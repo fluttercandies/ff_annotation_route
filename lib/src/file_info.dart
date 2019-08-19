@@ -1,5 +1,3 @@
-
-
 import 'route_info.dart';
 
 class FileInfo {
