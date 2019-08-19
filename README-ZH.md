@@ -86,11 +86,11 @@ class PicSwiper extends StatefulWidget {
 
 #### 环境
 
-把Dart的bin的路径加入到你的系统 `$PATH`.
+添加dart的bin的路径到你的系统 `$PATH`.
 
 `cache\dart-sdk\bin` 
 
-[`more info `](https://dart.dev/tools/pub/cmd/pub-global)
+[更多信息](https://dart.dev/tools/pub/cmd/pub-global)
 
 不清楚的可以看[掘金](https://juejin.im/post/5d4b8959e51d4561df780555)
 

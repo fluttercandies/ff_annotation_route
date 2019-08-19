@@ -84,7 +84,7 @@ class PicSwiper extends StatefulWidget {
 
 #### Environment
 
-Add Dart bin into to your `$PATH`.
+add dart bin into to your `$PATH`.
 
 `cache\dart-sdk\bin` 
 
