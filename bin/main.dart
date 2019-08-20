@@ -7,17 +7,11 @@ main(List<String> arguments) {
   PackageGraph packageGraph;
   var path =
       arguments.firstWhere((x) => x.contains("path="), orElse: () => null);
+
   if (path != null) {
     packageGraph = PackageGraph.forPath(path.replaceAll("path=", ""));
   } else {
     packageGraph = PackageGraph.forThisPackage();
-  }
-
-  var checkEnableS = arguments.firstWhere((x) => x.contains("checkEnable="),
-      orElse: () => null);
-  bool checkEnable = false;
-  if (checkEnableS != null) {
-    checkEnable = checkEnableS.replaceAll("checkEnable=", "") == "true";
   }
 
   var generateRouteNamesS = arguments
@@ -27,7 +21,7 @@ main(List<String> arguments) {
     generateRouteNames =
         generateRouteNamesS.replaceAll("generateRouteNames=", "") == "true";
   }
-
+ 
   var modeS =
       arguments.firstWhere((x) => x.contains("mode="), orElse: () => null);
   int mode = 0;
@@ -36,7 +30,7 @@ main(List<String> arguments) {
       modeS.replaceAll("mode=", "") ?? 0,
     );
   }
-
+ 
   bool routeSettingsNoArguments = false;
   if (mode == 1) {
     var routeSettingsNoArgumentsS = arguments.firstWhere(
@@ -49,23 +43,19 @@ main(List<String> arguments) {
     }
   }
 
-  List<PackageNode> annotationPackages = List<PackageNode>();
-  //only check path
-  var packages = packageGraph.allPackages.values
-      .where((x) => x.dependencyType == DependencyType.path);
-  annotationPackages.addAll(packages);
-  bool rootAnnotationRouteEnable = true;
-  if (checkEnable) {
-    for (var package in packages) {
-      var map = pubspecForPath(package.path);
-      var enable = map["annotation_route_enable"] ?? false;
-      if (!package.isRoot && !enable) {
-        annotationPackages.remove(package);
-      }
-      if (package.isRoot) {
-        rootAnnotationRouteEnable = enable;
-      }
-    }
+  //only check path and import ff_annotation_route
+  List<PackageNode> annotationPackages = packageGraph.allPackages.values
+      .where((x) =>
+          x.dependencyType == DependencyType.path &&
+          (x.dependencies.firstWhere((dep) => dep.name == "ff_annotation_route",
+                  orElse: () => null) !=
+              null))
+      .toList();
+
+  bool rootAnnotationRouteEnable =
+      annotationPackages.contains(packageGraph.root);
+  if (!rootAnnotationRouteEnable) {
+    annotationPackages.add(packageGraph.root);
   }
 
   generate(annotationPackages,

@@ -229,10 +229,10 @@ Map<String, Set<String>> _parsePackageDependencies(
 /// Gets the deps from a yaml file, taking into account dependency_overrides.
 Set<String> _depsFromYaml(YamlMap yaml, {bool isRoot = false}) {
   var deps = Set<String>()..addAll(_stringKeys(yaml['dependencies'] as Map));
-  if (isRoot) {
+  //if (isRoot) {
     deps..addAll(_stringKeys(yaml['dev_dependencies'] as Map));
     deps..addAll(_stringKeys(yaml['dependency_overrides'] as Map));
-  }
+  //}
   return deps;
 }
 

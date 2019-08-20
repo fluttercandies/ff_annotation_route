@@ -1,3 +1,7 @@
+## 1.0.6
+
+- Command "checkEnable" is obsolete now. only sacn the project/package which has dependency of "ff_annotation_route"
+
 ## 1.0.5
 
 - Fix FFNavigatorObserver
