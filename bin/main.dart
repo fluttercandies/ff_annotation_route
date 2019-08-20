@@ -21,7 +21,7 @@ main(List<String> arguments) {
     generateRouteNames =
         generateRouteNamesS.replaceAll("generateRouteNames=", "") == "true";
   }
- 
+
   var modeS =
       arguments.firstWhere((x) => x.contains("mode="), orElse: () => null);
   int mode = 0;
@@ -30,7 +30,7 @@ main(List<String> arguments) {
       modeS.replaceAll("mode=", "") ?? 0,
     );
   }
- 
+
   bool routeSettingsNoArguments = false;
   if (mode == 1) {
     var routeSettingsNoArgumentsS = arguments.firstWhere(
