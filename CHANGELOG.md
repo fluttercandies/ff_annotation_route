@@ -1,3 +1,7 @@
+## 1.0.2
+
+- Correct analyzer version for flutter low sdk
+
 ## 1.0.1
 
 - Correct analyzer version
