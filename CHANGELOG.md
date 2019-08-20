@@ -1,3 +1,7 @@
+## 1.0.5
+
+- Fix FFNavigatorObserver
+  
 ## 1.0.4
 
 - Public getFFRouteSettings

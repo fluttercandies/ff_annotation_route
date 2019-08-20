@@ -48,30 +48,30 @@ class FFNavigatorObserver extends NavigatorObserver {
 
   @override
   void didPop(Route route, Route previousRoute) {
+    super.didPop(route, previousRoute);    
     _showStatusBarChange(previousRoute, route);
     _routeChange(previousRoute);
-    super.didPop(route, previousRoute);
   }
 
   @override
   void didPush(Route route, Route previousRoute) {
+    super.didPush(route, previousRoute);
     _showStatusBarChange(route, previousRoute);
     _routeChange(route);
-    super.didPush(route, previousRoute);
   }
 
   @override
   void didRemove(Route route, Route previousRoute) {
+     super.didRemove(route, previousRoute);
     _showStatusBarChange(previousRoute, route);
-    _routeChange(previousRoute);
-    super.didRemove(route, previousRoute);
+    _routeChange(previousRoute);  
   }
 
   @override
   void didReplace({Route newRoute, Route oldRoute}) {
+     super.didReplace(newRoute: newRoute, oldRoute: oldRoute);
     _showStatusBarChange(newRoute, oldRoute);
     _routeChange(newRoute);
-    super.didReplace(newRoute: newRoute, oldRoute: oldRoute);
   }
 
   @override
