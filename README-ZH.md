@@ -24,6 +24,9 @@ Language: [English](README.md) | [中文简体](README-ZH.md)
       - [执行命令](#%e6%89%a7%e8%a1%8c%e5%91%bd%e4%bb%a4)
       - [命令参数](#%e5%91%bd%e4%bb%a4%e5%8f%82%e6%95%b0)
     - [Main.dart](#maindart)
+    - [Push](#push)
+      - [Push name](#push-name)
+      - [Push name with arguments](#push-name-with-arguments)
 
 ## 使用
 
@@ -199,3 +202,25 @@ Widget build(BuildContext context) {
 
 [更多信息](https://github.com/fluttercandies/ff_annotation_route/blob/master/example/lib/main.dart)
 
+### Push
+
+#### Push name
+
+```dart
+  Navigator.pushNamed(context, "fluttercandies://mainpage");
+```
+
+#### Push name with arguments
+
+参数应该是一个 Map<String,dynamic>
+```dart
+   Navigator.pushNamed(context, "fluttercandies://picswiper",
+                arguments: {
+                  "index": index,
+                  "pics": listSourceRepository
+                      .map<PicSwiperItem>(
+                          (f) => PicSwiperItem(f.imageUrl, des: f.title))
+                      .toList(),
+                });
+
+```

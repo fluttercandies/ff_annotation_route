@@ -22,6 +22,9 @@ Provide route generator to create route map quickly by annotations.
       - [Execute command](#execute-command)
       - [Command Parameter](#command-parameter)
     - [Main.dart](#maindart)
+    - [Push](#push)
+      - [Push name](#push-name)
+      - [Push name with arguments](#push-name-with-arguments)
 
 ## Usage
 
@@ -195,3 +198,25 @@ Widget build(BuildContext context) {
 
 [more info](https://github.com/fluttercandies/ff_annotation_route/blob/master/example/lib/main.dart)
 
+### Push
+
+#### Push name
+
+```dart
+  Navigator.pushNamed(context, "fluttercandies://mainpage");
+```
+
+#### Push name with arguments
+
+and arguments should be Map<String,dynamic>
+```dart
+   Navigator.pushNamed(context, "fluttercandies://picswiper",
+                arguments: {
+                  "index": index,
+                  "pics": listSourceRepository
+                      .map<PicSwiperItem>(
+                          (f) => PicSwiperItem(f.imageUrl, des: f.title))
+                      .toList(),
+                });
+
+```
