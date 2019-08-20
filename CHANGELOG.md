@@ -1,3 +1,7 @@
+## 1.0.3
+
+- Fix getRouteResult method error
+  
 ## 1.0.2
 
 - Correct analyzer version for flutter low sdk

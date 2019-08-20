@@ -7,7 +7,7 @@ const String fileHeader = """// GENERATED CODE - DO NOT MODIFY BY HAND
 
 const String rootFile = """
 
-RouteResult getRouteResult{String name, Map<String, dynamic> arguments}) {
+RouteResult getRouteResult({String name, Map<String, dynamic> arguments}) {
   switch (name) {
 {0}   default:
       return RouteResult();
