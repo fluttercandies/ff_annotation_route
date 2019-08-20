@@ -86,8 +86,8 @@ class FFNavigatorObserver extends NavigatorObserver {
 
   void _showStatusBarChange(Route newRoute, Route oldRoute) {
     if (showStatusBarChange != null) {
-      var newSettting = _getFFRouteSettings(newRoute);
-      var oldSetting = _getFFRouteSettings(oldRoute);
+      var newSettting = getFFRouteSettings(newRoute);
+      var oldSetting = getFFRouteSettings(oldRoute);
       if (newSettting?.showStatusBar != null &&
           newSettting.showStatusBar != oldSetting?.showStatusBar) {
         showStatusBarChange(newSettting.showStatusBar);
@@ -97,14 +97,14 @@ class FFNavigatorObserver extends NavigatorObserver {
 
   void _routeChange(Route newRoute) {
     if (routeChange != null) {
-      var newSettting = _getFFRouteSettings(newRoute);
+      var newSettting = getFFRouteSettings(newRoute);
       if (newSettting?.routeName != null) {
         routeChange(newSettting.routeName);
       }
     }
   }
 
-  FFRouteSettings _getFFRouteSettings(Route route) {
+  FFRouteSettings getFFRouteSettings(Route route) {
     if (route != null &&
         route.settings != null &&
         route.settings is FFRouteSettings) {

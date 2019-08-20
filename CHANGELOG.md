@@ -1,3 +1,7 @@
+## 1.0.4
+
+- Public getFFRouteSettings
+
 ## 1.0.3
 
 - Fix getRouteResult method error
