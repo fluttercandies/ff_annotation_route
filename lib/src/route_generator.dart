@@ -80,6 +80,8 @@ class RouteGenerator {
 
                 PageRouteType pageRouteType;
 
+                String description;
+
                 for (var item in parameters) {
                   if (item is NamedExpressionImpl) {
                     var key = item.name.toSource();
@@ -98,6 +100,8 @@ class RouteGenerator {
                           (type) =>
                               type.toString() == item.expression.toSource(),
                           orElse: () => null);
+                    } else if (key == "description:") {
+                      description = item.expression.toSource();
                     }
                   }
                 }
@@ -108,7 +112,8 @@ class RouteGenerator {
                         argumentNames: argumentNames,
                         showStatusBar: showStatusBar,
                         routeName: routeName,
-                        pageRouteType: pageRouteType));
+                        pageRouteType: pageRouteType,
+                        description: description));
 
                 fileInfo.routes.add(routeInfo);
               }

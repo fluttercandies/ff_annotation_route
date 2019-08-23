@@ -112,11 +112,15 @@ class RouteResult {
   /// The type of page route
   final PageRouteType pageRouteType;
 
+  /// The description of route
+  final String description;
+
   const RouteResult(
       {this.widget,
       this.showStatusBar = true,
       this.routeName = '',
-      this.pageRouteType});
+      this.pageRouteType,
+      this.description = ''});
 }
 
 enum PageRouteType { material, cupertino, transparent }

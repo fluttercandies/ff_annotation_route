@@ -1,3 +1,7 @@
+## 1.0.7
+
+- Add description parameter for FFRoute
+
 ## 1.0.6
 
 - Command "checkEnable" is obsolete now. only sacn the project/package which has dependency of "ff_annotation_route"

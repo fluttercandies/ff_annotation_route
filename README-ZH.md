@@ -1,6 +1,6 @@
 # ff_annotation_route
 
-[![pub package](https://img.shields.io/pub/v/ff_annotation_route.svg)](https://pub.dartlang.org/packages/ff_annotation_route)
+[![pub package](https://img.shields.io/pub/v/ff_annotation_route.svg)](https://pub.dartlang.org/packages/ff_annotation_route) [![GitHub stars](https://img.shields.io/github/stars/fluttercandies/ff_annotation_route)](https://github.com/fluttercandies/ff_annotation_route/stargazers) [![GitHub forks](https://img.shields.io/github/forks/fluttercandies/ff_annotation_route)](https://github.com/fluttercandies/ff_annotation_route/network)  [![GitHub license](https://img.shields.io/github/license/fluttercandies/ff_annotation_route)](https://github.com/fluttercandies/ff_annotation_route/blob/master/LICENSE)  [![GitHub issues](https://img.shields.io/github/issues/fluttercandies/ff_annotation_route)](https://github.com/fluttercandies/ff_annotation_route/issues) <a target="_blank" href="https://jq.qq.com/?_wv=1027&k=5bcc0gy"><img border="0" src="https://pub.idqqimg.com/wpa/images/group.png" alt="flutter-candies" title="flutter-candies"></a>
 
 Language: [English](README.md) | [中文简体](README-ZH.md)
 
@@ -83,7 +83,7 @@ class PicSwiper extends StatefulWidget {
 | showStatusBar | 是否显示状态栏                               | true     |
 | routeName     | 用于埋点收集数据的页面名字                   | ''       |
 | pageRouteType | 路由的类型(material, cupertino, transparent) | -        |
-
+| description   | 路由的描述                                   | ''       |
 
 
 ### 生成文件

@@ -19,12 +19,16 @@ class FFRoute {
   /// The type of page route
   final PageRouteType pageRouteType;
 
+  /// The description of route
+  final String description;
+
   const FFRoute(
       {String name,
       this.argumentNames,
       this.showStatusBar = true,
       this.routeName = '',
-      this.pageRouteType})
+      this.pageRouteType,
+      this.description = ''})
       : assert(name != null),
         this.name = name;
 }
