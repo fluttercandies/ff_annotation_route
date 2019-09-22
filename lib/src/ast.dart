@@ -32,7 +32,6 @@ CompilationUnit parseCompilationUnit(String contents,
     bool suppressErrors = false,
     bool parseFunctionBodies = true,
     FeatureSet featureSet}) {
-  // TODO(paulberry): make featureSet a required parameter
   featureSet ??= FeatureSet.fromEnableFlags([]);
   Source source = StringSource(contents, name);
   return _parseSource(contents, source, featureSet,
