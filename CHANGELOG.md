@@ -1,6 +1,6 @@
-## 1.0.8
+## 1.0.9
 
-- Fix demo issue and change analyzer version
+- Fix demo issue and update analyzer version
   
 ## 1.0.7
 
