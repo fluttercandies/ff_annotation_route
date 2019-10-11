@@ -9,7 +9,7 @@ class RouteInfo {
     var params = "";
     if (ffRoute.argumentNames != null && ffRoute.argumentNames.isNotEmpty) {
       for (var key in ffRoute.argumentNames) {
-        params += "$key:arguments['$key'],";
+        params += "$key:arguments??={}['$key'],";
       }
     }
 
