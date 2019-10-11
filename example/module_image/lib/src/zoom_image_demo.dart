@@ -21,7 +21,7 @@ class ZoomImageDemo extends StatelessWidget {
           url,
           fit: BoxFit.contain,
           //enableLoadState: false,
-          mode: ExtendedImageMode.Gesture,
+          mode: ExtendedImageMode.gesture,
           initGestureConfigHandler: (state) {
             return GestureConfig(
                 minScale: 0.9,

@@ -1,3 +1,7 @@
+## 1.0.9
+
+- Fix demo issue and update analyzer version
+  
 ## 1.0.7
 
 - Add description parameter for FFRoute
