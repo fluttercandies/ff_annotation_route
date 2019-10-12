@@ -45,38 +45,93 @@ class RouteResult {
 const String routeHelper = """
 import 'package:flutter/widgets.dart';
 
+class FFNoRoute extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: AppBar(
+          title: Text("can't find route"),
+        ),
+        body: Center(
+          child: Container(
+            child: Text("can't find route"),
+          ),
+        ));
+  }
+}
+
 class FFNavigatorObserver extends NavigatorObserver {
   final ShowStatusBarChange showStatusBarChange;
   final RouteChange routeChange;
+
+  // 当前路由栈
+  static List<Route> _mRoutes;
+  List<Route> get routes => _mRoutes;
+  // 当前路由
+  Route get currentRoute => _mRoutes[_mRoutes.length - 1];
+  // stream相关
+  static StreamController _streamController;
+  StreamController get streamController=> _streamController;
+
+  /* 单例给出NavigatorManager */
+  static FFNavigatorObserver navigatorManager;
+  static FFNavigatorObserver getInstance() {
+    if (navigatorManager == null) {
+      navigatorManager = new FFNavigatorObserver();
+      _streamController = StreamController.broadcast();
+    }
+    return navigatorManager;
+  }
 
   FFNavigatorObserver({this.showStatusBarChange, this.routeChange});
 
   @override
   void didPop(Route route, Route previousRoute) {
-    super.didPop(route, previousRoute);    
-    _showStatusBarChange(previousRoute, route);
-    _routeChange(previousRoute);
+    super.didPop(route, previousRoute);
+    if (route is CupertinoPageRoute || route is MaterialPageRoute) {
+      _mRoutes.remove(route);
+      _showStatusBarChange(previousRoute, route);
+      _routeChange(previousRoute);
+      _routeObserver();
+    }
   }
 
   @override
   void didPush(Route route, Route previousRoute) {
     super.didPush(route, previousRoute);
-    _showStatusBarChange(route, previousRoute);
-    _routeChange(route);
+    if (_mRoutes == null) {
+      _mRoutes = new List<Route>();
+    }
+    // 这里过滤调push的是dialog的情况
+    if (route is CupertinoPageRoute || route is MaterialPageRoute) {
+      _mRoutes.add(route);
+      _showStatusBarChange(route, previousRoute);
+      _routeChange(route);
+      _routeObserver();
+    }
   }
 
   @override
   void didRemove(Route route, Route previousRoute) {
-     super.didRemove(route, previousRoute);
-    _showStatusBarChange(previousRoute, route);
-    _routeChange(previousRoute);  
+    super.didRemove(route, previousRoute);
+    if (route is CupertinoPageRoute || route is MaterialPageRoute) {
+      _mRoutes.remove(route);
+      _showStatusBarChange(previousRoute, route);
+      _routeChange(previousRoute);
+      _routeObserver();
+    }
   }
 
   @override
   void didReplace({Route newRoute, Route oldRoute}) {
-     super.didReplace(newRoute: newRoute, oldRoute: oldRoute);
-    _showStatusBarChange(newRoute, oldRoute);
-    _routeChange(newRoute);
+    super.didReplace(newRoute: newRoute, oldRoute: oldRoute);
+    if (newRoute is CupertinoPageRoute || newRoute is MaterialPageRoute) {
+      _mRoutes.remove(oldRoute);
+      _mRoutes.add(newRoute);
+      _showStatusBarChange(newRoute, oldRoute);
+      _routeChange(newRoute);
+      _routeObserver();
+    }
   }
 
   @override
@@ -87,6 +142,59 @@ class FFNavigatorObserver extends NavigatorObserver {
   @override
   void didStopUserGesture() {
     super.didStopUserGesture();
+  }
+
+  // replace 页面
+  pushReplacementNamed(String routeName, [WidgetBuilder builder]) {
+    var routeResult = getRouteResult(
+      name: routeName,
+    );
+
+    var page = routeResult.widget ?? FFNoRoute();
+    var targetRoute = Platform.isIOS
+        ? CupertinoPageRoute(
+            builder: builder ?? (context) => page,
+            settings: RouteSettings(name: routeName),
+          )
+        : MaterialPageRoute(
+            builder: builder ?? (context) => page,
+            settings: RouteSettings(name: routeName),
+          );
+    return navigator.pushReplacement(
+      targetRoute,
+    );
+  }
+
+  // push 页面
+  pushNamed(String routeName, [WidgetBuilder builder]) {
+    var routeResult = getRouteResult(
+      name: routeName,
+    );
+
+    var page = routeResult.widget ?? FFNoRoute();
+    var targetRoute = Platform.isIOS
+        ? CupertinoPageRoute(
+            builder: builder ?? (context) => page,
+            settings: RouteSettings(name: routeName),
+          )
+        : MaterialPageRoute(
+            builder: builder ?? (context) => page,
+            settings: RouteSettings(name: routeName),
+          );
+    return navigator.push(
+      targetRoute,
+    );
+  }
+
+  // pop 页面
+  pop<T extends Object>([T result]) {
+    navigator.pop(result);
+  }
+
+  // push一个页面， 移除该页面下面所有页面
+  pushNamedAndRemoveUntil(String newRouteName) {
+    return navigator.pushNamedAndRemoveUntil(
+        newRouteName, (Route<dynamic> route) => false);
   }
 
   void _showStatusBarChange(Route newRoute, Route oldRoute) {
@@ -107,6 +215,16 @@ class FFNavigatorObserver extends NavigatorObserver {
         routeChange(newSettting.routeName);
       }
     }
+  }
+  
+  void _routeObserver() {
+    print('&&路由栈&&');
+    print('\$_mRoutes');
+    print('&&当前路由&&');
+    print('\${_mRoutes[_mRoutes.length - 1]}');
+    // 当前页面的navigator，用来路由跳转
+    // navigator = _mRoutes[_mRoutes.length - 1].navigator;
+    _streamController.sink.add(_mRoutes);
   }
 
   FFRouteSettings getFFRouteSettings(Route route) {
