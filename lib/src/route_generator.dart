@@ -211,7 +211,7 @@ class RouteGenerator {
     file.createSync();
 
     file.writeAsStringSync(
-        "$fileHeader\n$routeHelper\n${routeSettingsNoArguments ? ffRouteSettingsNoArguments : ffRouteSettings}");
+        "$fileHeader\nimport ${packageNode.name}_route.dart\n$routeHelper\n${routeSettingsNoArguments ? ffRouteSettingsNoArguments : ffRouteSettings}");
     print("generate : ${p.relative(file.path, from: packageNode.path)}");
   }
 }
