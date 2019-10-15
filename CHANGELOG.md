@@ -1,3 +1,7 @@
+## 1.1.0
+
+- Fix null exception about dependencies
+  
 ## 1.0.9
 
 - Fix demo issue and update analyzer version

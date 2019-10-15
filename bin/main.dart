@@ -47,7 +47,8 @@ main(List<String> arguments) {
   List<PackageNode> annotationPackages = packageGraph.allPackages.values
       .where((x) =>
           x.dependencyType == DependencyType.path &&
-          (x.dependencies.firstWhere((dep) => dep.name == "ff_annotation_route",
+          (x.dependencies.firstWhere(
+                  (dep) => dep?.name == "ff_annotation_route",
                   orElse: () => null) !=
               null))
       .toList();
