@@ -1,35 +1,37 @@
+import 'dart:convert';
 import 'dart:io';
+
+import 'package:analyzer/src/dart/ast/ast.dart';
+import 'package:path/path.dart' as p;
+
+import 'ast.dart';
+import 'ff_route.dart';
+import 'file_info.dart';
+import 'package_graph.dart';
 import 'route_info.dart';
 import 'utils.dart';
-import 'package:path/path.dart' as p;
-import 'ast.dart';
-import 'file_info.dart';
-import 'ff_route.dart';
-import 'package_graph.dart';
-import 'package:analyzer/src/dart/ast/ast.dart';
-import 'dart:convert';
 
 class RouteGenerator {
-  List<FileInfo> _fileInfos = List<FileInfo>();
-  List<FileInfo> get fileInfos => _fileInfos;
+  List<FileInfo> _fileInfoList = List<FileInfo>();
+  List<FileInfo> get fileInfoList => _fileInfoList;
   bool get isRoot => packageNode.isRoot;
   Directory _lib;
 
   final PackageNode packageNode;
-  bool get hasAnnotationRoute => _lib != null && _fileInfos.isNotEmpty;
+  bool get hasAnnotationRoute => _lib != null && _fileInfoList.isNotEmpty;
 
   String get import =>
       "import 'package:${packageNode.name}/${packageNode.name}_route.dart';";
 
   String get export {
-    if (_fileInfos.isNotEmpty) {
+    if (_fileInfoList.isNotEmpty) {
       StringBuffer sb = StringBuffer();
 
       if (!isRoot) {
         sb.write("library ${packageNode.name}_route;\n");
       }
 
-      _fileInfos.forEach((info) {
+      _fileInfoList.forEach((info) {
         sb.write("${isRoot ? "import" : "export"} '${info.export}'; \n");
       });
       return sb.toString();
@@ -43,19 +45,19 @@ class RouteGenerator {
     if (_lib != null) {
       print("");
       print("scan package : ${packageNode.name}");
-      for (var item in _lib.listSync(recursive: true)) {
-        var file = item.statSync();
+      for (final item in _lib.listSync(recursive: true)) {
+        final file = item.statSync();
         if (file.type == FileSystemEntityType.file &&
             item.path.endsWith(".dart")) {
           CompilationUnitImpl astRoot = parseDartFile(item.path);
 
           FileInfo fileInfo;
-          for (var declaration in astRoot.declarations) {
-            for (var metadata in declaration.metadata) {
+          for (final declaration in astRoot.declarations) {
+            for (final metadata in declaration.metadata) {
               if (metadata is AnnotationImpl &&
                   metadata.name?.name == typeOf<FFRoute>().toString() &&
                   metadata.parent is ClassDeclarationImpl) {
-                var className =
+                final className =
                     (metadata.parent as ClassDeclarationImpl).name?.name;
 
                 print(
@@ -68,27 +70,22 @@ class RouteGenerator {
                         .replaceAll("\\", "/"),
                     packageName: packageNode.name);
 
-                var parameters = metadata.arguments?.arguments;
+                final parameters = metadata.arguments?.arguments;
 
                 String name = "";
-
                 List<String> argumentNames;
-
                 bool showStatusBar;
-
                 String routeName;
-
                 PageRouteType pageRouteType;
-
                 String description;
 
-                for (var item in parameters) {
+                for (final item in parameters) {
                   if (item is NamedExpressionImpl) {
-                    var key = item.name.toSource();
+                    final key = item.name.toSource();
                     if (key == "name:") {
                       name = item.expression.toSource();
                     } else if (key == "argumentNames:") {
-                      var list =
+                      final list =
                           json.decode(item.expression.toSource()) as List;
                       argumentNames = list.map((f) => f.toString()).toList();
                     } else if (key == "showStatusBar:") {
@@ -106,21 +103,23 @@ class RouteGenerator {
                   }
                 }
                 RouteInfo routeInfo = RouteInfo(
-                    className: className,
-                    ffRoute: FFRoute(
-                        name: name,
-                        argumentNames: argumentNames,
-                        showStatusBar: showStatusBar,
-                        routeName: routeName,
-                        pageRouteType: pageRouteType,
-                        description: description));
+                  className: className,
+                  ffRoute: FFRoute(
+                    name: name,
+                    argumentNames: argumentNames,
+                    showStatusBar: showStatusBar,
+                    routeName: routeName,
+                    pageRouteType: pageRouteType,
+                    description: description,
+                  ),
+                );
 
                 fileInfo.routes.add(routeInfo);
               }
             }
           }
           if (fileInfo != null) {
-            _fileInfos.add(fileInfo);
+            _fileInfoList.add(fileInfo);
           }
         }
       }
@@ -138,30 +137,31 @@ class RouteGenerator {
     List<RouteGenerator> nodes,
     bool generateRouteNames = false,
   }) {
-    File file = File(p.join(_lib.path, "${packageNode.name}_route.dart"));
+    final file = File(p.join(_lib.path, "${packageNode.name}_route.dart"));
     if (file.existsSync()) {
       file.deleteSync();
     }
-    if (isRoot && _fileInfos.isEmpty && (nodes?.isEmpty ?? true)) {
+    if (isRoot && _fileInfoList.isEmpty && (nodes?.isEmpty ?? true)) {
       return;
     }
 
     StringBuffer sb = StringBuffer();
 
-    //nodes import
+    /// Nodes import
     if (packageNode.isRoot && nodes != null && nodes.isNotEmpty) {
       nodes.forEach((node) {
         sb.write(node.import + "\n");
       });
     }
-    //export
+
+    /// Export
     sb.write(export);
 
-    //create route generator
+    /// Create route generator
     if (isRoot) {
       StringBuffer caseSb = StringBuffer();
       List<String> routeNames = List<String>();
-      _fileInfos.forEach((info) {
+      _fileInfoList.forEach((info) {
         info.routes.forEach((route) {
           routeNames.add(route.ffRoute.name.replaceAll("\"", ""));
           caseSb.write(route.caseString);
@@ -170,7 +170,7 @@ class RouteGenerator {
 
       if (nodes != null && nodes.isNotEmpty) {
         nodes.forEach((node) {
-          node.fileInfos.forEach((info) {
+          node.fileInfoList.forEach((info) {
             info.routes.forEach((route) {
               routeNames.add(route.ffRoute.name.replaceAll("\"", ""));
               caseSb.write(route.caseString);
@@ -197,11 +197,12 @@ class RouteGenerator {
     }
   }
 
-  void generateHelperFile(
-      {List<RouteGenerator> nodes,
-      bool routeSettingsNoArguments = false,
-      int mode = 0}) {
-    File file =
+  void generateHelperFile({
+    List<RouteGenerator> nodes,
+    bool routeSettingsNoArguments = false,
+    int mode = 0,
+  }) {
+    final file =
         File(p.join(_lib.path, "${packageNode.name}_route_helper.dart"));
     if (file.existsSync()) {
       file.deleteSync();
