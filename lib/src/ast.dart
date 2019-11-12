@@ -27,28 +27,32 @@ import 'package:path/path.dart' as pathos;
 ///
 /// If [parseFunctionBodies] is [false] then only function signatures will be
 /// parsed.
-CompilationUnit parseCompilationUnit(String contents,
-    {String name,
-    bool suppressErrors = false,
-    bool parseFunctionBodies = true,
-    FeatureSet featureSet}) {
+CompilationUnit parseCompilationUnit(
+  String contents, {
+  String name,
+  bool suppressErrors = false,
+  bool parseFunctionBodies = true,
+  FeatureSet featureSet,
+}) {
   featureSet ??= FeatureSet.fromEnableFlags([]);
   Source source = StringSource(contents, name);
   return _parseSource(contents, source, featureSet,
       suppressErrors: suppressErrors, parseFunctionBodies: parseFunctionBodies);
 }
 
-CompilationUnit parseDartFile(String path,
-    {bool suppressErrors = false,
-    bool parseFunctionBodies = true,
-    FeatureSet featureSet}) {
+CompilationUnit parseDartFile(
+  String path, {
+  bool suppressErrors = false,
+  bool parseFunctionBodies = true,
+  FeatureSet featureSet,
+}) {
   featureSet ??= FeatureSet.fromEnableFlags([]);
-  String contents = io.File(path).readAsStringSync();
-  var sourceFactory =
+  final contents = io.File(path).readAsStringSync();
+  final sourceFactory =
       SourceFactory([ResourceUriResolver(PhysicalResourceProvider.INSTANCE)]);
 
-  var absolutePath = pathos.absolute(path);
-  var source = sourceFactory.forUri(pathos.toUri(absolutePath).toString());
+  final absolutePath = pathos.absolute(path);
+  final source = sourceFactory.forUri(pathos.toUri(absolutePath).toString());
   if (source == null) {
     throw ArgumentError("Can't get source for path $path");
   }
@@ -56,8 +60,13 @@ CompilationUnit parseDartFile(String path,
     throw ArgumentError("Source $source doesn't exist");
   }
 
-  return _parseSource(contents, source, featureSet,
-      suppressErrors: suppressErrors, parseFunctionBodies: parseFunctionBodies);
+  return _parseSource(
+    contents,
+    source,
+    featureSet,
+    suppressErrors: suppressErrors,
+    parseFunctionBodies: parseFunctionBodies,
+  );
 }
 
 /// Parses a Dart file into an AST.
@@ -68,19 +77,25 @@ CompilationUnit parseDartFile(String path,
 /// If [parseFunctionBodies] is [false] then only function signatures will be
 /// parsed.
 CompilationUnit _parseSource(
-    String contents, Source source, FeatureSet featureSet,
-    {bool suppressErrors = false, bool parseFunctionBodies = true}) {
-  var reader = CharSequenceReader(contents);
-  var errorCollector = _ErrorCollector();
-  var scanner = Scanner(source, reader, errorCollector)
+  String contents,
+  Source source,
+  FeatureSet featureSet, {
+  bool suppressErrors = false,
+  bool parseFunctionBodies = true,
+}) {
+  final reader = CharSequenceReader(contents);
+  final errorCollector = _ErrorCollector();
+  final scanner = Scanner(source, reader, errorCollector)
     ..configureFeatures(featureSet);
-  var token = scanner.tokenize();
-  var parser = Parser(source, errorCollector, featureSet: featureSet)
+  final token = scanner.tokenize();
+  final parser = Parser(source, errorCollector, featureSet: featureSet)
     ..parseFunctionBodies = parseFunctionBodies;
-  var unit = parser.parseCompilationUnit(token)
+  final unit = parser.parseCompilationUnit(token)
     ..lineInfo = LineInfo(scanner.lineStarts);
 
-  if (errorCollector.hasErrors && !suppressErrors) throw errorCollector.group;
+  if (errorCollector.hasErrors && !suppressErrors) {
+    throw errorCollector.group;
+  }
 
   return unit;
 }

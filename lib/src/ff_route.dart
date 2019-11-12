@@ -1,6 +1,5 @@
-/// annotation to generate route
-///
-///
+/// Annotation to generate route
+
 class FFRoute {
   /// The name of the route (e.g., "/settings").
   ///

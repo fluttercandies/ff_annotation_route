@@ -101,11 +101,10 @@ add dart bin into to your `$PATH`.
 
 #### Execute command
 
-you can cd to your project and exectue command.
-`ff_annotation_route`
+you can cd to your project and execute command. `ff_annotation_route`
 
-or you can exectue command with your project path
-`ff_annotation_route path=`
+or you can execute command with your project path `ff_annotation_route
+path=`
 
 #### Command Parameter
 
@@ -120,10 +119,10 @@ use as parameter=xxx, and use space to split them.
 
 ### Main.dart
 
-- if you exectue command with mode=1, FFNavigatorObserver/FFRouteSettings will generate in xxx_route_helper.dart
+- if you execute command with mode=1, FFNavigatorObserver/FFRouteSettings will generate in xxx_route_helper.dart
 they help you to track page or change status bar state.
 
-- if you exectue command with mode=1, FFTransparentPageRoute will generate in xxx_route_helper.dart
+- if you execute command with mode=1, FFTransparentPageRoute will generate in xxx_route_helper.dart
 it helps you to push a transparent page route.
 
 ```dart
@@ -209,13 +208,14 @@ Widget build(BuildContext context) {
 
 and arguments should be Map<String,dynamic>
 ```dart
-   Navigator.pushNamed(context, "fluttercandies://picswiper",
-                arguments: {
-                  "index": index,
-                  "pics": listSourceRepository
-                      .map<PicSwiperItem>(
-                          (f) => PicSwiperItem(f.imageUrl, des: f.title))
-                      .toList(),
-                });
-
+  Navigator.pushNamed(
+    context,
+    "fluttercandies://picswiper",
+    arguments: {
+      "index": index,
+      "pics": listSourceRepository
+          .map<PicSwiperItem>((f) => PicSwiperItem(f.imageUrl, des: f.title))
+          .toList(),
+    },
+  );
 ```
