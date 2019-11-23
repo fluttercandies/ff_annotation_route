@@ -1,3 +1,7 @@
+## 1.1.1
+
+- Correct typos and formatted codes
+  
 ## 1.1.0
 
 - Fix null exception about dependencies
