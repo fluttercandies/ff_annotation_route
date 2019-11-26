@@ -25,7 +25,8 @@ void generate(
       routeGenerator.getLib();
       routeGenerator.scanLib();
       if (routeGenerator.hasAnnotationRoute) {
-        routeGenerator.generateFile();
+        final file = routeGenerator.generateFile();
+        formatFile(file);
         nodes.add(routeGenerator);
       }
     }
