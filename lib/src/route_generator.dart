@@ -133,7 +133,7 @@ class RouteGenerator {
     }
   }
 
-  void generateFile({
+  File generateFile({
     List<RouteGenerator> nodes,
     bool generateRouteNames = false,
   }) {
@@ -142,7 +142,7 @@ class RouteGenerator {
       file.deleteSync();
     }
     if (isRoot && _fileInfoList.isEmpty && (nodes?.isEmpty ?? true)) {
-      return;
+      return null;
     }
 
     StringBuffer sb = StringBuffer();
@@ -195,9 +195,11 @@ class RouteGenerator {
           sb.toString());
       print("generate : ${p.relative(file.path, from: packageNode.path)}");
     }
+
+    return file;
   }
 
-  void generateHelperFile({
+  File generateHelperFile({
     List<RouteGenerator> nodes,
     bool routeSettingsNoArguments = false,
     int mode = 0,
@@ -207,12 +209,14 @@ class RouteGenerator {
     if (file.existsSync()) {
       file.deleteSync();
     }
-    if (mode == 0) return;
+    if (mode == 0) return null;
 
     file.createSync();
 
     file.writeAsStringSync(
         "$fileHeader\n$routeHelper\n${routeSettingsNoArguments ? ffRouteSettingsNoArguments : ffRouteSettings}");
     print("generate : ${p.relative(file.path, from: packageNode.path)}");
+
+    return file;
   }
 }
