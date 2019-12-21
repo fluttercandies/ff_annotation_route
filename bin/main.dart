@@ -2,11 +2,13 @@ import 'package:ff_annotation_route/ff_annotation_route.dart';
 import 'package:ff_annotation_route/src/package_graph.dart';
 
 main(List<String> arguments) {
-  print("ff_annotation_route------------------ start");
+  print("ff_annotation_route ------- Start");
 
   PackageGraph packageGraph;
-  var path =
-      arguments.firstWhere((x) => x.contains("path="), orElse: () => null);
+  var path = arguments.firstWhere(
+    (x) => x.contains("path="),
+    orElse: () => null,
+  );
 
   if (path != null) {
     packageGraph = PackageGraph.forPath(path.replaceAll("path=", ""));
@@ -14,16 +16,36 @@ main(List<String> arguments) {
     packageGraph = PackageGraph.forThisPackage();
   }
 
-  var generateRouteNamesS = arguments
-      .firstWhere((x) => x.contains("generateRouteNames="), orElse: () => null);
+  var generateRouteNamesS = arguments.firstWhere(
+    (x) => x.contains("generateRouteNames="),
+    orElse: () => null,
+  );
   bool generateRouteNames = false;
   if (generateRouteNamesS != null) {
-    generateRouteNames =
-        generateRouteNamesS.replaceAll("generateRouteNames=", "") == "true";
+    generateRouteNames = generateRouteNamesS.replaceAll(
+          "generateRouteNames=",
+          "",
+        ) ==
+        "true";
   }
 
-  var modeS =
-      arguments.firstWhere((x) => x.contains("mode="), orElse: () => null);
+  var generateRouteConstantsS = arguments.firstWhere(
+    (x) => x.contains("generateRouteConstants="),
+    orElse: () => null,
+  );
+  bool generateRouteConstants = false;
+  if (generateRouteConstantsS != null) {
+    generateRouteConstants = generateRouteConstantsS.replaceAll(
+          "generateRouteConstants=",
+          "",
+        ) ==
+        "true";
+  }
+
+  var modeS = arguments.firstWhere(
+    (x) => x.contains("mode="),
+    orElse: () => null,
+  );
   int mode = 0;
   if (modeS != null) {
     mode = int.tryParse(
@@ -34,8 +56,9 @@ main(List<String> arguments) {
   bool routeSettingsNoArguments = false;
   if (mode == 1) {
     var routeSettingsNoArgumentsS = arguments.firstWhere(
-        (x) => x.contains("routeSettingsNoArguments="),
-        orElse: () => null);
+      (x) => x.contains("routeSettingsNoArguments="),
+      orElse: () => null,
+    );
     if (routeSettingsNoArgumentsS != null) {
       routeSettingsNoArguments = routeSettingsNoArgumentsS.replaceAll(
               "routeSettingsNoArguments=", "") ==
@@ -45,12 +68,15 @@ main(List<String> arguments) {
 
   //only check path and import ff_annotation_route
   List<PackageNode> annotationPackages = packageGraph.allPackages.values
-      .where((x) =>
-          x.dependencyType == DependencyType.path &&
-          (x.dependencies.firstWhere(
+      .where(
+        (x) =>
+            x.dependencyType == DependencyType.path &&
+            (x.dependencies.firstWhere(
                   (dep) => dep?.name == "ff_annotation_route",
-                  orElse: () => null) !=
-              null))
+                  orElse: () => null,
+                ) !=
+                null),
+      )
       .toList();
 
   bool rootAnnotationRouteEnable =
@@ -59,12 +85,15 @@ main(List<String> arguments) {
     annotationPackages.add(packageGraph.root);
   }
 
-  generate(annotationPackages,
-      generateRouteNames: generateRouteNames,
-      mode: mode,
-      routeSettingsNoArguments: routeSettingsNoArguments,
-      rootAnnotationRouteEnable: rootAnnotationRouteEnable);
+  generate(
+    annotationPackages,
+    generateRouteNames: generateRouteNames,
+    generateRouteConstants: generateRouteConstants,
+    mode: mode,
+    routeSettingsNoArguments: routeSettingsNoArguments,
+    rootAnnotationRouteEnable: rootAnnotationRouteEnable,
+  );
 
   print("");
-  print("ff_annotation_route------------------ end");
+  print("ff_annotation_route ------ End");
 }

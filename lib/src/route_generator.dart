@@ -12,7 +12,7 @@ import 'route_info.dart';
 import 'utils.dart';
 
 class RouteGenerator {
-  List<FileInfo> _fileInfoList = List<FileInfo>();
+  final _fileInfoList = <FileInfo>[];
   List<FileInfo> get fileInfoList => _fileInfoList;
   bool get isRoot => packageNode.isRoot;
   Directory _lib;
@@ -25,10 +25,10 @@ class RouteGenerator {
 
   String get export {
     if (_fileInfoList.isNotEmpty) {
-      StringBuffer sb = StringBuffer();
+      final sb = StringBuffer();
 
       if (!isRoot) {
-        sb.write("library ${packageNode.name}_route;\n");
+        sb.write('library ${packageNode.name}_route;\n');
       }
 
       _fileInfoList.forEach((info) {
@@ -36,19 +36,19 @@ class RouteGenerator {
       });
       return sb.toString();
     }
-    return "";
+    return '';
   }
 
   RouteGenerator(this.packageNode);
 
   void scanLib() {
     if (_lib != null) {
-      print("");
-      print("scan package : ${packageNode.name}");
+      print('');
+      print('Scanning package : ${packageNode.name}');
       for (final item in _lib.listSync(recursive: true)) {
         final file = item.statSync();
         if (file.type == FileSystemEntityType.file &&
-            item.path.endsWith(".dart")) {
+            item.path.endsWith('.dart')) {
           CompilationUnitImpl astRoot = parseDartFile(item.path);
 
           FileInfo fileInfo;
@@ -61,18 +61,18 @@ class RouteGenerator {
                     (metadata.parent as ClassDeclarationImpl).name?.name;
 
                 print(
-                    "find annotation route : ${p.relative(item.path, from: packageNode.path)} ------- class : $className");
+                    'Found annotation route : ${p.relative(item.path, from: packageNode.path)} ------ class : $className');
 
                 fileInfo ??= FileInfo(
                     export: p
                         .relative(item.path,
-                            from: p.join(packageNode.path, "lib"))
-                        .replaceAll("\\", "/"),
+                            from: p.join(packageNode.path, 'lib'))
+                        .replaceAll('\\', '/'),
                     packageName: packageNode.name);
 
                 final parameters = metadata.arguments?.arguments;
 
-                String name = "";
+                String name;
                 List<String> argumentNames;
                 bool showStatusBar;
                 String routeName;
@@ -85,8 +85,9 @@ class RouteGenerator {
                     if (key == "name:") {
                       name = item.expression.toSource();
                     } else if (key == "argumentNames:") {
-                      final list =
-                          json.decode(item.expression.toSource()) as List;
+                      final list = json.decode(
+                        item.expression.toSource(),
+                      ) as List;
                       argumentNames = list.map((f) => f.toString()).toList();
                     } else if (key == "showStatusBar:") {
                       showStatusBar = item.expression.toSource() == "true";
@@ -94,15 +95,15 @@ class RouteGenerator {
                       routeName = item.expression.toSource();
                     } else if (key == "pageRouteType:") {
                       pageRouteType = PageRouteType.values.firstWhere(
-                          (type) =>
-                              type.toString() == item.expression.toSource(),
-                          orElse: () => null);
+                        (type) => type.toString() == item.expression.toSource(),
+                        orElse: () => null,
+                      );
                     } else if (key == "description:") {
                       description = item.expression.toSource();
                     }
                   }
                 }
-                RouteInfo routeInfo = RouteInfo(
+                final routeInfo = RouteInfo(
                   className: className,
                   ffRoute: FFRoute(
                     name: name,
@@ -127,17 +128,16 @@ class RouteGenerator {
   }
 
   void getLib() {
-    final Directory lib = Directory(p.join(packageNode.path, 'lib'));
-    if (lib.existsSync()) {
-      _lib = lib;
-    }
+    final lib = Directory(p.join(packageNode.path, 'lib'));
+    if (lib.existsSync()) _lib = lib;
   }
 
   File generateFile({
     List<RouteGenerator> nodes,
     bool generateRouteNames = false,
+    bool generateRouteConstants = false,
   }) {
-    final file = File(p.join(_lib.path, "${packageNode.name}_route.dart"));
+    final file = File(p.join(_lib.path, '${packageNode.name}_route.dart'));
     if (file.existsSync()) {
       file.deleteSync();
     }
@@ -145,12 +145,12 @@ class RouteGenerator {
       return null;
     }
 
-    StringBuffer sb = StringBuffer();
+    final sb = StringBuffer();
 
     /// Nodes import
     if (packageNode.isRoot && nodes != null && nodes.isNotEmpty) {
       nodes.forEach((node) {
-        sb.write(node.import + "\n");
+        sb.write('${node.import}\n');
       });
     }
 
@@ -159,11 +159,11 @@ class RouteGenerator {
 
     /// Create route generator
     if (isRoot) {
-      StringBuffer caseSb = StringBuffer();
-      List<String> routeNames = List<String>();
+      final caseSb = StringBuffer();
+      final routeNames = <String>[];
       _fileInfoList.forEach((info) {
         info.routes.forEach((route) {
-          routeNames.add(route.ffRoute.name.replaceAll("\"", ""));
+          routeNames.add(route.ffRoute.name.replaceAll('\"', ''));
           caseSb.write(route.caseString);
         });
       });
@@ -172,28 +172,47 @@ class RouteGenerator {
         nodes.forEach((node) {
           node.fileInfoList.forEach((info) {
             info.routes.forEach((route) {
-              routeNames.add(route.ffRoute.name.replaceAll("\"", ""));
+              routeNames.add(route.ffRoute.name.replaceAll('\"', ''));
               caseSb.write(route.caseString);
             });
           });
         });
       }
 
-      sb.write(rootFile.replaceAll("{0}", caseSb.toString()));
+      sb.write(rootFile.replaceAll('{0}', caseSb.toString()));
 
       if (generateRouteNames) {
-        sb.write("\n");
-        sb.write("List<String> routeNames = ${json.encode(routeNames)};");
+        sb.write('\n');
+        sb.write('List<String> routeNames = ${json.encode(routeNames)};');
+      }
+
+      if (generateRouteConstants) {
+        sb.write('\n');
+        sb.write('class Routes {\n');
+        routeNames.forEach((routeName) {
+          final constant = routeName
+              .replaceAll('://', '_')
+              .replaceAll('/', '_')
+              .replaceAll('.', '_')
+              .replaceAll(' ', '_')
+              .replaceAll('-', '_');
+          sb.write(
+            '  static const String '
+            '${constant.toUpperCase()} = \"${routeName}\";'
+            '\n',
+          );
+        });
+        sb.write('}');
       }
     }
 
     if (sb.isNotEmpty) {
       file.createSync();
       file.writeAsStringSync(fileHeader +
-          "\n" +
-          (isRoot ? "import 'package:flutter/widgets.dart';\n" : "") +
+          '\n' +
+          (isRoot ? "import 'package:flutter/widgets.dart';\n\n" : '') +
           sb.toString());
-      print("generate : ${p.relative(file.path, from: packageNode.path)}");
+      print('Generate : ${p.relative(file.path, from: packageNode.path)}');
     }
 
     return file;
@@ -205,7 +224,7 @@ class RouteGenerator {
     int mode = 0,
   }) {
     final file =
-        File(p.join(_lib.path, "${packageNode.name}_route_helper.dart"));
+        File(p.join(_lib.path, '${packageNode.name}_route_helper.dart'));
     if (file.existsSync()) {
       file.deleteSync();
     }
@@ -214,8 +233,8 @@ class RouteGenerator {
     file.createSync();
 
     file.writeAsStringSync(
-        "$fileHeader\n$routeHelper\n${routeSettingsNoArguments ? ffRouteSettingsNoArguments : ffRouteSettings}");
-    print("generate : ${p.relative(file.path, from: packageNode.path)}");
+        '$fileHeader\n$routeHelper\n${routeSettingsNoArguments ? ffRouteSettingsNoArguments : ffRouteSettings}');
+    print('Generate : ${p.relative(file.path, from: packageNode.path)}');
 
     return file;
   }

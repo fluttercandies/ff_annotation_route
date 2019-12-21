@@ -1,3 +1,8 @@
+## 1.1.3
+
+- Add `generateRouteConstants` param to generate routes in `Routes` with
+  constants.
+
 ## 1.1.2
 
 - Format output files.
