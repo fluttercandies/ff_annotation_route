@@ -82,23 +82,23 @@ class RouteGenerator {
                 for (final item in parameters) {
                   if (item is NamedExpressionImpl) {
                     final key = item.name.toSource();
-                    if (key == "name:") {
+                    if (key == 'name:') {
                       name = item.expression.toSource();
-                    } else if (key == "argumentNames:") {
+                    } else if (key == 'argumentNames:') {
                       final list = json.decode(
                         item.expression.toSource(),
                       ) as List;
                       argumentNames = list.map((f) => f.toString()).toList();
-                    } else if (key == "showStatusBar:") {
-                      showStatusBar = item.expression.toSource() == "true";
-                    } else if (key == "routeName:") {
+                    } else if (key == 'showStatusBar:') {
+                      showStatusBar = item.expression.toSource() == 'true';
+                    } else if (key == 'routeName:') {
                       routeName = item.expression.toSource();
-                    } else if (key == "pageRouteType:") {
+                    } else if (key == 'pageRouteType:') {
                       pageRouteType = PageRouteType.values.firstWhere(
                         (type) => type.toString() == item.expression.toSource(),
                         orElse: () => null,
                       );
-                    } else if (key == "description:") {
+                    } else if (key == 'description:') {
                       description = item.expression.toSource();
                     }
                   }

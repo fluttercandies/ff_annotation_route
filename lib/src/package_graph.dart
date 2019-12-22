@@ -87,8 +87,12 @@ class PackageGraph {
       );
     }
 
-    rootNode.dependencies
-        .addAll(_dependenciesFromYaml(rootPubspec, isRoot: true).map((n) => nodes[n]));
+    rootNode.dependencies.addAll(
+      _dependenciesFromYaml(
+        rootPubspec,
+        isRoot: true,
+      ).map((n) => nodes[n]),
+    );
 
     final packageDependencies = _parsePackageDependencies(packageLocations);
     for (final packageName in packageDependencies.keys) {
@@ -108,7 +112,7 @@ class PackageGraph {
 
   @override
   String toString() {
-    StringBuffer buffer = StringBuffer();
+    final buffer = StringBuffer();
     for (final package in allPackages.values) {
       buffer.writeln('$package');
     }
@@ -160,18 +164,18 @@ Map<String, String> _parsePackageLocations(String rootPackagePath) {
     throw StateError('Unable to generate package graph, no `.packages` found. '
         'This program must be ran from the root directory of your package.');
   }
-  Map<String, String> packageLocations = <String, String>{};
+  final packageLocations = <String, String>{};
   for (final line in packagesFile.readAsLinesSync().skip(1)) {
     final firstColon = line.indexOf(':');
     final name = line.substring(0, firstColon);
     assert(line.endsWith('lib/'));
     // Start after package_name:, and strip out trailing 'lib/'.
-    String uriString = line.substring(firstColon + 1, line.length - 4);
+    var uriString = line.substring(firstColon + 1, line.length - 4);
     // Strip the trailing slash, if present.
     if (uriString.endsWith('/')) {
       uriString = uriString.substring(0, uriString.length - 1);
     }
-    Uri uri = Uri.tryParse(uriString) ?? Uri.file(uriString);
+    var uri = Uri.tryParse(uriString) ?? Uri.file(uriString);
     if (!uri.isAbsolute) {
       uri = p.toUri(p.join(rootPackagePath, uri.path));
     }
@@ -233,7 +237,8 @@ Map<String, Set<String>> _parsePackageDependencies(
 /// Gets the dependencies from a yaml file, taking into account
 /// dependency_overrides.
 Set<String> _dependenciesFromYaml(YamlMap yaml, {bool isRoot = false}) {
-  final dependencies = Set<String>()..addAll(_stringKeys(yaml['dependencies'] as Map));
+  final dependencies = <String>{}
+    ..addAll(_stringKeys(yaml['dependencies'] as Map));
   // if (isRoot) {
   dependencies..addAll(_stringKeys(yaml['dev_dependencies'] as Map));
   dependencies..addAll(_stringKeys(yaml['dependency_overrides'] as Map));

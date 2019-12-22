@@ -5,12 +5,11 @@ homepage: https://github.com/fluttercandies/ff_annotation_route
 author: zmtzawqlp <zmtzawqlp@live.com>
 
 environment:
-  sdk: '>=2.1.0 <3.0.0'
+  sdk: '>=2.2.0 <3.0.0'
 dependencies:
-  analyzer: ^0.38.3
+  analyzer: ^0.39.2+1
   path: ^1.0.0
   yaml: ^2.0.0
-# dev_dependencies:
 
 executables:
   ff_annotation_route:
