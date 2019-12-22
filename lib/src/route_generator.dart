@@ -230,7 +230,7 @@ class RouteGenerator {
             }
             sb.write(
               '\nstatic const String '
-              '${_constant.toUpperCase()} = \"$_routeName\";\n\n',
+              '${_constant.toUpperCase()} = \"$_name\";\n\n',
             );
           });
         });
