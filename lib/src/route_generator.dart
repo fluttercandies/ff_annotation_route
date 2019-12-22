@@ -187,21 +187,54 @@ class RouteGenerator {
       }
 
       if (generateRouteConstants) {
-        sb.write('\n');
         sb.write('class Routes {\n');
-        routeNames.forEach((routeName) {
-          final constant = routeName
-              .replaceAll('://', '_')
-              .replaceAll('/', '_')
-              .replaceAll('.', '_')
-              .replaceAll(' ', '_')
-              .replaceAll('-', '_');
-          sb.write(
-            '  static const String '
-            '${constant.toUpperCase()} = \"${routeName}\";'
-            '\n',
-          );
+
+        _fileInfoList.forEach((info) {
+          info.routes.forEach((route) {
+            final _route = route.ffRoute;
+
+            final _name = _route.name.replaceAll('\"', '');
+            final _routeName = _route.routeName.replaceAll('\"', '');
+            final _description = _route.description;
+            final _arguments = _route.argumentNames;
+            final _showStatusBar = _route.showStatusBar;
+            final _pageRouteType = _route.pageRouteType;
+
+            final _firstLine = _description ?? _routeName ?? _name;
+
+            final _constant = _name
+                .replaceAll('\"', '')
+                .replaceAll('://', '_')
+                .replaceAll('/', '_')
+                .replaceAll('.', '_')
+                .replaceAll(' ', '_')
+                .replaceAll('-', '_');
+
+            sb.write('/// $_firstLine\n');
+            sb.write('///');
+            sb.write('\n/// [name] : $_name');
+            if (_routeName != null) {
+              sb.write('\n/// [routeName] : $_routeName');
+            }
+            if (_description != null) {
+              sb.write('\n/// [description] : $_description');
+            }
+            if (_arguments != null) {
+              sb.write('\n/// [arguments] : $_arguments');
+            }
+            if (_showStatusBar != null) {
+              sb.write('\n/// [showStatusBar] : $_showStatusBar');
+            }
+            if (_pageRouteType != null) {
+              sb.write('\n/// [pageRouteType] : $_pageRouteType');
+            }
+            sb.write(
+              '\nstatic const String '
+              '${_constant.toUpperCase()} = \"$_routeName\";\n\n',
+            );
+          });
         });
+
         sb.write('}');
       }
     }
