@@ -1,85 +1,88 @@
 import 'package:ff_annotation_route/ff_annotation_route.dart';
 import 'package:ff_annotation_route/src/package_graph.dart';
 
-main(List<String> arguments) {
-  print("ff_annotation_route ------- Start");
+void main(List<String> arguments) {
+  print('ff_annotation_route ------- Start');
 
   PackageGraph packageGraph;
   var path = arguments.firstWhere(
-    (x) => x.contains("path="),
+    (x) => x.contains('path='),
     orElse: () => null,
   );
 
   if (path != null) {
-    packageGraph = PackageGraph.forPath(path.replaceAll("path=", ""));
+    packageGraph = PackageGraph.forPath(path.replaceAll('path=', ''));
   } else {
     packageGraph = PackageGraph.forThisPackage();
   }
 
   var generateRouteNamesS = arguments.firstWhere(
-    (x) => x.contains("generateRouteNames="),
+    (x) => x.contains('generateRouteNames='),
     orElse: () => null,
   );
-  bool generateRouteNames = false;
+  bool generateRouteNames;
   if (generateRouteNamesS != null) {
-    generateRouteNames = generateRouteNamesS.replaceAll(
-          "generateRouteNames=",
-          "",
-        ) ==
-        "true";
+    generateRouteNames =
+        generateRouteNamesS.replaceAll('generateRouteNames=', '') == 'true';
+  } else {
+    generateRouteNames = false;
   }
 
   var generateRouteConstantsS = arguments.firstWhere(
-    (x) => x.contains("generateRouteConstants="),
+    (x) => x.contains('generateRouteConstants='),
     orElse: () => null,
   );
-  bool generateRouteConstants = false;
+  bool generateRouteConstants;
   if (generateRouteConstantsS != null) {
-    generateRouteConstants = generateRouteConstantsS.replaceAll(
-          "generateRouteConstants=",
-          "",
-        ) ==
-        "true";
+    generateRouteConstants =
+        generateRouteConstantsS.replaceAll('generateRouteConstants=', '') ==
+            'true';
+  } else {
+    generateRouteConstants = false;
   }
 
   var modeS = arguments.firstWhere(
-    (x) => x.contains("mode="),
+    (x) => x.contains('mode='),
     orElse: () => null,
   );
-  int mode = 0;
+  int mode;
   if (modeS != null) {
     mode = int.tryParse(
-      modeS.replaceAll("mode=", "") ?? 0,
+      modeS.replaceAll('mode=', '') ?? 0,
     );
+  } else {
+    mode = 0;
   }
 
-  bool routeSettingsNoArguments = false;
+  bool routeSettingsNoArguments;
   if (mode == 1) {
     var routeSettingsNoArgumentsS = arguments.firstWhere(
-      (x) => x.contains("routeSettingsNoArguments="),
+      (x) => x.contains('routeSettingsNoArguments='),
       orElse: () => null,
     );
     if (routeSettingsNoArgumentsS != null) {
       routeSettingsNoArguments = routeSettingsNoArgumentsS.replaceAll(
-              "routeSettingsNoArguments=", "") ==
-          "true";
+              'routeSettingsNoArguments=', '') ==
+          'true';
+    } else {
+      routeSettingsNoArguments = false;
     }
+  } else {
+    routeSettingsNoArguments = false;
   }
 
   //only check path and import ff_annotation_route
-  List<PackageNode> annotationPackages = packageGraph.allPackages.values
-      .where(
-        (x) =>
-            x.dependencyType == DependencyType.path &&
-            (x.dependencies.firstWhere(
-                  (dep) => dep?.name == "ff_annotation_route",
-                  orElse: () => null,
-                ) !=
-                null),
-      )
+  final annotationPackages = packageGraph.allPackages.values
+      .where((x) =>
+          x.dependencyType == DependencyType.path &&
+          (x.dependencies.firstWhere(
+                (dep) => dep?.name == 'ff_annotation_route',
+                orElse: () => null,
+              ) !=
+              null))
       .toList();
 
-  bool rootAnnotationRouteEnable =
+  final rootAnnotationRouteEnable =
       annotationPackages.contains(packageGraph.root);
   if (!rootAnnotationRouteEnable) {
     annotationPackages.add(packageGraph.root);
@@ -94,6 +97,6 @@ main(List<String> arguments) {
     rootAnnotationRouteEnable: rootAnnotationRouteEnable,
   );
 
-  print("");
-  print("ff_annotation_route ------ End");
+  print('');
+  print('ff_annotation_route ------ End');
 }

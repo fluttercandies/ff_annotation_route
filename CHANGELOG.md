@@ -1,3 +1,8 @@
+## 1.1.3+1
+
+- Remove the deprecated `author:` field from pubspec.yaml
+- Update codes according to health suggestion.
+
 ## 1.1.3
 
 - Add `generateRouteConstants` param to generate routes in `Routes` with
