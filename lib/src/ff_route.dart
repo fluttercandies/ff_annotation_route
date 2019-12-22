@@ -1,4 +1,5 @@
 /// Annotation to generate route
+import 'package:meta/meta.dart';
 
 class FFRoute {
   /// The name of the route (e.g., "/settings").
@@ -21,15 +22,14 @@ class FFRoute {
   /// The description of route
   final String description;
 
-  const FFRoute(
-      {String name,
-      this.argumentNames,
-      this.showStatusBar = true,
-      this.routeName = '',
-      this.pageRouteType,
-      this.description = ''})
-      : assert(name != null),
-        this.name = name;
+  const FFRoute({
+    @required this.name,
+    this.argumentNames,
+    this.showStatusBar = true,
+    this.routeName = '',
+    this.pageRouteType,
+    this.description = '',
+  }) : assert(name != null);
 }
 
 enum PageRouteType { material, cupertino, transparent }

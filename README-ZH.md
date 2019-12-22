@@ -2,7 +2,7 @@
 
 [![pub package](https://img.shields.io/pub/v/ff_annotation_route.svg)](https://pub.dartlang.org/packages/ff_annotation_route) [![GitHub stars](https://img.shields.io/github/stars/fluttercandies/ff_annotation_route)](https://github.com/fluttercandies/ff_annotation_route/stargazers) [![GitHub forks](https://img.shields.io/github/forks/fluttercandies/ff_annotation_route)](https://github.com/fluttercandies/ff_annotation_route/network)  [![GitHub license](https://img.shields.io/github/license/fluttercandies/ff_annotation_route)](https://github.com/fluttercandies/ff_annotation_route/blob/master/LICENSE)  [![GitHub issues](https://img.shields.io/github/issues/fluttercandies/ff_annotation_route)](https://github.com/fluttercandies/ff_annotation_route/issues) <a target="_blank" href="https://jq.qq.com/?_wv=1027&k=5bcc0gy"><img border="0" src="https://pub.idqqimg.com/wpa/images/group.png" alt="flutter-candies" title="flutter-candies"></a>
 
-Language: [English](README.md) | [中文简体](README-ZH.md)
+Languages: [English](README.md) | [中文简体](README-ZH.md)
 
 [掘金地址](https://juejin.im/post/5d5a7fe5f265da03b94ff42c)
 
@@ -32,10 +32,10 @@ Language: [English](README.md) | [中文简体](README-ZH.md)
 
 ### 增加引用
 
-添加引用到dev_dependencies，你需要注解的project/packages的pubspec.yaml中
+添加引用到`dev_dependencies`，及你需要注解的project/packages到`pubspec.yaml`中
 ```yaml
 dev_dependencies:
-  ff_annotation_route: any
+  ff_annotation_route: latest-version
 ```
 
 执行 `flutter packages get` 下载
@@ -53,7 +53,7 @@ import 'package:ff_annotation_route/ff_annotation_route.dart';
 )
 class MainPage extends StatelessWidget 
 {
-      // ...
+  // ...
 }
 
 ```
@@ -61,29 +61,31 @@ class MainPage extends StatelessWidget
 
 ```dart
 import 'package:ff_annotation_route/ff_annotation_route.dart';
+
 @FFRoute(
-    name: "fluttercandies://picswiper",
-    routeName: "PicSwiper",
-    argumentNames: ["index", "pics"],
-    showStatusBar: false,
-    pageRouteType: PageRouteType.transparent)
+  name: "fluttercandies://picswiper",
+  routeName: "PicSwiper",
+  argumentNames: ["index", "pics"],
+  showStatusBar: false,
+  pageRouteType: PageRouteType.transparent,
+)
 class PicSwiper extends StatefulWidget {
   final int index;
   final List<PicSwiperItem> pics;
   PicSwiper({this.index, this.pics});
-        // ...
-  }
+  // ...
+}
 ```  
 #### FFRoute
 
-| parameter     | description                                  | default  |
+| Parameter     | Description                                  | Default  |
 | ------------- | -------------------------------------------- | -------- |
-| name          | 路由的名字(e.g., "/settings").               | required |
-| argumentNames | 路由的参数的名字                             | -        |
-| showStatusBar | 是否显示状态栏                               | true     |
-| routeName     | 用于埋点收集数据的页面名字                   | ''       |
-| pageRouteType | 路由的类型(material, cupertino, transparent) | -        |
-| description   | 路由的描述                                   | ''       |
+| name          | 路由的名字 (e.g., "/settings").                | required |
+| argumentNames | 路由的参数的名字 (只能使用")                     | -        |
+| showStatusBar | 是否显示状态栏                                 | true     |
+| routeName     | 用于埋点收集数据的页面名字                       | ''       |
+| pageRouteType | 路由的类型 (material, cupertino, transparent) | -        |
+| description   | 路由的描述                                    | ''       |
 
 
 ### 生成文件
@@ -105,30 +107,29 @@ class PicSwiper extends StatefulWidget {
 
 #### 执行命令
 
-你可以到你的项目路径下面执行
-`ff_annotation_route`
+进入到项目根路径下执行 `ff_annotation_route`
 
-你也可以直接执行，并且带上你的项目路径
-`ff_annotation_route path=`
+你也可以直接执行，并且带上你的项目路径 `ff_annotation_route path=`
 
 #### 命令参数
 
-使用 parameter=xxx, 使用空格隔开多个参数
+使用方式为 `parameter=xxx`, 并用空格 (` `) 隔开多个参数。
 
-| 参数                     | 描述                                                                                                                                                                                                       | 默认     |
-| ------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- |
-| path                     | 你的项目路径                                                                                                                                                                                               | 当前路径 |
-| generateRouteNames       | 是否在根项目中的 xxx_route.dart 生成全部路由的名字                                                                                                                                                         | false    |
-| mode                     | 0或者1, 模式1会生成 xxx_route_helper.dart 来帮助你处理 showStatusBar/routeName/pageRouteType                                                                                                               | 0        |
-| routeSettingsNoArguments | 如果为true， FFRouteSettings 将没有arguments这个参数,这个是主要是为了适配Flutter低版本                                                                                                                     | false    |
+| 参数                     | 描述                                                                                      | 默认     |
+| ------------------------ | ---------------------------------------------------------------------------------------- | ------- |
+| path                     | 你的项目路径                                                                               | 当前路径 |
+| generateRouteNames       | 是否在根项目中的 `xxx_route.dart` 生成全部路由的名字                                           | false   |
+| generateRouteConstants   | 是否在根项目中的 `xxx_route.dart` 生成全部路由的静态常量                                       | false   |
+| mode                     | 0或者1, 模式1会生成 xxx_route_helper.dart 来帮助你处理 showStatusBar/routeName/pageRouteType | 0       |
+| routeSettingsNoArguments | 如果为true， FFRouteSettings 将没有arguments这个参数,这个是主要是为了适配Flutter低版本           | false   |
 
 ### Main.dart
 
-- 如果你设置命令带有参数 mode=1, FFNavigatorObserver/FFRouteSettings 将会生成 在 xxx_route_helper.dart
-他们帮助追踪页面和设置状态栏.
+- 如果运行的命令带有参数 `mode=1` , `FFNavigatorObserver/FFRouteSettings`
+  将会生成在 `xxx_route_helper.dart` 中，用于协助追踪页面和设置状态栏。
 
--  如果你设置命令带有参数 mode=1,FFTransparentPageRoute 将会生成 在 xxx_route_helper.dart
-它帮助push一个透明的PageRoute.
+- 如果运行的命令带有参数 `mode=1` ，`FFTransparentPageRoute` 将会生成在
+  `xxx_route_helper.dart` 中，可以使用它来 `push` 一个透明的 `PageRoute` 。
 
 ```dart
 Widget build(BuildContext context) {
@@ -211,15 +212,16 @@ Widget build(BuildContext context) {
 
 #### Push name with arguments
 
-参数应该是一个 Map<String,dynamic>
+参数必须是一个 `Map<String, dynamic>`
 ```dart
-   Navigator.pushNamed(context, "fluttercandies://picswiper",
-                arguments: {
-                  "index": index,
-                  "pics": listSourceRepository
-                      .map<PicSwiperItem>(
-                          (f) => PicSwiperItem(f.imageUrl, des: f.title))
-                      .toList(),
-                });
-
+  Navigator.pushNamed(
+    context,
+    "fluttercandies://picswiper",
+    arguments: {
+      "index": index,
+      "pics": listSourceRepository
+          .map<PicSwiperItem>((f) => PicSwiperItem(f.imageUrl, des: f.title))
+          .toList(),
+    },
+  );
 ```

@@ -6,14 +6,17 @@ class RouteInfo {
   RouteInfo({this.ffRoute, this.className});
 
   String get constructor {
-    String params = "";
+    String params;
     if (ffRoute.argumentNames != null && ffRoute.argumentNames.isNotEmpty) {
       for (final key in ffRoute.argumentNames) {
+        params ??= '';
         params += "$key:arguments['$key'],";
       }
+    } else {
+      params = '';
     }
 
-    return "$className($params)";
+    return '$className($params)';
   }
 
   String get caseString {

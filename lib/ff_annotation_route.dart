@@ -2,8 +2,6 @@ library ff_annotation_route;
 
 export 'src/ff_route.dart';
 
-import 'dart:io';
-
 import 'src/format.dart';
 import 'src/package_graph.dart';
 import 'src/route_generator.dart';
@@ -11,12 +9,13 @@ import 'src/route_generator.dart';
 void generate(
   List<PackageNode> annotationPackages, {
   bool generateRouteNames = false,
+  bool generateRouteConstants = false,
   int mode = 0,
   bool routeSettingsNoArguments = false,
   bool rootAnnotationRouteEnable = true,
 }) {
   RouteGenerator root;
-  List<RouteGenerator> nodes = List<RouteGenerator>();
+  final nodes = <RouteGenerator>[];
   for (final annotationPackage in annotationPackages) {
     final routeGenerator = RouteGenerator(annotationPackage);
     if (routeGenerator.isRoot) {
@@ -38,6 +37,7 @@ void generate(
   final routeFile = root?.generateFile(
     nodes: nodes,
     generateRouteNames: generateRouteNames,
+    generateRouteConstants: generateRouteConstants,
   );
   final helperFile = root?.generateHelperFile(
     nodes: nodes,
