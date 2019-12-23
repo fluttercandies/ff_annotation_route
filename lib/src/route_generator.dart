@@ -202,13 +202,16 @@ class RouteGenerator {
 
             final _firstLine = _description ?? _routeName ?? _name;
 
-            final _constant = _name
+            var _constant = _name
                 .replaceAll('\"', '')
                 .replaceAll('://', '_')
                 .replaceAll('/', '_')
                 .replaceAll('.', '_')
                 .replaceAll(' ', '_')
                 .replaceAll('-', '_');
+            while (_constant.startsWith('_')) {
+              _constant = _constant.replaceFirst('_', '');
+            }
 
             sb.write('/// $_firstLine\n');
             sb.write('///');
