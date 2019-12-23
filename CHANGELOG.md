@@ -1,3 +1,8 @@
+## 1.1.3+2
+
+- Remove `_` while route constant was start with `/`, which will cause
+  the constant unreachable.
+
 ## 1.1.3+1
 
 - Remove the deprecated `author:` field from pubspec.yaml
