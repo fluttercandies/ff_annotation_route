@@ -4,6 +4,7 @@
 // **************************************************************************
 
 import 'package:flutter/widgets.dart';
+
 import 'package:module_image/module_image_route.dart';
 import 'package:module_text/module_text_route.dart';
 import 'package:module_widget/module_widget_route.dart';
@@ -16,6 +17,11 @@ RouteResult getRouteResult({String name, Map<String, dynamic> arguments}) {
         widget: MainPage(),
         routeName: "MainPage",
       );
+    case "fluttercandies://cropimage":
+      return RouteResult(
+        widget: CropImageDemo(),
+        routeName: "CropImageDemo",
+      );
     case "fluttercandies://customimage":
       return RouteResult(
         widget: CustomImageDemo(
@@ -23,29 +29,24 @@ RouteResult getRouteResult({String name, Map<String, dynamic> arguments}) {
         ),
         routeName: "CustomImageDemo",
       );
-    case "fluttercandies://paintimage":
-      return RouteResult(
-        widget: PaintImageDemo(
-          url: arguments['url'],
-        ),
-        routeName: "PaintImageDemo",
-      );
-    case "fluttercandies://cropimage":
-      return RouteResult(
-        widget: CropImageDemo(),
-        routeName: "CropImageDemo",
-      );
-    case "fluttercandies://imagelist":
-      return RouteResult(
-        widget: ImageListDemo(),
-        routeName: "ImageListDemo",
-      );
     case "fluttercandies://image":
       return RouteResult(
         widget: ImageDemo(
           url: arguments['url'],
         ),
         routeName: "ImageDemo",
+      );
+    case "fluttercandies://imagelist":
+      return RouteResult(
+        widget: ImageListDemo(),
+        routeName: "ImageListDemo",
+      );
+    case "fluttercandies://paintimage":
+      return RouteResult(
+        widget: PaintImageDemo(
+          url: arguments['url'],
+        ),
+        routeName: "PaintImageDemo",
       );
     case "fluttercandies://photoview":
       return RouteResult(
@@ -59,15 +60,15 @@ RouteResult getRouteResult({String name, Map<String, dynamic> arguments}) {
         ),
         routeName: "ZoomImageDemo",
       );
-    case "fluttercandies://customimagetext":
-      return RouteResult(
-        widget: CustomImageTextDemo(),
-        routeName: "CustomImageDemo",
-      );
     case "fluttercandies://backgroundtext":
       return RouteResult(
         widget: BackgroundTextDemo(),
         routeName: "BackgroundTextDemo",
+      );
+    case "fluttercandies://customimagetext":
+      return RouteResult(
+        widget: CustomImageTextDemo(),
+        routeName: "CustomImageDemo",
       );
     case "fluttercandies://customtextoverflow":
       return RouteResult(
@@ -127,15 +128,15 @@ enum PageRouteType { material, cupertino, transparent }
 
 List<String> routeNames = [
   "fluttercandies://mainpage",
-  "fluttercandies://customimage",
-  "fluttercandies://paintimage",
   "fluttercandies://cropimage",
-  "fluttercandies://imagelist",
+  "fluttercandies://customimage",
   "fluttercandies://image",
+  "fluttercandies://imagelist",
+  "fluttercandies://paintimage",
   "fluttercandies://photoview",
   "fluttercandies://zoomimage",
-  "fluttercandies://customimagetext",
   "fluttercandies://backgroundtext",
+  "fluttercandies://customimagetext",
   "fluttercandies://customtextoverflow",
   "fluttercandies://text",
   "fluttercandies://textselection",

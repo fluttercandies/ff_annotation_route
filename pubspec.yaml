@@ -1,6 +1,6 @@
 name: ff_annotation_route
 description: Provide a route generator to create route map quickly by annotations.
-version: 1.1.3+2
+version: 1.1.4
 homepage: https://github.com/fluttercandies/ff_annotation_route
 
 environment:
@@ -12,4 +12,4 @@ dependencies:
   yaml: ^2.0.0
 
 executables:
-  ff_annotation_route:
+  ff_annotation_route: main

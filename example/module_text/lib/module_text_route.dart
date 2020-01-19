@@ -5,8 +5,8 @@
 
 library module_text_route;
 
-export 'src/custom_image_demo.dart';
 export 'src/background_text_demo.dart';
+export 'src/custom_image_demo.dart';
 export 'src/custom_text_overflow_demo.dart';
 export 'src/text_demo.dart';
 export 'src/text_selection_demo.dart';

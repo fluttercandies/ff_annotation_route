@@ -5,7 +5,7 @@ void main(List<String> arguments) {
   print('ff_annotation_route ------- Start');
 
   PackageGraph packageGraph;
-  var path = arguments.firstWhere(
+  final path = arguments.firstWhere(
     (x) => x.contains('path='),
     orElse: () => null,
   );
@@ -16,7 +16,7 @@ void main(List<String> arguments) {
     packageGraph = PackageGraph.forThisPackage();
   }
 
-  var generateRouteNamesS = arguments.firstWhere(
+  final generateRouteNamesS = arguments.firstWhere(
     (x) => x.contains('generateRouteNames='),
     orElse: () => null,
   );
@@ -28,7 +28,7 @@ void main(List<String> arguments) {
     generateRouteNames = false;
   }
 
-  var generateRouteConstantsS = arguments.firstWhere(
+  final generateRouteConstantsS = arguments.firstWhere(
     (x) => x.contains('generateRouteConstants='),
     orElse: () => null,
   );
@@ -41,7 +41,7 @@ void main(List<String> arguments) {
     generateRouteConstants = false;
   }
 
-  var modeS = arguments.firstWhere(
+  final modeS = arguments.firstWhere(
     (x) => x.contains('mode='),
     orElse: () => null,
   );
@@ -97,6 +97,5 @@ void main(List<String> arguments) {
     rootAnnotationRouteEnable: rootAnnotationRouteEnable,
   );
 
-  print('');
-  print('ff_annotation_route ------ End');
+  print('\nff_annotation_route ------ End');
 }

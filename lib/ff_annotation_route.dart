@@ -46,5 +46,5 @@ void generate(
   );
 
   formatFile(routeFile);
-  formatFile(helperFile);
+  if (routeFile != null) formatFile(helperFile);
 }

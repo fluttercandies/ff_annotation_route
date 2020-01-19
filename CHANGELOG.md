@@ -1,3 +1,8 @@
+## 1.1.4
+
+- Fix format failed.
+- Fix demo error.
+
 ## 1.1.3+2
 
 - Remove `_` while route constant was start with `/`, which will cause
