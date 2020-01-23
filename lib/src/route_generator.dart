@@ -20,8 +20,7 @@ class RouteGenerator {
   final PackageNode packageNode;
   bool get hasAnnotationRoute => _lib != null && _fileInfoList.isNotEmpty;
 
-  String get import =>
-      "import 'package:${packageNode.name}/${packageNode.name}_route.dart';";
+  String get import => "import 'package:${packageNode.name}/${packageNode.name}_route.dart';";
 
   String get export {
     if (_fileInfoList.isNotEmpty) {
@@ -47,8 +46,7 @@ class RouteGenerator {
       print('Scanning package : ${packageNode.name}');
       for (final item in _lib.listSync(recursive: true)) {
         final file = item.statSync();
-        if (file.type == FileSystemEntityType.file &&
-            item.path.endsWith('.dart')) {
+        if (file.type == FileSystemEntityType.file && item.path.endsWith('.dart')) {
           CompilationUnitImpl astRoot = parseDartFile(item.path);
 
           FileInfo fileInfo;
@@ -57,16 +55,14 @@ class RouteGenerator {
               if (metadata is AnnotationImpl &&
                   metadata.name?.name == typeOf<FFRoute>().toString() &&
                   metadata.parent is ClassDeclarationImpl) {
-                final className =
-                    (metadata.parent as ClassDeclarationImpl).name?.name;
+                final className = (metadata.parent as ClassDeclarationImpl).name?.name;
 
                 print(
                     'Found annotation route : ${p.relative(item.path, from: packageNode.path)} ------ class : $className');
 
                 fileInfo ??= FileInfo(
                     export: p
-                        .relative(item.path,
-                            from: p.join(packageNode.path, 'lib'))
+                        .relative(item.path, from: p.join(packageNode.path, 'lib'))
                         .replaceAll('\\', '/'),
                     packageName: packageNode.name);
 
@@ -188,6 +184,7 @@ class RouteGenerator {
 
       if (generateRouteConstants) {
         sb.write('class Routes {\n');
+        sb.write('const Routes._();\n');
 
         _fileInfoList.forEach((info) {
           info.routes.forEach((route) {
@@ -246,7 +243,7 @@ class RouteGenerator {
       file.createSync();
       file.writeAsStringSync(fileHeader +
           '\n' +
-          (isRoot ? "import 'package:flutter/widgets.dart';\n\n" : '') +
+          (isRoot ? 'import \'package:flutter/widgets.dart\';\n\n' : '') +
           sb.toString());
       print('Generate : ${p.relative(file.path, from: packageNode.path)}');
     }
@@ -259,8 +256,7 @@ class RouteGenerator {
     bool routeSettingsNoArguments = false,
     int mode = 0,
   }) {
-    final file =
-        File(p.join(_lib.path, '${packageNode.name}_route_helper.dart'));
+    final file = File(p.join(_lib.path, '${packageNode.name}_route_helper.dart'));
     if (file.existsSync()) {
       file.deleteSync();
     }
@@ -269,7 +265,10 @@ class RouteGenerator {
     file.createSync();
 
     file.writeAsStringSync(
-        '$fileHeader\n$routeHelper\n${routeSettingsNoArguments ? ffRouteSettingsNoArguments : ffRouteSettings}');
+      '$fileHeader\n'
+      '$routeHelper\n'
+      '${routeSettingsNoArguments ? ffRouteSettingsNoArguments : ffRouteSettings}',
+    );
     print('Generate : ${p.relative(file.path, from: packageNode.path)}');
 
     return file;
