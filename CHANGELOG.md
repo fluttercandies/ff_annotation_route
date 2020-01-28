@@ -1,3 +1,7 @@
+## 1.1.5
+
+- Add const private constructor.
+
 ## 1.1.4
 
 - Fix format failed.

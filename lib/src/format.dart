@@ -11,13 +11,17 @@ Future<void> formatFile(File file) async {
   }
 
   processRunSync(
-      executable: 'flutter',
-      arguments: 'format ${file?.absolute?.path}',
-      runInShell: true);
+    executable: 'flutter',
+    arguments: 'format ${file?.absolute?.path}',
+    runInShell: true,
+  );
 }
 
-void processRunSync(
-    {String executable, String arguments, bool runInShell = false}) {
+void processRunSync({
+  String executable,
+  String arguments,
+  bool runInShell = false,
+}) {
   final result = Process.runSync(
     executable,
     arguments.split(' '),
