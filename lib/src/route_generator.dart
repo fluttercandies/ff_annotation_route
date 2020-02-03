@@ -180,6 +180,7 @@ class RouteGenerator {
       if (generateRouteNames) {
         sb.write('\n');
         sb.write('List<String> routeNames = ${json.encode(routeNames)};');
+        sb.write('\n');
       }
 
       if (generateRouteConstants) {
@@ -266,7 +267,7 @@ class RouteGenerator {
 
     file.writeAsStringSync(
       '$fileHeader\n'
-      '$routeHelper\n'
+      '${routeHelper(packageNode.name)}\n'
       '${routeSettingsNoArguments ? ffRouteSettingsNoArguments : ffRouteSettings}',
     );
     print('Generate : ${p.relative(file.path, from: packageNode.path)}');

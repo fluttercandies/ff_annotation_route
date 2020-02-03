@@ -41,8 +41,14 @@ class RouteResult {
  enum PageRouteType { material, cupertino, transparent }
 """;
 
-const String routeHelper = """
+String routeHelper(String name) => """
+import 'dart:io';
+
+import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/widgets.dart';
+
+import '${name}_route.dart';
 
 class FFNavigatorObserver extends NavigatorObserver {
   final ShowStatusBarChange showStatusBarChange;
@@ -157,6 +163,47 @@ Widget _defaultTransitionsBuilder(
 ) {
   return child;
 }
+
+Route<dynamic> onGenerateRouteHelper(RouteSettings settings, Widget child) {
+  assert(child != null, 'child cannot be null otherwise no route can be pushed when error occured.');
+  final routeResult = getRouteResult(
+    name: settings.name,
+    arguments: settings.arguments,
+  );
+  if (routeResult.showStatusBar != null || routeResult.routeName != null) {
+    settings = FFRouteSettings(
+      name: settings.name,
+      isInitialRoute: settings.isInitialRoute,
+      routeName: routeResult.routeName,
+      arguments: settings.arguments,
+      showStatusBar: routeResult.showStatusBar,
+    );
+  }
+  final page = routeResult.widget ?? child;
+
+  if (settings.arguments != null && settings.arguments is Map<String, dynamic>) {
+    RouteBuilder builder = (settings.arguments as Map<String, dynamic>)['routeBuilder'];
+    if (builder != null) return builder(page);
+  }
+
+  switch (routeResult.pageRouteType) {
+    case PageRouteType.material:
+      return MaterialPageRoute(settings: settings, builder: (c) => page);
+    case PageRouteType.cupertino:
+      return CupertinoPageRoute(settings: settings, builder: (c) => page);
+    case PageRouteType.transparent:
+      return FFTransparentPageRoute(
+        settings: settings,
+        pageBuilder: (_, __, ___) => page,
+      );
+    default:
+      return Platform.isIOS
+          ? CupertinoPageRoute(settings: settings, builder: (c) => page)
+          : MaterialPageRoute(settings: settings, builder: (c) => page);
+  }
+}
+
+typedef RouteBuilder = PageRoute Function(Widget page);
 
 """;
 
