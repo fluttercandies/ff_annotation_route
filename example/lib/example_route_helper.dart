@@ -105,8 +105,8 @@ Widget _defaultTransitionsBuilder(
   return child;
 }
 
-Route<dynamic> onGenerateRouteHelper(RouteSettings settings,
-    Widget notFoundFallback) {
+Route<dynamic> onGenerateRouteHelper(
+    RouteSettings settings, Widget notFoundFallback) {
   final routeResult = getRouteResult(
     name: settings.name,
     arguments: settings.arguments,
@@ -126,7 +126,7 @@ Route<dynamic> onGenerateRouteHelper(RouteSettings settings,
 
   if (settings?.arguments is Map<String, dynamic>) {
     RouteBuilder builder =
-    (settings.arguments as Map<String, dynamic>)['routeBuilder'];
+        (settings.arguments as Map<String, dynamic>)['routeBuilder'];
     if (builder != null) return builder(page);
   }
 

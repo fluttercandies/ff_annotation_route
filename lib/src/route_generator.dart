@@ -69,7 +69,7 @@ class RouteGenerator {
                 fileInfo ??= FileInfo(
                     export: p
                         .relative(item.path,
-                        from: p.join(packageNode.path, 'lib'))
+                            from: p.join(packageNode.path, 'lib'))
                         .replaceAll('\\', '/'),
                     packageName: packageNode.name);
 
@@ -165,7 +165,7 @@ class RouteGenerator {
       final caseSb = StringBuffer();
       final routeNames = <String>[];
       final routes =
-      _fileInfoList.map((it) => it.routes).expand((it) => it).toList();
+          _fileInfoList.map((it) => it.routes).expand((it) => it).toList();
       if (nodes != null && nodes.isNotEmpty) {
         routes.addAll(
           nodes
@@ -255,7 +255,7 @@ class RouteGenerator {
     }
     sb.write(
       '\nstatic const String '
-          '${_constant.toUpperCase()} = \"$_name\";\n\n',
+      '${_constant.toUpperCase()} = \"$_name\";\n\n',
     );
   }
 
@@ -265,7 +265,7 @@ class RouteGenerator {
     int mode = 0,
   }) {
     final file =
-    File(p.join(_lib.path, '${packageNode.name}_route_helper.dart'));
+        File(p.join(_lib.path, '${packageNode.name}_route_helper.dart'));
     if (file.existsSync()) {
       file.deleteSync();
     }
