@@ -30,12 +30,13 @@ class RouteResult {
   /// The description of route
   final String description;
 
-  const RouteResult(
-      {this.widget,
-      this.showStatusBar = true,
-      this.routeName = '',
-      this.pageRouteType,
-      this.description = ''});
+  const RouteResult({
+    this.widget,
+    this.showStatusBar = true,
+    this.routeName = '',
+    this.pageRouteType,
+    this.description = '',
+  });
 }
 
  enum PageRouteType { material, cupertino, transparent }
@@ -84,49 +85,29 @@ class FFNavigatorObserver extends NavigatorObserver {
     _routeChange(newRoute);
   }
 
-  @override
-  void didStartUserGesture(Route route, Route previousRoute) {
-    super.didStartUserGesture(route, previousRoute);
-  }
-
-  @override
-  void didStopUserGesture() {
-    super.didStopUserGesture();
-  }
-
   void _showStatusBarChange(Route newRoute, Route oldRoute) {
     if (showStatusBarChange != null) {
       final newSetting = getFFRouteSettings(newRoute);
       final oldSetting = getFFRouteSettings(oldRoute);
-      if (newSetting?.showStatusBar != null &&
-          newSetting.showStatusBar != oldSetting?.showStatusBar) {
+      if (newSetting?.showStatusBar != oldSetting?.showStatusBar) {
         showStatusBarChange(newSetting.showStatusBar);
       }
     }
   }
 
   void _routeChange(Route newRoute) {
-    if (routeChange != null) {
-      final newSetting = getFFRouteSettings(newRoute);
-      if (newSetting?.routeName != null) {
-        routeChange(newSetting.routeName);
-      }
-    }
+    if (routeChange == null) return;
+    final newSetting = getFFRouteSettings(newRoute);
+    routeChange.call(newSetting);
   }
 
-  FFRouteSettings getFFRouteSettings(Route route) {
-    if (route != null &&
-        route.settings != null &&
-        route.settings is FFRouteSettings) {
-      return route.settings;
-    }
-    return null;
-  }
+  FFRouteSettings getFFRouteSettings(Route route) =>
+    (route?.settings is FFRouteSettings) ? route.settings : null;
 }
 
 typedef ShowStatusBarChange = void Function(bool showStatusBar);
 
-typedef RouteChange = void Function(String routeName);
+typedef RouteChange = void Function(FFRouteSettings routeSettings);
 
 class FFTransparentPageRoute<T> extends PageRouteBuilder<T> {
   FFTransparentPageRoute({
@@ -164,8 +145,7 @@ Widget _defaultTransitionsBuilder(
   return child;
 }
 
-Route<dynamic> onGenerateRouteHelper(RouteSettings settings, Widget child) {
-  assert(child != null, 'child cannot be null otherwise no route can be pushed when error occured.');
+Route<dynamic> onGenerateRouteHelper(RouteSettings settings, Widget notFoundFallback) {
   final routeResult = getRouteResult(
     name: settings.name,
     arguments: settings.arguments,
@@ -179,9 +159,11 @@ Route<dynamic> onGenerateRouteHelper(RouteSettings settings, Widget child) {
       showStatusBar: routeResult.showStatusBar,
     );
   }
-  final page = routeResult.widget ?? child;
+  final page = routeResult.widget ??
+      notFoundFallback ??
+      Center(child: Text("\${settings.name}\\npage not found."));
 
-  if (settings.arguments != null && settings.arguments is Map<String, dynamic>) {
+  if (settings?.arguments is Map<String, dynamic>) {
     RouteBuilder builder = (settings.arguments as Map<String, dynamic>)['routeBuilder'];
     if (builder != null) return builder(page);
   }
