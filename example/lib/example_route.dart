@@ -4,10 +4,10 @@
 // **************************************************************************
 
 import 'package:flutter/widgets.dart';
+
 import 'package:module_image/module_image_route.dart';
 import 'package:module_text/module_text_route.dart';
 import 'package:module_widget/module_widget_route.dart';
-
 import 'src/main_page.dart';
 
 RouteResult getRouteResult({String name, Map<String, dynamic> arguments}) {
