@@ -1,3 +1,7 @@
+## 1.1.6
+
+- Add `onGenerateRouteHelper` to helper file instead of written in `MaterialApp`.
+
 ## 1.1.5
 
 - Add const private constructor.
