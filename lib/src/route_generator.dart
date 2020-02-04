@@ -84,8 +84,13 @@ class RouteGenerator {
 
                 for (final item in parameters) {
                   if (item is NamedExpressionImpl) {
-                    final source = item.expression.toSource();
+                    var source = item.expression.toSource();
                     if (source == 'null') continue;
+                    if (source.startsWith("'''") && source.endsWith("'''")) {
+                      source = '"${source.substring(3, source.length - 3)}"';
+                    } else if (source.startsWith("'") && source.endsWith("'")) {
+                      source = '"${source.substring(1, source.length - 1)}"';
+                    }
                     final key = item.name.toSource();
                     switch (key) {
                       case 'name:':
@@ -103,7 +108,10 @@ class RouteGenerator {
                             .split(',')
                             .map((it) => it.trim())
                             .where((it) => it.length > 2)
-                            .map((it) => it.substring(1, it.length - 1))
+                            .map((it) =>
+                        (it.startsWith("'''") && it.endsWith("'''")
+                            ? it.substring(3, it.length - 3)
+                            : it.substring(1, it.length - 1)))
                             .toList();
                         break;
                       case 'pageRouteType:':
