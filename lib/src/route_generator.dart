@@ -99,8 +99,12 @@ class RouteGenerator {
                         break;
                       case 'argumentNames:':
                         argumentNames = source
-                            .replaceAll(RegExp("\\[|\\]|\'|\"|\\s|\\t"), '')
-                            .split(',');
+                            .replaceAll(RegExp('\\[|\\]'), '')
+                            .split(',')
+                            .map((it) => it.trim())
+                            .where((it) => it.length > 2)
+                            .map((it) => it.substring(1, it.length - 1))
+                            .toList();
                         break;
                       case 'pageRouteType:':
                         pageRouteType = PageRouteType.values.firstWhere(
