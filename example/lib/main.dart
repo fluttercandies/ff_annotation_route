@@ -25,12 +25,19 @@ class MyApp extends StatelessWidget {
             //you can track page here
             print(
                 "route change: ${oldRouteSettings.name} => ${newRouteSettings.name}");
-          }, showStatusBarChange: (bool showStatusBar) {
-            if (showStatusBar) {
-              SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
-              SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
-            } else {
-              SystemChrome.setEnabledSystemUIOverlays([]);
+            if (newRouteSettings is FFRouteSettings &&
+                oldRouteSettings is FFRouteSettings) {
+              if (newRouteSettings?.showStatusBar !=
+                  oldRouteSettings?.showStatusBar) {
+                if (newRouteSettings?.showStatusBar == true) {
+                  SystemChrome.setEnabledSystemUIOverlays(
+                      SystemUiOverlay.values);
+                  SystemChrome.setSystemUIOverlayStyle(
+                      SystemUiOverlayStyle.dark);
+                } else {
+                  SystemChrome.setEnabledSystemUIOverlays([]);
+                }
+              }
             }
           })
         ],

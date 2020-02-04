@@ -5,17 +5,16 @@
 
 import 'dart:io';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/widgets.dart';
 
 import 'example_route.dart';
 
 class FFNavigatorObserver extends NavigatorObserver {
-  final ShowStatusBarChange showStatusBarChange;
   final RouteChange routeChange;
 
-  FFNavigatorObserver({this.showStatusBarChange, this.routeChange});
+  FFNavigatorObserver({this.routeChange});
 
   @override
   void didPop(Route route, Route previousRoute) {
@@ -42,13 +41,6 @@ class FFNavigatorObserver extends NavigatorObserver {
   }
 
   void _didRouteChange(Route newRoute, Route oldRoute) {
-    if (showStatusBarChange != null) {
-      final newSetting = getFFRouteSettings(newRoute);
-      final oldSetting = getFFRouteSettings(oldRoute);
-      if (newSetting?.showStatusBar != oldSetting?.showStatusBar) {
-        showStatusBarChange?.call(newSetting.showStatusBar);
-      }
-    }
     routeChange?.call(newRoute.settings, oldRoute.settings);
   }
 
@@ -146,7 +138,6 @@ typedef RouteBuilder = PageRoute Function(Widget page);
 class FFRouteSettings extends RouteSettings {
   final String routeName;
   final bool showStatusBar;
-
   const FFRouteSettings({
     this.routeName,
     this.showStatusBar,
