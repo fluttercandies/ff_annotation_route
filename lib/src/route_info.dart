@@ -23,4 +23,9 @@ class RouteInfo {
     return """    case ${ffRoute.name}:
       return RouteResult(widget: $constructor, ${ffRoute.showStatusBar != null ? 'showStatusBar: ${ffRoute.showStatusBar},' : ''} ${ffRoute.routeName != null ? 'routeName: ${ffRoute.routeName},' : ''} ${ffRoute.pageRouteType != null ? 'pageRouteType: ${ffRoute.pageRouteType},' : ''} ${ffRoute.description != null ? 'description: ${ffRoute.description},' : ''});\n""";
   }
+
+  @override
+  String toString() {
+    return 'RouteInfo{className: $className, ffRoute: $ffRoute}';
+  }
 }

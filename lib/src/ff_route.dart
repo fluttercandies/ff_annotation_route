@@ -30,6 +30,11 @@ class FFRoute {
     this.pageRouteType,
     this.description = '',
   }) : assert(name != null);
+
+  @override
+  String toString() {
+    return 'FFRoute{name: $name, argumentNames: $argumentNames, showStatusBar: $showStatusBar, routeName: $routeName, pageRouteType: $pageRouteType, description: $description}';
+  }
 }
 
 enum PageRouteType { material, cupertino, transparent }

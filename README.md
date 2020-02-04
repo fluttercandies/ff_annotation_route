@@ -138,15 +138,24 @@ Widget build(BuildContext context) {
         primarySwatch: Colors.blue,
       ),
       navigatorObservers: [
-        FFNavigatorObserver(routeChange: (name) {
+        FFNavigatorObserver(routeChange:
+            (RouteSettings newRouteSettings, RouteSettings oldRouteSettings) {
           //you can track page here
-          print(name);
-        }, showStatusBarChange: (bool showStatusBar) {
-          if (showStatusBar) {
-            SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
-            SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
-          } else {
-            SystemChrome.setEnabledSystemUIOverlays([]);
+          print(
+              "route change: ${oldRouteSettings.name} => ${newRouteSettings.name}");
+          if (newRouteSettings is FFRouteSettings &&
+              oldRouteSettings is FFRouteSettings) {
+            if (newRouteSettings?.showStatusBar !=
+                oldRouteSettings?.showStatusBar) {
+              if (newRouteSettings?.showStatusBar == true) {
+                SystemChrome.setEnabledSystemUIOverlays(
+                    SystemUiOverlay.values);
+                SystemChrome.setSystemUIOverlayStyle(
+                    SystemUiOverlayStyle.dark);
+              } else {
+                SystemChrome.setEnabledSystemUIOverlays([]);
+              }
+            }
           }
         })
       ],
@@ -160,40 +169,9 @@ Widget build(BuildContext context) {
           child: w,
         );
       },
-      initialRoute: "fluttercandies://mainpage",
-      onGenerateRoute: (RouteSettings settings) {
-        var routeResult =
-            getRouteResult(name: settings.name, arguments: settings.arguments);
-
-        if (routeResult.showStatusBar != null ||
-            routeResult.routeName != null) {
-          settings = FFRouteSettings(
-              arguments: settings.arguments,
-              name: settings.name,
-              isInitialRoute: settings.isInitialRoute,
-              routeName: routeResult.routeName,
-              showStatusBar: routeResult.showStatusBar);
-        }
-
-        var page = routeResult.widget ?? NoRoute();
-
-        switch (routeResult.pageRouteType) {
-          case PageRouteType.material:
-            return MaterialPageRoute(settings: settings, builder: (c) => page);
-          case PageRouteType.cupertino:
-            return CupertinoPageRoute(settings: settings, builder: (c) => page);
-          case PageRouteType.transparent:
-            return FFTransparentPageRoute(
-                settings: settings,
-                pageBuilder: (BuildContext context, Animation<double> animation,
-                        Animation<double> secondaryAnimation) =>
-                    page);
-          default:
-            return Platform.isIOS
-                ? CupertinoPageRoute(settings: settings, builder: (c) => page)
-                : MaterialPageRoute(settings: settings, builder: (c) => page);
-        }
-      },
+      initialRoute: Routes.FLUTTERCANDIES_MAINPAGE,// fluttercandies://mainpage
+      onGenerateRoute: (RouteSettings settings) =>
+          onGenerateRouteHelper(settings, notFoundFallback: NoRoute()),
     ),
   );
 }
@@ -206,7 +184,7 @@ Widget build(BuildContext context) {
 #### Push name
 
 ```dart
-  Navigator.pushNamed(context, "fluttercandies://mainpage");
+  Navigator.pushNamed(context, Routes.FLUTTERCANDIES_MAINPAGE /* fluttercandies://picswiper */);
 ```
 
 #### Push name with arguments
@@ -215,7 +193,7 @@ Widget build(BuildContext context) {
 ```dart
   Navigator.pushNamed(
     context,
-    "fluttercandies://picswiper",
+    Routes.FLUTTERCANDIES_PICSWIPER, // fluttercandies://picswiper
     arguments: {
       "index": index,
       "pics": listSourceRepository

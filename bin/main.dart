@@ -2,7 +2,8 @@ import 'package:ff_annotation_route/ff_annotation_route.dart';
 import 'package:ff_annotation_route/src/package_graph.dart';
 
 void main(List<String> arguments) {
-  print('ff_annotation_route ------- Start');
+  final before = DateTime.now();
+  print('ff_annotation_route ------ Start');
 
   PackageGraph packageGraph;
   final path = arguments.firstWhere(
@@ -97,5 +98,6 @@ void main(List<String> arguments) {
     rootAnnotationRouteEnable: rootAnnotationRouteEnable,
   );
 
-  print('\nff_annotation_route ------ End');
+  var diff = DateTime.now().difference(before);
+  print('\nff_annotation_route ------ End [$diff]');
 }

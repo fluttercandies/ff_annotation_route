@@ -13,14 +13,18 @@ import 'utils.dart';
 
 class RouteGenerator {
   final _fileInfoList = <FileInfo>[];
+
   List<FileInfo> get fileInfoList => _fileInfoList;
+
   bool get isRoot => packageNode.isRoot;
   Directory _lib;
 
   final PackageNode packageNode;
+
   bool get hasAnnotationRoute => _lib != null && _fileInfoList.isNotEmpty;
 
-  String get import => "import 'package:${packageNode.name}/${packageNode.name}_route.dart';";
+  String get import =>
+      "import 'package:${packageNode.name}/${packageNode.name}_route.dart';";
 
   String get export {
     if (_fileInfoList.isNotEmpty) {
@@ -46,7 +50,8 @@ class RouteGenerator {
       print('Scanning package : ${packageNode.name}');
       for (final item in _lib.listSync(recursive: true)) {
         final file = item.statSync();
-        if (file.type == FileSystemEntityType.file && item.path.endsWith('.dart')) {
+        if (file.type == FileSystemEntityType.file &&
+            item.path.endsWith('.dart')) {
           CompilationUnitImpl astRoot = parseDartFile(item.path);
 
           FileInfo fileInfo;
@@ -55,14 +60,16 @@ class RouteGenerator {
               if (metadata is AnnotationImpl &&
                   metadata.name?.name == typeOf<FFRoute>().toString() &&
                   metadata.parent is ClassDeclarationImpl) {
-                final className = (metadata.parent as ClassDeclarationImpl).name?.name;
+                final className =
+                    (metadata.parent as ClassDeclarationImpl).name?.name;
 
                 print(
                     'Found annotation route : ${p.relative(item.path, from: packageNode.path)} ------ class : $className');
 
                 fileInfo ??= FileInfo(
                     export: p
-                        .relative(item.path, from: p.join(packageNode.path, 'lib'))
+                        .relative(item.path,
+                            from: p.join(packageNode.path, 'lib'))
                         .replaceAll('\\', '/'),
                     packageName: packageNode.name);
 
@@ -157,23 +164,23 @@ class RouteGenerator {
     if (isRoot) {
       final caseSb = StringBuffer();
       final routeNames = <String>[];
-      _fileInfoList.forEach((info) {
-        info.routes.forEach((route) {
-          routeNames.add(route.ffRoute.name.replaceAll('\"', ''));
-          caseSb.write(route.caseString);
-        });
-      });
-
+      final routes =
+          _fileInfoList.map((it) => it.routes).expand((it) => it).toList();
       if (nodes != null && nodes.isNotEmpty) {
-        nodes.forEach((node) {
-          node.fileInfoList.forEach((info) {
-            info.routes.forEach((route) {
-              routeNames.add(route.ffRoute.name.replaceAll('\"', ''));
-              caseSb.write(route.caseString);
-            });
-          });
-        });
+        routes.addAll(
+          nodes
+              .map((it) => it.fileInfoList)
+              .expand((it) => it)
+              .map((it) => it.routes)
+              .expand((it) => it),
+        );
       }
+      routes.sort((a, b) => a.ffRoute.name.compareTo(b.ffRoute.name));
+
+      routes.forEach((it) {
+        routeNames.add(it.ffRoute.name.replaceAll('\"', ''));
+        caseSb.write(it.caseString);
+      });
 
       sb.write(rootFile.replaceAll('{0}', caseSb.toString()));
 
@@ -186,56 +193,9 @@ class RouteGenerator {
       if (generateRouteConstants) {
         sb.write('class Routes {\n');
         sb.write('const Routes._();\n');
-
-        _fileInfoList.forEach((info) {
-          info.routes.forEach((route) {
-            final _route = route.ffRoute;
-
-            final _name = _route.name.replaceAll('\"', '');
-            final _routeName = _route.routeName.replaceAll('\"', '');
-            final _description = _route.description;
-            final _arguments = _route.argumentNames;
-            final _showStatusBar = _route.showStatusBar;
-            final _pageRouteType = _route.pageRouteType;
-
-            final _firstLine = _description ?? _routeName ?? _name;
-
-            var _constant = _name
-                .replaceAll('\"', '')
-                .replaceAll('://', '_')
-                .replaceAll('/', '_')
-                .replaceAll('.', '_')
-                .replaceAll(' ', '_')
-                .replaceAll('-', '_');
-            while (_constant.startsWith('_')) {
-              _constant = _constant.replaceFirst('_', '');
-            }
-
-            sb.write('/// $_firstLine\n');
-            sb.write('///');
-            sb.write('\n/// [name] : $_name');
-            if (_routeName != null) {
-              sb.write('\n/// [routeName] : $_routeName');
-            }
-            if (_description != null) {
-              sb.write('\n/// [description] : $_description');
-            }
-            if (_arguments != null) {
-              sb.write('\n/// [arguments] : $_arguments');
-            }
-            if (_showStatusBar != null) {
-              sb.write('\n/// [showStatusBar] : $_showStatusBar');
-            }
-            if (_pageRouteType != null) {
-              sb.write('\n/// [pageRouteType] : $_pageRouteType');
-            }
-            sb.write(
-              '\nstatic const String '
-              '${_constant.toUpperCase()} = \"$_name\";\n\n',
-            );
-          });
+        routes.forEach((it) {
+          _generateRouteConstant(it, sb);
         });
-
         sb.write('}');
       }
     }
@@ -252,12 +212,60 @@ class RouteGenerator {
     return file;
   }
 
+  void _generateRouteConstant(RouteInfo route, StringBuffer sb) {
+    final _route = route.ffRoute;
+
+    final _name = _route.name.replaceAll('\"', '');
+    final _routeName = _route.routeName.replaceAll('\"', '');
+    final _description = _route.description;
+    final _arguments = _route.argumentNames;
+    final _showStatusBar = _route.showStatusBar;
+    final _pageRouteType = _route.pageRouteType;
+
+    final _firstLine = _description ?? _routeName ?? _name;
+
+    var _constant = _name
+        .replaceAll('\"', '')
+        .replaceAll('://', '_')
+        .replaceAll('/', '_')
+        .replaceAll('.', '_')
+        .replaceAll(' ', '_')
+        .replaceAll('-', '_');
+    while (_constant.startsWith('_')) {
+      _constant = _constant.replaceFirst('_', '');
+    }
+
+    sb.write('/// $_firstLine\n');
+    sb.write('///');
+    sb.write('\n/// [name] : $_name');
+    if (_routeName != null) {
+      sb.write('\n/// [routeName] : $_routeName');
+    }
+    if (_description != null) {
+      sb.write('\n/// [description] : $_description');
+    }
+    if (_arguments != null) {
+      sb.write('\n/// [arguments] : $_arguments');
+    }
+    if (_showStatusBar != null) {
+      sb.write('\n/// [showStatusBar] : $_showStatusBar');
+    }
+    if (_pageRouteType != null) {
+      sb.write('\n/// [pageRouteType] : $_pageRouteType');
+    }
+    sb.write(
+      '\nstatic const String '
+      '${_constant.toUpperCase()} = \"$_name\";\n\n',
+    );
+  }
+
   File generateHelperFile({
     List<RouteGenerator> nodes,
     bool routeSettingsNoArguments = false,
     int mode = 0,
   }) {
-    final file = File(p.join(_lib.path, '${packageNode.name}_route_helper.dart'));
+    final file =
+        File(p.join(_lib.path, '${packageNode.name}_route_helper.dart'));
     if (file.existsSync()) {
       file.deleteSync();
     }
