@@ -1,13 +1,11 @@
-import 'dart:io';
-
-import 'package:flutter/material.dart';
+import 'package:example/example_route.dart';
+import 'package:example/src/no_route.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:oktoast/oktoast.dart';
 
-import 'package:example/src/no_route.dart';
-import 'example_route.dart';
 import 'example_route_helper.dart';
 
 void main() => runApp(MyApp());
@@ -22,9 +20,11 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
         ),
         navigatorObservers: [
-          FFNavigatorObserver(routeChange: (name) {
+          FFNavigatorObserver(routeChange:
+              (RouteSettings newRouteSettings, RouteSettings oldRouteSettings) {
             //you can track page here
-            print(name);
+            print(
+                "route change: ${oldRouteSettings.name} => ${newRouteSettings.name}");
           }, showStatusBarChange: (bool showStatusBar) {
             if (showStatusBar) {
               SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
@@ -46,59 +46,9 @@ class MyApp extends StatelessWidget {
             child: w,
           );
         },
-        initialRoute: "fluttercandies://mainpage",
-        onGenerateRoute: (RouteSettings settings) {
-          var routeResult = getRouteResult(
-            name: settings.name,
-            arguments: settings.arguments,
-          );
-
-          if (routeResult.showStatusBar != null ||
-              routeResult.routeName != null) {
-            settings = FFRouteSettings(
-              arguments: settings.arguments,
-              name: settings.name,
-              isInitialRoute: settings.isInitialRoute,
-              routeName: routeResult.routeName,
-              showStatusBar: routeResult.showStatusBar,
-            );
-          }
-
-          var page = routeResult.widget ?? NoRoute();
-
-          switch (routeResult.pageRouteType) {
-            case PageRouteType.material:
-              return MaterialPageRoute(
-                settings: settings,
-                builder: (c) => page,
-              );
-            case PageRouteType.cupertino:
-              return CupertinoPageRoute(
-                settings: settings,
-                builder: (c) => page,
-              );
-            case PageRouteType.transparent:
-              return FFTransparentPageRoute(
-                settings: settings,
-                pageBuilder: (
-                  BuildContext context,
-                  Animation<double> animation,
-                  Animation<double> secondaryAnimation,
-                ) =>
-                    page,
-              );
-            default:
-              return Platform.isIOS
-                  ? CupertinoPageRoute(
-                      settings: settings,
-                      builder: (c) => page,
-                    )
-                  : MaterialPageRoute(
-                      settings: settings,
-                      builder: (c) => page,
-                    );
-          }
-        },
+        initialRoute: Routes.FLUTTERCANDIES_MAINPAGE,
+        onGenerateRoute: (RouteSettings settings) =>
+            onGenerateRouteHelper(settings, notFoundFallback: NoRoute()),
       ),
     );
   }
