@@ -59,46 +59,36 @@ class FFNavigatorObserver extends NavigatorObserver {
 
   @override
   void didPop(Route route, Route previousRoute) {
-    super.didPop(route, previousRoute);    
-    _showStatusBarChange(previousRoute, route);
-    _routeChange(previousRoute);
+    super.didPop(route, previousRoute);
+    _didRouteChange(previousRoute, route);
   }
 
   @override
   void didPush(Route route, Route previousRoute) {
     super.didPush(route, previousRoute);
-    _showStatusBarChange(route, previousRoute);
-    _routeChange(route);
+    _didRouteChange(route, previousRoute);
   }
 
   @override
   void didRemove(Route route, Route previousRoute) {
-     super.didRemove(route, previousRoute);
-    _showStatusBarChange(previousRoute, route);
-    _routeChange(previousRoute);  
+    super.didRemove(route, previousRoute);
+    _didRouteChange(previousRoute, route);
   }
 
   @override
   void didReplace({Route newRoute, Route oldRoute}) {
-     super.didReplace(newRoute: newRoute, oldRoute: oldRoute);
-    _showStatusBarChange(newRoute, oldRoute);
-    _routeChange(newRoute);
+    super.didReplace(newRoute: newRoute, oldRoute: oldRoute);
+    _didRouteChange(newRoute, oldRoute);
   }
 
-  void _showStatusBarChange(Route newRoute, Route oldRoute) {
-    if (showStatusBarChange != null) {
-      final newSetting = getFFRouteSettings(newRoute);
-      final oldSetting = getFFRouteSettings(oldRoute);
-      if (newSetting?.showStatusBar != oldSetting?.showStatusBar) {
-        showStatusBarChange(newSetting.showStatusBar);
-      }
-    }
-  }
-
-  void _routeChange(Route newRoute) {
-    if (routeChange == null) return;
+  void _didRouteChange(Route newRoute, Route oldRoute) {
+    if (showStatusBarChange == null && routeChange == null) return;
     final newSetting = getFFRouteSettings(newRoute);
-    routeChange.call(newSetting);
+    final oldSetting = getFFRouteSettings(oldRoute);
+    if (newSetting?.showStatusBar != oldSetting?.showStatusBar) {
+      showStatusBarChange?.call(newSetting.showStatusBar);
+    }
+    routeChange?.call(newSetting, oldSetting);
   }
 
   FFRouteSettings getFFRouteSettings(Route route) {
@@ -109,7 +99,8 @@ class FFNavigatorObserver extends NavigatorObserver {
 
 typedef ShowStatusBarChange = void Function(bool showStatusBar);
 
-typedef RouteChange = void Function(RouteSettings routeSettings);
+typedef RouteChange = void Function(
+    RouteSettings newRouteSettings, RouteSettings oldRouteSettings);
 
 class FFTransparentPageRoute<T> extends PageRouteBuilder<T> {
   FFTransparentPageRoute({
