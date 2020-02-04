@@ -184,7 +184,7 @@ Widget build(BuildContext context) {
 #### Push name
 
 ```dart
-  Navigator.pushNamed(context, Routes.FLUTTERCANDIES_MAINPAGE /* fluttercandies://picswiper */);
+  Navigator.pushNamed(context, Routes.FLUTTERCANDIES_MAINPAGE /* fluttercandies://mainpage */);
 ```
 
 #### Push name with arguments
