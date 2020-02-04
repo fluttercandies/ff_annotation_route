@@ -52,10 +52,9 @@ import 'package:flutter/widgets.dart';
 import '${name}_route.dart';
 
 class FFNavigatorObserver extends NavigatorObserver {
-  final ShowStatusBarChange showStatusBarChange;
   final RouteChange routeChange;
 
-  FFNavigatorObserver({this.showStatusBarChange, this.routeChange});
+  FFNavigatorObserver({this.routeChange});
 
   @override
   void didPop(Route route, Route previousRoute) {
@@ -82,13 +81,6 @@ class FFNavigatorObserver extends NavigatorObserver {
   }
 
   void _didRouteChange(Route newRoute, Route oldRoute) {
-    if (showStatusBarChange != null) {
-      final newSetting = getFFRouteSettings(newRoute);
-      final oldSetting = getFFRouteSettings(oldRoute);
-      if (newSetting?.showStatusBar != oldSetting?.showStatusBar) {
-        showStatusBarChange?.call(newSetting.showStatusBar);
-      }
-    }
     routeChange?.call(newRoute.settings, oldRoute.settings);
   }
 
