@@ -107,7 +107,7 @@ class FFNavigatorObserver extends NavigatorObserver {
 
 typedef ShowStatusBarChange = void Function(bool showStatusBar);
 
-typedef RouteChange = void Function(FFRouteSettings routeSettings);
+typedef RouteChange = void Function(RouteSettings routeSettings);
 
 class FFTransparentPageRoute<T> extends PageRouteBuilder<T> {
   FFTransparentPageRoute({
