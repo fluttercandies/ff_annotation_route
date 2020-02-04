@@ -109,9 +109,11 @@ class RouteGenerator {
                             .map((it) => it.trim())
                             .where((it) => it.length > 2)
                             .map((it) =>
-                        (it.startsWith("'''") && it.endsWith("'''")
+                        it.length > 6 &&
+                            it.startsWith("'''") &&
+                            it.endsWith("'''")
                             ? it.substring(3, it.length - 3)
-                            : it.substring(1, it.length - 1)))
+                            : it.substring(1, it.length - 1))
                             .toList();
                         break;
                       case 'pageRouteType:':
