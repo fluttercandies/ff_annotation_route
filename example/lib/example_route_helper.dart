@@ -5,8 +5,8 @@
 
 import 'dart:io';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/widgets.dart';
 
 import 'example_route.dart';
@@ -61,13 +61,15 @@ class FFNavigatorObserver extends NavigatorObserver {
     routeChange.call(newSetting);
   }
 
-  FFRouteSettings getFFRouteSettings(Route route) =>
-      (route?.settings is FFRouteSettings) ? route.settings : null;
+  FFRouteSettings getFFRouteSettings(Route route) {
+    if (route?.settings is FFRouteSettings) return route.settings;
+    return null;
+  }
 }
 
 typedef ShowStatusBarChange = void Function(bool showStatusBar);
 
-typedef RouteChange = void Function(FFRouteSettings routeSettings);
+typedef RouteChange = void Function(RouteSettings routeSettings);
 
 class FFTransparentPageRoute<T> extends PageRouteBuilder<T> {
   FFTransparentPageRoute({
@@ -132,9 +134,9 @@ Route<dynamic> onGenerateRouteHelper(RouteSettings settings,
 
   switch (routeResult.pageRouteType) {
     case PageRouteType.material:
-      return MaterialPageRoute(settings: settings, builder: (c) => page);
+      return MaterialPageRoute(settings: settings, builder: (_) => page);
     case PageRouteType.cupertino:
-      return CupertinoPageRoute(settings: settings, builder: (c) => page);
+      return CupertinoPageRoute(settings: settings, builder: (_) => page);
     case PageRouteType.transparent:
       return FFTransparentPageRoute(
         settings: settings,
@@ -142,8 +144,8 @@ Route<dynamic> onGenerateRouteHelper(RouteSettings settings,
       );
     default:
       return Platform.isIOS
-          ? CupertinoPageRoute(settings: settings, builder: (c) => page)
-          : MaterialPageRoute(settings: settings, builder: (c) => page);
+          ? CupertinoPageRoute(settings: settings, builder: (_) => page)
+          : MaterialPageRoute(settings: settings, builder: (_) => page);
   }
 }
 
@@ -152,7 +154,6 @@ typedef RouteBuilder = PageRoute Function(Widget page);
 class FFRouteSettings extends RouteSettings {
   final String routeName;
   final bool showStatusBar;
-
   const FFRouteSettings({
     this.routeName,
     this.showStatusBar,
