@@ -164,9 +164,9 @@ Widget build(BuildContext context) {
           child: w,
         );
       },
-      initialRoute: Routes.FLUTTERCANDIES_MAINPAGE,
-             onGenerateRoute: (RouteSettings settings) =>
-                 onGenerateRouteHelper(settings, notFoundFallback: NoRoute()),
+      initialRoute: Routes.FLUTTERCANDIES_MAINPAGE,// fluttercandies://mainpage
+      onGenerateRoute: (RouteSettings settings) =>
+          onGenerateRouteHelper(settings, notFoundFallback: NoRoute()),
     ),
   );
 }
@@ -179,7 +179,7 @@ Widget build(BuildContext context) {
 #### Push name
 
 ```dart
-  Navigator.pushNamed(context, Routes.FLUTTERCANDIES_MAINPAGE);
+  Navigator.pushNamed(context, Routes.FLUTTERCANDIES_MAINPAGE /* fluttercandies://picswiper */);
 ```
 
 #### Push name with arguments
@@ -188,7 +188,7 @@ Widget build(BuildContext context) {
 ```dart
   Navigator.pushNamed(
     context,
-    Routes.FLUTTERCANDIES_PICSWIPER,
+    Routes.FLUTTERCANDIES_PICSWIPER, // fluttercandies://picswiper
     arguments: {
       "index": index,
       "pics": listSourceRepository
