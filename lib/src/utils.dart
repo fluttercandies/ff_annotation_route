@@ -101,8 +101,10 @@ class FFNavigatorObserver extends NavigatorObserver {
     routeChange.call(newSetting);
   }
 
-  FFRouteSettings getFFRouteSettings(Route route) =>
-    (route?.settings is FFRouteSettings) ? route.settings : null;
+  FFRouteSettings getFFRouteSettings(Route route) {
+    if (route?.settings is FFRouteSettings) return route.settings;
+    return null;
+  }
 }
 
 typedef ShowStatusBarChange = void Function(bool showStatusBar);
@@ -170,9 +172,9 @@ Route<dynamic> onGenerateRouteHelper(RouteSettings settings, {Widget notFoundFal
 
   switch (routeResult.pageRouteType) {
     case PageRouteType.material:
-      return MaterialPageRoute(settings: settings, builder: (c) => page);
+      return MaterialPageRoute(settings: settings, builder: (_) => page);
     case PageRouteType.cupertino:
-      return CupertinoPageRoute(settings: settings, builder: (c) => page);
+      return CupertinoPageRoute(settings: settings, builder: (_) => page);
     case PageRouteType.transparent:
       return FFTransparentPageRoute(
         settings: settings,
@@ -180,8 +182,8 @@ Route<dynamic> onGenerateRouteHelper(RouteSettings settings, {Widget notFoundFal
       );
     default:
       return Platform.isIOS
-          ? CupertinoPageRoute(settings: settings, builder: (c) => page)
-          : MaterialPageRoute(settings: settings, builder: (c) => page);
+          ? CupertinoPageRoute(settings: settings, builder: (_) => page)
+          : MaterialPageRoute(settings: settings, builder: (_) => page);
   }
 }
 
