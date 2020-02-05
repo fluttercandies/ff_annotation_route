@@ -86,10 +86,14 @@ class RouteGenerator {
                   if (item is NamedExpressionImpl) {
                     var source = item.expression.toSource();
                     if (source == 'null') continue;
-                    if (source.startsWith("'''") && source.endsWith("'''")) {
-                      source = '"${source.substring(3, source.length - 3)}"';
-                    } else if (source.startsWith("'") && source.endsWith("'")) {
+                    // using single quotes has greater possibility.
+                    if (source.length >= 2 &&
+                        source.startsWith("'") &&
+                        source.endsWith("'")) {
                       source = '"${source.substring(1, source.length - 1)}"';
+                    } else if (source.startsWith("'''") &&
+                        source.endsWith("'''")) {
+                      source = '"${source.substring(3, source.length - 3)}"';
                     }
                     final key = item.name.toSource();
                     switch (key) {
@@ -109,9 +113,7 @@ class RouteGenerator {
                             .map((it) => it.trim())
                             .where((it) => it.length > 2)
                             .map((it) =>
-                        it.length > 6 &&
-                            it.startsWith("'''") &&
-                            it.endsWith("'''")
+                        it.startsWith("'''") && it.endsWith("'''")
                             ? it.substring(3, it.length - 3)
                             : it.substring(1, it.length - 1))
                             .toList();
