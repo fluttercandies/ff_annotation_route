@@ -1,3 +1,11 @@
+## 1.1.7
+
+- Fix route constants didn't generated for submodules.
+- Generated routes will be sorted.
+- Update parameter for `onGenerateRouteHelper`.
+- Remove `showStatusBarChange` from `FFNavigatorObserver`.
+- Improve code quality and remove redundant code.
+
 ## 1.1.6
 
 - Add `onGenerateRouteHelper` to helper file instead of written in `MaterialApp`.
