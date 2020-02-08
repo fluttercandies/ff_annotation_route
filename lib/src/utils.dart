@@ -82,7 +82,7 @@ class FFNavigatorObserver extends NavigatorObserver {
 
   void _didRouteChange(Route newRoute, Route oldRoute) {
     // oldRoute may be null when route first time enter.
-    routeChange?.call(newRoute.settings, oldRoute?.settings);
+    routeChange?.call(newRoute?.settings, oldRoute?.settings);
   }
 
   FFRouteSettings getFFRouteSettings(Route route) {
