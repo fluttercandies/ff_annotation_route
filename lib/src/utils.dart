@@ -146,9 +146,16 @@ Route<dynamic> onGenerateRouteHelper(RouteSettings settings, {Widget notFoundFal
       showStatusBar: routeResult.showStatusBar,
     );
   }
-  final page = routeResult.widget ??
-      notFoundFallback ??
-      Center(child: Text("\${settings.name}\\npage not found."));
+  final page = routeResult.widget ?? notFoundFallback;
+  if (page == null) {
+    throw FlutterError.fromParts(<DiagnosticsNode>[
+      ErrorSummary('Route "\${settings.name}" returned null.'),
+      ErrorDescription(
+          'Route Widget must never return null, '
+              'maybe the reason is that route name did not match with right path. '
+              'You can use parameter[notFoundFallback] to avoid this ugly error.')
+    ]);
+  }
 
   if (settings?.arguments is Map<String, dynamic>) {
     RouteBuilder builder = (settings.arguments as Map<String, dynamic>)['routeBuilder'];
