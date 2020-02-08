@@ -142,7 +142,7 @@ Widget build(BuildContext context) {
             (RouteSettings newRouteSettings, RouteSettings oldRouteSettings) {
           //you can track page here
           print(
-              "route change: ${oldRouteSettings.name} => ${newRouteSettings.name}");
+              "route change: ${oldRouteSettings?.name} => ${newRouteSettings.name}");
           if (newRouteSettings is FFRouteSettings &&
               oldRouteSettings is FFRouteSettings) {
             if (newRouteSettings?.showStatusBar !=

@@ -1,5 +1,4 @@
 import 'package:example/example_route.dart';
-import 'package:example/src/no_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -24,7 +23,7 @@ class MyApp extends StatelessWidget {
               (RouteSettings newRouteSettings, RouteSettings oldRouteSettings) {
             //you can track page here
             print(
-                "route change: ${oldRouteSettings.name} => ${newRouteSettings.name}");
+                "route change: ${oldRouteSettings?.name} => ${newRouteSettings.name}");
             if (newRouteSettings is FFRouteSettings &&
                 oldRouteSettings is FFRouteSettings) {
               if (newRouteSettings?.showStatusBar !=
@@ -55,7 +54,7 @@ class MyApp extends StatelessWidget {
         },
         initialRoute: Routes.FLUTTERCANDIES_MAINPAGE,
         onGenerateRoute: (RouteSettings settings) =>
-            onGenerateRouteHelper(settings, notFoundFallback: NoRoute()),
+            onGenerateRouteHelper(settings),
       ),
     );
   }
