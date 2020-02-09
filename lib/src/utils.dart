@@ -81,7 +81,8 @@ class FFNavigatorObserver extends NavigatorObserver {
   }
 
   void _didRouteChange(Route newRoute, Route oldRoute) {
-    routeChange?.call(newRoute.settings, oldRoute.settings);
+    // oldRoute may be null when route first time enter.
+    routeChange?.call(newRoute?.settings, oldRoute?.settings);
   }
 
   FFRouteSettings getFFRouteSettings(Route route) {
@@ -145,9 +146,16 @@ Route<dynamic> onGenerateRouteHelper(RouteSettings settings, {Widget notFoundFal
       showStatusBar: routeResult.showStatusBar,
     );
   }
-  final page = routeResult.widget ??
-      notFoundFallback ??
-      Center(child: Text("\${settings.name}\\npage not found."));
+  final page = routeResult.widget ?? notFoundFallback;
+  if (page == null) {
+    throw FlutterError.fromParts(<DiagnosticsNode>[
+      ErrorSummary('Route "\${settings.name}" returned null.'),
+      ErrorDescription(
+          'Route Widget must never return null, '
+              'maybe the reason is that route name did not match with right path. '
+              'You can use parameter[notFoundFallback] to avoid this ugly error.')
+    ]);
+  }
 
   if (settings?.arguments is Map<String, dynamic>) {
     RouteBuilder builder = (settings.arguments as Map<String, dynamic>)['routeBuilder'];
