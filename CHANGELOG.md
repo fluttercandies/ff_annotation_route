@@ -1,3 +1,8 @@
+## 1.1.8
+
+- Fix NPE when `_didRouteChange` was called.
+- Update `onGenerateRouteHelper`'s not found fallback.
+
 ## 1.1.7
 
 - Fix route constants didn't generated for submodules.
