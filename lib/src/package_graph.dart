@@ -237,7 +237,7 @@ Map<String, Set<String>> _parsePackageDependencies(
 /// Gets the dependencies from a yaml file, taking into account
 /// dependency_overrides.
 Set<String> _dependenciesFromYaml(YamlMap yaml, {bool isRoot = false}) {
-  final dependencies = <String>{}
+  final dependencies = Set<String>()
     ..addAll(_stringKeys(yaml['dependencies'] as Map));
   // if (isRoot) {
   dependencies..addAll(_stringKeys(yaml['dev_dependencies'] as Map));
