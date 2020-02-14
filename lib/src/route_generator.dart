@@ -84,28 +84,53 @@ class RouteGenerator {
 
                 for (final item in parameters) {
                   if (item is NamedExpressionImpl) {
+                    var source = item.expression.toSource();
+                    if (source == 'null') continue;
+                    // using single quotes has greater possibility.
+                    if (source.length >= 2 &&
+                        source.startsWith("'") &&
+                        source.endsWith("'")) {
+                      source = '"${source.substring(1, source.length - 1)}"';
+                    } else if (source.startsWith("'''") &&
+                        source.endsWith("'''")) {
+                      source = '"${source.substring(3, source.length - 3)}"';
+                    }
                     final key = item.name.toSource();
-                    if (key == 'name:') {
-                      name = item.expression.toSource();
-                    } else if (key == 'argumentNames:') {
-                      final list = json.decode(
-                        item.expression.toSource(),
-                      ) as List;
-                      argumentNames = list.map((f) => f.toString()).toList();
-                    } else if (key == 'showStatusBar:') {
-                      showStatusBar = item.expression.toSource() == 'true';
-                    } else if (key == 'routeName:') {
-                      routeName = item.expression.toSource();
-                    } else if (key == 'pageRouteType:') {
-                      pageRouteType = PageRouteType.values.firstWhere(
-                        (type) => type.toString() == item.expression.toSource(),
-                        orElse: () => null,
-                      );
-                    } else if (key == 'description:') {
-                      description = item.expression.toSource();
+                    switch (key) {
+                      case 'name:':
+                        name = source;
+                        break;
+                      case 'routeName:':
+                        routeName = source;
+                        break;
+                      case 'showStatusBar:':
+                        showStatusBar = source == 'true';
+                        break;
+                      case 'argumentNames:':
+                        argumentNames = source
+                            .replaceAll(RegExp('\\[|\\]'), '')
+                            .split(',')
+                            .map((it) => it.trim())
+                            .where((it) => it.length > 2)
+                            .map((it) =>
+                        it.startsWith("'''") && it.endsWith("'''")
+                            ? it.substring(3, it.length - 3)
+                            : it.substring(1, it.length - 1))
+                            .toList();
+                        break;
+                      case 'pageRouteType:':
+                        pageRouteType = PageRouteType.values.firstWhere(
+                              (type) => type.toString() == source,
+                          orElse: () => null,
+                        );
+                        break;
+                      case 'description:':
+                        description = source;
+                        break;
                     }
                   }
                 }
+
                 final routeInfo = RouteInfo(
                   className: className,
                   ffRoute: FFRoute(
