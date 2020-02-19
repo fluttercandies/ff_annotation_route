@@ -1,3 +1,7 @@
+## 1.1.9
+
+- Merge files from `1.1.8`.
+
 ## 1.1.8
 
 - Fix NPE when `_didRouteChange` was called.
