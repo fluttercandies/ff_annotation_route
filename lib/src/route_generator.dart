@@ -113,14 +113,14 @@ class RouteGenerator {
                             .map((it) => it.trim())
                             .where((it) => it.length > 2)
                             .map((it) =>
-                        it.startsWith("'''") && it.endsWith("'''")
-                            ? it.substring(3, it.length - 3)
-                            : it.substring(1, it.length - 1))
+                                it.startsWith("'''") && it.endsWith("'''")
+                                    ? it.substring(3, it.length - 3)
+                                    : it.substring(1, it.length - 1))
                             .toList();
                         break;
                       case 'pageRouteType:':
                         pageRouteType = PageRouteType.values.firstWhere(
-                              (type) => type.toString() == source,
+                          (type) => type.toString() == source,
                           orElse: () => null,
                         );
                         break;
@@ -287,14 +287,14 @@ class RouteGenerator {
   File generateHelperFile({
     List<RouteGenerator> nodes,
     bool routeSettingsNoArguments = false,
-    int mode = 0,
+    bool generateRouteHelper = false,
   }) {
     final file =
         File(p.join(_lib.path, '${packageNode.name}_route_helper.dart'));
     if (file.existsSync()) {
       file.deleteSync();
     }
-    if (mode == 0) return null;
+    if (!generateRouteHelper) return null;
 
     file.createSync();
 

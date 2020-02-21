@@ -18,7 +18,7 @@ Provide a route generator to create route map quickly by annotations.
       - [FFRoute](#ffroute)
     - [Generate Route File](#generate-route-file)
       - [Environment](#environment)
-      - [Activate](#activate)
+      - [Activate the plugin](#activate-the-plugin)
       - [Execute command](#execute-command)
       - [Command Parameter](#command-parameter)
     - [Main.dart](#maindart)
@@ -103,30 +103,34 @@ Add dart bin into to your `$PATH`.
 
 #### Execute command
 
-Go to your project's root path and execute command.
-`ff_annotation_route`
+Go to your project's root and execute command.
 
-Or you can execute command with your project path `ff_annotation_route
-path=`
+ `ff_route <command> [arguments]`
 
 #### Command Parameter
 
-Using with `parameter=xxx`, and use the space(` `) to split.
+Available commands:
 
-| Parameter                | Description                                                                                                       | Default |
-| ------------------------ | ----------------------------------------------------------------------------------------------------------------- | ------- |
-| path                     | The path of your project.                                                                                         | current |
-| mode                     | `0` or `1`, `1` will generate xxx_route_helper.dart to help you to handle showStatusBar/routeName/pageRouteType   | 0       |
-| generateRouteNames       | Whether to generate route names in `xxx_route.dart` at root project.                                              | false   |
-| generateRouteConstants   | Whether to generate route constants in `xxx_route.dart` at root project, with a class named `Routes`.             | false   |
-| routeSettingsNoArguments | if `true`, `FFRouteSettings(in xxx_route_helper.dart)` has no arguments for lower flutter sdk.                    | false   |
+-h&#160;, --help&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Print this usage information.
+
+-p&#160;, --path [arguments]&#160;&#160;&#160;&#160;The path of folder to be executed with commands.
+
+-rc, --route-constants&#160;&#160;&#160;&#160;&#160;&#160;&#160;Whether generate route names as constants.
+
+-rh, --route-helper&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Whether generate xxx_route_helper.dart
+
+-rn, --route-names&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Whether generate route names as a list.
+
+-s&#160;, --save&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; Whether save commands in local, it will read next time to be execute if no commands.     
+
+-na, --no-arguments&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Whether RouteSettings has arguments(for lower flutter sdk).
 
 ### Main.dart
 
-- If you execute command with `mode=1`, `FFNavigatorObserver/FFRouteSettings` will generate in `xxx_route_helper.dart`
+- If you execute command with `--route-helper`, `FFNavigatorObserver/FFRouteSettings` will generate in `xxx_route_helper.dart`
 which help you to track page or change status bar state.
 
-- If you execute command with `mode=1`, `FFTransparentPageRoute` will generate in `xxx_route_helper.dart`
+- If you execute command with `--route-helper`, `FFTransparentPageRoute` will generate in `xxx_route_helper.dart`
 which helps you to push a transparent page route.
 
 ```dart

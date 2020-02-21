@@ -107,28 +107,34 @@ class PicSwiper extends StatefulWidget {
 
 #### 执行命令
 
-进入到项目根路径下执行 `ff_annotation_route`
+到你的项目根目录下面执行.
 
-你也可以直接执行，并且带上你的项目路径 `ff_annotation_route path=`
+ `ff_route <command> [arguments]`
 
 #### 命令参数
 
-使用方式为 `parameter=xxx`, 并用空格 (` `) 隔开多个参数。
+可用的命令:
 
-| 参数                     | 描述                                                                                      | 默认     |
-| ------------------------ | ---------------------------------------------------------------------------------------- | ------- |
-| path                     | 你的项目路径                                                                               | 当前路径 |
-| generateRouteNames       | 是否在根项目中的 `xxx_route.dart` 生成全部路由的名字                                           | false   |
-| generateRouteConstants   | 是否在根项目中的 `xxx_route.dart` 生成全部路由的静态常量                                       | false   |
-| mode                     | 0或者1, 模式1会生成 xxx_route_helper.dart 来帮助你处理 showStatusBar/routeName/pageRouteType | 0       |
-| routeSettingsNoArguments | 如果为true， FFRouteSettings 将没有arguments这个参数,这个是主要是为了适配Flutter低版本           | false   |
+-h&#160;, --help&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;打印帮助信息.
+
+-p&#160;, --path [arguments]&#160;&#160;&#160;&#160;执行命令的目录，没有就是当前目录.
+
+-rc, --route-constants&#160;&#160;&#160;&#160;&#160;&#160;&#160;是否在根项目中的 `xxx_route.dart` 生成全部路由的静态常量 
+
+-rh, --route-helper&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;生成 xxx_route_helper.dart 来帮助你处理路由
+
+-rn, --route-names&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;是否在根项目中的 `xxx_route.dart` 生成全部路由的名字 
+
+-s&#160;, --save&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; 是否保存命令到本地，如果保存了，下一次就只需要执行`ff_route`就可以了
+
+-na, --no-arguments&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;FFRouteSettings 将没有arguments这个参数,这个是主要是为了适配Flutter低版本
 
 ### Main.dart
 
-- 如果运行的命令带有参数 `mode=1` , `FFNavigatorObserver/FFRouteSettings`
+- 如果运行的命令带有参数 `--route-helper` , `FFNavigatorObserver/FFRouteSettings`
   将会生成在 `xxx_route_helper.dart` 中，用于协助追踪页面和设置状态栏。
 
-- 如果运行的命令带有参数 `mode=1` ，`FFTransparentPageRoute` 将会生成在
+- 如果运行的命令带有参数 `--route-helper` ，`FFTransparentPageRoute` 将会生成在
   `xxx_route_helper.dart` 中，可以使用它来 `push` 一个透明的 `PageRoute` 。
 
 ```dart

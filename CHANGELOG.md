@@ -1,3 +1,29 @@
+## 2.0.0
+
+- Breaking change
+
+Manage your Flutter app development with ff_annotation_route.
+
+Activate:  `pub global activate ff_annotation_route `
+
+Usage: `ff_route <command> [arguments]`
+
+Available commands:
+
+-h&#160;, --help&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Print this usage information.
+
+-p&#160;, --path [arguments]&#160;&#160;&#160;&#160;The path of folder to be executed with commands.
+
+-rc, --route-constants&#160;&#160;&#160;&#160;&#160;&#160;&#160;Whether generate route names as constants.
+
+-rh, --route-helper&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Whether generate xxx_route_helper.dart
+
+-rn, --route-names&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Whether generate route names as a list.
+
+-s&#160;, --save&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; Whether save commands in local, it will read next time to be execute if no commands.     
+
+-na, --no-arguments&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Whether RouteSettings has arguments(for lower flutter sdk).
+
 ## 1.1.9
 
 - Merge files from `1.1.8`.

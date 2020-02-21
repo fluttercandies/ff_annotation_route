@@ -10,7 +10,7 @@ void generate(
   List<PackageNode> annotationPackages, {
   bool generateRouteNames = false,
   bool generateRouteConstants = false,
-  int mode = 0,
+  bool generateRouteHelper = false,
   bool routeSettingsNoArguments = false,
   bool rootAnnotationRouteEnable = true,
 }) {
@@ -42,7 +42,7 @@ void generate(
   final helperFile = root?.generateHelperFile(
     nodes: nodes,
     routeSettingsNoArguments: routeSettingsNoArguments,
-    mode: mode,
+    generateRouteHelper: generateRouteHelper,
   );
 
   formatFile(routeFile);
