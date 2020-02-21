@@ -2,7 +2,8 @@ library ff_annotation_route;
 
 export 'src/ff_route.dart';
 
-import 'src/format.dart';
+import 'package:ff_annotation_route/src/utils/format.dart';
+
 import 'src/package_graph.dart';
 import 'src/route_generator.dart';
 

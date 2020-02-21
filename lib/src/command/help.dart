@@ -12,6 +12,16 @@ class Help extends Command {
 }
 
 String get help {
+  return '''\nManage your Flutter app development with ff_annotation_route.
+
+Usage: ff_route <command> [arguments]
+
+Available commands:
+${getCommandsHelp(ffCommands)}
+''';
+}
+
+String getCommandsHelp(List<Command> commands) {
   final maxLengthCommand = commands.reduce((value, element) =>
       value.command.length > element.command.length ? value : element);
 
@@ -21,12 +31,5 @@ String get help {
     sb.write(
         '${command.command}${' ' * (maxLengthCommand.command.length - command.command.length + 5)}${command.description}\n');
   }
-
-  return '''\nManage your Flutter app development with ff_annotation_route.
-
-Usage: ff_route <command> [arguments]
-
-Available commands:
-${sb.toString()}
-''';
+  return sb.toString();
 }

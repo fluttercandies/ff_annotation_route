@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:io/ansi.dart';
 
 Future<void> formatFile(File file) async {
   if (file == null) {
@@ -6,7 +7,7 @@ Future<void> formatFile(File file) async {
   }
 
   if (!file.existsSync()) {
-    print('format error: ${file?.absolute?.path} doesn\'t exist\n');
+    print(red.wrap('format error: ${file?.absolute?.path} doesn\'t exist\n'));
     return;
   }
 

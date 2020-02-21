@@ -1,4 +1,3 @@
-
 import 'package:ff_annotation_route/ff_annotation_route.dart';
 import 'package:ff_annotation_route/src/command/command.dart';
 import 'package:ff_annotation_route/src/command/help.dart';
@@ -10,12 +9,13 @@ import 'package:ff_annotation_route/src/command/save.dart';
 import 'package:ff_annotation_route/src/command/settings_no_arguments.dart';
 import 'package:ff_annotation_route/src/package_graph.dart';
 import 'dart:io' as io;
-
+import 'package:io/ansi.dart';
 import 'package:path/path.dart';
 
 const String cmmandsFile = 'ff_annotation_route_commands';
 
 void main(List<String> arguments) {
+  final argumentsIsEmpty = arguments.isEmpty;
   if (arguments.isEmpty) {
     final file = io.File(join('./', cmmandsFile));
     if (file.existsSync()) {
@@ -29,9 +29,13 @@ void main(List<String> arguments) {
   }
 
   final commmands = initCommands(arguments);
+  if (commmands == null) {
+    return;
+  }
+
   if (commmands.isEmpty) {
-    print(
-        '''No available commands found.\n Run 'ff_route -h' for available commands and options''');
+    print(red.wrap(
+        '''No available commands found.\nRun 'ff_route -h' for available commands and options.'''));
     return;
   }
 
@@ -46,7 +50,11 @@ void main(List<String> arguments) {
 
   final before = DateTime.now();
 
-  print('ff_annotation_route ------ Start');
+  print(green.wrap('\nff_annotation_route ------ Start'));
+
+  if (argumentsIsEmpty) {
+    print(yellow.wrap('execute commands from local.\n${getCommandsHelp(commmands)}'));
+  }
 
   final pathCommand = commmands.firstWhere(
     (element) => element is Path,
@@ -121,8 +129,10 @@ void main(List<String> arguments) {
 
     file.writeAsStringSync(
         commmands.toString().replaceAll('[', '').replaceAll(']', ''));
+    print(green.wrap(
+        'Save commands successfully: ${commmands}.\n\nYou can run "ff_route" directly in next time.'));
   }
 
   final diff = DateTime.now().difference(before);
-  print('\nff_annotation_route ------ End [$diff]');
+  print(green.wrap('\nff_annotation_route ------ End [$diff]'));
 }

@@ -2,9 +2,9 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:analyzer/src/dart/ast/ast.dart';
+import 'package:ff_annotation_route/src/utils/ast.dart';
 import 'package:path/path.dart' as p;
 
-import 'ast.dart';
 import 'ff_route.dart';
 import 'file_info.dart';
 import 'package_graph.dart';

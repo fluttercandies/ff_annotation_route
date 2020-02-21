@@ -121,7 +121,7 @@ Available commands:
 
 -rn, --route-names&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Whether generate route names as a list.
 
--s&#160;, --save&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; Whether save commands in local, it will read next time to be execute if no commands.     
+-s&#160;, --save&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; Whether save commands in local, it will read commands from local next time to execute if run "ff_route" without any commands.
 
 -na, --no-arguments&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Whether RouteSettings has arguments(for lower flutter sdk).
 
