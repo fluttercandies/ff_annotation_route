@@ -1,3 +1,7 @@
+## 2.0.2
+
+- Fix error about -na, --no-arguments.
+  
 ## 2.0.1
 
 - Add more friendly prompt.

@@ -53,7 +53,8 @@ void main(List<String> arguments) {
   print(green.wrap('\nff_annotation_route ------ Start'));
 
   if (argumentsIsEmpty) {
-    print(yellow.wrap('execute commands from local.\n${getCommandsHelp(commmands)}'));
+    print(yellow
+        .wrap('execute commands from local.\n${getCommandsHelp(commmands)}'));
   }
 
   final pathCommand = commmands.firstWhere(

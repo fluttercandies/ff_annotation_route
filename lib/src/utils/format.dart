@@ -28,7 +28,7 @@ void processRunSync({
     arguments.split(' '),
     runInShell: runInShell,
   );
-  if (result.stderr != null && result.stderr != '') {
+  if (result.exitCode != 0) {
     throw Exception(result.stderr);
   }
   print('${result.stdout}');

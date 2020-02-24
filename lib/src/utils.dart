@@ -42,7 +42,7 @@ class RouteResult {
  enum PageRouteType { material, cupertino, transparent }
 """;
 
-String routeHelper(String name) => """
+String routeHelper(String name,bool routeSettingsNoArguments) => """
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -83,11 +83,6 @@ class FFNavigatorObserver extends NavigatorObserver {
   void _didRouteChange(Route newRoute, Route oldRoute) {
     // oldRoute may be null when route first time enter.
     routeChange?.call(newRoute?.settings, oldRoute?.settings);
-  }
-
-  FFRouteSettings getFFRouteSettings(Route route) {
-    if (route?.settings is FFRouteSettings) return route.settings;
-    return null;
   }
 }
 
@@ -132,33 +127,34 @@ Widget _defaultTransitionsBuilder(
   return child;
 }
 
-Route<dynamic> onGenerateRouteHelper(RouteSettings settings, {Widget notFoundFallback}) {
+Route<dynamic> onGenerateRouteHelper(RouteSettings settings, {Widget notFoundFallback,
+${routeSettingsNoArguments?'@required':''}
+Object arguments,
+}) {
+  ${routeSettingsNoArguments?'':'arguments??=settings.arguments;'}
+  
   final routeResult = getRouteResult(
     name: settings.name,
-    arguments: settings.arguments,
+    arguments: arguments,
   );
   if (routeResult.showStatusBar != null || routeResult.routeName != null) {
     settings = FFRouteSettings(
       name: settings.name,
       isInitialRoute: settings.isInitialRoute,
       routeName: routeResult.routeName,
-      arguments: settings.arguments,
+      ${routeSettingsNoArguments?'':'arguments: arguments,'}
       showStatusBar: routeResult.showStatusBar,
     );
   }
   final page = routeResult.widget ?? notFoundFallback;
   if (page == null) {
-    throw FlutterError.fromParts(<DiagnosticsNode>[
-      ErrorSummary('Route "\${settings.name}" returned null.'),
-      ErrorDescription(
-          'Route Widget must never return null, '
-              'maybe the reason is that route name did not match with right path. '
-              'You can use parameter[notFoundFallback] to avoid this ugly error.')
-    ]);
+    throw Exception('''Route "\${settings.name}" returned null.Route Widget must never return null, 
+          maybe the reason is that route name did not match with right path.
+          You can use parameter[notFoundFallback] to avoid this ugly error.''');
   }
 
-  if (settings?.arguments is Map<String, dynamic>) {
-    RouteBuilder builder = (settings.arguments as Map<String, dynamic>)['routeBuilder'];
+  if (arguments is Map<String, dynamic>) {
+    RouteBuilder builder = arguments['routeBuilder'];
     if (builder != null) return builder(page);
   }
 

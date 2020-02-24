@@ -300,7 +300,10 @@ class RouteGenerator {
 
     file.writeAsStringSync(
       '$fileHeader\n'
-      '${routeHelper(packageNode.name)}\n'
+      '${routeHelper(
+        packageNode.name,
+        routeSettingsNoArguments,
+      )}\n'
       '${routeSettingsNoArguments ? ffRouteSettingsNoArguments : ffRouteSettings}',
     );
     print('Generate : ${p.relative(file.path, from: packageNode.path)}');

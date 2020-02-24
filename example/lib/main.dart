@@ -22,22 +22,29 @@ class MyApp extends StatelessWidget {
         navigatorObservers: [
           FFNavigatorObserver(routeChange:
               (RouteSettings newRouteSettings, RouteSettings oldRouteSettings) {
-            //you can track page here
-            print(
-                "route change: ${oldRouteSettings?.name} => ${newRouteSettings?.name}");
-            if (newRouteSettings is FFRouteSettings &&
+            FFRouteSettings newSetting;
+            FFRouteSettings oldSetting;
+            if (newRouteSettings != null &&
+                newRouteSettings is FFRouteSettings) {
+              newSetting = newRouteSettings;
+            }
+            if (oldRouteSettings != null &&
                 oldRouteSettings is FFRouteSettings) {
-              if (newRouteSettings?.showStatusBar !=
-                  oldRouteSettings?.showStatusBar) {
-                if (newRouteSettings?.showStatusBar == true) {
-                  SystemChrome.setEnabledSystemUIOverlays(
-                      SystemUiOverlay.values);
-                  SystemChrome.setSystemUIOverlayStyle(
-                      SystemUiOverlayStyle.dark);
-                } else {
-                  SystemChrome.setEnabledSystemUIOverlays([]);
-                }
+              oldSetting = oldRouteSettings;
+            }
+
+            if (newSetting?.showStatusBar != oldSetting?.showStatusBar) {
+              if (newSetting?.showStatusBar ?? false) {
+                SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
+                SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
+              } else {
+                SystemChrome.setEnabledSystemUIOverlays([]);
               }
+            }
+
+            if (newSetting?.routeName != null) {
+              //you can track page here
+              print("route change: ${newSetting?.routeName}");
             }
           })
         ],
