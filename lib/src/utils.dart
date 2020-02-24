@@ -82,14 +82,12 @@ class FFNavigatorObserver extends NavigatorObserver {
 
   void _didRouteChange(Route newRoute, Route oldRoute) {
     // oldRoute may be null when route first time enter.
-    routeChange?.call(newRoute?.settings, oldRoute?.settings);
+    routeChange?.call(newRoute,oldRoute);
   }
 }
 
-typedef ShowStatusBarChange = void Function(bool showStatusBar);
-
 typedef RouteChange = void Function(
-    RouteSettings newRouteSettings, RouteSettings oldRouteSettings);
+    Route newRoute, Route oldRoute,);
 
 class FFTransparentPageRoute<T> extends PageRouteBuilder<T> {
   FFTransparentPageRoute({

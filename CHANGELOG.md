@@ -1,3 +1,10 @@
+## 2.0.3
+
+- Breaking change
+  Route instead of RouteSetting for RouteChange call back.
+- Demo
+  Track page only for PageRoute
+  
 ## 2.0.2
 
 - Fix error about -na, --no-arguments.

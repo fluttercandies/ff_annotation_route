@@ -20,17 +20,18 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
         ),
         navigatorObservers: [
-          FFNavigatorObserver(routeChange:
-              (RouteSettings newRouteSettings, RouteSettings oldRouteSettings) {
+          FFNavigatorObserver(routeChange: (
+            Route newRoute,
+            Route oldRoute,
+          ) {
             FFRouteSettings newSetting;
             FFRouteSettings oldSetting;
-            if (newRouteSettings != null &&
-                newRouteSettings is FFRouteSettings) {
-              newSetting = newRouteSettings;
+
+            if (newRoute?.settings is FFRouteSettings) {
+              newSetting = newRoute.settings;
             }
-            if (oldRouteSettings != null &&
-                oldRouteSettings is FFRouteSettings) {
-              oldSetting = oldRouteSettings;
+            if (oldRoute?.settings is FFRouteSettings) {
+              oldSetting = oldRoute.settings;
             }
 
             if (newSetting?.showStatusBar != oldSetting?.showStatusBar) {
@@ -42,7 +43,13 @@ class MyApp extends StatelessWidget {
               }
             }
 
-            if (newSetting?.routeName != null) {
+            if (newRoute is PageRoute &&
+                (
+                    //first page
+                    oldRoute == null ||
+                        //exclude PopupRoute ect
+                        oldRoute is PageRoute) &&
+                newSetting?.routeName != null) {
               //you can track page here
               print("route change: ${newSetting?.routeName}");
             }
