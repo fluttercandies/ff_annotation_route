@@ -1,3 +1,9 @@
+## 2.0.4
+
+- Add new command Git(Whether scan git lib,you should specify package names and split multiple by ',')
+- Add new command Package(Is this a package.)
+- Add new command SettingsNoIsInitialRoute(Whether RouteSettings has isInitialRoute(for higher flutter sdk).)
+  
 ## 2.0.3
 
 - Breaking change

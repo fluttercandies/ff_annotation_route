@@ -187,7 +187,7 @@ class FFRouteSettings extends RouteSettings {
     String name,
     bool isInitialRoute = false,
     Object arguments,
-  }) : super(name: name, isInitialRoute: isInitialRoute, arguments: arguments);
+  }) : super(name: name, isInitialRoute: isInitialRoute, arguments: arguments,);
 }
 ''';
 
@@ -200,6 +200,19 @@ class FFRouteSettings extends RouteSettings {
     this.showStatusBar,
     String name,
     bool isInitialRoute = false,
-  }) : super(name: name, isInitialRoute: isInitialRoute);
+  }) : super(name: name, isInitialRoute: isInitialRoute,);
+}
+''';
+
+const String ffRouteSettingsNoIsInitialRoute = '''
+class FFRouteSettings extends RouteSettings {
+  final String routeName;
+  final bool showStatusBar;
+  const FFRouteSettings({
+    this.routeName,
+    this.showStatusBar,
+    String name,
+    Object arguments,
+  }) : super(name: name,arguments: arguments,);
 }
 ''';

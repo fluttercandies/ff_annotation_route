@@ -16,10 +16,10 @@ class RouteGenerator {
 
   List<FileInfo> get fileInfoList => _fileInfoList;
 
-  bool get isRoot => packageNode.isRoot;
   Directory _lib;
 
   final PackageNode packageNode;
+  final bool isRoot;
 
   bool get hasAnnotationRoute => _lib != null && _fileInfoList.isNotEmpty;
 
@@ -42,7 +42,10 @@ class RouteGenerator {
     return '';
   }
 
-  RouteGenerator(this.packageNode);
+  RouteGenerator(
+    this.packageNode,
+    this.isRoot,
+  );
 
   void scanLib() {
     if (_lib != null) {
@@ -288,6 +291,7 @@ class RouteGenerator {
     List<RouteGenerator> nodes,
     bool routeSettingsNoArguments = false,
     bool generateRouteHelper = false,
+    bool routeSettingsNoIsInitialRoute = false,
   }) {
     final file =
         File(p.join(_lib.path, '${packageNode.name}_route_helper.dart'));
@@ -304,7 +308,7 @@ class RouteGenerator {
         packageNode.name,
         routeSettingsNoArguments,
       )}\n'
-      '${routeSettingsNoArguments ? ffRouteSettingsNoArguments : ffRouteSettings}',
+      '${routeSettingsNoArguments ? ffRouteSettingsNoArguments : (routeSettingsNoIsInitialRoute ? ffRouteSettingsNoIsInitialRoute : ffRouteSettings)}',
     );
     print('Generate : ${p.relative(file.path, from: packageNode.path)}');
 

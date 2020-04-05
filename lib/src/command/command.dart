@@ -7,6 +7,10 @@ import 'package:ff_annotation_route/src/command/save.dart';
 import 'package:ff_annotation_route/src/command/settings_no_arguments.dart';
 import 'package:io/ansi.dart';
 
+import 'git.dart';
+import 'package.dart';
+import 'settings_no_is_initial_route.dart';
+
 abstract class Command {
   /// full command
   String get full;
@@ -22,11 +26,15 @@ abstract class Command {
 
   @override
   String toString() {
-    return '$short';
+    return '$full';
   }
 
   //help of command
-  String get command => '$short${' ' * (3 - short.length)}, $full';
+  String get command => '$short${' ' * (3 - short.length)} , $full';
+}
+
+class CommandValue {
+  String value;
 }
 
 final List<Command> ffCommands = [
@@ -37,6 +45,9 @@ final List<Command> ffCommands = [
   RouteNames(),
   Save(),
   SettingsNoArguments(),
+  Git(),
+  Package(),
+  SettingsNoIsInitialRoute(),
 ];
 
 List<Command> initCommands(List<String> arguments) {
@@ -49,13 +60,13 @@ List<Command> initCommands(List<String> arguments) {
             ),
         orElse: () => null);
     if (command != null) {
-      if (command is Path) {
+      if (command is CommandValue) {
         i++;
         if (i >= arguments.length || arguments[i].startsWith('-')) {
-          print(red.wrap('Miss value of [--path].'));
+          print(red.wrap('Miss value of ${command.full}.'));
           return null;
         }
-        command.value = arguments[i];
+        (command as CommandValue).value = arguments[i];
       }
       result.add(command);
     } else {

@@ -111,19 +111,19 @@ Go to your project's root and execute command.
 
 Available commands:
 
--h&#160;, --help&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Print this usage information.
-
--p&#160;, --path [arguments]&#160;&#160;&#160;&#160;The path of folder to be executed with commands.
-
--rc, --route-constants&#160;&#160;&#160;&#160;&#160;&#160;&#160;Whether generate route names as constants.
-
--rh, --route-helper&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Whether generate xxx_route_helper.dart
-
--rn, --route-names&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Whether generate route names as a list.
-
--s&#160;, --save&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; Whether save commands in local, it will read commands from local next time to execute if run "ff_route" without any commands.
-
--na, --no-arguments&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Whether RouteSettings has arguments(for lower flutter sdk).
+|  command name  | description  |
+|  ----  | ----  |
+| -h&#160;, --help  | Print this usage information. |
+| -p&#160;, --path [arguments]  | The path of folder to be executed with commands.
+ |
+|  -rc, --route-constants  | Whether generate route names as constants.  |
+|  -rh, --route-helper  | Whether generate xxx_route_helper.dart  |
+|  -rn, --route-names  | Whether generate route names as a list.  |
+|  -s&#160;, --save  | Whether save commands in local, it will read commands from local next time to execute if run "ff_route" without any commands.  |
+|  -na, --no-arguments  | Whether RouteSettings has arguments(for lower flutter sdk).  |
+|  -g&#160;, --git package1,package2  | Whether scan git lib,you should specify package names and split multiple by ','.  |
+|  &#160;&#160;&#160;&#160;&#160;&#160; --package  | Is this a package.  |
+|  &#160;&#160;&#160;&#160;&#160;&#160; --no-is-initial-route   | Whether RouteSettings has isInitialRoute(for higher flutter sdk).  |
 
 ### Main.dart
 

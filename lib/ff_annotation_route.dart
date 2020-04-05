@@ -14,11 +14,16 @@ void generate(
   bool generateRouteHelper = false,
   bool routeSettingsNoArguments = false,
   bool rootAnnotationRouteEnable = true,
+  bool isPackage = false,
+  bool routeSettingsNoIsInitialRoute = false,
 }) {
   RouteGenerator root;
   final nodes = <RouteGenerator>[];
   for (final annotationPackage in annotationPackages) {
-    final routeGenerator = RouteGenerator(annotationPackage);
+    final routeGenerator = RouteGenerator(
+      annotationPackage,
+      annotationPackage.isRoot && !isPackage,
+    );
     if (routeGenerator.isRoot) {
       root = routeGenerator;
     } else {
@@ -44,6 +49,7 @@ void generate(
     nodes: nodes,
     routeSettingsNoArguments: routeSettingsNoArguments,
     generateRouteHelper: generateRouteHelper,
+    routeSettingsNoIsInitialRoute: routeSettingsNoIsInitialRoute,
   );
 
   formatFile(routeFile);

@@ -1,12 +1,15 @@
 import 'package:ff_annotation_route/ff_annotation_route.dart';
 import 'package:ff_annotation_route/src/command/command.dart';
+import 'package:ff_annotation_route/src/command/git.dart';
 import 'package:ff_annotation_route/src/command/help.dart';
+import 'package:ff_annotation_route/src/command/package.dart';
 import 'package:ff_annotation_route/src/command/path.dart';
 import 'package:ff_annotation_route/src/command/route_constants.dart';
 import 'package:ff_annotation_route/src/command/route_helper.dart';
 import 'package:ff_annotation_route/src/command/route_names.dart';
 import 'package:ff_annotation_route/src/command/save.dart';
 import 'package:ff_annotation_route/src/command/settings_no_arguments.dart';
+import 'package:ff_annotation_route/src/command/settings_no_is_initial_route.dart';
 import 'package:ff_annotation_route/src/package_graph.dart';
 import 'dart:io' as io;
 import 'package:io/ansi.dart';
@@ -90,10 +93,38 @@ void main(List<String> arguments) {
           ) !=
           null;
 
+  final git = commmands.firstWhere(
+    (element) => element is Git,
+    orElse: () => null,
+  );
+  var gitNames = [];
+  if (git != null) {
+    gitNames = (git as Git).value.split(',');
+  }
+
+  final isPackage = commmands.firstWhere(
+        (element) => element is Package,
+        orElse: () => null,
+      ) !=
+      null;
+
+  final routeSettingsNoIsInitialRoute = generateRouteHelper &&
+      commmands.firstWhere(
+            (element) => element is SettingsNoIsInitialRoute,
+            orElse: () => null,
+          ) !=
+          null;
+
   //only check path which imports ff_annotation_route
   final annotationPackages = packageGraph.allPackages.values
       .where((x) =>
-          x.dependencyType == DependencyType.path &&
+          (x.dependencyType == DependencyType.path ||
+              (x.dependencyType == DependencyType.github &&
+                  gitNames.firstWhere(
+                        (key) => x.name.contains(key),
+                        orElse: () => null,
+                      ) !=
+                      null)) &&
           (x.dependencies.firstWhere(
                 (dep) => dep?.name == 'ff_annotation_route',
                 orElse: () => null,
@@ -114,6 +145,8 @@ void main(List<String> arguments) {
     generateRouteHelper: generateRouteHelper,
     routeSettingsNoArguments: routeSettingsNoArguments,
     rootAnnotationRouteEnable: rootAnnotationRouteEnable,
+    isPackage: isPackage,
+    routeSettingsNoIsInitialRoute: routeSettingsNoIsInitialRoute,
   );
   final saveCommand = commmands.firstWhere(
     (element) => element is Save,
