@@ -1,3 +1,7 @@
+## 2.0.5
+
+- Change Git command(contains name to equal name)
+
 ## 2.0.4
 
 - Add new command Git(Whether scan git lib,you should specify package names and split multiple by ',')

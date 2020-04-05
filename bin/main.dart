@@ -121,7 +121,7 @@ void main(List<String> arguments) {
           (x.dependencyType == DependencyType.path ||
               (x.dependencyType == DependencyType.github &&
                   gitNames.firstWhere(
-                        (key) => x.name.contains(key),
+                        (key) => x.name == key,
                         orElse: () => null,
                       ) !=
                       null)) &&
