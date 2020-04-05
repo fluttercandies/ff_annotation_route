@@ -12,7 +12,7 @@ class Git extends Command with CommandValue {
 
   @override
   String toString() {
-    return '$full $value';
+    return '$full,$value';
   }
 
   //help of command

@@ -1,3 +1,7 @@
+## 2.0.6
+
+- Fix issue about Save command for Git and Path commands.
+  
 ## 2.0.5
 
 - Change Git command(contains name to equal name)
