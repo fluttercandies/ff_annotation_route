@@ -1,6 +1,6 @@
 # ff_annotation_route
 
-[![pub package](https://img.shields.io/pub/v/ff_annotation_route.svg)](https://pub.dartlang.org/packages/ff_annotation_route) [![GitHub stars](https://img.shields.io/github/stars/fluttercandies/ff_annotation_route)](https://github.com/fluttercandies/ff_annotation_route/stargazers) [![GitHub forks](https://img.shields.io/github/forks/fluttercandies/ff_annotation_route)](https://github.com/fluttercandies/ff_annotation_route/network)  [![GitHub license](https://img.shields.io/github/license/fluttercandies/ff_annotation_route)](https://github.com/fluttercandies/ff_annotation_route/blob/master/LICENSE)  [![GitHub issues](https://img.shields.io/github/issues/fluttercandies/ff_annotation_route)](https://github.com/fluttercandies/ff_annotation_route/issues) <a target="_blank" href="https://jq.qq.com/?_wv=1027&k=5bcc0gy"><img border="0" src="https://pub.idqqimg.com/wpa/images/group.png" alt="flutter-candies" title="flutter-candies"></a>
+[![pub package](https://img.shields.io/pub/v/ff_annotation_route.svg)](https://pub.dartlang.org/packages/ff_annotation_route) [![GitHub stars](https://img.shields.io/github/stars/fluttercandies/ff_annotation_route)](https://github.com/fluttercandies/ff_annotation_route/stargazers) [![GitHub forks](https://img.shields.io/github/forks/fluttercandies/ff_annotation_route)](https://github.com/fluttercandies/ff_annotation_route/network) [![GitHub license](https://img.shields.io/github/license/fluttercandies/ff_annotation_route)](https://github.com/fluttercandies/ff_annotation_route/blob/master/LICENSE) [![GitHub issues](https://img.shields.io/github/issues/fluttercandies/ff_annotation_route)](https://github.com/fluttercandies/ff_annotation_route/issues) <a target="_blank" href="https://jq.qq.com/?_wv=1027&k=5bcc0gy"><img border="0" src="https://pub.idqqimg.com/wpa/images/group.png" alt="flutter-candies" title="flutter-candies"></a>
 
 Languages: [English](README.md) | [中文简体](README-ZH.md)
 
@@ -29,13 +29,15 @@ Provide a route generator to create route map quickly by annotations.
 ## Usage
 
 ### Add packages to dev_dependencies
-Add the package to `dev_dependencies` in your project/packages's `pubspec.yaml`  
+
+Add the package to `dev_dependencies` in your project/packages's `pubspec.yaml`
+
 ```yaml
 dev_dependencies:
   ff_annotation_route: latest-version
 ```
 
-Download with `flutter packages get` 
+Download with `flutter packages get`
 
 ### Add annotation
 
@@ -48,12 +50,13 @@ import 'package:ff_annotation_route/ff_annotation_route.dart';
   name: "fluttercandies://mainpage",
   routeName: "MainPage",
 )
-class MainPage extends StatelessWidget 
+class MainPage extends StatelessWidget
 {
   // ...
 }
 
 ```
+
 #### Constructor with arguments
 
 ```dart
@@ -72,7 +75,8 @@ class PicSwiper extends StatefulWidget {
   PicSwiper({this.index, this.pics});
   // ...
 }
-```  
+```
+
 #### FFRoute
 
 | Parameter     | Description                                                          | Default  |
@@ -84,53 +88,51 @@ class PicSwiper extends StatefulWidget {
 | pageRouteType | The type of page route.(material, cupertino, transparent)            | -        |
 | description   | The description of the route.                                        | ''       |
 
-
 ### Generate Route File
 
 #### Environment
 
 Add dart bin into to your `$PATH`.
 
-`cache\dart-sdk\bin` 
+`cache\dart-sdk\bin`
 
 [`More info`](https://dart.dev/tools/pub/cmd/pub-global)
-
 
 #### Activate the plugin
 
 `pub global activate ff_annotation_route`
 
-
 #### Execute command
 
 Go to your project's root and execute command.
 
- `ff_route <command> [arguments]`
+`ff_route <command> [arguments]`
 
 #### Command Parameter
 
 Available commands:
 
-|  command name  | description  |
-|  ----  | ----  |
-| -h&#160;, --help  | Print this usage information. |
-| -p&#160;, --path [arguments]  | The path of folder to be executed with commands. |
-|  -rc, --route-constants  | Whether generate route names as constants.  |
-|  -rh, --route-helper  | Whether generate xxx_route_helper.dart  |
-|  -rn, --route-names  | Whether generate route names as a list.  |
-|  -s&#160;, --save  | Whether save commands in local, it will read commands from local next time to execute if run "ff_route" without any commands.  |
-|  -na, --no-arguments  | Whether RouteSettings has arguments(for lower flutter sdk).  |
-|  -g&#160;, --git package1,package2  | Whether scan git lib,you should specify package names and split multiple by ','.  |
-|  &#160;&#160;&#160;&#160;&#160;&#160; --package  | Is this a package.  |
-|  &#160;&#160;&#160;&#160;&#160;&#160; --no-is-initial-route   | Whether RouteSettings has isInitialRoute(for higher flutter sdk).  |
+| command name                | description                                                                                                                   |
+| --------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| -h, --help                  | Print this usage information.                                                                                                 |
+| -p, --path [arguments]      | The path of folder to be executed with commands.                                                                              |
+| -rc, --route-constants      | Whether generate route names as constants.                                                                                    |
+| -rh, --route-helper         | Whether generate xxx_route_helper.dart                                                                                        |
+| -rn, --route-names          | Whether generate route names as a list.                                                                                       |
+| -s, --save                  | Whether save commands in local, it will read commands from local next time to execute if run "ff_route" without any commands. |
+| -na, --no-arguments         | Whether RouteSettings has arguments(for lower flutter sdk).                                                                   |
+| -g, --git package1,package2 | Whether scan git lib,you should specify package names and split multiple by ','.                                              |
+| --package                   | Is this a package.                                                                                                            |
+| --no-is-initial-route       | Whether RouteSettings has isInitialRoute(for higher flutter sdk).                                                             |
+| -o --output                 | The route file relative of lib path.                                                                                          |
 
 ### Main.dart
 
 - If you execute command with `--route-helper`, `FFNavigatorObserver/FFRouteSettings` will generate in `xxx_route_helper.dart`
-which help you to track page or change status bar state.
+  which help you to track page or change status bar state.
 
 - If you execute command with `--route-helper`, `FFTransparentPageRoute` will generate in `xxx_route_helper.dart`
-which helps you to push a transparent page route.
+  which helps you to push a transparent page route.
 
 ```dart
 Widget build(BuildContext context) {
@@ -193,6 +195,7 @@ Widget build(BuildContext context) {
 #### Push name with arguments
 
 `arguments` **MUST** be a `Map<String, dynamic>`
+
 ```dart
   Navigator.pushNamed(
     context,

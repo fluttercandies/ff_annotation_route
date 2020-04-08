@@ -1,6 +1,6 @@
 # ff_annotation_route
 
-[![pub package](https://img.shields.io/pub/v/ff_annotation_route.svg)](https://pub.dartlang.org/packages/ff_annotation_route) [![GitHub stars](https://img.shields.io/github/stars/fluttercandies/ff_annotation_route)](https://github.com/fluttercandies/ff_annotation_route/stargazers) [![GitHub forks](https://img.shields.io/github/forks/fluttercandies/ff_annotation_route)](https://github.com/fluttercandies/ff_annotation_route/network)  [![GitHub license](https://img.shields.io/github/license/fluttercandies/ff_annotation_route)](https://github.com/fluttercandies/ff_annotation_route/blob/master/LICENSE)  [![GitHub issues](https://img.shields.io/github/issues/fluttercandies/ff_annotation_route)](https://github.com/fluttercandies/ff_annotation_route/issues) <a target="_blank" href="https://jq.qq.com/?_wv=1027&k=5bcc0gy"><img border="0" src="https://pub.idqqimg.com/wpa/images/group.png" alt="flutter-candies" title="flutter-candies"></a>
+[![pub package](https://img.shields.io/pub/v/ff_annotation_route.svg)](https://pub.dartlang.org/packages/ff_annotation_route) [![GitHub stars](https://img.shields.io/github/stars/fluttercandies/ff_annotation_route)](https://github.com/fluttercandies/ff_annotation_route/stargazers) [![GitHub forks](https://img.shields.io/github/forks/fluttercandies/ff_annotation_route)](https://github.com/fluttercandies/ff_annotation_route/network) [![GitHub license](https://img.shields.io/github/license/fluttercandies/ff_annotation_route)](https://github.com/fluttercandies/ff_annotation_route/blob/master/LICENSE) [![GitHub issues](https://img.shields.io/github/issues/fluttercandies/ff_annotation_route)](https://github.com/fluttercandies/ff_annotation_route/issues) <a target="_blank" href="https://jq.qq.com/?_wv=1027&k=5bcc0gy"><img border="0" src="https://pub.idqqimg.com/wpa/images/group.png" alt="flutter-candies" title="flutter-candies"></a>
 
 Languages: [English](README.md) | [中文简体](README-ZH.md)
 
@@ -32,7 +32,8 @@ Languages: [English](README.md) | [中文简体](README-ZH.md)
 
 ### 增加引用
 
-添加引用到`dev_dependencies`，及你需要注解的project/packages到`pubspec.yaml`中
+添加引用到`dev_dependencies`，及你需要注解的 project/packages 到`pubspec.yaml`中
+
 ```yaml
 dev_dependencies:
   ff_annotation_route: latest-version
@@ -51,12 +52,13 @@ import 'package:ff_annotation_route/ff_annotation_route.dart';
   name: "fluttercandies://mainpage",
   routeName: "MainPage",
 )
-class MainPage extends StatelessWidget 
+class MainPage extends StatelessWidget
 {
   // ...
 }
 
 ```
+
 #### 带参数构造
 
 ```dart
@@ -75,26 +77,26 @@ class PicSwiper extends StatefulWidget {
   PicSwiper({this.index, this.pics});
   // ...
 }
-```  
+```
+
 #### FFRoute
 
-| Parameter     | Description                                  | Default  |
-| ------------- | -------------------------------------------- | -------- |
-| name          | 路由的名字 (e.g., "/settings").                | required |
-| argumentNames | 路由的参数的名字 (只能使用")                     | -        |
-| showStatusBar | 是否显示状态栏                                 | true     |
-| routeName     | 用于埋点收集数据的页面名字                       | ''       |
+| Parameter     | Description                                   | Default  |
+| ------------- | --------------------------------------------- | -------- |
+| name          | 路由的名字 (e.g., "/settings").               | required |
+| argumentNames | 路由的参数的名字 (只能使用")                  | -        |
+| showStatusBar | 是否显示状态栏                                | true     |
+| routeName     | 用于埋点收集数据的页面名字                    | ''       |
 | pageRouteType | 路由的类型 (material, cupertino, transparent) | -        |
 | description   | 路由的描述                                    | ''       |
-
 
 ### 生成文件
 
 #### 环境
 
-添加dart的bin的路径到你的系统 `$PATH`.
+添加 dart 的 bin 的路径到你的系统 `$PATH`.
 
-`cache\dart-sdk\bin` 
+`cache\dart-sdk\bin`
 
 [更多信息](https://dart.dev/tools/pub/cmd/pub-global)
 
@@ -104,29 +106,29 @@ class PicSwiper extends StatefulWidget {
 
 `pub global activate ff_annotation_route`
 
-
 #### 执行命令
 
 到你的项目根目录下面执行.
 
- `ff_route <command> [arguments]`
+`ff_route <command> [arguments]`
 
 #### 命令参数
 
 可用的命令:
 
-|  command name  | description  |
-|  ----  | ----  |
-| -h&#160;, --help  | 打印帮助信息. |
-| -p&#160;, --path [arguments]  | 执行命令的目录，没有就是当前目录.|
-|  -rc, --route-constants  | 是否在根项目中的 `xxx_route.dart` 生成全部路由的静态常量  |
-|  -rh, --route-helper  | 生成 xxx_route_helper.dart 来帮助你处理路由  |
-|  -rn, --route-names  | 是否在根项目中的 `xxx_route.dart` 生成全部路由的名字   |
-|  -s&#160;, --save  | 是否保存命令到本地，如果保存了，下一次就只需要执行`ff_route`就可以了  |
-|  -na, --no-arguments  | FFRouteSettings 将没有arguments这个参数,这个是主要是为了适配Flutter低版本  |
-|  -g&#160;, --git package1,package2  | 是否扫描git引用的package，你需要指定package的名字  |
-|  &#160;&#160;&#160;&#160;&#160;&#160; --package  | 这个是否是一个package  |
-|  &#160;&#160;&#160;&#160;&#160;&#160; --no-is-initial-route   | FFRouteSettings 将没有isInitialRoute这个参数,这个是主要是为了适配Flutter高版本  |
+| command name                | description                                                                        |
+| --------------------------- | ---------------------------------------------------------------------------------- |
+| -h, --help                  | 打印帮助信息.                                                                      |
+| -p, --path [arguments]      | 执行命令的目录，没有就是当前目录.                                                  |
+| -rc, --route-constants      | 是否在根项目中的 `xxx_route.dart` 生成全部路由的静态常量                           |
+| -rh, --route-helper         | 生成 xxx_route_helper.dart 来帮助你处理路由                                        |
+| -rn, --route-names          | 是否在根项目中的 `xxx_route.dart` 生成全部路由的名字                               |
+| -s, --save                  | 是否保存命令到本地，如果保存了，下一次就只需要执行`ff_route`就可以了               |
+| -na, --no-arguments         | FFRouteSettings 将没有 arguments 这个参数,这个是主要是为了适配 Flutter 低版本      |
+| -g, --git package1,package2 | 是否扫描 git 引用的 package，你需要指定 package 的名字                             |
+| --package                   | 这个是否是一个 package                                                             |
+| --no-is-initial-route       | FFRouteSettings 将没有 isInitialRoute 这个参数,这个是主要是为了适配 Flutter 高版本 |
+| -o --output                 | route 文件的输出目录,仅修改主工程的                                                |
 
 ### Main.dart
 
@@ -197,6 +199,7 @@ Widget build(BuildContext context) {
 #### Push name with arguments
 
 参数必须是一个 `Map<String, dynamic>`
+
 ```dart
   Navigator.pushNamed(
     context,

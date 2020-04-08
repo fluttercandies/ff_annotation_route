@@ -47,7 +47,7 @@ class RouteGenerator {
     this.isRoot,
   );
 
-  void scanLib() {
+  void scanLib([String output]) {
     if (_lib != null) {
       print('');
       print('Scanning package : ${packageNode.name}');
@@ -69,10 +69,14 @@ class RouteGenerator {
                 print(
                     'Found annotation route : ${p.relative(item.path, from: packageNode.path)} ------ class : $className');
 
+                final relativeParts = [packageNode.path, 'lib'];
+                if (output != null) {
+                  relativeParts.add(output);
+                }
+
                 fileInfo ??= FileInfo(
                     export: p
-                        .relative(item.path,
-                            from: p.join(packageNode.path, 'lib'))
+                        .relative(item.path, from: p.joinAll(relativeParts))
                         .replaceAll('\\', '/'),
                     packageName: packageNode.name);
 
@@ -167,11 +171,21 @@ class RouteGenerator {
     List<RouteGenerator> nodes,
     bool generateRouteNames = false,
     bool generateRouteConstants = false,
+    String outputPath,
   }) {
-    final file = File(p.join(_lib.path, '${packageNode.name}_route.dart'));
+    final name = '${packageNode.name}_route.dart';
+    String routePath;
+    if (outputPath != null) {
+      routePath = p.join(_lib.path, outputPath, name);
+    } else {
+      routePath = p.join(_lib.path, name);
+    }
+
+    final file = File(routePath);
     if (file.existsSync()) {
       file.deleteSync();
     }
+    file.createSync(recursive: true);
     if (isRoot && _fileInfoList.isEmpty && (nodes?.isEmpty ?? true)) {
       return null;
     }
@@ -292,15 +306,21 @@ class RouteGenerator {
     bool routeSettingsNoArguments = false,
     bool generateRouteHelper = false,
     bool routeSettingsNoIsInitialRoute = false,
+    String outputPath,
   }) {
-    final file =
-        File(p.join(_lib.path, '${packageNode.name}_route_helper.dart'));
+    final parts = <String>[];
+    parts.add(_lib.path);
+    if (outputPath != null) {
+      parts.add(outputPath);
+    }
+    parts.add('${packageNode.name}_route_helper.dart');
+    final file = File(p.joinAll(parts));
     if (file.existsSync()) {
       file.deleteSync();
     }
     if (!generateRouteHelper) return null;
 
-    file.createSync();
+    file.createSync(recursive: true);
 
     file.writeAsStringSync(
       '$fileHeader\n'

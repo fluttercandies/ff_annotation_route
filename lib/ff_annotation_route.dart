@@ -16,6 +16,7 @@ void generate(
   bool rootAnnotationRouteEnable = true,
   bool isPackage = false,
   bool routeSettingsNoIsInitialRoute = false,
+  String outputPath,
 }) {
   RouteGenerator root;
   final nodes = <RouteGenerator>[];
@@ -38,11 +39,12 @@ void generate(
   }
   root?.getLib();
   if (rootAnnotationRouteEnable) {
-    root?.scanLib();
+    root?.scanLib(outputPath);
   }
   final routeFile = root?.generateFile(
     nodes: nodes,
     generateRouteNames: generateRouteNames,
+    outputPath: outputPath,
     generateRouteConstants: generateRouteConstants,
   );
   final helperFile = root?.generateHelperFile(
@@ -50,6 +52,7 @@ void generate(
     routeSettingsNoArguments: routeSettingsNoArguments,
     generateRouteHelper: generateRouteHelper,
     routeSettingsNoIsInitialRoute: routeSettingsNoIsInitialRoute,
+    outputPath: outputPath,
   );
 
   formatFile(routeFile);
