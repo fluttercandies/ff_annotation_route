@@ -8,6 +8,7 @@ import 'package:ff_annotation_route/src/command/settings_no_arguments.dart';
 import 'package:io/ansi.dart';
 
 import 'git.dart';
+import 'output.dart';
 import 'package.dart';
 import 'settings_no_is_initial_route.dart';
 
@@ -40,6 +41,7 @@ class CommandValue {
 final List<Command> ffCommands = [
   Help(),
   Path(),
+  Output(),
   RouteConstants(),
   RouteHelper(),
   RouteNames(),

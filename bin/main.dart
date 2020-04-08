@@ -2,6 +2,7 @@ import 'package:ff_annotation_route/ff_annotation_route.dart';
 import 'package:ff_annotation_route/src/command/command.dart';
 import 'package:ff_annotation_route/src/command/git.dart';
 import 'package:ff_annotation_route/src/command/help.dart';
+import 'package:ff_annotation_route/src/command/output.dart';
 import 'package:ff_annotation_route/src/command/package.dart';
 import 'package:ff_annotation_route/src/command/path.dart';
 import 'package:ff_annotation_route/src/command/route_constants.dart';
@@ -138,9 +139,17 @@ void main(List<String> arguments) {
     annotationPackages.add(packageGraph.root);
   }
 
+  final Output output =
+      commmands.firstWhere((t) => t is Output, orElse: () => null);
+  String outputPath;
+  if (output != null) {
+    outputPath = output.value;
+  }
+
   generate(
     annotationPackages,
     generateRouteNames: generateRouteNames,
+    outputPath: outputPath,
     generateRouteConstants: generateRouteConstants,
     generateRouteHelper: generateRouteHelper,
     routeSettingsNoArguments: routeSettingsNoArguments,
