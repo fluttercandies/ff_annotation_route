@@ -118,8 +118,7 @@ class PicSwiper extends StatefulWidget {
 |  command name  | description  |
 |  ----  | ----  |
 | -h&#160;, --help  | 打印帮助信息. |
-| -p&#160;, --path [arguments]  | 执行命令的目录，没有就是当前目录.
- |
+| -p&#160;, --path [arguments]  | 执行命令的目录，没有就是当前目录.|
 |  -rc, --route-constants  | 是否在根项目中的 `xxx_route.dart` 生成全部路由的静态常量  |
 |  -rh, --route-helper  | 生成 xxx_route_helper.dart 来帮助你处理路由  |
 |  -rn, --route-names  | 是否在根项目中的 `xxx_route.dart` 生成全部路由的名字   |

@@ -114,8 +114,7 @@ Available commands:
 |  command name  | description  |
 |  ----  | ----  |
 | -h&#160;, --help  | Print this usage information. |
-| -p&#160;, --path [arguments]  | The path of folder to be executed with commands.
- |
+| -p&#160;, --path [arguments]  | The path of folder to be executed with commands. |
 |  -rc, --route-constants  | Whether generate route names as constants.  |
 |  -rh, --route-helper  | Whether generate xxx_route_helper.dart  |
 |  -rn, --route-names  | Whether generate route names as a list.  |

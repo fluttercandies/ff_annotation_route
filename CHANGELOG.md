@@ -1,3 +1,7 @@
+## 2.0.6+1
+
+- format readme.
+
 ## 2.0.6
 
 - Fix issue about Save command for Git and Path commands.
