@@ -1,6 +1,10 @@
+## 2.0.7
+
+- Add output command for root.
+  
 ## 2.0.6+1
 
-- format readme.
+- Format readme.
 
 ## 2.0.6
 

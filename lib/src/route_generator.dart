@@ -193,7 +193,7 @@ class RouteGenerator {
     final sb = StringBuffer();
 
     /// Nodes import
-    if (packageNode.isRoot && nodes != null && nodes.isNotEmpty) {
+    if (isRoot && nodes != null && nodes.isNotEmpty) {
       nodes.forEach((node) {
         sb.write('${node.import}\n');
       });
