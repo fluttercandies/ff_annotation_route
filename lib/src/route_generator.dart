@@ -306,15 +306,21 @@ class RouteGenerator {
     bool routeSettingsNoArguments = false,
     bool generateRouteHelper = false,
     bool routeSettingsNoIsInitialRoute = false,
+    String outputPath,
   }) {
-    final file =
-        File(p.join(_lib.path, '${packageNode.name}_route_helper.dart'));
+    final parts = <String>[];
+    parts.add(_lib.path);
+    if (outputPath != null) {
+      parts.add(outputPath);
+    }
+    parts.add('${packageNode.name}_route_helper.dart');
+    final file = File(p.joinAll(parts));
     if (file.existsSync()) {
       file.deleteSync();
     }
     if (!generateRouteHelper) return null;
 
-    file.createSync();
+    file.createSync(recursive: true);
 
     file.writeAsStringSync(
       '$fileHeader\n'

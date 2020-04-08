@@ -52,6 +52,7 @@ void generate(
     routeSettingsNoArguments: routeSettingsNoArguments,
     generateRouteHelper: generateRouteHelper,
     routeSettingsNoIsInitialRoute: routeSettingsNoIsInitialRoute,
+    outputPath: outputPath,
   );
 
   formatFile(routeFile);
