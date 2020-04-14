@@ -31,14 +31,14 @@ abstract class Command {
   }
 
   //help of command
-  String get command => '$short${' ' * (3 - short.length)} , $full';
+  String get command => '$short${' ' * (3 - short.length)}, $full';
 }
 
 class CommandValue {
   String value;
 }
 
-final List<Command> ffCommands = [
+final List<Command> ffCommands = <Command>[
   Help(),
   Path(),
   Output(),
@@ -53,14 +53,13 @@ final List<Command> ffCommands = [
 ];
 
 List<Command> initCommands(List<String> arguments) {
-  final result = <Command>[];
-  for (var i = 0; i < arguments.length; i++) {
-    final argument = arguments[i].trim();
-    final command = ffCommands.firstWhere(
-        (element) => element.contains(
-              argument,
-            ),
-        orElse: () => null);
+  final List<Command> result = <Command>[];
+  for (int i = 0; i < arguments.length; i++) {
+    final String argument = arguments[i].trim();
+    final Command command = ffCommands.firstWhere(
+      (Command element) => element.contains(argument),
+      orElse: () => null,
+    );
     if (command != null) {
       if (command is CommandValue) {
         i++;

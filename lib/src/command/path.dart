@@ -15,7 +15,7 @@ class Path extends Command with CommandValue {
     return '$full,$value';
   }
 
-  //help of command
+  // Get help of the command
   @override
   String get command => '$short${' ' * (3 - short.length)} , $full [arguments]';
 }

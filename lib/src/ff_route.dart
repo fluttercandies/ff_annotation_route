@@ -2,6 +2,15 @@
 import 'package:meta/meta.dart';
 
 class FFRoute {
+  const FFRoute({
+    @required this.name,
+    this.argumentNames,
+    this.showStatusBar = true,
+    this.routeName = '',
+    this.pageRouteType,
+    this.description = '',
+  }) : assert(name != null);
+
   /// The name of the route (e.g., "/settings").
   ///
   /// If null, the route is anonymous.
@@ -21,15 +30,6 @@ class FFRoute {
 
   /// The description of route
   final String description;
-
-  const FFRoute({
-    @required this.name,
-    this.argumentNames,
-    this.showStatusBar = true,
-    this.routeName = '',
-    this.pageRouteType,
-    this.description = '',
-  }) : assert(name != null);
 
   @override
   String toString() {

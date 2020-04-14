@@ -12,95 +12,103 @@ import 'src/main_page.dart';
 
 RouteResult getRouteResult({String name, Map<String, dynamic> arguments}) {
   switch (name) {
-    case "fluttercandies://backgroundtext":
+    case 'fluttercandies://backgroundtext':
       return RouteResult(
         widget: BackgroundTextDemo(),
-        routeName: "BackgroundTextDemo",
+        routeName: 'BackgroundTextDemo',
       );
-    case "fluttercandies://cropimage":
+    case 'fluttercandies://cropimage':
       return RouteResult(
         widget: CropImageDemo(),
-        routeName: "CropImageDemo",
+        routeName: 'CropImageDemo',
       );
-    case "fluttercandies://customimage":
+    case 'fluttercandies://customimage':
       return RouteResult(
         widget: CustomImageDemo(
           url: arguments['url'],
         ),
-        routeName: "CustomImageDemo",
+        routeName: 'CustomImageDemo',
       );
-    case "fluttercandies://customimagetext":
+    case 'fluttercandies://customimagetext':
       return RouteResult(
         widget: CustomImageTextDemo(),
-        routeName: "CustomImageDemo",
+        routeName: 'CustomImageDemo',
       );
-    case "fluttercandies://customtextoverflow":
+    case 'fluttercandies://customtextoverflow':
       return RouteResult(
         widget: CustomTextOverflowDemo(),
-        routeName: "CustomTextOverflowDemo",
+        routeName: 'CustomTextOverflowDemo',
       );
-    case "fluttercandies://image":
+    case 'fluttercandies://image':
       return RouteResult(
         widget: ImageDemo(
           url: arguments['url'],
         ),
-        routeName: "ImageDemo",
+        routeName: 'ImageDemo',
       );
-    case "fluttercandies://imagelist":
+    case 'fluttercandies://imagelist':
       return RouteResult(
         widget: ImageListDemo(),
-        routeName: "ImageListDemo",
+        routeName: 'ImageListDemo',
       );
-    case "fluttercandies://mainpage":
+    case 'fluttercandies://mainpage':
       return RouteResult(
         widget: MainPage(),
-        routeName: "MainPage",
+        routeName: 'MainPage',
       );
-    case "fluttercandies://paintimage":
+    case 'fluttercandies://paintimage':
       return RouteResult(
         widget: PaintImageDemo(
           url: arguments['url'],
         ),
-        routeName: "PaintImageDemo",
+        routeName: 'PaintImageDemo',
       );
-    case "fluttercandies://photoview":
+    case 'fluttercandies://photoview':
       return RouteResult(
         widget: PhotoViewDemo(),
-        routeName: "PhotoViewDemo",
+        routeName: 'PhotoViewDemo',
       );
-    case "fluttercandies://picswiper":
+    case 'fluttercandies://picswiper':
       return RouteResult(
         widget: PicSwiper(
           index: arguments['index'],
           pics: arguments['pics'],
         ),
         showStatusBar: false,
-        routeName: "PicSwiper",
+        routeName: 'PicSwiper',
         pageRouteType: PageRouteType.transparent,
       );
-    case "fluttercandies://text":
+    case 'fluttercandies://text':
       return RouteResult(
         widget: TextDemo(),
-        routeName: "TextDemo",
+        routeName: 'TextDemo',
       );
-    case "fluttercandies://textselection":
+    case 'fluttercandies://textselection':
       return RouteResult(
         widget: TextSelectionDemo(),
-        routeName: "TextSelectionDemo",
+        routeName: 'TextSelectionDemo',
       );
-    case "fluttercandies://zoomimage":
+    case 'fluttercandies://zoomimage':
       return RouteResult(
         widget: ZoomImageDemo(
           url: arguments['url'],
         ),
-        routeName: "ZoomImageDemo",
+        routeName: 'ZoomImageDemo',
       );
     default:
-      return RouteResult();
+      return const RouteResult();
   }
 }
 
 class RouteResult {
+  const RouteResult({
+    this.widget,
+    this.showStatusBar = true,
+    this.routeName = '',
+    this.pageRouteType,
+    this.description = '',
+  });
+
   /// The Widget return base on route
   final Widget widget;
 
@@ -115,33 +123,25 @@ class RouteResult {
 
   /// The description of route
   final String description;
-
-  const RouteResult({
-    this.widget,
-    this.showStatusBar = true,
-    this.routeName = '',
-    this.pageRouteType,
-    this.description = '',
-  });
 }
 
 enum PageRouteType { material, cupertino, transparent }
 
-List<String> routeNames = [
-  "fluttercandies://backgroundtext",
-  "fluttercandies://cropimage",
-  "fluttercandies://customimage",
-  "fluttercandies://customimagetext",
-  "fluttercandies://customtextoverflow",
-  "fluttercandies://image",
-  "fluttercandies://imagelist",
-  "fluttercandies://mainpage",
-  "fluttercandies://paintimage",
-  "fluttercandies://photoview",
-  "fluttercandies://picswiper",
-  "fluttercandies://text",
-  "fluttercandies://textselection",
-  "fluttercandies://zoomimage"
+const List<String> routeNames = <String>[
+  'fluttercandies://backgroundtext',
+  'fluttercandies://cropimage',
+  'fluttercandies://customimage',
+  'fluttercandies://customimagetext',
+  'fluttercandies://customtextoverflow',
+  'fluttercandies://image',
+  'fluttercandies://imagelist',
+  'fluttercandies://mainpage',
+  'fluttercandies://paintimage',
+  'fluttercandies://photoview',
+  'fluttercandies://picswiper',
+  'fluttercandies://text',
+  'fluttercandies://textselection',
+  'fluttercandies://zoomimage'
 ];
 
 class Routes {
@@ -152,13 +152,13 @@ class Routes {
   /// [name] : fluttercandies://backgroundtext
   /// [routeName] : BackgroundTextDemo
   static const String FLUTTERCANDIES_BACKGROUNDTEXT =
-      "fluttercandies://backgroundtext";
+      'fluttercandies://backgroundtext';
 
   /// CropImageDemo
   ///
   /// [name] : fluttercandies://cropimage
   /// [routeName] : CropImageDemo
-  static const String FLUTTERCANDIES_CROPIMAGE = "fluttercandies://cropimage";
+  static const String FLUTTERCANDIES_CROPIMAGE = 'fluttercandies://cropimage';
 
   /// CustomImageDemo
   ///
@@ -166,53 +166,53 @@ class Routes {
   /// [routeName] : CustomImageDemo
   /// [arguments] : [url]
   static const String FLUTTERCANDIES_CUSTOMIMAGE =
-      "fluttercandies://customimage";
+      'fluttercandies://customimage';
 
   /// CustomImageDemo
   ///
   /// [name] : fluttercandies://customimagetext
   /// [routeName] : CustomImageDemo
   static const String FLUTTERCANDIES_CUSTOMIMAGETEXT =
-      "fluttercandies://customimagetext";
+      'fluttercandies://customimagetext';
 
   /// CustomTextOverflowDemo
   ///
   /// [name] : fluttercandies://customtextoverflow
   /// [routeName] : CustomTextOverflowDemo
   static const String FLUTTERCANDIES_CUSTOMTEXTOVERFLOW =
-      "fluttercandies://customtextoverflow";
+      'fluttercandies://customtextoverflow';
 
   /// ImageDemo
   ///
   /// [name] : fluttercandies://image
   /// [routeName] : ImageDemo
   /// [arguments] : [url]
-  static const String FLUTTERCANDIES_IMAGE = "fluttercandies://image";
+  static const String FLUTTERCANDIES_IMAGE = 'fluttercandies://image';
 
   /// ImageListDemo
   ///
   /// [name] : fluttercandies://imagelist
   /// [routeName] : ImageListDemo
-  static const String FLUTTERCANDIES_IMAGELIST = "fluttercandies://imagelist";
+  static const String FLUTTERCANDIES_IMAGELIST = 'fluttercandies://imagelist';
 
   /// MainPage
   ///
   /// [name] : fluttercandies://mainpage
   /// [routeName] : MainPage
-  static const String FLUTTERCANDIES_MAINPAGE = "fluttercandies://mainpage";
+  static const String FLUTTERCANDIES_MAINPAGE = 'fluttercandies://mainpage';
 
   /// PaintImageDemo
   ///
   /// [name] : fluttercandies://paintimage
   /// [routeName] : PaintImageDemo
   /// [arguments] : [url]
-  static const String FLUTTERCANDIES_PAINTIMAGE = "fluttercandies://paintimage";
+  static const String FLUTTERCANDIES_PAINTIMAGE = 'fluttercandies://paintimage';
 
   /// PhotoViewDemo
   ///
   /// [name] : fluttercandies://photoview
   /// [routeName] : PhotoViewDemo
-  static const String FLUTTERCANDIES_PHOTOVIEW = "fluttercandies://photoview";
+  static const String FLUTTERCANDIES_PHOTOVIEW = 'fluttercandies://photoview';
 
   /// PicSwiper
   ///
@@ -221,25 +221,25 @@ class Routes {
   /// [arguments] : [index, pics]
   /// [showStatusBar] : false
   /// [pageRouteType] : PageRouteType.transparent
-  static const String FLUTTERCANDIES_PICSWIPER = "fluttercandies://picswiper";
+  static const String FLUTTERCANDIES_PICSWIPER = 'fluttercandies://picswiper';
 
   /// TextDemo
   ///
   /// [name] : fluttercandies://text
   /// [routeName] : TextDemo
-  static const String FLUTTERCANDIES_TEXT = "fluttercandies://text";
+  static const String FLUTTERCANDIES_TEXT = 'fluttercandies://text';
 
   /// TextSelectionDemo
   ///
   /// [name] : fluttercandies://textselection
   /// [routeName] : TextSelectionDemo
   static const String FLUTTERCANDIES_TEXTSELECTION =
-      "fluttercandies://textselection";
+      'fluttercandies://textselection';
 
   /// ZoomImageDemo
   ///
   /// [name] : fluttercandies://zoomimage
   /// [routeName] : ZoomImageDemo
   /// [arguments] : [url]
-  static const String FLUTTERCANDIES_ZOOMIMAGE = "fluttercandies://zoomimage";
+  static const String FLUTTERCANDIES_ZOOMIMAGE = 'fluttercandies://zoomimage';
 }

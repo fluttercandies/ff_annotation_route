@@ -12,7 +12,5 @@ class Output extends Command with CommandValue {
   String get short => '-o';
 
   @override
-  String toString() {
-    return '$full,$value';
-  }
+  String toString() => '$full,$value';
 }

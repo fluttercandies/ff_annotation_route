@@ -1,7 +1,11 @@
+## 2.0.8
+
+- Update format in code and generated codes to match analyzer options.
+
 ## 2.0.7
 
 - Add output command for root.
-  
+
 ## 2.0.6+1
 
 - Format readme.
