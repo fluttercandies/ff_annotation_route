@@ -25,8 +25,8 @@ class CropImage extends StatelessWidget {
   Widget build(BuildContext context) {
     if (!item.hasImage) return Container();
 
-    final double num300 = ScreenUtil.getInstance().setWidth(300);
-    final double num400 = ScreenUtil.getInstance().setWidth(400);
+    final double num300 = ScreenUtil().setWidth(300);
+    final double num400 = ScreenUtil().setWidth(400);
     double height = num300;
     double width = num400;
 

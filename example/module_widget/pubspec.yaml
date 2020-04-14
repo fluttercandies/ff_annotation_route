@@ -1,8 +1,6 @@
 name: module_widget
 description: A new Flutter package project.
 version: 0.0.1
-author:
-homepage:
 
 environment:
   sdk: ">=2.1.0 <3.0.0"
@@ -12,11 +10,11 @@ dependencies:
     sdk: flutter
   extended_image: any
   pull_to_refresh_notification: any
-  flutter_screenutil: ^0.5.1
+  flutter_screenutil: ^1.1.0
   like_button: any
-  intl: ^0.15.7
-  oktoast: ^2.1.4
-  image_picker_saver: ^0.1.0
+  intl: any
+  oktoast: ^2.3.1
+  image_picker_saver: ^0.3.0
   module_service:
     path: ../module_service
 

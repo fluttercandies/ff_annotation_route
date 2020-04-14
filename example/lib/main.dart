@@ -56,11 +56,7 @@ class MyApp extends StatelessWidget {
           })
         ],
         builder: (c, w) {
-          ScreenUtil.instance = ScreenUtil(
-            width: 750,
-            height: 1334,
-            allowFontScaling: true,
-          )..init(c);
+          ScreenUtil.init(c, width: 750, height: 1334, allowFontScaling: true);
           var data = MediaQuery.of(c);
           return MediaQuery(
             data: data.copyWith(textScaleFactor: 1.0),

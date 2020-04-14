@@ -64,8 +64,8 @@ class _PaintImageDemoState extends State<PaintImageDemo> {
             child: Align(
               child: ExtendedImage.network(
                 url,
-                width: ScreenUtil.instance.setWidth(400),
-                height: ScreenUtil.instance.setWidth(400),
+                width: ScreenUtil().setWidth(400),
+                height: ScreenUtil().setWidth(400),
                 fit: BoxFit.fill,
                 cache: true,
                 beforePaintImage:
@@ -141,11 +141,11 @@ class _PaintImageDemoState extends State<PaintImageDemo> {
 
     Rect rect1 = Rect.fromLTWH(wxmin, wymin, wxmax - wxmin, wymax - wymin);
 
-    double xx = ScreenUtil.instance.setWidth(400) /
+    double xx = ScreenUtil().setWidth(400) /
         (max(rect1.width, rect1.height) * 1.1);
 
-    double top = rect.top + ScreenUtil.instance.setWidth(400) / 2.0;
-    double left = rect.left + ScreenUtil.instance.setWidth(400) / 2.0;
+    double top = rect.top + ScreenUtil().setWidth(400) / 2.0;
+    double left = rect.left + ScreenUtil().setWidth(400) / 2.0;
 
     List<Offset> points1 =  List<Offset>();
     points.forEach((point) {
