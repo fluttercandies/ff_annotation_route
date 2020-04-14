@@ -1,6 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:analyzer/dart/ast/ast.dart';
+
+// ignore: implementation_imports
 import 'package:analyzer/src/dart/ast/ast.dart';
 import 'package:ff_annotation_route/src/utils/ast.dart';
 import 'package:path/path.dart' as p;
@@ -12,7 +15,9 @@ import 'route_info.dart';
 import 'utils.dart';
 
 class RouteGenerator {
-  final _fileInfoList = <FileInfo>[];
+  RouteGenerator(this.packageNode, this.isRoot);
+
+  final List<FileInfo> _fileInfoList = <FileInfo>[];
 
   List<FileInfo> get fileInfoList => _fileInfoList;
 
@@ -23,64 +28,57 @@ class RouteGenerator {
 
   bool get hasAnnotationRoute => _lib != null && _fileInfoList.isNotEmpty;
 
-  String get import =>
-      "import 'package:${packageNode.name}/${packageNode.name}_route.dart';";
+  String get import => "import 'package:${packageNode.name}/${packageNode.name}_route.dart';";
 
   String get export {
     if (_fileInfoList.isNotEmpty) {
-      final sb = StringBuffer();
+      final StringBuffer sb = StringBuffer();
 
       if (!isRoot) {
         sb.write('library ${packageNode.name}_route;\n');
       }
 
-      _fileInfoList.forEach((info) {
+      _fileInfoList.sort((FileInfo a, FileInfo b) => a.export.compareTo(b.export));
+
+      for (final FileInfo info in _fileInfoList) {
         sb.write("${isRoot ? "import" : "export"} '${info.export}'; \n");
-      });
+      }
       return sb.toString();
     }
     return '';
   }
 
-  RouteGenerator(
-    this.packageNode,
-    this.isRoot,
-  );
-
   void scanLib([String output]) {
     if (_lib != null) {
       print('');
       print('Scanning package : ${packageNode.name}');
-      for (final item in _lib.listSync(recursive: true)) {
-        final file = item.statSync();
-        if (file.type == FileSystemEntityType.file &&
-            item.path.endsWith('.dart')) {
-          CompilationUnitImpl astRoot = parseDartFile(item.path);
+      for (final FileSystemEntity item in _lib.listSync(recursive: true)) {
+        final FileStat file = item.statSync();
+        if (file.type == FileSystemEntityType.file && item.path.endsWith('.dart')) {
+          final CompilationUnit astRoot = parseDartFile(item.path);
 
           FileInfo fileInfo;
-          for (final declaration in astRoot.declarations) {
-            for (final metadata in declaration.metadata) {
+          for (final CompilationUnitMember declaration in astRoot.declarations) {
+            for (final Annotation metadata in declaration.metadata) {
               if (metadata is AnnotationImpl &&
                   metadata.name?.name == typeOf<FFRoute>().toString() &&
                   metadata.parent is ClassDeclarationImpl) {
-                final className =
-                    (metadata.parent as ClassDeclarationImpl).name?.name;
+                final String className = (metadata.parent as ClassDeclarationImpl).name?.name;
 
                 print(
                     'Found annotation route : ${p.relative(item.path, from: packageNode.path)} ------ class : $className');
 
-                final relativeParts = [packageNode.path, 'lib'];
+                final List<String> relativeParts = <String>[packageNode.path, 'lib'];
                 if (output != null) {
                   relativeParts.add(output);
                 }
 
                 fileInfo ??= FileInfo(
-                    export: p
-                        .relative(item.path, from: p.joinAll(relativeParts))
-                        .replaceAll('\\', '/'),
+                    export:
+                        p.relative(item.path, from: p.joinAll(relativeParts)).replaceAll('\\', '/'),
                     packageName: packageNode.name);
 
-                final parameters = metadata.arguments?.arguments;
+                final NodeList<Expression> parameters = metadata.arguments?.arguments;
 
                 String name;
                 List<String> argumentNames;
@@ -89,20 +87,20 @@ class RouteGenerator {
                 PageRouteType pageRouteType;
                 String description;
 
-                for (final item in parameters) {
+                for (final Expression item in parameters) {
                   if (item is NamedExpressionImpl) {
-                    var source = item.expression.toSource();
-                    if (source == 'null') continue;
+                    String source;
+                    source = item.expression.toSource();
+                    if (source == 'null') {
+                      continue;
+                    }
                     // using single quotes has greater possibility.
-                    if (source.length >= 2 &&
-                        source.startsWith("'") &&
-                        source.endsWith("'")) {
+                    if (source.length >= 2 && source.startsWith("'") && source.endsWith("'")) {
                       source = '"${source.substring(1, source.length - 1)}"';
-                    } else if (source.startsWith("'''") &&
-                        source.endsWith("'''")) {
+                    } else if (source.startsWith("'''") && source.endsWith("'''")) {
                       source = '"${source.substring(3, source.length - 3)}"';
                     }
-                    final key = item.name.toSource();
+                    final String key = item.name.toSource();
                     switch (key) {
                       case 'name:':
                         name = source;
@@ -117,17 +115,16 @@ class RouteGenerator {
                         argumentNames = source
                             .replaceAll(RegExp('\\[|\\]'), '')
                             .split(',')
-                            .map((it) => it.trim())
-                            .where((it) => it.length > 2)
-                            .map((it) =>
-                                it.startsWith("'''") && it.endsWith("'''")
-                                    ? it.substring(3, it.length - 3)
-                                    : it.substring(1, it.length - 1))
+                            .map((String it) => it.trim())
+                            .where((String it) => it.length > 2)
+                            .map((String it) => it.startsWith("'''") && it.endsWith("'''")
+                                ? it.substring(3, it.length - 3)
+                                : it.substring(1, it.length - 1))
                             .toList();
                         break;
                       case 'pageRouteType:':
                         pageRouteType = PageRouteType.values.firstWhere(
-                          (type) => type.toString() == source,
+                          (PageRouteType type) => type.toString() == source,
                           orElse: () => null,
                         );
                         break;
@@ -138,7 +135,7 @@ class RouteGenerator {
                   }
                 }
 
-                final routeInfo = RouteInfo(
+                final RouteInfo routeInfo = RouteInfo(
                   className: className,
                   ffRoute: FFRoute(
                     name: name,
@@ -163,8 +160,10 @@ class RouteGenerator {
   }
 
   void getLib() {
-    final lib = Directory(p.join(packageNode.path, 'lib'));
-    if (lib.existsSync()) _lib = lib;
+    final Directory lib = Directory(p.join(packageNode.path, 'lib'));
+    if (lib.existsSync()) {
+      _lib = lib;
+    }
   }
 
   File generateFile({
@@ -173,7 +172,7 @@ class RouteGenerator {
     bool generateRouteConstants = false,
     String outputPath,
   }) {
-    final name = '${packageNode.name}_route.dart';
+    final String name = '${packageNode.name}_route.dart';
     String routePath;
     if (outputPath != null) {
       routePath = p.join(_lib.path, outputPath, name);
@@ -181,7 +180,7 @@ class RouteGenerator {
       routePath = p.join(_lib.path, name);
     }
 
-    final file = File(routePath);
+    final File file = File(routePath);
     if (file.existsSync()) {
       file.deleteSync();
     }
@@ -190,13 +189,13 @@ class RouteGenerator {
       return null;
     }
 
-    final sb = StringBuffer();
+    final StringBuffer sb = StringBuffer();
 
     /// Nodes import
     if (isRoot && nodes != null && nodes.isNotEmpty) {
-      nodes.forEach((node) {
+      for (final RouteGenerator node in nodes) {
         sb.write('${node.import}\n');
-      });
+      }
     }
 
     /// Export
@@ -204,40 +203,41 @@ class RouteGenerator {
 
     /// Create route generator
     if (isRoot) {
-      final caseSb = StringBuffer();
-      final routeNames = <String>[];
-      final routes =
-          _fileInfoList.map((it) => it.routes).expand((it) => it).toList();
+      final StringBuffer caseSb = StringBuffer();
+      final List<String> routeNames = <String>[];
+      final List<RouteInfo> routes =
+          _fileInfoList.map((FileInfo it) => it.routes).expand((List<RouteInfo> it) => it).toList();
       if (nodes != null && nodes.isNotEmpty) {
         routes.addAll(
           nodes
-              .map((it) => it.fileInfoList)
-              .expand((it) => it)
-              .map((it) => it.routes)
-              .expand((it) => it),
+              .map((RouteGenerator it) => it.fileInfoList)
+              .expand((List<FileInfo> it) => it)
+              .map((FileInfo it) => it.routes)
+              .expand((List<RouteInfo> it) => it),
         );
       }
-      routes.sort((a, b) => a.ffRoute.name.compareTo(b.ffRoute.name));
+      routes.sort((RouteInfo a, RouteInfo b) => a.ffRoute.name.compareTo(b.ffRoute.name));
 
-      routes.forEach((it) {
+      for (final RouteInfo it in routes) {
         routeNames.add(it.ffRoute.name.replaceAll('\"', ''));
-        caseSb.write(it.caseString);
-      });
+        caseSb.write(it.caseString.replaceAll('"', '\''));
+      }
 
       sb.write(rootFile.replaceAll('{0}', caseSb.toString()));
 
       if (generateRouteNames) {
         sb.write('\n');
-        sb.write('List<String> routeNames = ${json.encode(routeNames)};');
+        sb.write(
+            'const List<String> routeNames = <String>${json.encode(routeNames).replaceAll('"', '\'')};');
         sb.write('\n');
       }
 
       if (generateRouteConstants) {
         sb.write('class Routes {\n');
         sb.write('const Routes._();\n');
-        routes.forEach((it) {
+        for (final RouteInfo it in routes) {
           _generateRouteConstant(it, sb);
-        });
+        }
         sb.write('}');
       }
     }
@@ -255,18 +255,19 @@ class RouteGenerator {
   }
 
   void _generateRouteConstant(RouteInfo route, StringBuffer sb) {
-    final _route = route.ffRoute;
+    final FFRoute _route = route.ffRoute;
 
-    final _name = _route.name.replaceAll('\"', '');
-    final _routeName = _route.routeName.replaceAll('\"', '');
-    final _description = _route.description;
-    final _arguments = _route.argumentNames;
-    final _showStatusBar = _route.showStatusBar;
-    final _pageRouteType = _route.pageRouteType;
+    final String _name = _route.name.replaceAll('\"', '');
+    final String _routeName = _route.routeName.replaceAll('\"', '');
+    final String _description = _route.description;
+    final List<String> _arguments = _route.argumentNames;
+    final bool _showStatusBar = _route.showStatusBar;
+    final PageRouteType _pageRouteType = _route.pageRouteType;
 
-    final _firstLine = _description ?? _routeName ?? _name;
+    final String _firstLine = _description ?? _routeName ?? _name;
 
-    var _constant = _name
+    String _constant;
+    _constant = _name
         .replaceAll('\"', '')
         .replaceAll('://', '_')
         .replaceAll('/', '_')
@@ -297,7 +298,7 @@ class RouteGenerator {
     }
     sb.write(
       '\nstatic const String '
-      '${_constant.toUpperCase()} = \"$_name\";\n\n',
+      '${_constant.toUpperCase()} = \'$_name\';\n\n',
     );
   }
 
@@ -308,17 +309,19 @@ class RouteGenerator {
     bool routeSettingsNoIsInitialRoute = false,
     String outputPath,
   }) {
-    final parts = <String>[];
+    final List<String> parts = <String>[];
     parts.add(_lib.path);
     if (outputPath != null) {
       parts.add(outputPath);
     }
     parts.add('${packageNode.name}_route_helper.dart');
-    final file = File(p.joinAll(parts));
+    final File file = File(p.joinAll(parts));
     if (file.existsSync()) {
       file.deleteSync();
     }
-    if (!generateRouteHelper) return null;
+    if (!generateRouteHelper) {
+      return null;
+    }
 
     file.createSync(recursive: true);
 

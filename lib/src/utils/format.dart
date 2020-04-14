@@ -23,7 +23,7 @@ void processRunSync({
   String arguments,
   bool runInShell = false,
 }) {
-  final result = Process.runSync(
+  final ProcessResult result = Process.runSync(
     executable,
     arguments.split(' '),
     runInShell: runInShell,

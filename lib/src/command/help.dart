@@ -22,12 +22,14 @@ ${getCommandsHelp(ffCommands)}
 }
 
 String getCommandsHelp(List<Command> commands) {
-  final maxLengthCommand = commands.reduce((value, element) =>
-      value.command.length > element.command.length ? value : element);
+  final Command maxLengthCommand = commands.reduce(
+    (Command value, Command element) =>
+        value.command.length > element.command.length ? value : element,
+  );
 
-  final sb = StringBuffer();
-  for (var i = 0; i < commands.length; i++) {
-    final command = commands[i];
+  final StringBuffer sb = StringBuffer();
+  for (int i = 0; i < commands.length; i++) {
+    final Command command = commands[i];
     sb.write(
         '${command.command}${' ' * (maxLengthCommand.command.length - command.command.length + 5)}${command.description}\n');
   }
