@@ -30,7 +30,7 @@ class _CropImageDemoState extends State<CropImageDemo> {
 
   @override
   Widget build(BuildContext context) {
-    final double margin = ScreenUtil.instance.setWidth(22);
+    final double margin = ScreenUtil().setWidth(22);
 
     return Material(
       child: Column(
@@ -72,7 +72,7 @@ class _CropImageDemoState extends State<CropImageDemo> {
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
-                                      fontSize: ScreenUtil.instance.setSp(34))),
+                                      fontSize: ScreenUtil().setSp(34))),
                             ),
                             item.content == null || item.content == ""
                                 ? Container()
@@ -85,7 +85,7 @@ class _CropImageDemoState extends State<CropImageDemo> {
                                       overflow: TextOverflow.ellipsis,
                                       style: TextStyle(
                                           fontSize:
-                                              ScreenUtil.instance.setSp(28),
+                                              ScreenUtil().setSp(28),
                                           color: Colors.grey),
                                     )),
                             CropImage(item, index, margin, konwImageSize,
@@ -93,7 +93,7 @@ class _CropImageDemoState extends State<CropImageDemo> {
                             Container(
                               padding:
                                   EdgeInsets.only(left: margin, right: margin),
-                              height: ScreenUtil.instance.setWidth(80),
+                              height: ScreenUtil().setWidth(80),
                               color: Colors.grey.withOpacity(0.5),
                               alignment: Alignment.center,
                               child: Row(

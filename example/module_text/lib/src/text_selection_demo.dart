@@ -49,7 +49,7 @@ class _TextSelectionDemoState extends State<TextSelectionDemo> {
 
   @override
   Widget build(BuildContext context) {
-    final double margin = ScreenUtil.instance.setWidth(22);
+    final double margin = ScreenUtil().setWidth(22);
 
     Widget result = Material(
       child: Column(
@@ -99,7 +99,7 @@ class _TextSelectionDemoState extends State<TextSelectionDemo> {
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
-                                      fontSize: ScreenUtil.instance.setSp(34))),
+                                      fontSize: ScreenUtil().setSp(34))),
                             ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.start,
@@ -124,7 +124,7 @@ class _TextSelectionDemoState extends State<TextSelectionDemo> {
                                       //overflow: ExtendedTextOverflow.ellipsis,
                                       style: TextStyle(
                                           fontSize:
-                                              ScreenUtil.instance.setSp(28),
+                                              ScreenUtil().setSp(28),
                                           color: Colors.grey),
                                       maxLines: 10,
                                       overFlowTextSpan: OverFlowTextSpan(
@@ -157,7 +157,7 @@ class _TextSelectionDemoState extends State<TextSelectionDemo> {
                             Container(
                               padding:
                                   EdgeInsets.only(left: margin, right: margin),
-                              height: ScreenUtil.instance.setWidth(80),
+                              height: ScreenUtil().setWidth(80),
                               color: Colors.grey.withOpacity(0.5),
                               alignment: Alignment.center,
                               child: Row(

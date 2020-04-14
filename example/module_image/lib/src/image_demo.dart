@@ -90,8 +90,8 @@ class _ImageDemoState extends State<ImageDemo> {
             child: Align(
               child: ExtendedImage.network(
                 url,
-                width: ScreenUtil.instance.setWidth(400),
-                height: ScreenUtil.instance.setWidth(400),
+                width: ScreenUtil().setWidth(400),
+                height: ScreenUtil().setWidth(400),
                 fit: BoxFit.fill,
                 cache: true,
                 border: Border.all(color: Colors.red, width: 1.0),

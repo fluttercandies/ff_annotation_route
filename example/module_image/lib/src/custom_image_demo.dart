@@ -56,8 +56,8 @@ class _CustomImageDemoState extends State<CustomImageDemo>
             child: Align(
               child: ExtendedImage.network(
                 url,
-                width: ScreenUtil.instance.setWidth(600),
-                height: ScreenUtil.instance.setWidth(400),
+                width: ScreenUtil().setWidth(600),
+                height: ScreenUtil().setWidth(400),
                 fit: BoxFit.fill,
                 cache: true,
                 loadStateChanged: (ExtendedImageState state) {
@@ -75,8 +75,8 @@ class _CustomImageDemoState extends State<CustomImageDemo>
                         opacity: _controller,
                         child: ExtendedRawImage(
                           image: state.extendedImageInfo?.image,
-                          width: ScreenUtil.instance.setWidth(600),
-                          height: ScreenUtil.instance.setWidth(400),
+                          width: ScreenUtil().setWidth(600),
+                          height: ScreenUtil().setWidth(400),
                         ),
                       );
                       break;
