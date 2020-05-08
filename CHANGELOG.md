@@ -1,3 +1,8 @@
+## 2.0.9
+
+- Handle case that argumentNames: <String>['test', 'test1']
+- Add 'ignore_for_file: argument_type_not_assignable' for route file.
+
 ## 2.0.8
 
 - Update format in code and generated codes to match analyzer options.

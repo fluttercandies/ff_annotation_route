@@ -7,6 +7,7 @@ const String fileHeader = '''// GENERATED CODE - DO NOT MODIFY MANUALLY
 
 const String rootFile = """
 
+// ignore_for_file: argument_type_not_assignable
 RouteResult getRouteResult({String name, Map<String, dynamic> arguments}) {
   switch (name) {
 {0}   default:
