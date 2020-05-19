@@ -5,95 +5,50 @@
 
 import 'package:flutter/widgets.dart';
 
-import 'package:module_image/module_image_route.dart';
-import 'package:module_text/module_text_route.dart';
-import 'package:module_widget/module_widget_route.dart';
+import 'package:flutter_candies_demo_library/flutter_candies_demo_library_route.dart';
+import 'package:module_a/module_a_route.dart';
 import 'src/main_page.dart';
+import 'src/test_page_a.dart';
+import 'src/test_page_b.dart';
 
+// ignore_for_file: argument_type_not_assignable
 RouteResult getRouteResult({String name, Map<String, dynamic> arguments}) {
   switch (name) {
-    case 'fluttercandies://backgroundtext':
-      return RouteResult(
-        widget: BackgroundTextDemo(),
-        routeName: 'BackgroundTextDemo',
-      );
-    case 'fluttercandies://cropimage':
-      return RouteResult(
-        widget: CropImageDemo(),
-        routeName: 'CropImageDemo',
-      );
-    case 'fluttercandies://customimage':
-      return RouteResult(
-        widget: CustomImageDemo(
-          url: arguments['url'],
-        ),
-        routeName: 'CustomImageDemo',
-      );
-    case 'fluttercandies://customimagetext':
-      return RouteResult(
-        widget: CustomImageTextDemo(),
-        routeName: 'CustomImageDemo',
-      );
-    case 'fluttercandies://customtextoverflow':
-      return RouteResult(
-        widget: CustomTextOverflowDemo(),
-        routeName: 'CustomTextOverflowDemo',
-      );
-    case 'fluttercandies://image':
-      return RouteResult(
-        widget: ImageDemo(
-          url: arguments['url'],
-        ),
-        routeName: 'ImageDemo',
-      );
-    case 'fluttercandies://imagelist':
-      return RouteResult(
-        widget: ImageListDemo(),
-        routeName: 'ImageListDemo',
-      );
     case 'fluttercandies://mainpage':
       return RouteResult(
         widget: MainPage(),
         routeName: 'MainPage',
-      );
-    case 'fluttercandies://paintimage':
-      return RouteResult(
-        widget: PaintImageDemo(
-          url: arguments['url'],
-        ),
-        routeName: 'PaintImageDemo',
-      );
-    case 'fluttercandies://photoview':
-      return RouteResult(
-        widget: PhotoViewDemo(),
-        routeName: 'PhotoViewDemo',
       );
     case 'fluttercandies://picswiper':
       return RouteResult(
         widget: PicSwiper(
           index: arguments['index'],
           pics: arguments['pics'],
+          tuChongItem: arguments['tuChongItem'],
         ),
         showStatusBar: false,
         routeName: 'PicSwiper',
         pageRouteType: PageRouteType.transparent,
       );
-    case 'fluttercandies://text':
+    case 'fluttercandies://testPageA':
       return RouteResult(
-        widget: TextDemo(),
-        routeName: 'TextDemo',
+        widget: TestPageA(),
+        routeName: 'testPageA',
+        description: 'This is test page A.',
       );
-    case 'fluttercandies://textselection':
+    case 'fluttercandies://testPageB':
       return RouteResult(
-        widget: TextSelectionDemo(),
-        routeName: 'TextSelectionDemo',
-      );
-    case 'fluttercandies://zoomimage':
-      return RouteResult(
-        widget: ZoomImageDemo(
-          url: arguments['url'],
+        widget: TestPageB(
+          argument: arguments['argument'],
         ),
-        routeName: 'ZoomImageDemo',
+        routeName: 'testPageB',
+        description: 'This is test page B.',
+      );
+    case 'fluttercandies://testPageC':
+      return RouteResult(
+        widget: TestPageC(),
+        routeName: 'testPageC',
+        description: 'This is test page c in other module.',
       );
     default:
       return const RouteResult();
@@ -128,72 +83,15 @@ class RouteResult {
 enum PageRouteType { material, cupertino, transparent }
 
 const List<String> routeNames = <String>[
-  'fluttercandies://backgroundtext',
-  'fluttercandies://cropimage',
-  'fluttercandies://customimage',
-  'fluttercandies://customimagetext',
-  'fluttercandies://customtextoverflow',
-  'fluttercandies://image',
-  'fluttercandies://imagelist',
   'fluttercandies://mainpage',
-  'fluttercandies://paintimage',
-  'fluttercandies://photoview',
   'fluttercandies://picswiper',
-  'fluttercandies://text',
-  'fluttercandies://textselection',
-  'fluttercandies://zoomimage'
+  'fluttercandies://testPageA',
+  'fluttercandies://testPageB',
+  'fluttercandies://testPageC'
 ];
 
 class Routes {
   const Routes._();
-
-  /// BackgroundTextDemo
-  ///
-  /// [name] : fluttercandies://backgroundtext
-  /// [routeName] : BackgroundTextDemo
-  static const String FLUTTERCANDIES_BACKGROUNDTEXT =
-      'fluttercandies://backgroundtext';
-
-  /// CropImageDemo
-  ///
-  /// [name] : fluttercandies://cropimage
-  /// [routeName] : CropImageDemo
-  static const String FLUTTERCANDIES_CROPIMAGE = 'fluttercandies://cropimage';
-
-  /// CustomImageDemo
-  ///
-  /// [name] : fluttercandies://customimage
-  /// [routeName] : CustomImageDemo
-  /// [arguments] : [url]
-  static const String FLUTTERCANDIES_CUSTOMIMAGE =
-      'fluttercandies://customimage';
-
-  /// CustomImageDemo
-  ///
-  /// [name] : fluttercandies://customimagetext
-  /// [routeName] : CustomImageDemo
-  static const String FLUTTERCANDIES_CUSTOMIMAGETEXT =
-      'fluttercandies://customimagetext';
-
-  /// CustomTextOverflowDemo
-  ///
-  /// [name] : fluttercandies://customtextoverflow
-  /// [routeName] : CustomTextOverflowDemo
-  static const String FLUTTERCANDIES_CUSTOMTEXTOVERFLOW =
-      'fluttercandies://customtextoverflow';
-
-  /// ImageDemo
-  ///
-  /// [name] : fluttercandies://image
-  /// [routeName] : ImageDemo
-  /// [arguments] : [url]
-  static const String FLUTTERCANDIES_IMAGE = 'fluttercandies://image';
-
-  /// ImageListDemo
-  ///
-  /// [name] : fluttercandies://imagelist
-  /// [routeName] : ImageListDemo
-  static const String FLUTTERCANDIES_IMAGELIST = 'fluttercandies://imagelist';
 
   /// MainPage
   ///
@@ -201,45 +99,34 @@ class Routes {
   /// [routeName] : MainPage
   static const String FLUTTERCANDIES_MAINPAGE = 'fluttercandies://mainpage';
 
-  /// PaintImageDemo
-  ///
-  /// [name] : fluttercandies://paintimage
-  /// [routeName] : PaintImageDemo
-  /// [arguments] : [url]
-  static const String FLUTTERCANDIES_PAINTIMAGE = 'fluttercandies://paintimage';
-
-  /// PhotoViewDemo
-  ///
-  /// [name] : fluttercandies://photoview
-  /// [routeName] : PhotoViewDemo
-  static const String FLUTTERCANDIES_PHOTOVIEW = 'fluttercandies://photoview';
-
   /// PicSwiper
   ///
   /// [name] : fluttercandies://picswiper
   /// [routeName] : PicSwiper
-  /// [arguments] : [index, pics]
+  /// [arguments] : [index, pics, tuChongItem]
   /// [showStatusBar] : false
   /// [pageRouteType] : PageRouteType.transparent
   static const String FLUTTERCANDIES_PICSWIPER = 'fluttercandies://picswiper';
 
-  /// TextDemo
+  /// "This is test page A."
   ///
-  /// [name] : fluttercandies://text
-  /// [routeName] : TextDemo
-  static const String FLUTTERCANDIES_TEXT = 'fluttercandies://text';
+  /// [name] : fluttercandies://testPageA
+  /// [routeName] : testPageA
+  /// [description] : "This is test page A."
+  static const String FLUTTERCANDIES_TESTPAGEA = 'fluttercandies://testPageA';
 
-  /// TextSelectionDemo
+  /// "This is test page B."
   ///
-  /// [name] : fluttercandies://textselection
-  /// [routeName] : TextSelectionDemo
-  static const String FLUTTERCANDIES_TEXTSELECTION =
-      'fluttercandies://textselection';
+  /// [name] : fluttercandies://testPageB
+  /// [routeName] : testPageB
+  /// [description] : "This is test page B."
+  /// [arguments] : [argument]
+  static const String FLUTTERCANDIES_TESTPAGEB = 'fluttercandies://testPageB';
 
-  /// ZoomImageDemo
+  /// "This is test page c in other module."
   ///
-  /// [name] : fluttercandies://zoomimage
-  /// [routeName] : ZoomImageDemo
-  /// [arguments] : [url]
-  static const String FLUTTERCANDIES_ZOOMIMAGE = 'fluttercandies://zoomimage';
+  /// [name] : fluttercandies://testPageC
+  /// [routeName] : testPageC
+  /// [description] : "This is test page c in other module."
+  static const String FLUTTERCANDIES_TESTPAGEC = 'fluttercandies://testPageC';
 }

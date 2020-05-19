@@ -89,6 +89,7 @@ class PicSwiper extends StatefulWidget {
 | routeName     | 用于埋点收集数据的页面名字                    | ''       |
 | pageRouteType | 路由的类型 (material, cupertino, transparent) | -        |
 | description   | 路由的描述                                    | ''       |
+| exts          | 其他扩展参数.                                 | -        |
 
 ### 生成文件
 

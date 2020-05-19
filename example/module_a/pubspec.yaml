@@ -1,4 +1,4 @@
-name: module_service
+name: module_a
 description: A new Flutter package project.
 version: 0.0.1
 author:
@@ -10,13 +10,14 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  loading_more_list: any
-  http_client_helper: any
-  
+  flutter_candies_demo_library:
+    git:
+        url: https://github.com/fluttercandies/flutter_candies_demo_library.git
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
+  ff_annotation_route:
+    path: ../../
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 

@@ -1,1 +1,0 @@
-library module_text;

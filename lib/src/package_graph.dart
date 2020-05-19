@@ -11,7 +11,8 @@ final String sdkPath = p.dirname(p.dirname(Platform.resolvedExecutable));
 
 /// The SDK package, we filter this to the core libs and dev compiler
 /// resources.
-final PackageNode _sdkPackageNode = PackageNode(r'$sdk', sdkPath, DependencyType.hosted);
+final PackageNode _sdkPackageNode =
+    PackageNode(r'$sdk', sdkPath, DependencyType.hosted);
 
 /// A graph of the package dependencies for an application.
 class PackageGraph {
@@ -22,14 +23,18 @@ class PackageGraph {
     if (!root.isRoot) {
       throw ArgumentError('Root node must indicate `isRoot`');
     }
-    if (allPackages.values.where((PackageNode n) => n != root).any((PackageNode n) => n.isRoot)) {
+    if (allPackages.values
+        .where((PackageNode n) => n != root)
+        .any((PackageNode n) => n.isRoot)) {
       throw ArgumentError('No nodes other than the root may indicate `isRoot`');
     }
   }
 
   /// Creates a [PackageGraph] given the [root] [PackageNode].
   factory PackageGraph.fromRoot(PackageNode root) {
-    final Map<String, PackageNode> allPackages = <String, PackageNode>{root.name: root};
+    final Map<String, PackageNode> allPackages = <String, PackageNode>{
+      root.name: root
+    };
 
     void addDependency(PackageNode package) {
       for (final PackageNode dep in package.dependencies) {
@@ -52,16 +57,18 @@ class PackageGraph {
     /// Read in the pubspec file and parse it as yaml.
     final File pubspec = File(p.join(packagePath, 'pubspec.yaml'));
     if (!pubspec.existsSync()) {
-      throw StateError('Unable to generate package graph, no `pubspec.yaml` found. '
+      throw StateError(
+          'Unable to generate package graph, no `pubspec.yaml` found. '
           'This program must be ran from the root directory of your package.');
     }
     final YamlMap rootPubspec = pubspecForPath(packagePath);
     final String rootPackageName = rootPubspec['name'] as String;
 
-    final Map<String, String> packageLocations = _parsePackageLocations(packagePath)
-      ..remove(rootPackageName);
+    final Map<String, String> packageLocations =
+        _parsePackageLocations(packagePath)..remove(rootPackageName);
 
-    final Map<String, DependencyType> dependencyTypes = _parseDependencyTypes(packagePath);
+    final Map<String, DependencyType> dependencyTypes =
+        _parseDependencyTypes(packagePath);
 
     final Map<String, PackageNode> nodes = <String, PackageNode>{};
     final PackageNode rootNode = PackageNode(
@@ -159,7 +166,8 @@ class PackageNode {
 
   /// Converts [path] to a canonical absolute path, returns `null` if given
   /// `null`.
-  static String _toAbsolute(String path) => (path == null) ? null : p.canonicalize(path);
+  static String _toAbsolute(String path) =>
+      (path == null) ? null : p.canonicalize(path);
 }
 
 /// Parse the `.packages` file and return a Map from package name to the file
@@ -201,13 +209,17 @@ enum DependencyType { github, path, hosted, sdk }
 Map<String, DependencyType> _parseDependencyTypes(String rootPackagePath) {
   final File pubspecLock = File(p.join(rootPackagePath, 'pubspec.lock'));
   if (!pubspecLock.existsSync()) {
-    throw StateError('Unable to generate package graph, no `pubspec.lock` found. '
+    throw StateError(
+        'Unable to generate package graph, no `pubspec.lock` found. '
         'This program must be ran from the root directory of your package.');
   }
-  final Map<String, DependencyType> dependencyTypes = <String, DependencyType>{};
-  final YamlMap dependencies = loadYaml(pubspecLock.readAsStringSync()) as YamlMap;
+  final Map<String, DependencyType> dependencyTypes =
+      <String, DependencyType>{};
+  final YamlMap dependencies =
+      loadYaml(pubspecLock.readAsStringSync()) as YamlMap;
   for (final String packageName in dependencies['packages'].keys) {
-    final String source = dependencies['packages'][packageName]['source'] as String;
+    final String source =
+        dependencies['packages'][packageName]['source'] as String;
     dependencyTypes[packageName] = _dependencyTypeFromSource(source);
   }
   return dependencyTypes;
@@ -229,7 +241,8 @@ DependencyType _dependencyTypeFromSource(String source) {
 
 /// Read the pubspec for each package in [packageLocations] and finds it's
 /// dependencies.
-Map<String, Set<String>> _parsePackageDependencies(Map<String, String> packageLocations,
+Map<String, Set<String>> _parsePackageDependencies(
+    Map<String, String> packageLocations,
     {bool skipDevDependencies = false}) {
   final Map<String, Set<String>> dependencies = <String, Set<String>>{};
   for (final String packageName in packageLocations.keys) {
@@ -242,22 +255,25 @@ Map<String, Set<String>> _parsePackageDependencies(Map<String, String> packageLo
 /// Gets the dependencies from a yaml file, taking into account
 /// dependency_overrides.
 Set<String> _dependenciesFromYaml(YamlMap yaml, {bool isRoot = false}) {
-  final Set<String> dependencies = <String>{}..addAll(_stringKeys(yaml['dependencies'] as YamlMap));
+  final Set<String> dependencies = <String>{}
+    ..addAll(_stringKeys(yaml['dependencies'] as YamlMap));
   // if (isRoot) {
-  dependencies..addAll(_stringKeys(yaml['dev_dependencies'] as YamlMap));
-  dependencies..addAll(_stringKeys(yaml['dependency_overrides'] as YamlMap));
+  dependencies.addAll(_stringKeys(yaml['dev_dependencies'] as YamlMap));
+  dependencies.addAll(_stringKeys(yaml['dependency_overrides'] as YamlMap));
   // }
   return dependencies;
 }
 
-Iterable<String> _stringKeys(YamlMap m) => m?.keys?.cast<String>() ?? const <String>[];
+Iterable<String> _stringKeys(YamlMap m) =>
+    m?.keys?.cast<String>() ?? const <String>[];
 
 /// Should point to the top level directory for the package.
 YamlMap pubspecForPath(String absolutePath) {
   final String pubspecPath = p.join(absolutePath, 'pubspec.yaml');
   final File pubspec = File(pubspecPath);
   if (!pubspec.existsSync()) {
-    throw StateError('Unable to generate package graph, no `$pubspecPath` found.');
+    throw StateError(
+        'Unable to generate package graph, no `$pubspecPath` found.');
   }
   return loadYaml(pubspec.readAsStringSync()) as YamlMap;
 }

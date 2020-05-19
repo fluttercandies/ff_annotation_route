@@ -96,6 +96,7 @@ class RouteGenerator {
                 String routeName;
                 PageRouteType pageRouteType;
                 String description;
+                Map<String, dynamic> exts;
 
                 for (final Expression item in parameters) {
                   if (item is NamedExpressionImpl) {
@@ -146,6 +147,13 @@ class RouteGenerator {
                       case 'description:':
                         description = source;
                         break;
+                      case 'exts:':
+                        source = source.substring(source.indexOf('{'));
+                        source = source.replaceAll("'''", '\'');
+                        source = source.replaceAll('"', '\'');
+                        source = source.replaceAll('\'', '"');
+                        exts = json.decode(source) as Map<String, dynamic>;
+                        break;
                     }
                   }
                 }
@@ -159,6 +167,7 @@ class RouteGenerator {
                     routeName: routeName,
                     pageRouteType: pageRouteType,
                     description: description,
+                    exts: exts,
                   ),
                 );
 
@@ -343,14 +352,12 @@ class RouteGenerator {
 
     file.createSync(recursive: true);
 
-    file.writeAsStringSync(
-      '$fileHeader\n'
-      '${routeHelper(
-        packageNode.name,
-        routeSettingsNoArguments,
-      )}\n'
-      '${routeSettingsNoArguments ? ffRouteSettingsNoArguments : (routeSettingsNoIsInitialRoute ? ffRouteSettingsNoIsInitialRoute : ffRouteSettings)}',
-    );
+    file.writeAsStringSync('$fileHeader\n'
+        '${routeHelper(
+      packageNode.name,
+      routeSettingsNoArguments,
+      routeSettingsNoIsInitialRoute,
+    )}\n');
     print('Generate : ${p.relative(file.path, from: packageNode.path)}');
 
     return file;

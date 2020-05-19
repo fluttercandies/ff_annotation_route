@@ -9,6 +9,7 @@ class FFRoute {
     this.routeName = '',
     this.pageRouteType,
     this.description = '',
+    this.exts,
   }) : assert(name != null);
 
   /// The name of the route (e.g., "/settings").
@@ -30,6 +31,9 @@ class FFRoute {
 
   /// The description of route
   final String description;
+  
+  /// The extend arguments
+  final Map<String,dynamic> exts;
 
   @override
   String toString() {

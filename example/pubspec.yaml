@@ -19,15 +19,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  oktoast: ^2.3.1
-  flutter_screenutil: ^1.1.0
   cupertino_icons: ^0.1.2
-  module_text:
-    path: module_text
-  module_image:
-    path: module_image
-  module_widget:
-    path: module_widget    
+  module_a:
+    path: module_a
 
 dev_dependencies:
   flutter_test:

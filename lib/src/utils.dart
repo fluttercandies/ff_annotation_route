@@ -43,7 +43,9 @@ class RouteResult {
 enum PageRouteType { material, cupertino, transparent }
 """;
 
-String routeHelper(String name,bool routeSettingsNoArguments) => """
+String routeHelper(String name, bool routeSettingsNoArguments,
+        bool routeSettingsNoIsInitialRoute) =>
+    """
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -140,9 +142,9 @@ Route<dynamic> onGenerateRouteHelper(
   if (routeResult.showStatusBar != null || routeResult.routeName != null) {
     settings = FFRouteSettings(
       name: settings.name,
-      isInitialRoute: settings.isInitialRoute,
+      ${routeSettingsNoIsInitialRoute ? '' : 'isInitialRoute:settings.isInitialRoute,'}     
       routeName: routeResult.routeName,
-      ${routeSettingsNoArguments?'':'arguments: arguments as Map<String, dynamic>,'}
+      ${routeSettingsNoArguments ? '' : 'arguments: arguments as Map<String, dynamic>,'}
       showStatusBar: routeResult.showStatusBar,
     );
   }
@@ -196,57 +198,22 @@ Route<dynamic> onGenerateRouteHelper(
 
 typedef RouteBuilder = PageRoute<dynamic> Function(Widget page);
 
-""";
-
-const String ffRouteSettings = '''
 class FFRouteSettings extends RouteSettings {
   const FFRouteSettings({
     this.routeName,
     this.showStatusBar,
     String name,
-    bool isInitialRoute = false,
-    Object arguments,
+     ${routeSettingsNoArguments ? '' : 'Object arguments,'}
+     ${routeSettingsNoIsInitialRoute ? '' : 'bool isInitialRoute = false,'}   
   }) : super(
           name: name,
-          isInitialRoute: isInitialRoute,
-          arguments: arguments
+           ${routeSettingsNoIsInitialRoute ? '' : 'isInitialRoute:isInitialRoute,'}  
+            ${routeSettingsNoArguments ? '' : 'arguments:arguments,'}
         );
   
   final String routeName;
   final bool showStatusBar;
 }
-''';
+""";
 
-const String ffRouteSettingsNoArguments = '''
-class FFRouteSettings extends RouteSettings {
-  const FFRouteSettings({
-    this.routeName,
-    this.showStatusBar,
-    String name,
-    bool isInitialRoute = false,
-  }) : super(
-          name: name,
-          isInitialRoute: isInitialRoute,
-        );
 
-  final String routeName;
-  final bool showStatusBar;
-}
-''';
-
-const String ffRouteSettingsNoIsInitialRoute = '''
-class FFRouteSettings extends RouteSettings {
-  const FFRouteSettings({
-    this.routeName,
-    this.showStatusBar,
-    String name,
-    Object arguments,
-  }) : super(
-          name: name,
-          arguments: arguments,
-        );
-
-  final String routeName;
-  final bool showStatusBar;
-}
-''';

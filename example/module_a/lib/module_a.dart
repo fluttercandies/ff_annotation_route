@@ -1,4 +1,4 @@
-library module_image;
+library module_a;
 
 /// A Calculator.
 class Calculator {

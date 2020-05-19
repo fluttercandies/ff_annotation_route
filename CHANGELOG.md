@@ -1,3 +1,8 @@
+## 2.1.0
+
+- Fix command SettingsNoIsInitialRoute.
+- Add Map<String,dynamic> exts for FFRoute
+
 ## 2.0.9
 
 - Handle case that argumentNames: <String>['test', 'test1']

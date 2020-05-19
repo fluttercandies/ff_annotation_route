@@ -87,6 +87,7 @@ class PicSwiper extends StatefulWidget {
 | routeName     | The route name to track page.                                        | ''       |
 | pageRouteType | The type of page route.(material, cupertino, transparent)            | -        |
 | description   | The description of the route.                                        | ''       |
+| exts          | The extend arguments.                                                | -        |
 
 ### Generate Route File
 
