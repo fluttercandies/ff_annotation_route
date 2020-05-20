@@ -62,14 +62,6 @@ void generate(
     outputPath: outputPath,
   );
 
-   root?.generateHelperFile(
-    nodes: nodes,
-    routeSettingsNoArguments: routeSettingsNoArguments,
-    generateRouteHelper: generateRouteHelper,
-    routeSettingsNoIsInitialRoute: routeSettingsNoIsInitialRoute,
-    outputPath: outputPath,
-  );
-
   // formatFile(routeFile);
   // if (routeFile != null) {
   //   formatFile(helperFile);

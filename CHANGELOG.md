@@ -1,3 +1,8 @@
+## 3.1.2
+
+- Fix duplicate generate helper
+- Fix generateRouteNames is not work
+
 ## 3.1.1
 
 - Fix camelCase error of constants

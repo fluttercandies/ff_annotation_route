@@ -275,7 +275,7 @@ class RouteGenerator {
       bool generateRouteNames,
       List<String> routeNames,
       List<RouteInfo> routes) {
-    if (generateRouteConstants || generateRouteConstants) {
+    if (generateRouteConstants || generateRouteNames) {
       final StringBuffer constantsSb = StringBuffer();
       final String name = '${packageNode.name}_routes.dart';
       String routePath;
