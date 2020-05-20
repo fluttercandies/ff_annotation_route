@@ -14,10 +14,30 @@ import 'src/test_page_b.dart';
 // ignore_for_file: argument_type_not_assignable
 RouteResult getRouteResult({String name, Map<String, dynamic> arguments}) {
   switch (name) {
-    case 'fluttercandies://mainpage':
+    case 'flutterCandies://mainPage':
       return RouteResult(
         widget: MainPage(),
         routeName: 'MainPage',
+      );
+    case 'flutterCandies://testPageA':
+      return RouteResult(
+        widget: TestPageA(),
+        routeName: 'testPageA',
+        description: 'This is test page A.',
+      );
+    case 'flutterCandies://testPageB':
+      return RouteResult(
+        widget: TestPageB(
+          argument: arguments['argument'],
+        ),
+        routeName: 'testPageB',
+        description: 'This is test page B.',
+      );
+    case 'flutterCandies://testPageC':
+      return RouteResult(
+        widget: TestPageC(),
+        routeName: 'testPageC',
+        description: 'This is test page c in other module.',
       );
     case 'fluttercandies://picswiper':
       return RouteResult(
@@ -29,26 +49,6 @@ RouteResult getRouteResult({String name, Map<String, dynamic> arguments}) {
         showStatusBar: false,
         routeName: 'PicSwiper',
         pageRouteType: PageRouteType.transparent,
-      );
-    case 'fluttercandies://testPageA':
-      return RouteResult(
-        widget: TestPageA(),
-        routeName: 'testPageA',
-        description: 'This is test page A.',
-      );
-    case 'fluttercandies://testPageB':
-      return RouteResult(
-        widget: TestPageB(
-          argument: arguments['argument'],
-        ),
-        routeName: 'testPageB',
-        description: 'This is test page B.',
-      );
-    case 'fluttercandies://testPageC':
-      return RouteResult(
-        widget: TestPageC(),
-        routeName: 'testPageC',
-        description: 'This is test page c in other module.',
       );
     default:
       return const RouteResult();
@@ -81,52 +81,3 @@ class RouteResult {
 }
 
 enum PageRouteType { material, cupertino, transparent }
-
-const List<String> routeNames = <String>[
-  'fluttercandies://mainpage',
-  'fluttercandies://picswiper',
-  'fluttercandies://testPageA',
-  'fluttercandies://testPageB',
-  'fluttercandies://testPageC'
-];
-
-class Routes {
-  const Routes._();
-
-  /// MainPage
-  ///
-  /// [name] : fluttercandies://mainpage
-  /// [routeName] : MainPage
-  static const String FLUTTERCANDIES_MAINPAGE = 'fluttercandies://mainpage';
-
-  /// PicSwiper
-  ///
-  /// [name] : fluttercandies://picswiper
-  /// [routeName] : PicSwiper
-  /// [arguments] : [index, pics, tuChongItem]
-  /// [showStatusBar] : false
-  /// [pageRouteType] : PageRouteType.transparent
-  static const String FLUTTERCANDIES_PICSWIPER = 'fluttercandies://picswiper';
-
-  /// "This is test page A."
-  ///
-  /// [name] : fluttercandies://testPageA
-  /// [routeName] : testPageA
-  /// [description] : "This is test page A."
-  static const String FLUTTERCANDIES_TESTPAGEA = 'fluttercandies://testPageA';
-
-  /// "This is test page B."
-  ///
-  /// [name] : fluttercandies://testPageB
-  /// [routeName] : testPageB
-  /// [description] : "This is test page B."
-  /// [arguments] : [argument]
-  static const String FLUTTERCANDIES_TESTPAGEB = 'fluttercandies://testPageB';
-
-  /// "This is test page c in other module."
-  ///
-  /// [name] : fluttercandies://testPageC
-  /// [routeName] : testPageC
-  /// [description] : "This is test page c in other module."
-  static const String FLUTTERCANDIES_TESTPAGEC = 'fluttercandies://testPageC';
-}

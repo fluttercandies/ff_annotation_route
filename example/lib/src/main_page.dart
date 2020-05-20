@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:ff_annotation_route/ff_annotation_route.dart';
 
-import '../example_route.dart';
+import '../example_route_constants.dart';
+
 
 @FFRoute(
-  name: 'fluttercandies://mainpage',
+  name: 'flutterCandies://mainPage',
   routeName: 'MainPage',
 )
 class MainPage extends StatelessWidget {

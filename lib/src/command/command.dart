@@ -3,6 +3,7 @@ import 'package:ff_annotation_route/src/command/path.dart';
 import 'package:ff_annotation_route/src/command/route_constants.dart';
 import 'package:ff_annotation_route/src/command/route_helper.dart';
 import 'package:ff_annotation_route/src/command/route_names.dart';
+import 'package:ff_annotation_route/src/command/routes_file_output.dart';
 import 'package:ff_annotation_route/src/command/save.dart';
 import 'package:ff_annotation_route/src/command/settings_no_arguments.dart';
 import 'package:io/ansi.dart';
@@ -50,6 +51,7 @@ final List<Command> ffCommands = <Command>[
   Git(),
   Package(),
   SettingsNoIsInitialRoute(),
+  RoutesFileOutput(),
 ];
 
 List<Command> initCommands(List<String> arguments) {

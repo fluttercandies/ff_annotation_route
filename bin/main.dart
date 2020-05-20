@@ -10,6 +10,7 @@ import 'package:ff_annotation_route/src/command/path.dart';
 import 'package:ff_annotation_route/src/command/route_constants.dart';
 import 'package:ff_annotation_route/src/command/route_helper.dart';
 import 'package:ff_annotation_route/src/command/route_names.dart';
+import 'package:ff_annotation_route/src/command/routes_file_output.dart';
 import 'package:ff_annotation_route/src/command/save.dart';
 import 'package:ff_annotation_route/src/command/settings_no_arguments.dart';
 import 'package:ff_annotation_route/src/command/settings_no_is_initial_route.dart';
@@ -44,7 +45,9 @@ void main(List<String> arguments) {
     return;
   }
 
-  if (commands.firstWhere((Command element) => element is Help, orElse: () => null) != null) {
+  if (commands.firstWhere((Command element) => element is Help,
+          orElse: () => null) !=
+      null) {
     print(help);
     return;
   }
@@ -54,7 +57,8 @@ void main(List<String> arguments) {
   print(green.wrap('\nff_annotation_route ------ Start'));
 
   if (argumentsIsEmpty) {
-    print(yellow.wrap('execute commands from local.\n${getCommandsHelp(commands)}'));
+    print(yellow
+        .wrap('execute commands from local.\n${getCommandsHelp(commands)}'));
   }
 
   final Command pathCommand = commands.firstWhere(
@@ -65,15 +69,20 @@ void main(List<String> arguments) {
       ? PackageGraph.forPath((pathCommand as Path).value)
       : PackageGraph.forThisPackage();
 
-  final bool shouldGenerateRouteNames =
-      commands.firstWhere((Command element) => element is RouteNames, orElse: () => null) != null;
+  final bool shouldGenerateRouteNames = commands.firstWhere(
+          (Command element) => element is RouteNames,
+          orElse: () => null) !=
+      null;
 
-  final bool shouldGenerateRouteConstants =
-      commands.firstWhere((Command element) => element is RouteConstants, orElse: () => null) !=
-          null;
+  final bool shouldGenerateRouteConstants = commands.firstWhere(
+          (Command element) => element is RouteConstants,
+          orElse: () => null) !=
+      null;
 
-  final bool shouldGenerateRouteHelper =
-      commands.firstWhere((Command element) => element is RouteHelper, orElse: () => null) != null;
+  final bool shouldGenerateRouteHelper = commands.firstWhere(
+          (Command element) => element is RouteHelper,
+          orElse: () => null) !=
+      null;
 
   final bool isRouteSettingsNoArguments = shouldGenerateRouteHelper &&
       commands.firstWhere((Command element) => element is SettingsNoArguments,
@@ -90,20 +99,26 @@ void main(List<String> arguments) {
     gitNames = (git as Git).value.split(',');
   }
 
-  final bool isPackage =
-      commands.firstWhere((Command element) => element is Package, orElse: () => null) != null;
+  final bool isPackage = commands.firstWhere(
+          (Command element) => element is Package,
+          orElse: () => null) !=
+      null;
 
   final bool isRouteSettingsHasIsInitialRoute = shouldGenerateRouteHelper &&
-      commands.firstWhere((Command element) => element is SettingsNoIsInitialRoute,
+      commands.firstWhere(
+              (Command element) => element is SettingsNoIsInitialRoute,
               orElse: () => null) !=
           null;
 
   // Only check path which imports ff_annotation_route
-  final List<PackageNode> annotationPackages = packageGraph.allPackages.values.where(
+  final List<PackageNode> annotationPackages =
+      packageGraph.allPackages.values.where(
     (PackageNode x) {
       final bool matchPackage = x.dependencyType == DependencyType.path ||
           (x.dependencyType == DependencyType.github &&
-              gitNames.firstWhere((String key) => x.name == key, orElse: () => null) != null);
+              gitNames.firstWhere((String key) => x.name == key,
+                      orElse: () => null) !=
+                  null);
       final bool matchFFRoute = x.dependencies.firstWhere(
             (PackageNode dep) => dep?.name == 'ff_annotation_route',
             orElse: () => null,
@@ -113,15 +128,25 @@ void main(List<String> arguments) {
     },
   ).toList();
 
-  final bool isRootAnnotationRouteEnabled = annotationPackages.contains(packageGraph.root);
+  final bool isRootAnnotationRouteEnabled =
+      annotationPackages.contains(packageGraph.root);
   if (!isRootAnnotationRouteEnabled) {
     annotationPackages.add(packageGraph.root);
   }
 
-  final Output output = commands.firstWhere((Command t) => t is Output, orElse: () => null) as Output;
+  final Output output = commands.firstWhere((Command t) => t is Output,
+      orElse: () => null) as Output;
   String outputPath;
   if (output != null) {
     outputPath = output.value;
+  }
+
+  final RoutesFileOutput routesFileOutput = commands.firstWhere(
+      (Command t) => t is RoutesFileOutput,
+      orElse: () => null) as RoutesFileOutput;
+  String routesFileOutputPath;
+  if (routesFileOutput != null) {
+    routesFileOutputPath = routesFileOutput.value;
   }
 
   generate(
@@ -134,6 +159,7 @@ void main(List<String> arguments) {
     rootAnnotationRouteEnable: isRootAnnotationRouteEnabled,
     isPackage: isPackage,
     routeSettingsNoIsInitialRoute: isRouteSettingsHasIsInitialRoute,
+    routesFileOutputPath: routesFileOutputPath,
   );
   final Command saveCommand = commands.firstWhere(
     (Command element) => element is Save,
@@ -148,7 +174,8 @@ void main(List<String> arguments) {
 
     commands.remove(saveCommand);
 
-    file.writeAsStringSync(commands.toString().replaceAll('[', '').replaceAll(']', ''));
+    file.writeAsStringSync(
+        commands.toString().replaceAll('[', '').replaceAll(']', ''));
     print(green.wrap(
         'Save commands successfully: $commands.\n\nYou can run "ff_route" directly in next time.'));
   }

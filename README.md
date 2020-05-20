@@ -125,7 +125,8 @@ Available commands:
 | -g, --git package1,package2 | Whether scan git lib,you should specify package names and split multiple by ','.                                              |
 | --package                   | Is this a package.                                                                                                            |
 | --no-is-initial-route       | Whether RouteSettings has isInitialRoute(for higher flutter sdk).                                                             |
-| -o --output                 | The route file relative of lib path.                                                                                          |
+| -o --output                 | The path of main project route file and helper file. it is relative to the lib directory.                                                                                          |
+| -rfo --routes-file-output   | The path of routes file.It is relative to the lib directory.                                                                             |
 
 ### Main.dart
 

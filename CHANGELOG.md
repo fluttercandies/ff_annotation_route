@@ -1,3 +1,11 @@
+## 3.1.0
+
+- Use DartStyle to format dart code.
+- Add --routes-file-output command for xxx_routes.dart(is relative to the lib directory)
+- Breaking change
+  Generate route names and route constant in single file(xxx_routes.dart)
+  Route constants are following camelCase rule now(suggestion from Flutter Team). 
+
 ## 2.1.0
 
 - Fix command SettingsNoIsInitialRoute.

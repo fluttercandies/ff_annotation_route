@@ -129,7 +129,8 @@ class PicSwiper extends StatefulWidget {
 | -g, --git package1,package2 | 是否扫描 git 引用的 package，你需要指定 package 的名字                             |
 | --package                   | 这个是否是一个 package                                                             |
 | --no-is-initial-route       | FFRouteSettings 将没有 isInitialRoute 这个参数,这个是主要是为了适配 Flutter 高版本 |
-| -o --output                 | route 文件的输出目录,仅修改主工程的                                                |
+| -o --output                 | route和helper文件的输出目录路径，路径相对于主项目的lib文件夹                       |
+| -rfo --routes-file-output   | routes 文件的输出目录路径，路径相对于主项目的lib文件夹                             |
 
 ### Main.dart
 

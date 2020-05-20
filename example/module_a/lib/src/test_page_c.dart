@@ -2,7 +2,7 @@ import 'package:ff_annotation_route/ff_annotation_route.dart';
 import 'package:flutter/material.dart';
 
 @FFRoute(
-  name: 'fluttercandies://testPageC',
+  name: 'flutterCandies://testPageC',
   routeName: 'testPageC',
   description: 'This is test page c in other module.',
 )
