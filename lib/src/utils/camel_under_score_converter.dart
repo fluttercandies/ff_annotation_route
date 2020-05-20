@@ -53,7 +53,7 @@ String camelName(String name) {
     } else {
       if (!isNullOrWhiteSpace(name)) {
         result.write(camel.substring(0, 1).toUpperCase());
-        result.write(camel.substring(1).toLowerCase());
+        result.write(camel.substring(1));
       }
     }
   }
@@ -80,7 +80,7 @@ String upcaseCamelName(String name) {
   for (final String camel in camels) {
     if (!isNullOrWhiteSpace(name)) {
       result.write(camel.substring(0, 1).toUpperCase());
-      result.write(camel.substring(1).toLowerCase());
+      result.write(camel.substring(1));
     }
   }
 
