@@ -32,6 +32,7 @@ RouteResult getRouteResult({String name, Map<String, dynamic> arguments}) {
         ),
         routeName: 'testPageB',
         description: 'This is test page B.',
+        exts: <String, dynamic>{'test': 1, 'test1': 'string'},
       );
     case 'flutterCandies://testPageC':
       return RouteResult(
@@ -62,6 +63,7 @@ class RouteResult {
     this.routeName = '',
     this.pageRouteType,
     this.description = '',
+    this.exts,
   });
 
   /// The Widget return base on route
@@ -78,6 +80,13 @@ class RouteResult {
 
   /// The description of route
   final String description;
+
+  /// The extend arguments
+  final Map<String, dynamic> exts;
 }
 
-enum PageRouteType { material, cupertino, transparent }
+enum PageRouteType {
+  material,
+  cupertino,
+  transparent,
+}

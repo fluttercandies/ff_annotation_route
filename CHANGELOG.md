@@ -1,3 +1,7 @@
+## 3.1.3
+
+- Fix Map<String,dynamic> exts for FFRoute are not generated.
+
 ## 3.1.2
 
 - Fix duplicate generate helper

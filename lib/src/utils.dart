@@ -22,6 +22,7 @@ class RouteResult {
     this.routeName = '',
     this.pageRouteType,
     this.description = '',
+    this.exts,
   });
 
   /// The Widget return base on route
@@ -38,9 +39,12 @@ class RouteResult {
 
   /// The description of route
   final String description;
+
+  /// The extend arguments
+  final Map<String,dynamic> exts;
 }
 
-enum PageRouteType { material, cupertino, transparent }
+enum PageRouteType { material, cupertino, transparent, }
 """;
 
 String routeHelper(String name, bool routeSettingsNoArguments,
