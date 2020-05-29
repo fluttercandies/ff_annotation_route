@@ -8,10 +8,10 @@ Languages: [English](README.md) | [中文简体](README-ZH.md)
 
 Provide a route generator to create route map quickly by annotations.
 
-- [ff_annotation_route](#ffannotationroute)
+- [ff_annotation_route](#ff_annotation_route)
   - [Description](#description)
   - [Usage](#usage)
-    - [Add packages to dev_dependencies](#add-packages-to-devdependencies)
+    - [Add packages to dev_dependencies](#add-packages-to-dev_dependencies)
     - [Add annotation](#add-annotation)
       - [Empty Constructor](#empty-constructor)
       - [Constructor with arguments](#constructor-with-arguments)
@@ -79,15 +79,16 @@ class PicSwiper extends StatefulWidget {
 
 #### FFRoute
 
-| Parameter     | Description                                                          | Default  |
-| ------------- | -------------------------------------------------------------------- | -------- |
-| name          | The name of the route (e.g., "/settings").                           | required |
-| argumentNames | Arguments name passed to `FFRoute`. Pass with double quote (") only. | -        |
-| showStatusBar | Whether to show the status bar.                                      | true     |
-| routeName     | The route name to track page.                                        | ''       |
-| pageRouteType | The type of page route.(material, cupertino, transparent)            | -        |
-| description   | The description of the route.                                        | ''       |
-| exts          | The extend arguments.                                                | -        |
+| Parameter     | Description                                               | Default  |
+| ------------- | --------------------------------------------------------- | -------- |
+| name          | The name of the route (e.g., "/settings").                | required |
+| argumentNames | Arguments name passed to `FFRoute`.                       | -        |
+| argumentTypes | The types of arguments.                                   | -        |
+| showStatusBar | Whether to show the status bar.                           | true     |
+| routeName     | The route name to track page.                             | ''       |
+| pageRouteType | The type of page route.(material, cupertino, transparent) | -        |
+| description   | The description of the route.                             | ''       |
+| exts          | The extend arguments.                                     | -        |
 
 ### Generate Route File
 
@@ -125,8 +126,8 @@ Available commands:
 | -g, --git package1,package2 | Whether scan git lib,you should specify package names and split multiple by ','.                                              |
 | --package                   | Is this a package.                                                                                                            |
 | --no-is-initial-route       | Whether RouteSettings has isInitialRoute(for higher flutter sdk).                                                             |
-| -o --output                 | The path of main project route file and helper file. it is relative to the lib directory.                                                                                          |
-| -rfo --routes-file-output   | The path of routes file.It is relative to the lib directory.                                                                             |
+| -o --output                 | The path of main project route file and helper file. it is relative to the lib directory.                                     |
+| -rfo --routes-file-output   | The path of routes file.It is relative to the lib directory.                                                                  |
 
 ### Main.dart
 

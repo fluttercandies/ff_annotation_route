@@ -1,3 +1,9 @@
+## 3.2.0
+
+- Change style of save commands.
+- Add argumentTypes for FFRoute.
+- Add name for RouteResult.
+  
 ## 3.1.3
 
 - Fix Map<String,dynamic> exts for FFRoute are not generated.

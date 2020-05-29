@@ -24,7 +24,7 @@ class RouteInfo {
 
   String get caseString {
     return '''    case ${ffRoute.name}:
-      return RouteResult(widget: $constructor, ${ffRoute.showStatusBar != null ? 'showStatusBar: ${ffRoute.showStatusBar},' : ''} ${ffRoute.routeName != null ? 'routeName: ${ffRoute.routeName},' : ''} ${ffRoute.pageRouteType != null ? 'pageRouteType: ${ffRoute.pageRouteType},' : ''} ${ffRoute.description != null ? 'description: ${ffRoute.description},' : ''} ${ffRoute.exts != null ? 'exts:<String,dynamic>${json.encode(ffRoute.exts)},' : ''});\n''';
+      return RouteResult(name: name, widget: $constructor, ${ffRoute.showStatusBar != null ? 'showStatusBar: ${ffRoute.showStatusBar},' : ''} ${ffRoute.routeName != null ? 'routeName: ${ffRoute.routeName},' : ''} ${ffRoute.pageRouteType != null ? 'pageRouteType: ${ffRoute.pageRouteType},' : ''} ${ffRoute.description != null ? 'description: ${ffRoute.description},' : ''} ${ffRoute.exts != null ? 'exts:<String,dynamic>${json.encode(ffRoute.exts)},' : ''});\n''';
   }
 
   @override

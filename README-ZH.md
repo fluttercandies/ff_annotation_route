@@ -10,19 +10,19 @@ Languages: [English](README.md) | [中文简体](README-ZH.md)
 
 通过注解快速完成路由映射.
 
-- [ff_annotation_route](#ffannotationroute)
-  - [描述](#%e6%8f%8f%e8%bf%b0)
-  - [使用](#%e4%bd%bf%e7%94%a8)
-    - [增加引用](#%e5%a2%9e%e5%8a%a0%e5%bc%95%e7%94%a8)
-    - [添加注解](#%e6%b7%bb%e5%8a%a0%e6%b3%a8%e8%a7%a3)
-      - [空构造](#%e7%a9%ba%e6%9e%84%e9%80%a0)
-      - [带参数构造](#%e5%b8%a6%e5%8f%82%e6%95%b0%e6%9e%84%e9%80%a0)
+- [ff_annotation_route](#ff_annotation_route)
+  - [描述](#描述)
+  - [使用](#使用)
+    - [增加引用](#增加引用)
+    - [添加注解](#添加注解)
+      - [空构造](#空构造)
+      - [带参数构造](#带参数构造)
       - [FFRoute](#ffroute)
-    - [生成文件](#%e7%94%9f%e6%88%90%e6%96%87%e4%bb%b6)
-      - [环境](#%e7%8e%af%e5%a2%83)
-      - [激活](#%e6%bf%80%e6%b4%bb)
-      - [执行命令](#%e6%89%a7%e8%a1%8c%e5%91%bd%e4%bb%a4)
-      - [命令参数](#%e5%91%bd%e4%bb%a4%e5%8f%82%e6%95%b0)
+    - [生成文件](#生成文件)
+      - [环境](#环境)
+      - [激活](#激活)
+      - [执行命令](#执行命令)
+      - [命令参数](#命令参数)
     - [Main.dart](#maindart)
     - [Push](#push)
       - [Push name](#push-name)
@@ -84,7 +84,8 @@ class PicSwiper extends StatefulWidget {
 | Parameter     | Description                                   | Default  |
 | ------------- | --------------------------------------------- | -------- |
 | name          | 路由的名字 (e.g., "/settings").               | required |
-| argumentNames | 路由的参数的名字 (只能使用")                  | -        |
+| argumentNames | 路由的参数的名字                              | -        |
+| argumentTypes | 参数的类型，用于生成Constants方便查看.        | -        |
 | showStatusBar | 是否显示状态栏                                | true     |
 | routeName     | 用于埋点收集数据的页面名字                    | ''       |
 | pageRouteType | 路由的类型 (material, cupertino, transparent) | -        |

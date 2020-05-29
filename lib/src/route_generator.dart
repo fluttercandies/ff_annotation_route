@@ -94,6 +94,7 @@ class RouteGenerator {
 
                 String name;
                 List<String> argumentNames;
+                List<String> argumentTypes;
                 bool showStatusBar;
                 String routeName;
                 PageRouteType pageRouteType;
@@ -140,6 +141,19 @@ class RouteGenerator {
                                     : it.substring(1, it.length - 1))
                             .toList();
                         break;
+                      case 'argumentTypes:':
+                        source = source.substring(source.indexOf('['));
+                        argumentTypes = source
+                            .replaceAll(RegExp('\\[|\\]'), '')
+                            .split(',')
+                            .map((String it) => it.trim())
+                            .where((String it) => it.length > 2)
+                            .map((String it) =>
+                                it.startsWith("'''") && it.endsWith("'''")
+                                    ? it.substring(3, it.length - 3)
+                                    : it.substring(1, it.length - 1))
+                            .toList();
+                        break;
                       case 'pageRouteType:':
                         pageRouteType = PageRouteType.values.firstWhere(
                           (PageRouteType type) => type.toString() == source,
@@ -170,6 +184,7 @@ class RouteGenerator {
                     pageRouteType: pageRouteType,
                     description: description,
                     exts: exts,
+                    argumentTypes: argumentTypes,
                   ),
                 );
 
@@ -324,6 +339,7 @@ class RouteGenerator {
     final String _routeName = _route.routeName.replaceAll('\"', '');
     final String _description = _route.description;
     final List<String> _arguments = _route.argumentNames;
+    final List<String> _argumentTypes = _route.argumentTypes;
     final bool _showStatusBar = _route.showStatusBar;
     final PageRouteType _pageRouteType = _route.pageRouteType;
     final Map<String, dynamic> _exts = _route.exts;
@@ -356,6 +372,10 @@ class RouteGenerator {
     if (_arguments != null) {
       sb.write('\n///');
       sb.write('\n/// [arguments] : $_arguments');
+    }
+    if (_argumentTypes != null) {
+      sb.write('\n///');
+      sb.write('\n/// [argumentTypes] : $_argumentTypes');
     }
     if (_showStatusBar != null) {
       sb.write('\n///');

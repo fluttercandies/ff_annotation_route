@@ -22,10 +22,18 @@ const String commandsFile = 'ff_annotation_route_commands';
 
 void main(List<String> arguments) {
   final bool argumentsIsEmpty = arguments.isEmpty;
+  bool oldStyle=false;
   if (arguments.isEmpty) {
     final io.File file = io.File(join('./', commandsFile));
     if (file.existsSync()) {
-      arguments = file.readAsStringSync().split(',');
+      final String content = file.readAsStringSync();
+      if (content.contains(',')) {
+        //old style
+        arguments = content.split(',');
+        oldStyle=true;
+      } else {
+        arguments = content.split(' ');
+      }
     }
   }
 
@@ -166,7 +174,7 @@ void main(List<String> arguments) {
     orElse: () => null,
   );
 
-  if (saveCommand != null) {
+  if (saveCommand != null || oldStyle) {
     final io.File file = io.File(join(packageGraph.root.path, commandsFile));
     if (!file.existsSync()) {
       file.createSync();
@@ -174,10 +182,28 @@ void main(List<String> arguments) {
 
     commands.remove(saveCommand);
 
-    file.writeAsStringSync(
-        commands.toString().replaceAll('[', '').replaceAll(']', ''));
+    // file.writeAsStringSync(
+    //     commands.toString().replaceAll('[', '').replaceAll(']', ''));
+
+    final StringBuffer sb = StringBuffer();
+
+    for (final Command command in commands) {
+      final String commandS = command.toString();
+      if (commandS.contains(',')) {
+        for (final String item in commandS.split(',')) {
+          sb.write('$item ');
+        }
+      } else {
+        sb.write('$commandS ');
+      }
+    }
+
+    final String saveCommands=sb.toString().trim();
+
+    file.writeAsStringSync(saveCommands);
+
     print(green.wrap(
-        'Save commands successfully: $commands.\n\nYou can run "ff_route" directly in next time.'));
+        'Save commands successfully: $saveCommands.\n\nYou can run "ff_route" directly in next time.'));
   }
 
   final Duration diff = DateTime.now().difference(before);

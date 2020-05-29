@@ -16,17 +16,20 @@ RouteResult getRouteResult({String name, Map<String, dynamic> arguments}) {
   switch (name) {
     case 'flutterCandies://mainPage':
       return RouteResult(
+        name: name,
         widget: MainPage(),
         routeName: 'MainPage',
       );
     case 'flutterCandies://testPageA':
       return RouteResult(
+        name: name,
         widget: TestPageA(),
         routeName: 'testPageA',
         description: 'This is test page A.',
       );
     case 'flutterCandies://testPageB':
       return RouteResult(
+        name: name,
         widget: TestPageB(
           argument: arguments['argument'],
         ),
@@ -36,12 +39,14 @@ RouteResult getRouteResult({String name, Map<String, dynamic> arguments}) {
       );
     case 'flutterCandies://testPageC':
       return RouteResult(
+        name: name,
         widget: TestPageC(),
         routeName: 'testPageC',
         description: 'This is test page c in other module.',
       );
     case 'fluttercandies://picswiper':
       return RouteResult(
+        name: name,
         widget: PicSwiper(
           index: arguments['index'],
           pics: arguments['pics'],
@@ -52,12 +57,13 @@ RouteResult getRouteResult({String name, Map<String, dynamic> arguments}) {
         pageRouteType: PageRouteType.transparent,
       );
     default:
-      return const RouteResult();
+      return const RouteResult(name: 'flutterCandies://notfound');
   }
 }
 
 class RouteResult {
   const RouteResult({
+    @required this.name,
     this.widget,
     this.showStatusBar = true,
     this.routeName = '',
@@ -65,6 +71,11 @@ class RouteResult {
     this.description = '',
     this.exts,
   });
+
+  /// The name of the route (e.g., "/settings").
+  ///
+  /// If null, the route is anonymous.
+  final String name;
 
   /// The Widget return base on route
   final Widget widget;

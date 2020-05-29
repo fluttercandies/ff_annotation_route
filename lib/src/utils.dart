@@ -11,12 +11,14 @@ const String rootFile = """
 RouteResult getRouteResult({String name, Map<String, dynamic> arguments}) {
   switch (name) {
 {0}   default:
-      return const RouteResult();
+      return const RouteResult(name:'flutterCandies://notfound');
   }
 }
 
 class RouteResult {
   const RouteResult({
+    @required
+    this.name,
     this.widget,
     this.showStatusBar = true,
     this.routeName = '',
@@ -24,6 +26,11 @@ class RouteResult {
     this.description = '',
     this.exts,
   });
+  
+  /// The name of the route (e.g., "/settings").
+  ///
+  /// If null, the route is anonymous.
+  final String name;
 
   /// The Widget return base on route
   final Widget widget;

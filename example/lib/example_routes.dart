@@ -39,6 +39,8 @@ class Routes {
   ///
   /// [arguments] : [argument]
   ///
+  /// [argumentTypes] : [String]
+  ///
   /// [exts] : {test: 1, test1: string}
   static const String flutterCandiesTestPageB = 'flutterCandies://testPageB';
 

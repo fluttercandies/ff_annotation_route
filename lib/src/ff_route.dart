@@ -10,6 +10,7 @@ class FFRoute {
     this.pageRouteType,
     this.description = '',
     this.exts,
+    this.argumentTypes,
   }) : assert(name != null);
 
   /// The name of the route (e.g., "/settings").
@@ -17,7 +18,7 @@ class FFRoute {
   /// If null, the route is anonymous.
   final String name;
 
-  /// The argument names passed to  FFRoute.
+  /// The argument names passed to FFRoute.
   final List<String> argumentNames;
 
   /// Whether show status bar.
@@ -31,13 +32,33 @@ class FFRoute {
 
   /// The description of route
   final String description;
-  
+
   /// The extend arguments
-  final Map<String,dynamic> exts;
+  final Map<String, dynamic> exts;
+
+  /// The types of arguments.
+  ///
+  /// It's easily to see type of argument from Route Constants
+  ///
+  /// "This is test page B."
+  ///
+  /// [name] : flutterCandies://testPageB
+  ///
+  /// [routeName] : testPageB
+  ///
+  /// [description] : "This is test page B."
+  ///
+  /// [arguments] : [argument]
+  ///
+  /// [argumentTypes] : [String]
+  ///
+  /// [exts] : {test: 1, test1: string}
+  /// static const String flutterCandiesTestPageB = 'flutterCandies://testPageB';
+  final List<String> argumentTypes;
 
   @override
   String toString() {
-    return 'FFRoute{name: $name, argumentNames: $argumentNames, showStatusBar: $showStatusBar, routeName: $routeName, pageRouteType: $pageRouteType, description: $description,exts: $exts,}';
+    return 'FFRoute{name: $name, argumentNames: $argumentNames, showStatusBar: $showStatusBar, routeName: $routeName, pageRouteType: $pageRouteType, description: $description,exts: $exts,argumentTypes:$argumentTypes,}';
   }
 }
 

@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
   routeName: 'testPageB',
   description: 'This is test page B.',
   argumentNames: <String>['argument'],
+  argumentTypes: <String>['String'],
   exts: <String, dynamic>{
     'test': 1,
     'test1': 'string',
