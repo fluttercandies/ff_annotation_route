@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:dart_style/dart_style.dart';
 import 'package:io/ansi.dart';
 
-final DartFormatter formatter = DartFormatter();
+final DartFormatter _formatter = DartFormatter();
 
 Future<void> formatFile(File file) async {
   if (file == null) {
@@ -19,6 +19,15 @@ Future<void> formatFile(File file) async {
     arguments: 'format ${file?.absolute?.path}',
     runInShell: true,
   );
+}
+
+String formatDart(String input) {
+  try {
+    return _formatter.format(input);
+  } catch (e) {
+    print(e);
+  }
+  return input;
 }
 
 void processRunSync({

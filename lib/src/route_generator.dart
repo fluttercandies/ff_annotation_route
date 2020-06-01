@@ -276,7 +276,7 @@ class RouteGenerator {
 
     if (sb.isNotEmpty) {
       file.createSync();
-      file.writeAsStringSync(formatter.format(fileHeader +
+      file.writeAsStringSync(formatDart(fileHeader +
           '\n' +
           (isRoot ? 'import \'package:flutter/widgets.dart\';\n\n' : '') +
           sb.toString()));
@@ -326,7 +326,7 @@ class RouteGenerator {
       }
       if (constantsSb.isNotEmpty) {
         file.createSync(recursive: true);
-        file.writeAsStringSync(formatter.format(constantsSb.toString()));
+        file.writeAsStringSync(formatDart(constantsSb.toString()));
         print('Generate : ${p.relative(file.path, from: packageNode.path)}');
       }
     }
@@ -420,7 +420,7 @@ class RouteGenerator {
 
     file.createSync(recursive: true);
 
-    file.writeAsStringSync(formatter.format('$fileHeader\n'
+    file.writeAsStringSync(formatDart('$fileHeader\n'
         '${routeHelper(
       packageNode.name,
       routeSettingsNoArguments,

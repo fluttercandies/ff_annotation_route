@@ -1,3 +1,7 @@
+## 3.2.1
+
+- Try catch DartFormatter.
+  
 ## 3.2.0
 
 - Change style of save commands.
