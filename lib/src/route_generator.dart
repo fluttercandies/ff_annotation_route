@@ -14,6 +14,7 @@ import 'package_graph.dart';
 import 'route_info.dart';
 import 'utils.dart';
 import 'utils/camel_under_score_converter.dart';
+import 'utils/convert.dart';
 import 'utils/format.dart';
 
 class RouteGenerator {
@@ -108,51 +109,23 @@ class RouteGenerator {
                     if (source == 'null') {
                       continue;
                     }
-                    // using single quotes has greater possibility.
-                    if (source.length >= 2 &&
-                        source.startsWith("'") &&
-                        source.endsWith("'")) {
-                      source = '"${source.substring(1, source.length - 1)}"';
-                    } else if (source.startsWith("'''") &&
-                        source.endsWith("'''")) {
-                      source = '"${source.substring(3, source.length - 3)}"';
-                    }
                     final String key = item.name.toSource();
+
                     switch (key) {
                       case 'name:':
-                        name = source;
+                        name = toT<String>(item.expression);
                         break;
                       case 'routeName:':
-                        routeName = source;
+                        routeName = toT<String>(item.expression);
                         break;
                       case 'showStatusBar:':
-                        showStatusBar = source == 'true';
+                        showStatusBar = toT<bool>(item.expression);
                         break;
                       case 'argumentNames:':
-                        source = source.substring(source.indexOf('['));
-                        argumentNames = source
-                            .replaceAll(RegExp('\\[|\\]'), '')
-                            .split(',')
-                            .map((String it) => it.trim())
-                            .where((String it) => it.length > 2)
-                            .map((String it) =>
-                                it.startsWith("'''") && it.endsWith("'''")
-                                    ? it.substring(3, it.length - 3)
-                                    : it.substring(1, it.length - 1))
-                            .toList();
+                        argumentNames = toT<List<String>>(item.expression);
                         break;
                       case 'argumentTypes:':
-                        source = source.substring(source.indexOf('['));
-                        argumentTypes = source
-                            .replaceAll(RegExp('\\[|\\]'), '')
-                            .split(',')
-                            .map((String it) => it.trim())
-                            .where((String it) => it.length > 2)
-                            .map((String it) =>
-                                it.startsWith("'''") && it.endsWith("'''")
-                                    ? it.substring(3, it.length - 3)
-                                    : it.substring(1, it.length - 1))
-                            .toList();
+                        argumentTypes = toT<List<String>>(item.expression);
                         break;
                       case 'pageRouteType:':
                         pageRouteType = PageRouteType.values.firstWhere(
@@ -161,7 +134,7 @@ class RouteGenerator {
                         );
                         break;
                       case 'description:':
-                        description = source;
+                        description = toT<String>(item.expression);
                         break;
                       case 'exts:':
                         source = source.substring(source.indexOf('{'));
@@ -226,7 +199,6 @@ class RouteGenerator {
     if (file.existsSync()) {
       file.deleteSync();
     }
-    file.createSync(recursive: true);
     if (isRoot && _fileInfoList.isEmpty && (nodes?.isEmpty ?? true)) {
       return;
     }
@@ -246,7 +218,6 @@ class RouteGenerator {
     /// Create route generator
     if (isRoot) {
       final StringBuffer caseSb = StringBuffer();
-      final List<String> routeNames = <String>[];
       final List<RouteInfo> routes = _fileInfoList
           .map((FileInfo it) => it.routes)
           .expand((List<RouteInfo> it) => it)
@@ -264,18 +235,17 @@ class RouteGenerator {
           a.ffRoute.name.compareTo(b.ffRoute.name));
 
       for (final RouteInfo it in routes) {
-        routeNames.add(it.ffRoute.name.replaceAll('\"', ''));
-        caseSb.write(it.caseString.replaceAll('"', '\''));
+        caseSb.write(it.caseString);
       }
 
       sb.write(rootFile.replaceAll('{0}', caseSb.toString()));
 
       _generateRoutesFile(generateRouteConstants, routesFileOutputPath,
-          generateRouteNames, routeNames, routes);
+          generateRouteNames, routes);
     }
 
     if (sb.isNotEmpty) {
-      file.createSync();
+      file.createSync(recursive: true);
       file.writeAsStringSync(formatDart(fileHeader +
           '\n' +
           (isRoot ? 'import \'package:flutter/widgets.dart\';\n\n' : '') +
@@ -288,7 +258,6 @@ class RouteGenerator {
       bool generateRouteConstants,
       String routesFileOutputPath,
       bool generateRouteNames,
-      List<String> routeNames,
       List<RouteInfo> routes) {
     if (generateRouteConstants || generateRouteNames) {
       final StringBuffer constantsSb = StringBuffer();
@@ -308,8 +277,15 @@ class RouteGenerator {
 
       if (generateRouteNames) {
         constantsSb.write(fileHeader);
+
+        final StringBuffer routeNamesString = StringBuffer();
+        for (final RouteInfo  item in routes) {
+          routeNamesString.write(safeToString(item.ffRoute.name));
+          routeNamesString.write(',');
+        }
+
         constantsSb.write(
-            'const List<String> routeNames = <String>${json.encode(routeNames).replaceAll('"', '\'')};');
+            'const List<String> routeNames = <String>[${routeNamesString.toString()}];');
         constantsSb.write('\n');
       }
 
@@ -335,9 +311,9 @@ class RouteGenerator {
   void _generateRouteConstant(RouteInfo route, StringBuffer sb) {
     final FFRoute _route = route.ffRoute;
 
-    final String _name = _route.name.replaceAll('\"', '');
-    final String _routeName = _route.routeName.replaceAll('\"', '');
-    final String _description = _route.description;
+    final String _name = safeToString(_route.name);
+    final String _routeName = safeToString(_route.routeName);
+    final String _description = safeToString(_route.description);
     final List<String> _arguments = _route.argumentNames;
     final List<String> _argumentTypes = _route.argumentTypes;
     final bool _showStatusBar = _route.showStatusBar;
@@ -349,6 +325,7 @@ class RouteGenerator {
     String _constant;
     _constant = camelName(_name)
         .replaceAll('\"', '')
+        .replaceAll('\'', '')
         .replaceAll('://', '_')
         .replaceAll('/', '_')
         .replaceAll('.', '_')
@@ -393,7 +370,7 @@ class RouteGenerator {
 
     sb.write(
       '\nstatic const String '
-      '${camelName(_constant)} = \'$_name\';\n\n',
+      '${camelName(_constant)} = $_name;\n\n',
     );
   }
 

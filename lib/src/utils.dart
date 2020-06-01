@@ -226,5 +226,3 @@ class FFRouteSettings extends RouteSettings {
   final bool showStatusBar;
 }
 """;
-
-

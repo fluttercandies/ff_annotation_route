@@ -1,3 +1,7 @@
+## 3.3.0
+
+- Do better for quotation marks.
+  
 ## 3.2.1
 
 - Try catch DartFormatter.

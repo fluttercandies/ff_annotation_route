@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:ff_annotation_route/ff_annotation_route.dart';
 
-import '../example_route_constants.dart';
+import '../example_routes.dart';
+
 
 
 @FFRoute(
@@ -11,7 +12,7 @@ import '../example_route_constants.dart';
 class MainPage extends StatelessWidget {
   MainPage()
       : routes = routeNames.toList()
-          ..remove('fluttercandies://mainpage')
+          ..remove('flutterCandies://mainPage')
           /// just demo
           ..remove('fluttercandies://picswiper');
   final List<String> routes;

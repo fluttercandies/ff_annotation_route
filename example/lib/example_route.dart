@@ -20,22 +20,24 @@ RouteResult getRouteResult({String name, Map<String, dynamic> arguments}) {
         widget: MainPage(),
         routeName: 'MainPage',
       );
+    case '''flutterCandies://testPage' "B''':
+      return RouteResult(
+        name: name,
+        widget: TestPageB(
+          argument: arguments["argument '"],
+        ),
+        showStatusBar: true,
+        routeName: 'testPageB ',
+        pageRouteType: PageRouteType.material,
+        description: "This is test ' page B.",
+        exts: <String, dynamic>{'test': 1, 'test1': 'string'},
+      );
     case 'flutterCandies://testPageA':
       return RouteResult(
         name: name,
         widget: TestPageA(),
         routeName: 'testPageA',
         description: 'This is test page A.',
-      );
-    case 'flutterCandies://testPageB':
-      return RouteResult(
-        name: name,
-        widget: TestPageB(
-          argument: arguments['argument'],
-        ),
-        routeName: 'testPageB',
-        description: 'This is test page B.',
-        exts: <String, dynamic>{'test': 1, 'test1': 'string'},
       );
     case 'flutterCandies://testPageC':
       return RouteResult(

@@ -4,60 +4,65 @@
 // **************************************************************************
 const List<String> routeNames = <String>[
   'flutterCandies://mainPage',
+  '''flutterCandies://testPage' "B''',
   'flutterCandies://testPageA',
-  'flutterCandies://testPageB',
   'flutterCandies://testPageC',
-  'fluttercandies://picswiper'
+  'fluttercandies://picswiper',
 ];
 
 class Routes {
   const Routes._();
 
-  /// MainPage
+  /// 'MainPage'
   ///
-  /// [name] : flutterCandies://mainPage
+  /// [name] : 'flutterCandies://mainPage'
   ///
-  /// [routeName] : MainPage
+  /// [routeName] : 'MainPage'
   static const String flutterCandiesMainPage = 'flutterCandies://mainPage';
 
-  /// "This is test page A."
+  /// "This is test ' page B."
   ///
-  /// [name] : flutterCandies://testPageA
+  /// [name] : '''flutterCandies://testPage' "B'''
   ///
-  /// [routeName] : testPageA
+  /// [routeName] : 'testPageB '
   ///
-  /// [description] : "This is test page A."
-  static const String flutterCandiesTestPageA = 'flutterCandies://testPageA';
-
-  /// "This is test page B."
+  /// [description] : "This is test ' page B."
   ///
-  /// [name] : flutterCandies://testPageB
-  ///
-  /// [routeName] : testPageB
-  ///
-  /// [description] : "This is test page B."
-  ///
-  /// [arguments] : [argument]
+  /// [arguments] : [argument ']
   ///
   /// [argumentTypes] : [String]
   ///
+  /// [showStatusBar] : true
+  ///
+  /// [pageRouteType] : PageRouteType.material
+  ///
   /// [exts] : {test: 1, test1: string}
-  static const String flutterCandiesTestPageB = 'flutterCandies://testPageB';
+  static const String flutterCandiesTestPageB =
+      '''flutterCandies://testPage' "B''';
 
-  /// "This is test page c in other module."
+  /// 'This is test page A.'
   ///
-  /// [name] : flutterCandies://testPageC
+  /// [name] : 'flutterCandies://testPageA'
   ///
-  /// [routeName] : testPageC
+  /// [routeName] : 'testPageA'
   ///
-  /// [description] : "This is test page c in other module."
+  /// [description] : 'This is test page A.'
+  static const String flutterCandiesTestPageA = 'flutterCandies://testPageA';
+
+  /// 'This is test page c in other module.'
+  ///
+  /// [name] : 'flutterCandies://testPageC'
+  ///
+  /// [routeName] : 'testPageC'
+  ///
+  /// [description] : 'This is test page c in other module.'
   static const String flutterCandiesTestPageC = 'flutterCandies://testPageC';
 
-  /// PicSwiper
+  /// 'PicSwiper'
   ///
-  /// [name] : fluttercandies://picswiper
+  /// [name] : 'fluttercandies://picswiper'
   ///
-  /// [routeName] : PicSwiper
+  /// [routeName] : 'PicSwiper'
   ///
   /// [arguments] : [index, pics, tuChongItem]
   ///

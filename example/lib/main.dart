@@ -2,8 +2,8 @@ import 'package:example/src/no_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'example_route_constants.dart';
 import 'example_route_helper.dart';
+import 'example_routes.dart';
 
 void main() => runApp(MyApp());
 
@@ -51,7 +51,7 @@ class MyApp extends StatelessWidget {
           }
         })
       ],
-      initialRoute: Routes.flutterCandiesMainpage,
+      initialRoute: Routes.flutterCandiesMainPage,
       onGenerateRoute: (RouteSettings settings) =>
           onGenerateRouteHelper(settings, notFoundFallback: NoRoute()),
     );
