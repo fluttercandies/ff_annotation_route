@@ -198,7 +198,7 @@ Route<dynamic> onGenerateRouteHelper(
             page,
       );
     default:
-      return kIsWeb || (!Platform.isIOS && !Platform.isMacOS)
+      return kIsWeb || !Platform.isIOS
           ? MaterialPageRoute<dynamic>(
               settings: settings,
               builder: (BuildContext _) => page,
