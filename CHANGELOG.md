@@ -1,3 +1,7 @@
+## 3.3.1
+
+- Capable with Flutter For the Web.
+
 ## 3.3.0
 
 - Do better for quotation marks.
