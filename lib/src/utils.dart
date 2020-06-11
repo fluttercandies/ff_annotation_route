@@ -61,6 +61,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 
 import '${name}_route.dart';
@@ -195,12 +196,12 @@ Route<dynamic> onGenerateRouteHelper(
             page,
       );
     default:
-      return Platform.isIOS
-          ? CupertinoPageRoute<dynamic>(
+      return kIsWeb || (!Platform.isIOS && !Platform.isMacOS)
+          ? MaterialPageRoute<dynamic>(
               settings: settings,
               builder: (BuildContext _) => page,
             )
-          : MaterialPageRoute<dynamic>(
+          : CupertinoPageRoute<dynamic>(
               settings: settings,
               builder: (BuildContext _) => page,
             );
