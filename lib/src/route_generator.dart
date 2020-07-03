@@ -63,8 +63,9 @@ class RouteGenerator {
         if (file.type == FileSystemEntityType.file &&
             item.path.endsWith('.dart')) {
           final CompilationUnit astRoot = parseFile(
-              path: item.path,
-              featureSet: FeatureSet.fromEnableFlags(<String>[])).unit;
+            path: item.path,
+            featureSet: FeatureSet.fromEnableFlags(<String>[]),
+          ).unit;
 
           FileInfo fileInfo;
           for (final CompilationUnitMember declaration

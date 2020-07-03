@@ -1,3 +1,7 @@
+## 3.3.2
+
+- Capable with Flutter For the Web.
+
 ## 3.3.1
 
 - Fix build error from [analyzer].

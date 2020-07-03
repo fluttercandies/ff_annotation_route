@@ -45,7 +45,6 @@ void generate(
   if (rootAnnotationRouteEnable) {
     root?.scanLib(outputPath);
   }
-  //final io.File routeFile =
   root?.generateFile(
     nodes: nodes,
     generateRouteNames: generateRouteNames,
@@ -53,7 +52,6 @@ void generate(
     generateRouteConstants: generateRouteConstants,
     routesFileOutputPath: routesFileOutputPath,
   );
-  //final io.File helperFile =
   root?.generateHelperFile(
     nodes: nodes,
     routeSettingsNoArguments: routeSettingsNoArguments,
@@ -61,9 +59,4 @@ void generate(
     routeSettingsNoIsInitialRoute: routeSettingsNoIsInitialRoute,
     outputPath: outputPath,
   );
-
-  // formatFile(routeFile);
-  // if (routeFile != null) {
-  //   formatFile(helperFile);
-  // }
 }

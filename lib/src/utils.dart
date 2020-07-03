@@ -54,13 +54,16 @@ class RouteResult {
 enum PageRouteType { material, cupertino, transparent, }
 """;
 
-String routeHelper(String name, bool routeSettingsNoArguments,
-        bool routeSettingsNoIsInitialRoute) =>
-    """
+String routeHelper(
+  String name,
+  bool routeSettingsNoArguments,
+  bool routeSettingsNoIsInitialRoute,
+) => """
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 
 import '${name}_route.dart';
@@ -112,21 +115,21 @@ class FFTransparentPageRoute<T> extends PageRouteBuilder<T> {
     Color barrierColor,
     String barrierLabel,
     bool maintainState = true,
-  })  : assert(pageBuilder != null),
-        assert(transitionsBuilder != null),
-        assert(barrierDismissible != null),
-        assert(maintainState != null),
-        super(
-          settings: settings,
-          opaque: false,
-          pageBuilder: pageBuilder,
-          transitionsBuilder: transitionsBuilder,
-          transitionDuration: transitionDuration,
-          barrierDismissible: barrierDismissible,
-          barrierColor: barrierColor,
-          barrierLabel: barrierLabel,
-          maintainState: maintainState,
-        );
+  }) : assert(pageBuilder != null),
+       assert(transitionsBuilder != null),
+       assert(barrierDismissible != null),
+       assert(maintainState != null),
+       super(
+         settings: settings,
+         opaque: false,
+         pageBuilder: pageBuilder,
+         transitionsBuilder: transitionsBuilder,
+         transitionDuration: transitionDuration,
+         barrierDismissible: barrierDismissible,
+         barrierColor: barrierColor,
+         barrierLabel: barrierLabel,
+         maintainState: maintainState,
+       );
 }
 
 Widget _defaultTransitionsBuilder(
@@ -195,12 +198,12 @@ Route<dynamic> onGenerateRouteHelper(
             page,
       );
     default:
-      return Platform.isIOS
-          ? CupertinoPageRoute<dynamic>(
+      return kIsWeb || !Platform.isIOS
+          ? MaterialPageRoute<dynamic>(
               settings: settings,
               builder: (BuildContext _) => page,
             )
-          : MaterialPageRoute<dynamic>(
+          : CupertinoPageRoute<dynamic>(
               settings: settings,
               builder: (BuildContext _) => page,
             );
@@ -214,12 +217,12 @@ class FFRouteSettings extends RouteSettings {
     this.routeName,
     this.showStatusBar,
     String name,
-     ${routeSettingsNoArguments ? '' : 'Object arguments,'}
-     ${routeSettingsNoIsInitialRoute ? '' : 'bool isInitialRoute = false,'}   
+    ${routeSettingsNoArguments ? '' : 'Object arguments,'}
+    ${routeSettingsNoIsInitialRoute ? '' : 'bool isInitialRoute = false,'}   
   }) : super(
           name: name,
-           ${routeSettingsNoIsInitialRoute ? '' : 'isInitialRoute:isInitialRoute,'}  
-            ${routeSettingsNoArguments ? '' : 'arguments:arguments,'}
+          ${routeSettingsNoIsInitialRoute ? '' : 'isInitialRoute:isInitialRoute,'}  
+          ${routeSettingsNoArguments ? '' : 'arguments:arguments,'}
         );
   
   final String routeName;
