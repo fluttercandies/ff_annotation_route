@@ -1,11 +1,12 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:analyzer/dart/analysis/features.dart';
+import 'package:analyzer/dart/analysis/utilities.dart';
 import 'package:analyzer/dart/ast/ast.dart';
 
 // ignore: implementation_imports
 import 'package:analyzer/src/dart/ast/ast.dart';
-import 'package:ff_annotation_route/src/utils/ast.dart';
 import 'package:path/path.dart' as p;
 
 import 'ff_route.dart';
@@ -61,7 +62,10 @@ class RouteGenerator {
         final FileStat file = item.statSync();
         if (file.type == FileSystemEntityType.file &&
             item.path.endsWith('.dart')) {
-          final CompilationUnit astRoot = parseDartFile(item.path);
+          final CompilationUnit astRoot = parseFile(
+            path: item.path,
+            featureSet: FeatureSet.fromEnableFlags(<String>[]),
+          ).unit;
 
           FileInfo fileInfo;
           for (final CompilationUnitMember declaration
@@ -279,7 +283,7 @@ class RouteGenerator {
         constantsSb.write(fileHeader);
 
         final StringBuffer routeNamesString = StringBuffer();
-        for (final RouteInfo  item in routes) {
+        for (final RouteInfo item in routes) {
           routeNamesString.write(safeToString(item.ffRoute.name));
           routeNamesString.write(',');
         }
