@@ -1,17 +1,21 @@
+## 3.3.1
+
+- Fix build error from [analyzer].
+
 ## 3.3.0
 
 - Do better for quotation marks.
-  
+
 ## 3.2.1
 
 - Try catch DartFormatter.
-  
+
 ## 3.2.0
 
 - Change style of save commands.
 - Add argumentTypes for FFRoute.
 - Add name for RouteResult.
-  
+
 ## 3.1.3
 
 - Fix Map<String,dynamic> exts for FFRoute are not generated.
@@ -31,7 +35,7 @@
 - Add --routes-file-output command for xxx_routes.dart(is relative to the lib directory)
 - Breaking change
   Generate route names and route constant in single file(xxx_routes.dart)
-  Route constants are following camelCase rule now(suggestion from Flutter Team) 
+  Route constants are following camelCase rule now(suggestion from Flutter Team)
 
 ## 2.1.0
 
@@ -58,7 +62,7 @@
 ## 2.0.6
 
 - Fix issue about Save command for Git and Path commands.
-  
+
 ## 2.0.5
 
 - Change Git command(contains name to equal name)
@@ -68,18 +72,18 @@
 - Add new command Git(Whether scan git lib,you should specify package names and split multiple by ',')
 - Add new command Package(Is this a package.)
 - Add new command SettingsNoIsInitialRoute(Whether RouteSettings has isInitialRoute(for higher flutter sdk).)
-  
+
 ## 2.0.3
 
 - Breaking change
   Route instead of RouteSetting for RouteChange call back.
 - Demo
   Track page only for PageRoute
-  
+
 ## 2.0.2
 
 - Fix error about -na, --no-arguments.
-  
+
 ## 2.0.1
 
 - Add more friendly prompt.
