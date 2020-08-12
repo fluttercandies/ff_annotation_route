@@ -123,7 +123,7 @@ Route<dynamic> onGenerateRouteHelper(
   }
 
   if (builder != null) {
-    page = builder(page);
+    page = builder(page, routeResult);
   }
 
   switch (routeResult.pageRouteType) {
@@ -178,4 +178,4 @@ class FFRouteSettings extends RouteSettings {
 }
 
 /// Signature for a function that creates a widget, e.g.
-typedef WidgetBuilder = Widget Function(Widget child);
+typedef WidgetBuilder = Widget Function(Widget child, RouteResult routeResult);
