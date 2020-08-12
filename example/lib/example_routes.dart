@@ -7,7 +7,6 @@ const List<String> routeNames = <String>[
   '''flutterCandies://testPage' "B''',
   'flutterCandies://testPageA',
   'flutterCandies://testPageC',
-  'fluttercandies://picswiper',
 ];
 
 class Routes {
@@ -57,17 +56,4 @@ class Routes {
   ///
   /// [description] : 'This is test page c in other module.'
   static const String flutterCandiesTestPageC = 'flutterCandies://testPageC';
-
-  /// 'PicSwiper'
-  ///
-  /// [name] : 'fluttercandies://picswiper'
-  ///
-  /// [routeName] : 'PicSwiper'
-  ///
-  /// [arguments] : [index, pics, tuChongItem]
-  ///
-  /// [showStatusBar] : false
-  ///
-  /// [pageRouteType] : PageRouteType.transparent
-  static const String fluttercandiesPicswiper = 'fluttercandies://picswiper';
 }

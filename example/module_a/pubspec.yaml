@@ -10,9 +10,6 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_candies_demo_library:
-    git:
-        url: https://github.com/fluttercandies/flutter_candies_demo_library.git
 dev_dependencies:
   flutter_test:
     sdk: flutter

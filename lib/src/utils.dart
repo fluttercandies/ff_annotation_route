@@ -58,7 +58,8 @@ String routeHelper(
   String name,
   bool routeSettingsNoArguments,
   bool routeSettingsNoIsInitialRoute,
-) => """
+) =>
+    """
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -146,6 +147,7 @@ Route<dynamic> onGenerateRouteHelper(
   Widget notFoundFallback,
   ${routeSettingsNoArguments ? '@required' : ''}
   Object arguments,
+  WidgetBuilder builder,  
 }) {
   ${routeSettingsNoArguments ? '' : 'arguments??=settings.arguments;'}
   
@@ -162,7 +164,7 @@ Route<dynamic> onGenerateRouteHelper(
       showStatusBar: routeResult.showStatusBar,
     );
   }
-  final Widget page = routeResult.widget ?? notFoundFallback;
+  Widget page = routeResult.widget ?? notFoundFallback;
   if (page == null) {
     throw Exception('''Route "\${settings.name}" returned null. Route Widget must never return null, 
           maybe the reason is that route name did not match with right path.
@@ -175,6 +177,10 @@ Route<dynamic> onGenerateRouteHelper(
       return builder(page);
     }
   }
+
+  if (builder != null) {
+    page = builder(page);
+  } 
 
   switch (routeResult.pageRouteType) {
     case PageRouteType.material:
@@ -228,4 +234,7 @@ class FFRouteSettings extends RouteSettings {
   final String routeName;
   final bool showStatusBar;
 }
+
+/// Signature for a function that creates a widget, e.g.
+typedef WidgetBuilder = Widget Function(Widget child);
 """;

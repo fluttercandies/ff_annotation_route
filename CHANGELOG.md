@@ -1,3 +1,7 @@
+## 3.4.0
+
+- Add WidgetBuilder for onGenerateRouteHelper.
+
 ## 3.3.2
 
 - Capable with Flutter For the Web.
