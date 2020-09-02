@@ -1,3 +1,7 @@
+## 3.4.1
+
+- Improve optional arguments handle.
+
 ## 3.4.0
 
 - Add WidgetBuilder for onGenerateRouteHelper.
