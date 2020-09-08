@@ -211,6 +211,3 @@ Widget build(BuildContext context) {
     },
   );
 ```
-## ☕️Buy me a coffee
-
-![img](http://zmtzawqlp.gitee.io/my_images/images/qrcode.png)
