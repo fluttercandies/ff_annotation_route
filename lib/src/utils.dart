@@ -112,7 +112,7 @@ class FFTransparentPageRoute<T> extends PageRouteBuilder<T> {
     RouteSettings settings,
     @required RoutePageBuilder pageBuilder,
     RouteTransitionsBuilder transitionsBuilder = _defaultTransitionsBuilder,
-    Duration transitionDuration = const Duration(milliseconds: 300),
+    Duration transitionDuration = const Duration(milliseconds: 150),
     bool barrierDismissible = false,
     Color barrierColor,
     String barrierLabel,
@@ -140,7 +140,13 @@ Widget _defaultTransitionsBuilder(
   Animation<double> secondaryAnimation,
   Widget child,
 ) {
-  return child;
+  return FadeTransition(
+    opacity: CurvedAnimation(
+      parent: animation,
+      curve: Curves.easeOut,
+    ),
+    child: child,
+  );
 }
 
 Route<dynamic> onGenerateRouteHelper(
