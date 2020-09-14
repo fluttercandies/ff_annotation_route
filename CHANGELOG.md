@@ -1,3 +1,7 @@
+## 3.4.2+1
+
+- Solve format issue and dependencies upgrade.
+
 ## 3.4.2
 
 - Consist transparent transition with `showDialog`.
