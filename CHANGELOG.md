@@ -1,3 +1,7 @@
+## 3.4.2
+
+- Consist transparent transition with `showDialog`.
+
 ## 3.4.1
 
 - Improve optional arguments handle.
