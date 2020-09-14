@@ -242,8 +242,7 @@ DependencyType _dependencyTypeFromSource(String source) {
 /// Read the pubspec for each package in [packageLocations] and finds it's
 /// dependencies.
 Map<String, Set<String>> _parsePackageDependencies(
-    Map<String, String> packageLocations,
-    {bool skipDevDependencies = false}) {
+    Map<String, String> packageLocations,) {
   final Map<String, Set<String>> dependencies = <String, Set<String>>{};
   for (final String packageName in packageLocations.keys) {
     final YamlMap pubspec = pubspecForPath(packageLocations[packageName]);
