@@ -19,8 +19,11 @@ import 'package:io/ansi.dart';
 import 'package:path/path.dart';
 
 const String commandsFile = 'ff_annotation_route_commands';
+const String debugCommands =
+    '--route-constants --route-helper --route-names --no-is-initial-route --path example/';
 
 void main(List<String> arguments) {
+  //arguments = debugCommands.split(' ');
   final bool argumentsIsEmpty = arguments.isEmpty;
   bool oldStyle = false;
   if (arguments.isEmpty) {

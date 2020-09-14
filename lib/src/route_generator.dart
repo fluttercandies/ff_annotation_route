@@ -74,11 +74,14 @@ class RouteGenerator {
               if (metadata is AnnotationImpl &&
                   metadata.name?.name == typeOf<FFRoute>().toString() &&
                   metadata.parent is ClassDeclarationImpl) {
-                final String className =
-                    (metadata.parent as ClassDeclarationImpl).name?.name;
+                final ClassDeclarationImpl parent =
+                    metadata.parent as ClassDeclarationImpl;
 
-                print(
-                    'Found annotation route : ${p.relative(item.path, from: packageNode.path)} ------ class : $className');
+                final String className = parent.name?.name;
+
+                final String routePath =
+                    '${p.relative(item.path, from: packageNode.path)} ------ class : $className';
+                print('Found annotation route : $routePath');
 
                 final List<String> relativeParts = <String>[
                   packageNode.path,
@@ -98,13 +101,12 @@ class RouteGenerator {
                     metadata.arguments?.arguments;
 
                 String name;
-                List<String> argumentNames;
-                List<String> argumentTypes;
                 bool showStatusBar;
                 String routeName;
                 PageRouteType pageRouteType;
                 String description;
                 Map<String, dynamic> exts;
+                String argumentImports;
 
                 for (final Expression item in parameters) {
                   if (item is NamedExpressionImpl) {
@@ -125,12 +127,12 @@ class RouteGenerator {
                       case 'showStatusBar:':
                         showStatusBar = toT<bool>(item.expression);
                         break;
-                      case 'argumentNames:':
-                        argumentNames = toT<List<String>>(item.expression);
-                        break;
-                      case 'argumentTypes:':
-                        argumentTypes = toT<List<String>>(item.expression);
-                        break;
+                      // case 'argumentNames:':
+                      //   argumentNames = toT<List<String>>(item.expression);
+                      //   break;
+                      // case 'argumentTypes:':
+                      //   argumentTypes = toT<List<String>>(item.expression);
+                      //   break;
                       case 'pageRouteType:':
                         pageRouteType = PageRouteType.values.firstWhere(
                           (PageRouteType type) => type.toString() == source,
@@ -139,6 +141,9 @@ class RouteGenerator {
                         break;
                       case 'description:':
                         description = toT<String>(item.expression);
+                        break;
+                      case 'argumentImports:':
+                        argumentImports = toT<String>(item.expression);
                         break;
                       case 'exts:':
                         source = source.substring(source.indexOf('{'));
@@ -155,16 +160,19 @@ class RouteGenerator {
                   className: className,
                   ffRoute: FFRoute(
                     name: name,
-                    argumentNames: argumentNames,
                     showStatusBar: showStatusBar,
                     routeName: routeName,
                     pageRouteType: pageRouteType,
                     description: description,
                     exts: exts,
-                    argumentTypes: argumentTypes,
+                    argumentImports: argumentImports,
                   ),
+                  constructors: parent.members
+                      .whereType<ConstructorDeclaration>()
+                      .toList(),
+                  fields: parent.members.whereType<FieldDeclaration>().toList(),
+                  routePath: routePath,
                 );
-
                 fileInfo.routes.add(routeInfo);
               }
             }
@@ -209,18 +217,26 @@ class RouteGenerator {
 
     final StringBuffer sb = StringBuffer();
 
+    final List<String> imports = <String>[];
+
     /// Nodes import
     if (isRoot && nodes != null && nodes.isNotEmpty) {
       for (final RouteGenerator node in nodes) {
-        sb.write('${node.import}\n');
+        imports.add('${node.import}\n');
+        //sb.write('${node.import}\n');
       }
     }
 
-    /// Export
-    sb.write(export);
+    if (!isRoot) {
+      /// Export
+      sb.write(export);
+    }
 
     /// Create route generator
     if (isRoot) {
+      imports.add(export);
+      imports.add('import \'package:flutter/widgets.dart\';');
+
       final StringBuffer caseSb = StringBuffer();
       final List<RouteInfo> routes = _fileInfoList
           .map((FileInfo it) => it.routes)
@@ -239,7 +255,32 @@ class RouteGenerator {
           a.ffRoute.name.compareTo(b.ffRoute.name));
 
       for (final RouteInfo it in routes) {
+        if (it.ffRoute.argumentImports != null) {
+          imports.add(it.ffRoute.argumentImports);
+        }
         caseSb.write(it.caseString);
+      }
+
+      if (imports.isNotEmpty) {
+        sb.write('\n');
+        imports.sort((String a, String b) => a.compareTo(b));
+        final List<String> packages = imports
+            .where((String element) => element.contains('package:'))
+            .toList();
+        for (final String package in packages) {
+          sb.write(package);
+          imports.remove(package);
+        }
+
+        if (packages.isNotEmpty) {
+          sb.write('\n');
+        }
+
+        for (int i = 0; i < imports.length; i++) {
+          sb.write(imports[i]);
+        }
+
+        sb.write('\n');
       }
 
       sb.write(rootFile.replaceAll('{0}', caseSb.toString()));
@@ -250,10 +291,7 @@ class RouteGenerator {
 
     if (sb.isNotEmpty) {
       file.createSync(recursive: true);
-      file.writeAsStringSync(formatDart(fileHeader +
-          '\n' +
-          (isRoot ? 'import \'package:flutter/widgets.dart\';\n\n' : '') +
-          sb.toString()));
+      file.writeAsStringSync(formatDart(fileHeader + sb.toString()));
       print('Generate : ${p.relative(file.path, from: packageNode.path)}');
     }
   }
@@ -318,8 +356,7 @@ class RouteGenerator {
     final String _name = safeToString(_route.name);
     final String _routeName = safeToString(_route.routeName);
     final String _description = safeToString(_route.description);
-    final List<String> _arguments = _route.argumentNames;
-    final List<String> _argumentTypes = _route.argumentTypes;
+    final String _constructors = route.constructorsString;
     final bool _showStatusBar = _route.showStatusBar;
     final PageRouteType _pageRouteType = _route.pageRouteType;
     final Map<String, dynamic> _exts = _route.exts;
@@ -350,13 +387,9 @@ class RouteGenerator {
       sb.write('\n///');
       sb.write('\n/// [description] : $_description');
     }
-    if (_arguments != null) {
+    if (_constructors != null) {
       sb.write('\n///');
-      sb.write('\n/// [arguments] : $_arguments');
-    }
-    if (_argumentTypes != null) {
-      sb.write('\n///');
-      sb.write('\n/// [argumentTypes] : $_argumentTypes');
+      sb.write('\n/// [constructors] : $_constructors');
     }
     if (_showStatusBar != null) {
       sb.write('\n///');

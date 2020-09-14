@@ -5,8 +5,6 @@ import 'package:flutter/material.dart';
   name: "flutterCandies://testPage\' \"B",
   routeName: 'testPageB ' '',
   description: 'This is test \' page B.',
-  argumentNames: <String>['argument \''],
-  argumentTypes: <String>['String'],
   exts: <String, dynamic>{
     'test': 1,
     'test1': 'string',
@@ -16,6 +14,7 @@ import 'package:flutter/material.dart';
 )
 class TestPageB extends StatelessWidget {
   const TestPageB({this.argument});
+  //const TestPageB._(this.argument);
   final String argument;
   @override
   Widget build(BuildContext context) {

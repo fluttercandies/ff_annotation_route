@@ -5,8 +5,10 @@
 const List<String> routeNames = <String>[
   'flutterCandies://mainPage',
   '''flutterCandies://testPage' "B''',
+  '''flutterCandies://testPage' "D''',
   'flutterCandies://testPageA',
   'flutterCandies://testPageC',
+  'flutterCandies://testPageE',
 ];
 
 class Routes {
@@ -17,6 +19,9 @@ class Routes {
   /// [name] : 'flutterCandies://mainPage'
   ///
   /// [routeName] : 'MainPage'
+  ///
+  /// [constructors] :
+  /// MainPage : []
   static const String flutterCandiesMainPage = 'flutterCandies://mainPage';
 
   /// "This is test ' page B."
@@ -27,9 +32,8 @@ class Routes {
   ///
   /// [description] : "This is test ' page B."
   ///
-  /// [arguments] : [argument ']
-  ///
-  /// [argumentTypes] : [String]
+  /// [constructors] :
+  /// TestPageB : [String argument]
   ///
   /// [showStatusBar] : true
   ///
@@ -38,6 +42,26 @@ class Routes {
   /// [exts] : {test: 1, test1: string}
   static const String flutterCandiesTestPageB =
       '''flutterCandies://testPage' "B''';
+
+  /// "This is test ' page D."
+  ///
+  /// [name] : '''flutterCandies://testPage' "D'''
+  ///
+  /// [routeName] : 'testPageD '
+  ///
+  /// [description] : "This is test ' page D."
+  ///
+  /// [constructors] :
+  /// TestPageD : [String argument, bool optional, String id]
+  /// TestPageD.another0 : [String argument]
+  ///
+  /// [showStatusBar] : true
+  ///
+  /// [pageRouteType] : PageRouteType.material
+  ///
+  /// [exts] : {test: 1, test1: string}
+  static const String flutterCandiesTestPageD =
+      '''flutterCandies://testPage' "D''';
 
   /// 'This is test page A.'
   ///
@@ -56,4 +80,18 @@ class Routes {
   ///
   /// [description] : 'This is test page c in other module.'
   static const String flutterCandiesTestPageC = 'flutterCandies://testPageC';
+
+  /// 'This is test page E.'
+  ///
+  /// [name] : 'flutterCandies://testPageE'
+  ///
+  /// [routeName] : 'testPageE'
+  ///
+  /// [description] : 'This is test page E.'
+  ///
+  /// [constructors] :
+  /// TestPageE : [TestMode testMode]
+  /// TestPageE.deafult : []
+  /// TestPageE.required : [TestMode testMode]
+  static const String flutterCandiesTestPageE = 'flutterCandies://testPageE';
 }
