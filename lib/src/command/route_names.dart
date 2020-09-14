@@ -1,7 +1,6 @@
 import 'package:ff_annotation_route/src/command/command.dart';
 
 class RouteNames extends Command {
-
   @override
   String get description => 'Whether generate route names as a list.';
 
@@ -10,6 +9,4 @@ class RouteNames extends Command {
 
   @override
   String get short => '-rn';
-
-
 }

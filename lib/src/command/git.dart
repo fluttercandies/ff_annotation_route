@@ -2,7 +2,8 @@ import 'package:ff_annotation_route/src/command/command.dart';
 
 class Git extends Command with CommandValue {
   @override
-  String get description => 'Whether scan git lib(you should specify package names and split multiple by ,)';
+  String get description =>
+      'Whether scan git lib(you should specify package names and split multiple by ,)';
 
   @override
   String get full => '--git';

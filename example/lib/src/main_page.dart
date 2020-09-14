@@ -3,8 +3,6 @@ import 'package:ff_annotation_route/ff_annotation_route.dart';
 
 import '../example_routes.dart';
 
-
-
 @FFRoute(
   name: 'flutterCandies://mainPage',
   routeName: 'MainPage',
@@ -13,6 +11,7 @@ class MainPage extends StatelessWidget {
   MainPage()
       : routes = routeNames.toList()
           ..remove('flutterCandies://mainPage')
+
           /// just demo
           ..remove('fluttercandies://picswiper');
   final List<String> routes;

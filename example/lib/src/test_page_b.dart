@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 @FFRoute(
   name: "flutterCandies://testPage\' \"B",
-  routeName: 'testPageB ''',
+  routeName: 'testPageB ' '',
   description: 'This is test \' page B.',
   argumentNames: <String>['argument \''],
   argumentTypes: <String>['String'],

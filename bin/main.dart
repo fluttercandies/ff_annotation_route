@@ -22,7 +22,7 @@ const String commandsFile = 'ff_annotation_route_commands';
 
 void main(List<String> arguments) {
   final bool argumentsIsEmpty = arguments.isEmpty;
-  bool oldStyle=false;
+  bool oldStyle = false;
   if (arguments.isEmpty) {
     final io.File file = io.File(join('./', commandsFile));
     if (file.existsSync()) {
@@ -30,7 +30,7 @@ void main(List<String> arguments) {
       if (content.contains(',')) {
         //old style
         arguments = content.split(',');
-        oldStyle=true;
+        oldStyle = true;
       } else {
         arguments = content.split(' ');
       }
@@ -198,7 +198,7 @@ void main(List<String> arguments) {
       }
     }
 
-    final String saveCommands=sb.toString().trim();
+    final String saveCommands = sb.toString().trim();
 
     file.writeAsStringSync(saveCommands);
 

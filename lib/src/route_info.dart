@@ -11,12 +11,13 @@ class RouteInfo {
   final FFRoute ffRoute;
 
   String get constructor {
-    String params='';
+    String params = '';
     if (ffRoute.argumentNames != null && ffRoute.argumentNames.isNotEmpty) {
       for (final String key in ffRoute.argumentNames) {
-        params += '${key.replaceAll('\'', '').replaceAll('\"', '')}:arguments[${safeToString(key)}],';
+        params +=
+            '${key.replaceAll('\'', '').replaceAll('\"', '')}:arguments[${safeToString(key)}],';
       }
-    } 
+    }
     return '$className($params)';
   }
 
