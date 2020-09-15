@@ -53,7 +53,7 @@ RouteResult getRouteResult({String name, Map<String, dynamic> arguments}) {
             arguments['argument'] as String,
             optional: arguments['optional'] as bool,
           ),
-        }[arguments['constructorName'] as String ?? ''],
+        }[arguments[constructorName] as String ?? ''],
         showStatusBar: true,
         routeName: 'testPageD ',
         pageRouteType: PageRouteType.material,
@@ -89,7 +89,7 @@ RouteResult getRouteResult({String name, Map<String, dynamic> arguments}) {
           'required': TestPageE.required(
             testMode: arguments['testMode'] as TestMode,
           ),
-        }[arguments['constructorName'] as String ?? ''],
+        }[arguments[constructorName] as String ?? ''],
         routeName: 'testPageE',
         description: 'This is test page E.',
         exts: <String, dynamic>{'group': 'Complex', 'order': 1},

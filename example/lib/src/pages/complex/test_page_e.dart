@@ -46,7 +46,7 @@ class TestPageE extends StatelessWidget {
           onPressed: () {
             Navigator.pushNamed(context, Routes.flutterCandiesTestPageE,
                 arguments: <String, dynamic>{
-                  'constructorName': 'deafult',
+                  constructorName: 'deafult',
                 });
           },
           child: const Text(
@@ -59,7 +59,7 @@ class TestPageE extends StatelessWidget {
               context,
               Routes.flutterCandiesTestPageE,
               arguments: <String, dynamic>{
-                'constructorName': 'required',
+                constructorName: 'required',
                 'testMode': const TestMode(
                   id: 100,
                   isTest: true,

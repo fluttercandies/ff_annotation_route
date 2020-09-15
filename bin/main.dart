@@ -24,7 +24,7 @@ const String debugCommands =
 
 void main(List<String> arguments) {
   //debug
-  arguments = debugCommands.split(' ');
+  //arguments = debugCommands.split(' ');
   final bool argumentsIsEmpty = arguments.isEmpty;
   bool oldStyle = false;
   if (arguments.isEmpty) {

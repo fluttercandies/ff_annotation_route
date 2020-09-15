@@ -47,7 +47,7 @@ class RouteInfo {
               '\'${rawConstructor.name ?? ''}\': ${getConstructorString(rawConstructor)}';
           keyValues += ',';
         }
-        return '<String,Widget>{$keyValues}[arguments[\'constructorName\'] as String ??\'\']';
+        return '<String,Widget>{$keyValues}[arguments[constructorName] as String ??\'\']';
       } else {
         return '${getConstructorString(constructors.first)}';
       }

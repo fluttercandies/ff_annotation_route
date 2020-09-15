@@ -2,7 +2,7 @@
 
 [![pub package](https://img.shields.io/pub/v/ff_annotation_route.svg)](https://pub.dartlang.org/packages/ff_annotation_route) [![GitHub stars](https://img.shields.io/github/stars/fluttercandies/ff_annotation_route)](https://github.com/fluttercandies/ff_annotation_route/stargazers) [![GitHub forks](https://img.shields.io/github/forks/fluttercandies/ff_annotation_route)](https://github.com/fluttercandies/ff_annotation_route/network) [![GitHub license](https://img.shields.io/github/license/fluttercandies/ff_annotation_route)](https://github.com/fluttercandies/ff_annotation_route/blob/master/LICENSE) [![GitHub issues](https://img.shields.io/github/issues/fluttercandies/ff_annotation_route)](https://github.com/fluttercandies/ff_annotation_route/issues) <a target="_blank" href="https://jq.qq.com/?_wv=1027&k=5bcc0gy"><img border="0" src="https://pub.idqqimg.com/wpa/images/group.png" alt="flutter-candies" title="flutter-candies"></a>
 
-Languages: [English](README.md) | [中文简体](README-ZH.md)
+Languages: [English](README.md) | 中文简体
 
 [掘金地址](https://juejin.im/post/5d5a7fe5f265da03b94ff42c)
 
@@ -27,6 +27,8 @@ Languages: [English](README.md) | [中文简体](README-ZH.md)
     - [Push](#push)
       - [Push name](#push-name)
       - [Push name with arguments](#push-name-with-arguments)
+      - [Code Hints](#code-hints)
+  - [☕️Buy me a coffee](#️buy-me-a-coffee)
 
 ## 使用
 
@@ -61,21 +63,42 @@ class MainPage extends StatelessWidget
 
 #### 带参数构造
 
+工具会自动处理带参数的构造，不需要做特殊处理。唯一需要注意的是，你需要使用 `argumentImports` 为class/enum的参数提供 import 地址。
+
 ```dart
 import 'package:ff_annotation_route/ff_annotation_route.dart';
 
 @FFRoute(
-  name: "fluttercandies://picswiper",
-  routeName: "PicSwiper",
-  argumentNames: ["index", "pics"],
-  showStatusBar: false,
-  pageRouteType: PageRouteType.transparent,
+  name: 'flutterCandies://testPageE',
+  routeName: 'testPageE',
+  description: 'This is test page E.',
+  argumentImports: <String>[
+    'import \'package:example/src/model/test_model.dart\';',
+    'import \'package:example/src/model/test_model1.dart\';'
+  ],
+  exts: <String, dynamic>{
+    'group': 'Complex',
+    'order': 1,
+  },
 )
-class PicSwiper extends StatefulWidget {
-  final int index;
-  final List<PicSwiperItem> pics;
-  PicSwiper({this.index, this.pics});
-  // ...
+class TestPageE extends StatelessWidget {
+  const TestPageE({
+    this.testMode = const TestMode(
+      id: 2,
+      isTest: false,
+    ),
+    this.testMode1,
+  });
+  factory TestPageE.deafult() => TestPageE(
+        testMode: TestMode.deafult(),
+      );
+
+  factory TestPageE.required({@required TestMode testMode}) => TestPageE(
+        testMode: testMode,
+      );
+
+  final TestMode testMode;
+  final TestMode1 testMode1;
 }
 ```
 
@@ -83,14 +106,13 @@ class PicSwiper extends StatefulWidget {
 
 | Parameter     | Description                                   | Default  |
 | ------------- | --------------------------------------------- | -------- |
-| name          | 路由的名字 (e.g., "/settings").               | required |
-| argumentNames | 路由的参数的名字                              | -        |
-| argumentTypes | 参数的类型，用于生成Constants方便查看.        | -        |
+| name          | 路由的名字 (e.g., "/settings")               | required |
 | showStatusBar | 是否显示状态栏                                | true     |
 | routeName     | 用于埋点收集数据的页面名字                    | ''       |
 | pageRouteType | 路由的类型 (material, cupertino, transparent) | -        |
 | description   | 路由的描述                                    | ''       |
 | exts          | 其他扩展参数.                                 | -        |
+| argumentImports | 某些参数的导入.有一些参数是类或者枚举，需要指定它们的导入地址 | -        |
 
 ### 生成文件
 
@@ -142,61 +164,53 @@ class PicSwiper extends StatefulWidget {
   `xxx_route_helper.dart` 中，可以使用它来 `push` 一个透明的 `PageRoute` 。
 
 ```dart
-Widget build(BuildContext context) {
-    return OKToast(
-        child: MaterialApp(
+class MyApp extends StatelessWidget {
+  // This widget is the root of your application.
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
       title: 'ff_annotation_route demo',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      navigatorObservers: [
-        FFNavigatorObserver(routeChange:
-            (RouteSettings newRouteSettings, RouteSettings oldRouteSettings) {
-          //you can track page here
-          print(
-              "route change: ${oldRouteSettings?.name} => ${newRouteSettings?.name}");
-          if (newRouteSettings is FFRouteSettings &&
-              oldRouteSettings is FFRouteSettings) {
-            if (newRouteSettings?.showStatusBar !=
-                oldRouteSettings?.showStatusBar) {
-              if (newRouteSettings?.showStatusBar == true) {
-                SystemChrome.setEnabledSystemUIOverlays(
-                    SystemUiOverlay.values);
-                SystemChrome.setSystemUIOverlayStyle(
-                    SystemUiOverlayStyle.dark);
-              } else {
-                SystemChrome.setEnabledSystemUIOverlays([]);
-              }
-            }
+      initialRoute: Routes.fluttercandiesMainpage,
+      onGenerateRoute: (RouteSettings settings) {
+        //when refresh web, route will as following
+        //   /
+        //   /fluttercandies:
+        //   /fluttercandies:/
+        //   /fluttercandies://mainpage
+        if (kIsWeb && settings.name.startsWith('/')) {
+          return onGenerateRouteHelper(
+            settings.copyWith(name: settings.name.replaceFirst('/', '')),
+            notFoundFallback:
+                getRouteResult(name: Routes.fluttercandiesMainpage).widget,
+          );
+        }
+        return onGenerateRouteHelper(settings,
+            builder: (Widget child, RouteResult result) {
+          if (settings.name == Routes.fluttercandiesMainpage ||
+              settings.name == Routes.fluttercandiesDemogrouppage) {
+            return child;
           }
-        })
-      ],
-      builder: (c, w) {
-        ScreenUtil.instance =
-            ScreenUtil(width: 750, height: 1334, allowFontScaling: true)
-              ..init(c);
-        var data = MediaQuery.of(c);
-        return MediaQuery(
-          data: data.copyWith(textScaleFactor: 1.0),
-          child: w,
-        );
+          return CommonWidget(
+            child: child,
+            result: result,
+          );
+        });
       },
-      initialRoute: Routes.FLUTTERCANDIES_MAINPAGE,// fluttercandies://mainpage
-      onGenerateRoute: (RouteSettings settings) =>
-          onGenerateRouteHelper(settings, notFoundFallback: NoRoute()),
-    ),
-  );
+    );
+  }
 }
 ```
-
-[更多信息](https://github.com/fluttercandies/ff_annotation_route/blob/master/example/lib/main.dart)
 
 ### Push
 
 #### Push name
 
 ```dart
-  Navigator.pushNamed(context, Routes.FLUTTERCANDIES_MAINPAGE /* fluttercandies://mainpage */);
+  Navigator.pushNamed(context, Routes.fluttercandiesMainpage /* fluttercandies://mainpage */);
 ```
 
 #### Push name with arguments
@@ -206,15 +220,43 @@ Widget build(BuildContext context) {
 ```dart
   Navigator.pushNamed(
     context,
-    Routes.FLUTTERCANDIES_PICSWIPER, // fluttercandies://picswiper
-    arguments: {
-      "index": index,
-      "pics": listSourceRepository
-          .map<PicSwiperItem>((f) => PicSwiperItem(f.imageUrl, des: f.title))
-          .toList(),
+    Routes.flutterCandiesTestPageE,
+    arguments: <String, dynamic>{
+      constructorName: 'required',
+      'testMode': const TestMode(
+        id: 100,
+        isTest: true,
+      ),
     },
   );
 ```
+
+#### Code Hints 
+
+你能这样使用路由 'Routes.flutterCandiesTestPageE', 并且在编辑器中看到代码提示。
+包括页面描述，构造，参数类型，参数名字，参数是否必填。
+
+```dart
+  /// 'This is test page E.'
+  ///
+  /// [name] : 'flutterCandies://testPageE'
+  ///
+  /// [routeName] : 'testPageE'
+  ///
+  /// [description] : 'This is test page E.'
+  ///
+  /// [constructors] :
+  ///
+  /// TestPageE : [TestMode testMode, TestMode1 testMode1]
+  ///
+  /// TestPageE.deafult : []
+  ///
+  /// TestPageE.required : [TestMode(required) testMode]
+  ///
+  /// [exts] : {group: Complex, order: 1}
+  static const String flutterCandiesTestPageE = 'flutterCandies://testPageE';
+```
+
 ## ☕️Buy me a coffee
 
 ![img](http://zmtzawqlp.gitee.io/my_images/images/qrcode.png)

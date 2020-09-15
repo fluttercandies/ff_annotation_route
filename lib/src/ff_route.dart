@@ -33,7 +33,7 @@ class FFRoute {
   final Map<String, dynamic> exts;
 
   /// The imports of arguments.
-  /// For example, Class/enum argument should provide import url.
+  /// For example, class/enum argument should provide import url.
   /// argumentImports: <String>[
   ///   'import \'package:example/src/model/test_model.dart\';',
   ///   'import \'package:example/src/model/test_model1.dart\';'
@@ -47,3 +47,5 @@ class FFRoute {
 }
 
 enum PageRouteType { material, cupertino, transparent }
+
+const String constructorName = 'constructorName';
