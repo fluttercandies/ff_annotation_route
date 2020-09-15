@@ -106,7 +106,7 @@ class RouteGenerator {
                 PageRouteType pageRouteType;
                 String description;
                 Map<String, dynamic> exts;
-                String argumentImports;
+                List<String> argumentImports;
 
                 for (final Expression item in parameters) {
                   if (item is NamedExpressionImpl) {
@@ -143,7 +143,7 @@ class RouteGenerator {
                         description = toT<String>(item.expression);
                         break;
                       case 'argumentImports:':
-                        argumentImports = toT<String>(item.expression);
+                        argumentImports = toT<List<String>>(item.expression);
                         break;
                       case 'exts:':
                         source = source.substring(source.indexOf('{'));
@@ -236,6 +236,8 @@ class RouteGenerator {
     if (isRoot) {
       imports.add(export);
       imports.add('import \'package:flutter/widgets.dart\';');
+      imports.add(
+          'import \'package:ff_annotation_route/ff_annotation_route.dart\';');
 
       final StringBuffer caseSb = StringBuffer();
       final List<RouteInfo> routes = _fileInfoList
@@ -256,7 +258,7 @@ class RouteGenerator {
 
       for (final RouteInfo it in routes) {
         if (it.ffRoute.argumentImports != null) {
-          imports.add(it.ffRoute.argumentImports);
+          imports.addAll(it.ffRoute.argumentImports);
         }
         caseSb.write(it.caseString);
       }

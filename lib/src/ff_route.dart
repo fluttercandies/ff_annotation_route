@@ -32,8 +32,13 @@ class FFRoute {
   /// The extend arguments
   final Map<String, dynamic> exts;
 
-
-  final String argumentImports;
+  /// The imports of arguments.
+  /// For example, Class/enum argument should provide import url.
+  /// argumentImports: <String>[
+  ///   'import \'package:example/src/model/test_model.dart\';',
+  ///   'import \'package:example/src/model/test_model1.dart\';'
+  /// ],
+  final List<String> argumentImports;
 
   @override
   String toString() {

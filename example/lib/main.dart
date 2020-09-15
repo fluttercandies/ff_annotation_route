@@ -1,59 +1,69 @@
-import 'package:example/src/no_route.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'example_route.dart';
 import 'example_route_helper.dart';
 import 'example_routes.dart';
 
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
+  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'ff_annotation_route demo',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      navigatorObservers: <NavigatorObserver>[
-        FFNavigatorObserver(routeChange: (
-          Route<dynamic> newRoute,
-          Route<dynamic> oldRoute,
-        ) {
-          FFRouteSettings newSetting;
-          FFRouteSettings oldSetting;
+      initialRoute: Routes.fluttercandiesMainpage,
+      onGenerateRoute: (RouteSettings settings) {
+        //when refresh web, route will as following
+        //   /
+        //   /fluttercandies:
+        //   /fluttercandies:/
+        //   /fluttercandies://mainpage
+        if (kIsWeb && settings.name.startsWith('/')) {
+          return onGenerateRouteHelper(
+            settings.copyWith(name: settings.name.replaceFirst('/', '')),
+            notFoundFallback:
+                getRouteResult(name: Routes.fluttercandiesMainpage).widget,
+          );
+        }
+        return onGenerateRouteHelper(settings,
+            builder: (Widget child, RouteResult result) {
+          if (settings.name == Routes.fluttercandiesMainpage ||
+              settings.name == Routes.fluttercandiesDemogrouppage) {
+            return child;
+          }
+          return CommonWidget(
+            child: child,
+            result: result,
+          );
+        });
+      },
+    );
+  }
+}
 
-          if (newRoute?.settings is FFRouteSettings) {
-            newSetting = newRoute.settings as FFRouteSettings;
-          }
-          if (oldRoute?.settings is FFRouteSettings) {
-            oldSetting = oldRoute.settings as FFRouteSettings;
-          }
+class CommonWidget extends StatelessWidget {
+  const CommonWidget({
+    this.child,
+    this.result,
+  });
+  final Widget child;
+  final RouteResult result;
 
-          if (newSetting?.showStatusBar != oldSetting?.showStatusBar) {
-            if (newSetting?.showStatusBar ?? false) {
-              SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
-              SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
-            } else {
-              SystemChrome.setEnabledSystemUIOverlays(<SystemUiOverlay>[]);
-            }
-          }
-
-          if (newRoute is PageRoute &&
-              (
-                  //first page
-                  oldRoute == null ||
-                      //exclude PopupRoute ect
-                      oldRoute is PageRoute) &&
-              newSetting?.routeName != null) {
-            //you can track page here
-            print('route change: ${newSetting?.routeName}');
-          }
-        })
-      ],
-      initialRoute: Routes.flutterCandiesMainPage,
-      onGenerateRoute: (RouteSettings settings) =>
-          onGenerateRouteHelper(settings, notFoundFallback: NoRoute()),
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          result.routeName,
+        ),
+      ),
+      body: child,
     );
   }
 }

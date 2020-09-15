@@ -22,7 +22,8 @@ dependencies:
   cupertino_icons: ^0.1.2
   module_a:
     path: module_a
-
+  url_launcher: any
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter

@@ -1,8 +1,9 @@
 ## 4.0.0
 
 * Breaking change: remove 'argumentNames' and 'argumentTypes', they will be generated automatically.
-* Support optional argument.
+* Support optional/positional argument.
 * Supoort multiple constructors.
+* Supoort const constructor.
 
 ## 3.4.2+1
 

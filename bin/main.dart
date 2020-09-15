@@ -23,7 +23,8 @@ const String debugCommands =
     '--route-constants --route-helper --route-names --no-is-initial-route --path example/';
 
 void main(List<String> arguments) {
-  //arguments = debugCommands.split(' ');
+  //debug
+  arguments = debugCommands.split(' ');
   final bool argumentsIsEmpty = arguments.isEmpty;
   bool oldStyle = false;
   if (arguments.isEmpty) {

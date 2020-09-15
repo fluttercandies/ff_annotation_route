@@ -5,15 +5,16 @@ import 'package:flutter/material.dart';
   name: 'flutterCandies://testPageA',
   routeName: 'testPageA',
   description: 'This is test page A.',
+  exts: <String, dynamic>{
+    'group': 'Simple',
+    'order': 0,
+  },
 )
 class TestPageA extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(),
-      body: const Center(
-        child: Text('TestPageA'),
-      ),
+    return const Center(
+      child: Text('TestPageA'),
     );
   }
 }

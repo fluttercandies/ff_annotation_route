@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'dart:mirrors';
+//import 'dart:mirrors';
 
 import 'package:analyzer/dart/ast/ast.dart';
 import 'package:ff_annotation_route/ff_annotation_route.dart';
@@ -27,7 +27,7 @@ class RouteInfo {
     if (constructorsMap.isNotEmpty) {
       String temp = '';
       constructorsMap.forEach((String key, List<String> value) {
-        temp += '\n /// $key : $value';
+        temp += '\n /// \n /// $key : $value';
       });
       return temp;
     }
@@ -52,7 +52,6 @@ class RouteInfo {
         return '${getConstructorString(constructors.first)}';
       }
     }
-
     return '$className()';
     // String params = '';
     // if (ffRoute.argumentNames != null && ffRoute.argumentNames.isNotEmpty) {
@@ -153,7 +152,7 @@ class RouteInfo {
       for (final FieldDeclaration item in fields) {
         if (item.fields.endToken.toString() == name) {
           final TypeAnnotation type = item.fields.type;
-          typeString ??= type.toString();
+          typeString = type.toString();
           break;
         }
       }
@@ -161,26 +160,31 @@ class RouteInfo {
         parameter.parameter is SimpleFormalParameter) {
       final TypeAnnotation type =
           (parameter.parameter as SimpleFormalParameter).type;
-
-      typeString ??= type.toString();
+      typeString = type.toString();
     }
     typeString ??= parameter.beginToken?.toString();
-    if (ffRoute.argumentImports == null) {
-      alertType(typeString);
+    // if (ffRoute.argumentImports == null) {
+    //   alertType(typeString);
+    // }
+
+    String display = typeString;
+    if (!parameter.isOptional || parameter.toString().contains('required')) {
+      display = '$display(required)';
     }
+
     constructorsMap[getConstructor(rawConstructor)] ??= <String>[];
-    constructorsMap[getConstructor(rawConstructor)].add('$typeString $name');
+    constructorsMap[getConstructor(rawConstructor)].add('$display $name');
     return typeString;
   }
 
   void alertType(String typeString) {
-    final Symbol symbol = Symbol(typeString);
-    final MirrorSystem mirrorSystem = currentMirrorSystem();
-    for (final LibraryMirror value in mirrorSystem.libraries.values) {
-      if (value.declarations.containsKey(symbol)) {
-        return;
-      }
-    }
+    // final Symbol symbol = Symbol(typeString);
+    // final MirrorSystem mirrorSystem = currentMirrorSystem();
+    // for (final LibraryMirror value in mirrorSystem.libraries.values) {
+    //   if (value.declarations.containsKey(symbol)) {
+    //     return;
+    //   }
+    // }
 
     print(red.wrap(
         '''Error : '$typeString' must be imported. Please add argumentImports of FFRoute at $routePath.'''));

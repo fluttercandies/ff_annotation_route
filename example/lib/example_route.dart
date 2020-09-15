@@ -4,24 +4,20 @@
 // **************************************************************************
 
 import 'package:example/src/model/test_model.dart';
+import 'package:example/src/model/test_model1.dart';
+import 'package:ff_annotation_route/ff_annotation_route.dart';
 import 'package:flutter/widgets.dart';
 import 'package:module_a/module_a_route.dart';
 
-import 'src/main_page.dart';
-import 'src/test_page_a.dart';
-import 'src/test_page_b.dart';
-import 'src/test_page_d.dart';
-import 'src/test_page_e.dart';
+import 'src/pages/complex/test_page_d.dart';
+import 'src/pages/complex/test_page_e.dart';
+import 'src/pages/main_page.dart';
+import 'src/pages/simple/test_page_a.dart';
+import 'src/pages/simple/test_page_b.dart';
 
 RouteResult getRouteResult({String name, Map<String, dynamic> arguments}) {
   arguments = arguments ?? const <String, dynamic>{};
   switch (name) {
-    case 'flutterCandies://mainPage':
-      return RouteResult(
-        name: name,
-        widget: MainPage(),
-        routeName: 'MainPage',
-      );
     case '''flutterCandies://testPage' "B''':
       return RouteResult(
         name: name,
@@ -32,7 +28,7 @@ RouteResult getRouteResult({String name, Map<String, dynamic> arguments}) {
         routeName: 'testPageB ',
         pageRouteType: PageRouteType.material,
         description: "This is test ' page B.",
-        exts: <String, dynamic>{'test': 1, 'test1': 'string'},
+        exts: <String, dynamic>{'group': 'Simple', 'order': 1},
       );
     case '''flutterCandies://testPage' "D''':
       return RouteResult(
@@ -46,12 +42,23 @@ RouteResult getRouteResult({String name, Map<String, dynamic> arguments}) {
           'another0': TestPageD.another0(
             argument: arguments['argument'] as String,
           ),
+          'another1': TestPageD.another1(
+            arguments['argument'] as String,
+            arguments['optional'] as bool ?? false,
+          ),
+          'another2': TestPageD.another2(
+            arguments['argument'] as String,
+          ),
+          'another3': TestPageD.another3(
+            arguments['argument'] as String,
+            optional: arguments['optional'] as bool,
+          ),
         }[arguments['constructorName'] as String ?? ''],
         showStatusBar: true,
         routeName: 'testPageD ',
         pageRouteType: PageRouteType.material,
         description: "This is test ' page D.",
-        exts: <String, dynamic>{'test': 1, 'test1': 'string'},
+        exts: <String, dynamic>{'group': 'Complex', 'order': 0},
       );
     case 'flutterCandies://testPageA':
       return RouteResult(
@@ -59,6 +66,7 @@ RouteResult getRouteResult({String name, Map<String, dynamic> arguments}) {
         widget: TestPageA(),
         routeName: 'testPageA',
         description: 'This is test page A.',
+        exts: <String, dynamic>{'group': 'Simple', 'order': 0},
       );
     case 'flutterCandies://testPageC':
       return RouteResult(
@@ -66,6 +74,7 @@ RouteResult getRouteResult({String name, Map<String, dynamic> arguments}) {
         widget: TestPageC(),
         routeName: 'testPageC',
         description: 'This is test page c in other module.',
+        exts: <String, dynamic>{'group': 'Simple', 'order': 2},
       );
     case 'flutterCandies://testPageE':
       return RouteResult(
@@ -74,6 +83,7 @@ RouteResult getRouteResult({String name, Map<String, dynamic> arguments}) {
           '': TestPageE(
             testMode: arguments['testMode'] as TestMode ??
                 const TestMode(id: 2, isTest: false),
+            testMode1: arguments['testMode1'] as TestMode1,
           ),
           'deafult': TestPageE.deafult(),
           'required': TestPageE.required(
@@ -82,6 +92,22 @@ RouteResult getRouteResult({String name, Map<String, dynamic> arguments}) {
         }[arguments['constructorName'] as String ?? ''],
         routeName: 'testPageE',
         description: 'This is test page E.',
+        exts: <String, dynamic>{'group': 'Complex', 'order': 1},
+      );
+    case 'fluttercandies://demogrouppage':
+      return RouteResult(
+        name: name,
+        widget: DemoGroupPage(
+          keyValue:
+              arguments['keyValue'] as MapEntry<String, List<DemoRouteResult>>,
+        ),
+        routeName: 'DemoGroupPage',
+      );
+    case 'fluttercandies://mainpage':
+      return RouteResult(
+        name: name,
+        widget: MainPage(),
+        routeName: 'MainPage',
       );
     default:
       return const RouteResult(name: 'flutterCandies://notfound');
@@ -121,10 +147,4 @@ class RouteResult {
 
   /// The extend arguments
   final Map<String, dynamic> exts;
-}
-
-enum PageRouteType {
-  material,
-  cupertino,
-  transparent,
 }
