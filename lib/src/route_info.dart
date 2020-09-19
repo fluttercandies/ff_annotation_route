@@ -3,8 +3,8 @@ import 'dart:mirrors';
 //import 'dart:mirrors';
 
 // ignore_for_file: implementation_imports
-import 'package:_fe_analyzer_shared/src/base/syntactic_entity.dart';
 import 'package:analyzer/dart/ast/ast.dart';
+import 'package:analyzer/dart/ast/syntactic_entity.dart';
 import 'package:analyzer/src/dart/ast/ast.dart';
 import 'package:ff_annotation_route/ff_annotation_route.dart';
 import 'package:io/ansi.dart';
