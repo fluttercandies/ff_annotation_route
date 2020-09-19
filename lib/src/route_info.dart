@@ -1,10 +1,13 @@
 import 'dart:convert';
+import 'dart:mirrors';
 //import 'dart:mirrors';
 
+// ignore_for_file: implementation_imports
+import 'package:_fe_analyzer_shared/src/base/syntactic_entity.dart';
 import 'package:analyzer/dart/ast/ast.dart';
+import 'package:analyzer/src/dart/ast/ast.dart';
 import 'package:ff_annotation_route/ff_annotation_route.dart';
 import 'package:io/ansi.dart';
-
 import 'utils/convert.dart';
 
 class RouteInfo {
@@ -14,6 +17,7 @@ class RouteInfo {
     this.constructors,
     this.fields,
     this.routePath,
+    this.classDeclarationImpl,
   });
 
   final String className;
@@ -22,6 +26,7 @@ class RouteInfo {
   final List<FieldDeclaration> fields;
   final String routePath;
   final Map<String, List<String>> constructorsMap = <String, List<String>>{};
+  final ClassDeclarationImpl classDeclarationImpl;
 
   String get constructorsString {
     if (constructorsMap.isNotEmpty) {
@@ -153,6 +158,7 @@ class RouteInfo {
         if (item.fields.endToken.toString() == name) {
           final TypeAnnotation type = item.fields.type;
           typeString = type.toString();
+          //getTypeImport();
           break;
         }
       }
@@ -161,6 +167,7 @@ class RouteInfo {
       final TypeAnnotation type =
           (parameter.parameter as SimpleFormalParameter).type;
       typeString = type.toString();
+      //getTypeImport();
     }
     typeString ??= parameter.beginToken?.toString();
     // if (ffRoute.argumentImports == null) {
@@ -178,16 +185,39 @@ class RouteInfo {
   }
 
   void alertType(String typeString) {
-    // final Symbol symbol = Symbol(typeString);
-    // final MirrorSystem mirrorSystem = currentMirrorSystem();
-    // for (final LibraryMirror value in mirrorSystem.libraries.values) {
-    //   if (value.declarations.containsKey(symbol)) {
-    //     return;
-    //   }
-    // }
+    final Symbol symbol = Symbol(typeString);
+    final MirrorSystem mirrorSystem = currentMirrorSystem();
+    for (final LibraryMirror value in mirrorSystem.libraries.values) {
+      if (value.declarations.containsKey(symbol)) {
+        return;
+      }
+    }
 
     print(red.wrap(
         '''Error : '$typeString' must be imported. Please add argumentImports of FFRoute at $routePath.'''));
+  }
+
+  void getTypeImport() {
+    final CompilationUnit compilationUnit =
+        classDeclarationImpl.parent as CompilationUnit;
+    for (final SyntacticEntity item in compilationUnit.childEntities) {
+      if (item is ImportDirective) {
+        if (item.toString().contains('package:flutter') ||
+            item.toString().contains('package:ff_annotation_route')) {
+          continue;
+        }
+        // final ImportDirective importDirective = item;
+
+        // print(item);
+      }
+    }
+
+    //classDeclarationImpl.parent as
+    // final CompilationUnit astRoot = parseFile(
+    //   path: '',
+    //   featureSet: FeatureSet.fromEnableFlags(<String>[]),
+    // ).unit;
+    //CompilationUnitImpl
   }
 
   String getConstructor(ConstructorDeclaration rawConstructor) {

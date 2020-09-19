@@ -1,3 +1,7 @@
+## 4.0.1
+
+* remove duplicate and sort imports.
+
 ## 4.0.0
 
 * Breaking change: remove 'argumentNames' and 'argumentTypes', they will be generated automatically.

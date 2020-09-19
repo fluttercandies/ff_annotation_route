@@ -165,13 +165,14 @@ class RouteGenerator {
                     pageRouteType: pageRouteType,
                     description: description,
                     exts: exts,
-                    argumentImports: argumentImports,
+                    argumentImports: argumentImports ?? <String>[],
                   ),
                   constructors: parent.members
                       .whereType<ConstructorDeclaration>()
                       .toList(),
                   fields: parent.members.whereType<FieldDeclaration>().toList(),
                   routePath: routePath,
+                  classDeclarationImpl: parent,
                 );
                 fileInfo.routes.add(routeInfo);
               }
@@ -222,7 +223,11 @@ class RouteGenerator {
     /// Nodes import
     if (isRoot && nodes != null && nodes.isNotEmpty) {
       for (final RouteGenerator node in nodes) {
-        imports.add('${node.import}\n');
+        final String import = '${node.import}\n';
+        if (!imports.contains(import)) {
+          imports.add(import);
+        }
+
         //sb.write('${node.import}\n');
       }
     }
@@ -257,8 +262,13 @@ class RouteGenerator {
           a.ffRoute.name.compareTo(b.ffRoute.name));
 
       for (final RouteInfo it in routes) {
-        if (it.ffRoute.argumentImports != null) {
-          imports.addAll(it.ffRoute.argumentImports);
+        if (it.ffRoute.argumentImports != null &&
+            it.ffRoute.argumentImports.isNotEmpty) {
+          for (final String element in it.ffRoute.argumentImports) {
+            if (!imports.contains(element)) {
+              imports.add(element);
+            }
+          }
         }
         caseSb.write(it.caseString);
       }
@@ -269,6 +279,15 @@ class RouteGenerator {
         final List<String> packages = imports
             .where((String element) => element.contains('package:'))
             .toList();
+        final List<String> darts = imports
+            .where((String element) => element.contains('dart:'))
+            .toList();
+
+        for (final String dart in darts) {
+          sb.write(dart);
+          imports.remove(dart);
+        }
+
         for (final String package in packages) {
           sb.write(package);
           imports.remove(package);

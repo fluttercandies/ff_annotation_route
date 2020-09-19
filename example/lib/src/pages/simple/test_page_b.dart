@@ -13,7 +13,9 @@ import 'package:flutter/material.dart';
   pageRouteType: PageRouteType.material,
 )
 class TestPageB extends StatelessWidget {
-  const TestPageB({this.argument});
+  const TestPageB({
+    this.argument,
+  });
   //const TestPageB._(this.argument);
   final String argument;
   @override

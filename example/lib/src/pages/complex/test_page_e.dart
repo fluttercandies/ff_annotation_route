@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
   description: 'This is test page E.',
   argumentImports: <String>[
     'import \'package:example/src/model/test_model.dart\';',
-    'import \'package:example/src/model/test_model1.dart\';'
+    'import \'package:example/src/model/test_model1.dart\';',
   ],
   exts: <String, dynamic>{
     'group': 'Complex',
