@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:mirrors';
 //import 'dart:mirrors';
 
 // ignore_for_file: implementation_imports
@@ -7,7 +6,7 @@ import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/ast/syntactic_entity.dart';
 import 'package:analyzer/src/dart/ast/ast.dart';
 import 'package:ff_annotation_route/ff_annotation_route.dart';
-import 'package:io/ansi.dart';
+//import 'package:io/ansi.dart';
 import 'utils/convert.dart';
 
 class RouteInfo {
@@ -185,16 +184,16 @@ class RouteInfo {
   }
 
   void alertType(String typeString) {
-    final Symbol symbol = Symbol(typeString);
-    final MirrorSystem mirrorSystem = currentMirrorSystem();
-    for (final LibraryMirror value in mirrorSystem.libraries.values) {
-      if (value.declarations.containsKey(symbol)) {
-        return;
-      }
-    }
+    // final Symbol symbol = Symbol(typeString);
+    // final MirrorSystem mirrorSystem = currentMirrorSystem();
+    // for (final LibraryMirror value in mirrorSystem.libraries.values) {
+    //   if (value.declarations.containsKey(symbol)) {
+    //     return;
+    //   }
+    // }
 
-    print(red.wrap(
-        '''Error : '$typeString' must be imported. Please add argumentImports of FFRoute at $routePath.'''));
+    // print(red.wrap(
+    //     '''Error : '$typeString' must be imported. Please add argumentImports of FFRoute at $routePath.'''));
   }
 
   void getTypeImport() {
