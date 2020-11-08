@@ -140,20 +140,20 @@ class TestPageE extends StatelessWidget {
 
 可用的命令:
 
-| command name                | description                                                                        |
-| --------------------------- | ---------------------------------------------------------------------------------- |
-| -h, --help                  | 打印帮助信息.                                                                      |
-| -p, --path [arguments]      | 执行命令的目录，没有就是当前目录.                                                  |
-| -rc, --route-constants      | 是否在根项目中的 `xxx_route.dart` 生成全部路由的静态常量                           |
-| -rh, --route-helper         | 生成 xxx_route_helper.dart 来帮助你处理路由                                        |
-| -rn, --route-names          | 是否在根项目中的 `xxx_route.dart` 生成全部路由的名字                               |
-| -s, --save                  | 是否保存命令到本地，如果保存了，下一次就只需要执行`ff_route`就可以了               |
-| -na, --no-arguments         | FFRouteSettings 将没有 arguments 这个参数,这个是主要是为了适配 Flutter 低版本      |
-| -g, --git package1,package2 | 是否扫描 git 引用的 package，你需要指定 package 的名字                             |
-| --package                   | 这个是否是一个 package                                                             |
-| --no-is-initial-route       | FFRouteSettings 将没有 isInitialRoute 这个参数,这个是主要是为了适配 Flutter 高版本 |
-| -o --output                 | route和helper文件的输出目录路径，路径相对于主项目的lib文件夹                       |
-| -rfo --routes-file-output   | routes 文件的输出目录路径，路径相对于主项目的lib文件夹                             |
+``` markdown
+-h, --[no-]help                   帮助信息
+-p, --path                        执行命令的目录，默认当前目录
+-o, --output                      route和helper文件的输出目录路径，路径相对于主项目的lib文件夹
+-g, --git                         扫描 git 引用的 package，你需要指定 package 的名字，多个用 `,` 分开
+    --routes-file-output          routes 文件的输出目录路径，路径相对于主项目的lib文件夹
+    --[no-]route-names            是否在根项目中的 `xxx_route.dart` 生成全部路由的名字
+    --[no-]route-helper           生成 `xxx_route_helper.dart` 来帮助你处理路由
+    --[no-]route-constants        是否在根项目中的 `xxx_route.dart` 生成全部路由的静态常量
+    --[no-]no-arguments           FFRouteSettings 将没有 arguments 这个参数,这个是主要是为了适配 Flutter 低版本
+    --[no-]package                这个是否是一个 package
+    --[no-]no-is-initial-route    FFRouteSettings 将没有 isInitialRoute 这个参数,这个是主要是为了适配 Flutter 高版本
+-s, --[no-]save                   是否保存命令到本地，如果保存了，下一次就只需要执行`ff_route`就可以了
+```
 
 ### Main.dart
 
@@ -231,7 +231,7 @@ class MyApp extends StatelessWidget {
   );
 ```
 
-#### Code Hints 
+#### Code Hints
 
 你能这样使用路由 'Routes.flutterCandiesTestPageE', 并且在编辑器中看到代码提示。
 包括页面描述，构造，参数类型，参数名字，参数是否必填。

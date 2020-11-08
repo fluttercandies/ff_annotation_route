@@ -1,66 +1,65 @@
 import 'dart:io' as io;
+import 'dart:io';
 
 import 'package:ff_annotation_route/ff_annotation_route.dart';
-import 'package:ff_annotation_route/src/command/command.dart';
-import 'package:ff_annotation_route/src/command/git.dart';
-import 'package:ff_annotation_route/src/command/help.dart';
-import 'package:ff_annotation_route/src/command/output.dart';
-import 'package:ff_annotation_route/src/command/package.dart';
-import 'package:ff_annotation_route/src/command/path.dart';
-import 'package:ff_annotation_route/src/command/route_constants.dart';
-import 'package:ff_annotation_route/src/command/route_helper.dart';
-import 'package:ff_annotation_route/src/command/route_names.dart';
-import 'package:ff_annotation_route/src/command/routes_file_output.dart';
-import 'package:ff_annotation_route/src/command/save.dart';
-import 'package:ff_annotation_route/src/command/settings_no_arguments.dart';
-import 'package:ff_annotation_route/src/command/settings_no_is_initial_route.dart';
 import 'package:ff_annotation_route/src/package_graph.dart';
 import 'package:io/ansi.dart';
 import 'package:path/path.dart';
 
-const String commandsFile = 'ff_annotation_route_commands';
+const String argumentsFile = 'ff_annotation_route_commands';
 const String debugCommands =
-    '--route-constants --route-helper --route-names --no-is-initial-route --path example/';
+    '--route-constants --route-helper --route-names --no-is-initial-route --path example/ -g xx,dd,ff';
 
-void main(List<String> arguments) {
+Future<void> main(List<String> arguments) async {
   //debug
   //arguments = debugCommands.split(' ');
-  final bool argumentsIsEmpty = arguments.isEmpty;
-  bool oldStyle = false;
+  bool runFromLocal = false;
   if (arguments.isEmpty) {
-    final io.File file = io.File(join('./', commandsFile));
+    final io.File file = io.File(join('./', argumentsFile));
     if (file.existsSync()) {
       final String content = file.readAsStringSync();
       if (content.contains(',')) {
         //old style
         arguments = content.split(',');
-        oldStyle = true;
       } else {
         arguments = content.split(' ');
       }
+      runFromLocal = true;
     }
   }
 
-  if (arguments.isEmpty) {
-    print(help);
-    return;
+  //keep old work
+  for (int i = 0; i < arguments.length; i++) {
+    if (arguments[i] == '-rc') {
+      arguments[i] = '--route-constants';
+    } else if (arguments[i] == '-rh') {
+      arguments[i] = '--route-helper';
+    } else if (arguments[i] == '-rn') {
+      arguments[i] = '--route-names';
+    } else if (arguments[i] == '-rfo') {
+      arguments[i] = '--routes-file-output';
+    } else if (arguments[i] == '-na') {
+      arguments[i] = '--no-arguments';
+    }
   }
 
-  final List<Command> commands = initCommands(arguments);
-  if (commands == null) {
-    return;
-  }
+  final Help help = Help();
+  final Path path = Path();
+  final Output output = Output();
+  final Git git = Git();
+  final RoutesFileOutput routesFileOutput = RoutesFileOutput();
+  final RouteNames routeNames = RouteNames();
+  final RouteHelper routeHelper = RouteHelper();
+  final RouteConstants routeConstants = RouteConstants();
+  final SettingsNoArguments settingsNoArguments = SettingsNoArguments();
+  final Package package = Package();
+  final SettingsNoIsInitialRoute settingsNoIsInitialRoute =
+      SettingsNoIsInitialRoute();
+  final Save save = Save();
+  parseArgs(arguments);
 
-  if (commands.isEmpty) {
-    print(red.wrap(
-        '''No available commands found.\nRun 'ff_route -h' for available commands and options.'''));
-    return;
-  }
-
-  if (commands.firstWhere((Command element) => element is Help,
-          orElse: () => null) !=
-      null) {
-    print(help);
+  if (arguments.isEmpty || help.value) {
+    print(green.wrap(parser.usage));
     return;
   }
 
@@ -68,59 +67,21 @@ void main(List<String> arguments) {
 
   print(green.wrap('\nff_annotation_route ------ Start'));
 
-  if (argumentsIsEmpty) {
-    print(yellow
-        .wrap('execute commands from local.\n${getCommandsHelp(commands)}'));
-  }
+  final PackageGraph packageGraph = PackageGraph.forPath(path.value);
 
-  final Command pathCommand = commands.firstWhere(
-    (Command element) => element is Path,
-    orElse: () => null,
-  );
-  final PackageGraph packageGraph = pathCommand != null
-      ? PackageGraph.forPath((pathCommand as Path).value)
-      : PackageGraph.forThisPackage();
+  final bool shouldGenerateRouteNames = routeNames.value;
 
-  final bool shouldGenerateRouteNames = commands.firstWhere(
-          (Command element) => element is RouteNames,
-          orElse: () => null) !=
-      null;
+  final bool shouldGenerateRouteConstants = routeConstants.value;
 
-  final bool shouldGenerateRouteConstants = commands.firstWhere(
-          (Command element) => element is RouteConstants,
-          orElse: () => null) !=
-      null;
+  final bool shouldGenerateRouteHelper = routeHelper.value;
 
-  final bool shouldGenerateRouteHelper = commands.firstWhere(
-          (Command element) => element is RouteHelper,
-          orElse: () => null) !=
-      null;
+  final bool isRouteSettingsNoArguments = settingsNoArguments.value;
 
-  final bool isRouteSettingsNoArguments = shouldGenerateRouteHelper &&
-      commands.firstWhere((Command element) => element is SettingsNoArguments,
-              orElse: () => null) !=
-          null;
+  final List<String> gitNames = git.value;
 
-  final Command git = commands.firstWhere(
-    (Command element) => element is Git,
-    orElse: () => null,
-  );
-  List<String> gitNames;
-  gitNames = <String>[];
-  if (git != null) {
-    gitNames = (git as Git).value.split(',');
-  }
+  final bool isPackage = package.value;
 
-  final bool isPackage = commands.firstWhere(
-          (Command element) => element is Package,
-          orElse: () => null) !=
-      null;
-
-  final bool isRouteSettingsHasIsInitialRoute = shouldGenerateRouteHelper &&
-      commands.firstWhere(
-              (Command element) => element is SettingsNoIsInitialRoute,
-              orElse: () => null) !=
-          null;
+  final bool isRouteSettingsHasIsInitialRoute = settingsNoIsInitialRoute.value;
 
   // Only check path which imports ff_annotation_route
   final List<PackageNode> annotationPackages =
@@ -146,20 +107,9 @@ void main(List<String> arguments) {
     annotationPackages.add(packageGraph.root);
   }
 
-  final Output output = commands.firstWhere((Command t) => t is Output,
-      orElse: () => null) as Output;
-  String outputPath;
-  if (output != null) {
-    outputPath = output.value;
-  }
+  final String outputPath = output.value;
 
-  final RoutesFileOutput routesFileOutput = commands.firstWhere(
-      (Command t) => t is RoutesFileOutput,
-      orElse: () => null) as RoutesFileOutput;
-  String routesFileOutputPath;
-  if (routesFileOutput != null) {
-    routesFileOutputPath = routesFileOutput.value;
-  }
+  final String routesFileOutputPath = routesFileOutput.value;
 
   generate(
     annotationPackages,
@@ -173,41 +123,17 @@ void main(List<String> arguments) {
     routeSettingsNoIsInitialRoute: isRouteSettingsHasIsInitialRoute,
     routesFileOutputPath: routesFileOutputPath,
   );
-  final Command saveCommand = commands.firstWhere(
-    (Command element) => element is Save,
-    orElse: () => null,
-  );
 
-  if (saveCommand != null || oldStyle) {
-    final io.File file = io.File(join(packageGraph.root.path, commandsFile));
+  if (save.value && !runFromLocal) {
+    final File file = File(join('./', argumentsFile));
     if (!file.existsSync()) {
       file.createSync();
     }
-
-    commands.remove(saveCommand);
-
-    // file.writeAsStringSync(
-    //     commands.toString().replaceAll('[', '').replaceAll(']', ''));
-
-    final StringBuffer sb = StringBuffer();
-
-    for (final Command command in commands) {
-      final String commandS = command.toString();
-      if (commandS.contains(',')) {
-        for (final String item in commandS.split(',')) {
-          sb.write('$item ');
-        }
-      } else {
-        sb.write('$commandS ');
-      }
+    String argumentsS = '';
+    for (final String item in arguments) {
+      argumentsS += '$item ';
     }
-
-    final String saveCommands = sb.toString().trim();
-
-    file.writeAsStringSync(saveCommands);
-
-    print(green.wrap(
-        'Save commands successfully: $saveCommands.\n\nYou can run "ff_route" directly in next time.'));
+    file.writeAsStringSync(argumentsS.trim());
   }
 
   final Duration diff = DateTime.now().difference(before);

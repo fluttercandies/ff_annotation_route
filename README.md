@@ -60,7 +60,7 @@ class MainPage extends StatelessWidget
 
 #### Constructor with arguments
 
-The tool will handle it. What you should take care is that provide import url by setting `argumentImports` if it has 
+The tool will handle it. What you should take care is that provide import url by setting `argumentImports` if it has
 class/enum argument.
 
 ```dart
@@ -136,21 +136,22 @@ Go to your project's root and execute command.
 
 Available commands:
 
-| command name                | description                                                                                                                   |
-| --------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
-| -h, --help                  | Print this usage information.                                                                                                 |
-| -p, --path [arguments]      | The path of folder to be executed with commands.                                                                              |
-| -rc, --route-constants      | Whether generate route names as constants.                                                                                    |
-| -rh, --route-helper         | Whether generate xxx_route_helper.dart                                                                                        |
-| -rn, --route-names          | Whether generate route names as a list.                                                                                       |
-| -s, --save                  | Whether save commands in local, it will read commands from local next time to execute if run "ff_route" without any commands. |
-| -na, --no-arguments         | Whether RouteSettings has arguments(for lower flutter sdk).                                                                   |
-| -g, --git package1,package2 | Whether scan git lib,you should specify package names and split multiple by ','.                                              |
-| --package                   | Is this a package.                                                                                                            |
-| --no-is-initial-route       | Whether RouteSettings has isInitialRoute(for higher flutter sdk).                                                             |
-| -o --output                 | The path of main project route file and helper file. it is relative to the lib directory.                                     |
-| -rfo --routes-file-output   | The path of routes file.It is relative to the lib directory.                                                                  |
-
+``` markdown
+-h, --[no-]help                   Help usage
+-p, --path                        Flutter project root path
+                                  (defaults to ".")
+-o, --output                      The path of main project route file and helper file.It is relative to the lib directory
+-g, --git                         scan git lib(you should specify package names and split multiple by ,)
+    --routes-file-output          The path of routes file. It is relative to the lib directory
+    --[no-]route-names            Whether generate route names as a list
+    --[no-]route-helper           Whether generate xxx_route_helper.dart
+    --[no-]route-constants        Whether generate route names as constants
+    --[no-]no-arguments           Whether RouteSettings has arguments(for lower flutter sdk)
+    --[no-]package                Is it a package
+    --[no-]no-is-initial-route    Whether RouteSettings has isInitialRoute(for higher flutter sdk)
+-s, --[no-]save                   Whether save the arguments into the local
+                                  It will execute the local arguments if run "ff_route" without any arguments
+```
 ### Main.dart
 
 - If you execute command with `--route-helper`, `FFNavigatorObserver/FFRouteSettings` will generate in `xxx_route_helper.dart`
@@ -226,7 +227,7 @@ class MyApp extends StatelessWidget {
     },
   );
 ```
-#### Code Hints 
+#### Code Hints
 
 you can use route as 'Routes.flutterCandiesTestPageE', and see Code Hints from ide.
 
