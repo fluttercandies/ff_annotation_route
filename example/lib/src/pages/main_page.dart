@@ -15,7 +15,7 @@ class MainPage extends StatelessWidget {
     final List<String> routeNames = <String>[];
     routeNames.addAll(example_routes.routeNames);
     routeNames.remove(Routes.fluttercandiesMainpage);
-    routeNames.remove(Routes.fluttercandiesDemogrouppage);
+    routeNames.remove(Routes.fluttercandiesDemogrouppage.toString());
     routesGroup.addAll(groupBy<DemoRouteResult, String>(
         routeNames
             .map<RouteResult>((String name) => getRouteResult(name: name))
@@ -91,10 +91,9 @@ class MainPage extends StatelessWidget {
                 ),
                 onTap: () {
                   Navigator.pushNamed(
-                      context, Routes.fluttercandiesDemogrouppage,
-                      arguments: <String, dynamic>{
-                        'keyValue': routesGroup.entries.toList()[index],
-                      });
+                      context, Routes.fluttercandiesDemogrouppage.toString(),
+                      arguments: Routes.fluttercandiesDemogrouppage
+                          .d(keyValue: routesGroup.entries.toList()[index]));
                 },
               ));
         },
@@ -107,6 +106,7 @@ class MainPage extends StatelessWidget {
 @FFRoute(
   name: 'fluttercandies://demogrouppage',
   routeName: 'DemoGroupPage',
+  argumentImports: <String>['import \'src/pages/main_page.dart\';'],
 )
 class DemoGroupPage extends StatelessWidget {
   DemoGroupPage({MapEntry<String, List<DemoRouteResult>> keyValue})

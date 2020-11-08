@@ -17,6 +17,7 @@ export 'src/arg/routes_file_output.dart';
 export 'src/arg/save.dart';
 export 'src/arg/settings_no_arguments.dart';
 export 'src/arg/settings_no_is_initial_route.dart';
+export 'src/arg/super_arguments.dart';
 export 'src/ff_route.dart';
 
 void generate(
@@ -30,6 +31,7 @@ void generate(
   bool routeSettingsNoIsInitialRoute = false,
   String outputPath,
   String routesFileOutputPath,
+  bool enableSupperArguments = false,
 }) {
   RouteGenerator root;
   final List<RouteGenerator> nodes = <RouteGenerator>[];
@@ -65,6 +67,7 @@ void generate(
     outputPath: outputPath,
     generateRouteConstants: generateRouteConstants,
     routesFileOutputPath: routesFileOutputPath,
+    enableSupperArguments: enableSupperArguments,
   );
   root?.generateHelperFile(
     nodes: nodes,

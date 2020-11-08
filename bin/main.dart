@@ -8,7 +8,7 @@ import 'package:path/path.dart';
 
 const String argumentsFile = 'ff_annotation_route_commands';
 const String debugCommands =
-    '--route-constants --route-helper --route-names --no-is-initial-route --path example/ -g xx,dd,ff';
+    '--route-constants --route-helper --route-names --no-is-initial-route --path example/ -g xx,dd,ff --supper-arguments';
 
 Future<void> main(List<String> arguments) async {
   //debug
@@ -55,6 +55,7 @@ Future<void> main(List<String> arguments) async {
   final Package package = Package();
   final SettingsNoIsInitialRoute settingsNoIsInitialRoute =
       SettingsNoIsInitialRoute();
+  final SupperArguments supperArguments = SupperArguments();
   final Save save = Save();
   parseArgs(arguments);
 
@@ -82,6 +83,8 @@ Future<void> main(List<String> arguments) async {
   final bool isPackage = package.value;
 
   final bool isRouteSettingsHasIsInitialRoute = settingsNoIsInitialRoute.value;
+
+  final bool enableSupperArguments = supperArguments.value;
 
   // Only check path which imports ff_annotation_route
   final List<PackageNode> annotationPackages =
@@ -122,6 +125,7 @@ Future<void> main(List<String> arguments) async {
     isPackage: isPackage,
     routeSettingsNoIsInitialRoute: isRouteSettingsHasIsInitialRoute,
     routesFileOutputPath: routesFileOutputPath,
+    enableSupperArguments: enableSupperArguments,
   );
 
   if (save.value && !runFromLocal) {

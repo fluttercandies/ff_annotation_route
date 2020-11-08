@@ -13,8 +13,8 @@ import 'ff_route.dart';
 import 'file_info.dart';
 import 'package_graph.dart';
 import 'route_info.dart';
+import 'routes_file_generator.dart';
 import 'utils.dart';
-import 'utils/camel_under_score_converter.dart';
 import 'utils/convert.dart';
 import 'utils/format.dart';
 
@@ -199,6 +199,7 @@ class RouteGenerator {
     bool generateRouteConstants = false,
     String outputPath,
     String routesFileOutputPath,
+    bool enableSupperArguments = false,
   }) {
     final String name = '${packageNode.name}_route.dart';
     String routePath;
@@ -223,7 +224,7 @@ class RouteGenerator {
     /// Nodes import
     if (isRoot && nodes != null && nodes.isNotEmpty) {
       for (final RouteGenerator node in nodes) {
-        final String import = '${node.import}\n';
+        final String import = '${node.import}';
         if (!imports.contains(import)) {
           imports.add(import);
         }
@@ -273,163 +274,25 @@ class RouteGenerator {
         caseSb.write(it.caseString);
       }
 
-      if (imports.isNotEmpty) {
-        sb.write('\n');
-        imports.sort((String a, String b) => a.compareTo(b));
-        final List<String> packages = imports
-            .where((String element) => element.contains('package:'))
-            .toList();
-        final List<String> darts = imports
-            .where((String element) => element.contains('dart:'))
-            .toList();
-
-        for (final String dart in darts) {
-          sb.write(dart);
-          imports.remove(dart);
-        }
-
-        for (final String package in packages) {
-          sb.write(package);
-          imports.remove(package);
-        }
-
-        if (packages.isNotEmpty) {
-          sb.write('\n');
-        }
-
-        for (int i = 0; i < imports.length; i++) {
-          sb.write(imports[i]);
-        }
-
-        sb.write('\n');
-      }
+      writeImports(imports, sb);
 
       sb.write(rootFile.replaceAll('{0}', caseSb.toString()));
-
-      _generateRoutesFile(generateRouteConstants, routesFileOutputPath,
-          generateRouteNames, routes);
+      RoutesFileGenerator(
+        generateRouteConstants: generateRouteConstants,
+        generateRouteNames: generateRouteNames,
+        routesFileOutputPath: routesFileOutputPath,
+        routes: routes,
+        enableSupperArguments: enableSupperArguments,
+        lib: _lib,
+        packageNode: packageNode,
+      ).generateRoutesFile();
     }
-
+    var ss= sb.toString();
     if (sb.isNotEmpty) {
       file.createSync(recursive: true);
       file.writeAsStringSync(formatDart(fileHeader + sb.toString()));
       print('Generate : ${p.relative(file.path, from: packageNode.path)}');
     }
-  }
-
-  void _generateRoutesFile(
-      bool generateRouteConstants,
-      String routesFileOutputPath,
-      bool generateRouteNames,
-      List<RouteInfo> routes) {
-    if (generateRouteConstants || generateRouteNames) {
-      final StringBuffer constantsSb = StringBuffer();
-      final String name = '${packageNode.name}_routes.dart';
-      String routePath;
-
-      if (routesFileOutputPath != null) {
-        routePath = p.join(_lib.path, routesFileOutputPath, name);
-      } else {
-        routePath = p.join(_lib.path, name);
-      }
-
-      final File file = File(routePath);
-      if (file.existsSync()) {
-        file.deleteSync();
-      }
-
-      if (generateRouteNames) {
-        constantsSb.write(fileHeader);
-
-        final StringBuffer routeNamesString = StringBuffer();
-        for (final RouteInfo item in routes) {
-          routeNamesString.write(safeToString(item.ffRoute.name));
-          routeNamesString.write(',');
-        }
-
-        constantsSb.write(
-            'const List<String> routeNames = <String>[${routeNamesString.toString()}];');
-        constantsSb.write('\n');
-      }
-
-      if (generateRouteConstants) {
-        if (constantsSb.isEmpty) {
-          constantsSb.write(fileHeader);
-        }
-        constantsSb.write('class Routes {\n');
-        constantsSb.write('const Routes._();\n');
-        for (final RouteInfo it in routes) {
-          _generateRouteConstant(it, constantsSb);
-        }
-        constantsSb.write('}');
-      }
-      if (constantsSb.isNotEmpty) {
-        file.createSync(recursive: true);
-        file.writeAsStringSync(formatDart(constantsSb.toString()));
-        print('Generate : ${p.relative(file.path, from: packageNode.path)}');
-      }
-    }
-  }
-
-  void _generateRouteConstant(RouteInfo route, StringBuffer sb) {
-    final FFRoute _route = route.ffRoute;
-
-    final String _name = safeToString(_route.name);
-    final String _routeName = safeToString(_route.routeName);
-    final String _description = safeToString(_route.description);
-    final String _constructors = route.constructorsString;
-    final bool _showStatusBar = _route.showStatusBar;
-    final PageRouteType _pageRouteType = _route.pageRouteType;
-    final Map<String, dynamic> _exts = _route.exts;
-
-    final String _firstLine = _description ?? _routeName ?? _name;
-
-    String _constant;
-    _constant = camelName(_name)
-        .replaceAll('\"', '')
-        .replaceAll('\'', '')
-        .replaceAll('://', '_')
-        .replaceAll('/', '_')
-        .replaceAll('.', '_')
-        .replaceAll(' ', '_')
-        .replaceAll('-', '_');
-    while (_constant.startsWith('_')) {
-      _constant = _constant.replaceFirst('_', '');
-    }
-
-    sb.write('/// $_firstLine\n');
-    sb.write('///');
-    sb.write('\n/// [name] : $_name');
-    if (_routeName != null) {
-      sb.write('\n///');
-      sb.write('\n/// [routeName] : $_routeName');
-    }
-    if (_description != null) {
-      sb.write('\n///');
-      sb.write('\n/// [description] : $_description');
-    }
-    if (_constructors != null) {
-      sb.write('\n///');
-      sb.write('\n/// [constructors] : $_constructors');
-    }
-    if (_showStatusBar != null) {
-      sb.write('\n///');
-      sb.write('\n/// [showStatusBar] : $_showStatusBar');
-    }
-    if (_pageRouteType != null) {
-      sb.write('\n///');
-      sb.write('\n/// [pageRouteType] : $_pageRouteType');
-    }
-
-    if (_exts != null) {
-      sb.write('\n///');
-      sb.write('\n/// [exts] : $_exts');
-    }
-
-    sb.write(
-      '\nstatic const String '
-      '${camelName(_constant)} = $_name;\n\n',
-    );
   }
 
   void generateHelperFile({

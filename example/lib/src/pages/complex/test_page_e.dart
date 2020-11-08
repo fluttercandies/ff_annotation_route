@@ -29,7 +29,7 @@ class TestPageE extends StatelessWidget {
         testMode: TestMode.deafult(),
       );
 
-  factory TestPageE.required({@required TestMode testMode}) => TestPageE(
+  factory TestPageE.requiredC({@required TestMode testMode}) => TestPageE(
         testMode: testMode,
       );
 
@@ -44,10 +44,9 @@ class TestPageE extends StatelessWidget {
         ),
         FlatButton(
           onPressed: () {
-            Navigator.pushNamed(context, Routes.flutterCandiesTestPageE,
-                arguments: <String, dynamic>{
-                  constructorName: 'deafult',
-                });
+            Navigator.pushNamed(
+                context, Routes.flutterCandiesTestPageE.toString(),
+                arguments: Routes.flutterCandiesTestPageE.deafult());
           },
           child: const Text(
             'TestPageE.deafult()',
@@ -57,14 +56,12 @@ class TestPageE extends StatelessWidget {
           onPressed: () {
             Navigator.pushNamed(
               context,
-              Routes.flutterCandiesTestPageE,
-              arguments: <String, dynamic>{
-                constructorName: 'required',
-                'testMode': const TestMode(
-                  id: 100,
-                  isTest: true,
-                ),
-              },
+              Routes.flutterCandiesTestPageE.toString(),
+              arguments: Routes.flutterCandiesTestPageE.requiredC(
+                  testMode: const TestMode(
+                id: 100,
+                isTest: true,
+              )),
             );
           },
           child: const Text(
