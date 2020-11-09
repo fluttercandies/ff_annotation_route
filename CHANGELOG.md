@@ -1,3 +1,8 @@
+## 4.2.0
+
+* add '--supper-arguments' which generate page arguments helper class
+* add '--const-ignore' is the regular to ignore some route consts
+
 ## 4.1.0
 
 * use args to parse arguments.

@@ -35,34 +35,33 @@ String safeToString(String input) {
 }
 
 void writeImports(List<String> imports, StringBuffer sb) {
-     if (imports.isNotEmpty) {
-      sb.write('\n');
-      imports.sort((String a, String b) => a.compareTo(b));
-      final List<String> packages = imports
-          .where((String element) => element.contains('package:'))
-          .toList();
-      final List<String> darts = imports
-          .where((String element) => element.contains('dart:'))
-          .toList();
+  if (imports.isNotEmpty) {
+    sb.write('\n');
+    imports.sort((String a, String b) => a.compareTo(b));
+    final List<String> packages = imports
+        .where((String element) => element.contains('package:'))
+        .toList();
+    final List<String> darts =
+        imports.where((String element) => element.contains('dart:')).toList();
 
-      for (final String dart in darts) {
-        sb.write(dart);
-        imports.remove(dart);
-      }
+    for (final String dart in darts) {
+      sb.write(dart);
+      imports.remove(dart);
+    }
 
-      for (final String package in packages) {
-        sb.write(package);
-        imports.remove(package);
-      }
+    for (final String package in packages) {
+      sb.write(package);
+      imports.remove(package);
+    }
 
-      if (packages.isNotEmpty) {
-        sb.write('\n');
-      }
-
-      for (int i = 0; i < imports.length; i++) {
-        sb.write(imports[i]);
-      }
-
+    if (packages.isNotEmpty) {
       sb.write('\n');
     }
+
+    for (int i = 0; i < imports.length; i++) {
+      sb.write(imports[i]);
+    }
+
+    sb.write('\n');
   }
+}

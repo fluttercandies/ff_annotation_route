@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
         return onGenerateRouteHelper(settings,
             builder: (Widget child, RouteResult result) {
           if (settings.name == Routes.fluttercandiesMainpage ||
-              settings.name == Routes.fluttercandiesDemogrouppage.toString()) {
+              settings.name == Routes.fluttercandiesDemogrouppage.name) {
             return child;
           }
           return CommonWidget(

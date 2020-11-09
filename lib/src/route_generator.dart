@@ -47,7 +47,7 @@ class RouteGenerator {
           .sort((FileInfo a, FileInfo b) => a.export.compareTo(b.export));
 
       for (final FileInfo info in _fileInfoList) {
-        sb.write("${isRoot ? "import" : "export"} '${info.export}'; \n");
+        sb.write("${isRoot ? "import" : "export"} '${info.export}';\n");
       }
       return sb.toString();
     }
@@ -200,6 +200,7 @@ class RouteGenerator {
     String outputPath,
     String routesFileOutputPath,
     bool enableSupperArguments = false,
+    RegExp constIgnore,
   }) {
     final String name = '${packageNode.name}_route.dart';
     String routePath;
@@ -224,7 +225,7 @@ class RouteGenerator {
     /// Nodes import
     if (isRoot && nodes != null && nodes.isNotEmpty) {
       for (final RouteGenerator node in nodes) {
-        final String import = '${node.import}';
+        final String import = '${node.import}\n';
         if (!imports.contains(import)) {
           imports.add(import);
         }
@@ -240,7 +241,7 @@ class RouteGenerator {
 
     /// Create route generator
     if (isRoot) {
-      imports.add(export);
+      imports.addAll(export.split('\n'));
       imports.add('import \'package:flutter/widgets.dart\';');
       imports.add(
           'import \'package:ff_annotation_route/ff_annotation_route.dart\';');
@@ -285,9 +286,10 @@ class RouteGenerator {
         enableSupperArguments: enableSupperArguments,
         lib: _lib,
         packageNode: packageNode,
+        constIgnore: constIgnore,
       ).generateRoutesFile();
     }
-    var ss= sb.toString();
+
     if (sb.isNotEmpty) {
       file.createSync(recursive: true);
       file.writeAsStringSync(formatDart(fileHeader + sb.toString()));

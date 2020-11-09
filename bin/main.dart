@@ -8,7 +8,7 @@ import 'package:path/path.dart';
 
 const String argumentsFile = 'ff_annotation_route_commands';
 const String debugCommands =
-    '--route-constants --route-helper --route-names --no-is-initial-route --path example/ -g xx,dd,ff --supper-arguments';
+    '--route-constants --route-helper --route-names --no-is-initial-route --path example/ -g xx,dd,ff --supper-arguments --const-ignore demogrouppage';
 
 Future<void> main(List<String> arguments) async {
   //debug
@@ -48,6 +48,7 @@ Future<void> main(List<String> arguments) async {
   final Output output = Output();
   final Git git = Git();
   final RoutesFileOutput routesFileOutput = RoutesFileOutput();
+  final ConstIgnore constIgnore = ConstIgnore();
   final RouteNames routeNames = RouteNames();
   final RouteHelper routeHelper = RouteHelper();
   final RouteConstants routeConstants = RouteConstants();
@@ -85,6 +86,9 @@ Future<void> main(List<String> arguments) async {
   final bool isRouteSettingsHasIsInitialRoute = settingsNoIsInitialRoute.value;
 
   final bool enableSupperArguments = supperArguments.value;
+
+  final RegExp regExp =
+      constIgnore.value != null ? RegExp(constIgnore.value) : null;
 
   // Only check path which imports ff_annotation_route
   final List<PackageNode> annotationPackages =
@@ -126,6 +130,7 @@ Future<void> main(List<String> arguments) async {
     routeSettingsNoIsInitialRoute: isRouteSettingsHasIsInitialRoute,
     routesFileOutputPath: routesFileOutputPath,
     enableSupperArguments: enableSupperArguments,
+    constIgnore: regExp,
   );
 
   if (save.value && !runFromLocal) {

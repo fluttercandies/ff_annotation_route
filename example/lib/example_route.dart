@@ -85,8 +85,8 @@ RouteResult getRouteResult({String name, Map<String, dynamic> arguments}) {
                 const TestMode(id: 2, isTest: false),
             testMode1: arguments['testMode1'] as TestMode1,
           ),
-          'deafult': TestPageE.deafult(),
-          'required': TestPageE.required(
+          'test': TestPageE.test(),
+          'requiredC': TestPageE.requiredC(
             testMode: arguments['testMode'] as TestMode,
           ),
         }[arguments[constructorName] as String ?? ''],

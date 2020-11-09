@@ -143,12 +143,14 @@ Available commands:
 -o, --output                      The path of main project route file and helper file.It is relative to the lib directory
 -g, --git                         scan git lib(you should specify package names and split multiple by ,)
     --routes-file-output          The path of routes file. It is relative to the lib directory
+    --const-ignore                The regular to ignore some route consts    
     --[no-]route-names            Whether generate route names as a list
     --[no-]route-helper           Whether generate xxx_route_helper.dart
     --[no-]route-constants        Whether generate route names as constants
     --[no-]no-arguments           Whether RouteSettings has arguments(for lower flutter sdk)
     --[no-]package                Is it a package
     --[no-]no-is-initial-route    Whether RouteSettings has isInitialRoute(for higher flutter sdk)
+    --[no-]supper-arguments       Whether generate page arguments helper class   
 -s, --[no-]save                   Whether save the arguments into the local
                                   It will execute the local arguments if run "ff_route" without any arguments
 ```
@@ -212,7 +214,7 @@ class MyApp extends StatelessWidget {
 
 #### Push name with arguments
 
-`arguments` **MUST** be a `Map<String, dynamic>`
+* `arguments` **MUST** be a `Map<String, dynamic>`
 
 ```dart
   Navigator.pushNamed(
@@ -227,9 +229,26 @@ class MyApp extends StatelessWidget {
     },
   );
 ```
+* enable --supper-arguments
+
+```dart
+  Navigator.pushNamed(
+    context,
+    Routes.flutterCandiesTestPageE.name,
+    arguments: Routes.flutterCandiesTestPageE.requiredC(
+      testMode: const TestMode(
+        id: 100,
+        isTest: true,
+      ),
+    ),
+  );
+```
+
 #### Code Hints
 
 you can use route as 'Routes.flutterCandiesTestPageE', and see Code Hints from ide.
+
+* default
 
 ```dart
   /// 'This is test page E.'
@@ -251,3 +270,55 @@ you can use route as 'Routes.flutterCandiesTestPageE', and see Code Hints from i
   /// [exts] : {group: Complex, order: 1}
   static const String flutterCandiesTestPageE = 'flutterCandies://testPageE';
 ```
+
+* enable --supper-arguments
+
+```dart
+  /// 'This is test page E.'
+  ///
+  /// [name] : 'flutterCandies://testPageE'
+  ///
+  /// [routeName] : 'testPageE'
+  ///
+  /// [description] : 'This is test page E.'
+  ///
+  /// [constructors] :
+  ///
+  /// TestPageE : [TestMode testMode, TestMode1 testMode1]
+  ///
+  /// TestPageE.test : []
+  ///
+  /// TestPageE.requiredC : [TestMode(required) testMode]
+  ///
+  /// [exts] : {group: Complex, order: 1}
+  static const _FlutterCandiesTestPageE flutterCandiesTestPageE =
+      _FlutterCandiesTestPageE();
+
+  class _FlutterCandiesTestPageE {
+    const _FlutterCandiesTestPageE();
+  
+    String get name => 'flutterCandies://testPageE';
+  
+    Map<String, dynamic> d(
+            {TestMode testMode = const TestMode(id: 2, isTest: false),
+            TestMode1 testMode1}) =>
+        <String, dynamic>{
+          'testMode': testMode,
+          'testMode1': testMode1,
+        };
+  
+    Map<String, dynamic> test() => const <String, dynamic>{
+          'constructorName': 'test',
+        };
+  
+    Map<String, dynamic> requiredC({@required TestMode testMode}) =>
+        <String, dynamic>{
+          'testMode': testMode,
+          'constructorName': 'requiredC',
+        };
+  
+    @override
+    String toString() => name;
+  }
+
+```      

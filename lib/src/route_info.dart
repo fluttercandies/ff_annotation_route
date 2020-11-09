@@ -291,6 +291,7 @@ class RouteInfo {
         argumentsClassName = argumentsClassName[0].toUpperCase() +
             argumentsClassName.substring(1, argumentsClassName.length);
       }
+      argumentsClassName = '_' + argumentsClassName;
       sb.write(
         '\nstatic const $argumentsClassName '
         '${camelName(_constant)} = $argumentsClassName();\n\n',
@@ -330,7 +331,7 @@ class RouteInfo {
               for (final FieldDeclaration item in fields) {
                 if (item.fields.endToken.toString() == name) {
                   final TypeAnnotation type = item.fields.type;
-                  args = args.replaceAll(parameterS,
+                  args = args.replaceFirst(parameterS,
                       parameterS.replaceAll('this.', '${type.toString()} '));
                   break;
                 }
@@ -344,7 +345,9 @@ class RouteInfo {
 
           sb.write(routeConstClassMethodTemplate
               .replaceAll('{0}', (name ?? 'd') + (args ?? '()'))
-              .replaceAll('{1}', nameMap));
+              .replaceAll('{1}', nameMap)
+              .replaceAll('{2}',
+                  rawConstructor.parameters.parameters.isEmpty ? 'const' : ''));
         }
       }
 
@@ -359,13 +362,18 @@ class RouteInfo {
 }
 
 const String routeConstClassMethodTemplate =
-    'Map<String, dynamic> {0} => <String, dynamic>{{1}};\n';
+    'Map<String, dynamic> {0} => {2} <String, dynamic>{{1}};\n\n';
 
 const String routeConstClassTemplate = '''
 class {0} {
+
   const {0}();
+
+  String get name => {1};
+
   {2}
+
   @override
-  String toString() => {1};
+  String toString() => name;
 }
 ''';

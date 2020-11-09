@@ -5,6 +5,7 @@ import 'src/route_generator.dart';
 export 'src/arg/arg.dart';
 export 'src/arg/arg_parser.dart';
 
+export 'src/arg/const_ignore.dart';
 export 'src/arg/git.dart';
 export 'src/arg/help.dart';
 export 'src/arg/output.dart';
@@ -32,6 +33,7 @@ void generate(
   String outputPath,
   String routesFileOutputPath,
   bool enableSupperArguments = false,
+  RegExp constIgnore,
 }) {
   RouteGenerator root;
   final List<RouteGenerator> nodes = <RouteGenerator>[];
@@ -68,6 +70,7 @@ void generate(
     generateRouteConstants: generateRouteConstants,
     routesFileOutputPath: routesFileOutputPath,
     enableSupperArguments: enableSupperArguments,
+    constIgnore: constIgnore,
   );
   root?.generateHelperFile(
     nodes: nodes,

@@ -8,7 +8,7 @@ class SupperArguments extends Argument<bool> {
   bool get defaultsTo => false;
 
   @override
-  String get help => 'Whether generate page arguments helper';
+  String get help => 'Whether generate page arguments helper class';
 
   @override
   String get name => 'supper-arguments';

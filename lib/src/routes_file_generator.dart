@@ -22,6 +22,7 @@ class RoutesFileGenerator {
     this.routes,
     this.lib,
     this.packageNode,
+    this.constIgnore,
   });
   final bool generateRouteConstants;
   final String routesFileOutputPath;
@@ -30,6 +31,7 @@ class RoutesFileGenerator {
   final bool enableSupperArguments;
   final Directory lib;
   final PackageNode packageNode;
+  final RegExp constIgnore;
 
   void generateRoutesFile() {
     if (generateRouteConstants || generateRouteNames) {
@@ -53,6 +55,9 @@ class RoutesFileGenerator {
 
         final StringBuffer routeNamesString = StringBuffer();
         for (final RouteInfo item in routes) {
+          if (constIgnore != null && constIgnore.hasMatch(item.ffRoute.name)) {
+            continue;
+          }
           routeNamesString.write(safeToString(item.ffRoute.name));
           routeNamesString.write(',');
         }
@@ -69,6 +74,9 @@ class RoutesFileGenerator {
         constantsSb.write('class Routes {\n');
         constantsSb.write('const Routes._();\n');
         for (final RouteInfo it in routes) {
+          if (constIgnore != null && constIgnore.hasMatch(it.ffRoute.name)) {
+            continue;
+          }
           it.getRouteConst(enableSupperArguments, constantsSb);
         }
         constantsSb.write('}');
@@ -76,6 +84,10 @@ class RoutesFileGenerator {
         if (enableSupperArguments) {
           for (final RouteInfo it in routes) {
             if (it.argumentsClass != null) {
+              if (constIgnore != null &&
+                  constIgnore.hasMatch(it.ffRoute.name)) {
+                continue;
+              }
               constantsSb.write(it.argumentsClass);
               if (it.argumentsClass.contains('@required')) {
                 if (!imports.contains(requiredS)) {
