@@ -1,3 +1,7 @@
+## 4.2.1
+
+* fix the method 'firstWhere' was called on null,gitNames is null
+  
 ## 4.2.0
 
 * add '--supper-arguments' which generate page arguments helper class
@@ -5,7 +9,7 @@
 
 ## 4.1.0
 
-* use args to parse arguments.
+* use args to parse arguments
 
 ## 4.0.2
 

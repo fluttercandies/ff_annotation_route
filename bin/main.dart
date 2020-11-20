@@ -79,7 +79,7 @@ Future<void> main(List<String> arguments) async {
 
   final bool isRouteSettingsNoArguments = settingsNoArguments.value;
 
-  final List<String> gitNames = git.value;
+  final List<String> gitNames = git.value ?? <String>[];
 
   final bool isPackage = package.value;
 
