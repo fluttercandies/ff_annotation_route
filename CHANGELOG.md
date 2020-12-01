@@ -1,3 +1,7 @@
+## 4.2.2
+
+* Add `name` parameter.
+
 ## 4.2.1
 
 * fix the method 'firstWhere' was called on null,gitNames is null
