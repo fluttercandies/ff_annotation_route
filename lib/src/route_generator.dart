@@ -201,6 +201,7 @@ class RouteGenerator {
     String routesFileOutputPath,
     bool enableSupperArguments = false,
     RegExp constIgnore,
+    String className,
   }) {
     final String name = '${packageNode.name}_route.dart';
     String routePath;
@@ -287,6 +288,7 @@ class RouteGenerator {
         lib: _lib,
         packageNode: packageNode,
         constIgnore: constIgnore,
+        className: className,
       ).generateRoutesFile();
     }
 

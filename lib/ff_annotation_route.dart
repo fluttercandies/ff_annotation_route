@@ -8,6 +8,7 @@ export 'src/arg/arg_parser.dart';
 export 'src/arg/const_ignore.dart';
 export 'src/arg/git.dart';
 export 'src/arg/help.dart';
+export 'src/arg/name.dart';
 export 'src/arg/output.dart';
 export 'src/arg/package.dart';
 export 'src/arg/path.dart';
@@ -32,6 +33,7 @@ void generate(
   bool routeSettingsNoIsInitialRoute = false,
   String outputPath,
   String routesFileOutputPath,
+  String className,
   bool enableSupperArguments = false,
   RegExp constIgnore,
 }) {
@@ -49,7 +51,7 @@ void generate(
       routeGenerator.scanLib();
       if (routeGenerator.hasAnnotationRoute) {
         //final io.File file =
-        routeGenerator.generateFile();
+        routeGenerator.generateFile(className: className);
         //formatFile(file);
         nodes.add(routeGenerator);
       }
@@ -71,6 +73,7 @@ void generate(
     routesFileOutputPath: routesFileOutputPath,
     enableSupperArguments: enableSupperArguments,
     constIgnore: constIgnore,
+    className: className,
   );
   root?.generateHelperFile(
     nodes: nodes,

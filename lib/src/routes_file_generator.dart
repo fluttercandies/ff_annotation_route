@@ -23,7 +23,9 @@ class RoutesFileGenerator {
     this.lib,
     this.packageNode,
     this.constIgnore,
+    this.className,
   });
+
   final bool generateRouteConstants;
   final String routesFileOutputPath;
   final bool generateRouteNames;
@@ -32,6 +34,7 @@ class RoutesFileGenerator {
   final Directory lib;
   final PackageNode packageNode;
   final RegExp constIgnore;
+  final String className;
 
   void generateRoutesFile() {
     if (generateRouteConstants || generateRouteNames) {
@@ -71,8 +74,8 @@ class RoutesFileGenerator {
         if (constantsSb.isEmpty) {
           constantsSb.write(fileHeader);
         }
-        constantsSb.write('class Routes {\n');
-        constantsSb.write('const Routes._();\n');
+        constantsSb.write('class $className {\n');
+        constantsSb.write('const $className._();\n');
         for (final RouteInfo it in routes) {
           if (constIgnore != null && constIgnore.hasMatch(it.ffRoute.name)) {
             continue;

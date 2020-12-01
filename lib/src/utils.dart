@@ -176,7 +176,7 @@ Route<dynamic> onGenerateRouteHelper(
   Widget page = routeResult.widget ?? notFoundFallback;
   if (page == null) {
     throw Exception(
-      'Route "${settings.name}" returned null. Route widget must never return '
+      'Route "\${settings.name}" returned null. Route widget must never return '
       'null. Maybe the reason is that the route name did not match with right'
       'path. You can use parameter[notFoundFallback] to avoid this ugly error.',
     );

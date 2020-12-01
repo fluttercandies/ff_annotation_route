@@ -45,6 +45,7 @@ Future<void> main(List<String> arguments) async {
 
   final Help help = Help();
   final Path path = Path();
+  final Name name = Name();
   final Output output = Output();
   final Git git = Git();
   final RoutesFileOutput routesFileOutput = RoutesFileOutput();
@@ -70,6 +71,8 @@ Future<void> main(List<String> arguments) async {
   print(green.wrap('\nff_annotation_route ------ Start'));
 
   final PackageGraph packageGraph = PackageGraph.forPath(path.value);
+
+  final String className = name.value;
 
   final bool shouldGenerateRouteNames = routeNames.value;
 
@@ -122,6 +125,7 @@ Future<void> main(List<String> arguments) async {
     annotationPackages,
     generateRouteNames: shouldGenerateRouteNames,
     outputPath: outputPath,
+    className: className,
     generateRouteConstants: shouldGenerateRouteConstants,
     generateRouteHelper: shouldGenerateRouteHelper,
     routeSettingsNoArguments: isRouteSettingsNoArguments,

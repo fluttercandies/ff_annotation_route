@@ -104,7 +104,7 @@ class TestPageE extends StatelessWidget {
 
 | Parameter       | Description                                                                           | Default  |
 | --------------- | ------------------------------------------------------------------------------------- | -------- |
-| name            | The name of the route (e.g., "/settings")                                            | required |
+| name            | The name of the route (e.g., "/settings")                                             | required |
 | showStatusBar   | Whether to show the status bar.                                                       | true     |
 | routeName       | The route name to track page.                                                         | ''       |
 | pageRouteType   | The type of page route.(material, cupertino, transparent)                             | -        |
@@ -136,12 +136,18 @@ Go to your project's root and execute command.
 
 Available commands:
 
-``` markdown
--h, --[no-]help                   Help usage
--p, --path                        Flutter project root path
+```markdown
+-h, --[no-]help                   Help usage.
+
+-p, --path                        Flutter project root path.
                                   (defaults to ".")
--o, --output                      The path of main project route file and helper file.It is relative to the lib directory
--g, --git                         scan git lib(you should specify package names and split multiple by ,)
+
+-o, --output                      The path of main project route file and helper file.It is relative to the lib directory.
+
+-n, --name                        The class name for the routes constant.
+                                  (defaults to "Routes")
+
+-g, --git                         Scan git lib (you should specify package names and split multiple by ,)
     --routes-file-output          The path of routes file. It is relative to the lib directory
     --const-ignore                The regular to ignore some route consts    
     --[no-]route-names            Whether generate route names as a list
@@ -150,9 +156,10 @@ Available commands:
     --[no-]no-arguments           Whether RouteSettings has arguments(for lower flutter sdk)
     --[no-]package                Is it a package
     --[no-]no-is-initial-route    Whether RouteSettings has isInitialRoute(for higher flutter sdk)
-    --[no-]supper-arguments       Whether generate page arguments helper class   
+    --[no-]supper-arguments       Whether generate page arguments helper class
+
 -s, --[no-]save                   Whether save the arguments into the local
-                                  It will execute the local arguments if run "ff_route" without any arguments
+                                  It will execute the local arguments if run "ff_route" without any arguments.
 ```
 ### Main.dart
 
