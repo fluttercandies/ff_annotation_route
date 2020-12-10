@@ -1,3 +1,7 @@
+## 4.2.3
+
+* Hide parameters.
+  
 ## 4.2.2
 
 * Add `name` parameter.
