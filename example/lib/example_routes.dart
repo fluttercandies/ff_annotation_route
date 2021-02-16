@@ -12,7 +12,6 @@ const List<String> routeNames = <String>[
   '''flutterCandies://testPage' "B''',
   '''flutterCandies://testPage' "D''',
   'flutterCandies://testPageA',
-  'flutterCandies://testPageC',
   'flutterCandies://testPageE',
   'fluttercandies://demogrouppage',
   'fluttercandies://mainpage',
@@ -79,17 +78,6 @@ class Routes {
   ///
   /// [exts] : {group: Simple, order: 0}
   static const String flutterCandiesTestPageA = 'flutterCandies://testPageA';
-
-  /// 'This is test page c in other module.'
-  ///
-  /// [name] : 'flutterCandies://testPageC'
-  ///
-  /// [routeName] : 'testPageC'
-  ///
-  /// [description] : 'This is test page c in other module.'
-  ///
-  /// [exts] : {group: Simple, order: 2}
-  static const String flutterCandiesTestPageC = 'flutterCandies://testPageC';
 
   /// 'This is test page E.'
   ///

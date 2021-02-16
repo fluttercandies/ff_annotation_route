@@ -1,7 +1,18 @@
+## 5.0.0
+
+* breaking change :
+
+  remove --route-helper, it's ff_annotation_route_library in now.
+  remove --no-is-initial-route
+  remove --no-arguments
+  remove --route-constants
+  remove --route-names
+
+* add Navigator 2.0 support
 ## 4.2.3
 
 * Hide parameters.
-  
+
 ## 4.2.2
 
 * Add `name` parameter.
@@ -9,7 +20,7 @@
 ## 4.2.1
 
 * fix the method 'firstWhere' was called on null,gitNames is null
-  
+
 ## 4.2.0
 
 * add '--supper-arguments' which generate page arguments helper class

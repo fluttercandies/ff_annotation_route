@@ -5,8 +5,8 @@ import 'dart:convert';
 import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/ast/syntactic_entity.dart';
 import 'package:analyzer/src/dart/ast/ast.dart';
-import 'package:ff_annotation_route/ff_annotation_route.dart';
-//import 'package:io/ansi.dart';
+import 'package:ff_annotation_route_core/ff_annotation_route_core.dart';
+//import 'package:io/ansi.dart'
 import 'utils/camel_under_score_converter.dart';
 import 'utils/convert.dart';
 
@@ -71,7 +71,7 @@ class RouteInfo {
   String get caseString {
     return '''case ${safeToString(ffRoute.name)}:
 
-    return RouteResult(
+    return FFRouteSettings(
       name: name,
       widget:  $constructor,
       ${ffRoute.showStatusBar != null ? 'showStatusBar: ${ffRoute.showStatusBar},' : ''}
@@ -92,11 +92,15 @@ class RouteInfo {
 
     final String type = getParameterType(name, parameter, rawConstructor);
     if (type != null) {
-      value = '$value as $type';
+      value = 'asT<$type>($value';
     }
 
     if (parameter is DefaultFormalParameter && parameter.defaultValue != null) {
-      value = '$value??${parameter.defaultValue}';
+      value += ',${parameter.defaultValue}';
+    }
+
+    if (type != null) {
+      value += ')';
     }
 
     if (!parameter.isPositional) {
@@ -126,10 +130,11 @@ class RouteInfo {
               //   optionals.add(item);
               // }
             } else {
-              constructorString += 'arguments[\'$name\']';
               final String type = getParameterType(name, item, rawConstructor);
               if (type != null) {
-                constructorString += ' as $type';
+                constructorString += 'asT<$type>(arguments[\'$name\'])';
+              } else {
+                constructorString += 'arguments[\'$name\']';
               }
             }
 

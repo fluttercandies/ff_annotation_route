@@ -1,7 +1,7 @@
 import 'package:example/example_route.dart';
 import 'package:example/example_routes.dart';
 import 'package:flutter/material.dart';
-import 'package:ff_annotation_route/ff_annotation_route.dart';
+import 'package:ff_annotation_route_library/ff_annotation_route_library.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:collection/collection.dart';
 import 'package:example/example_routes.dart' as example_routes;
@@ -18,9 +18,9 @@ class MainPage extends StatelessWidget {
     routeNames.remove(Routes.fluttercandiesDemogrouppage.name);
     routesGroup.addAll(groupBy<DemoRouteResult, String>(
         routeNames
-            .map<RouteResult>((String name) => getRouteResult(name: name))
-            .where((RouteResult element) => element.exts != null)
-            .map<DemoRouteResult>((RouteResult e) => DemoRouteResult(e))
+            .map<FFRouteSettings>((String name) => getRouteSettings(name: name))
+            .where((FFRouteSettings element) => element.exts != null)
+            .map<DemoRouteResult>((FFRouteSettings e) => DemoRouteResult(e))
             .toList()
               ..sort((DemoRouteResult a, DemoRouteResult b) =>
                   b.group.compareTo(a.group)),
@@ -167,5 +167,5 @@ class DemoRouteResult {
 
   final int order;
   final String group;
-  final RouteResult routeResult;
+  final FFRouteSettings routeResult;
 }

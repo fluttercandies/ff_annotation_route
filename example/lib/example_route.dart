@@ -5,24 +5,26 @@
 
 import 'package:example/src/model/test_model.dart';
 import 'package:example/src/model/test_model1.dart';
-import 'package:ff_annotation_route/ff_annotation_route.dart';
+import 'package:ff_annotation_route_library/ff_annotation_route_library.dart';
 import 'package:flutter/widgets.dart';
-import 'package:module_a/module_a_route.dart';
-
 import 'src/pages/complex/test_page_d.dart';
 import 'src/pages/complex/test_page_e.dart';
 import 'src/pages/main_page.dart';
 import 'src/pages/simple/test_page_a.dart';
 import 'src/pages/simple/test_page_b.dart';
 
-RouteResult getRouteResult({String name, Map<String, dynamic> arguments}) {
+// ignore_for_file: prefer_const_literals_to_create_immutables
+FFRouteSettings getRouteSettings({
+  @required String name,
+  Map<String, dynamic> arguments,
+}) {
   arguments = arguments ?? const <String, dynamic>{};
   switch (name) {
     case '''flutterCandies://testPage' "B''':
-      return RouteResult(
+      return FFRouteSettings(
         name: name,
         widget: TestPageB(
-          argument: arguments['argument'] as String,
+          argument: asT<String>(arguments['argument']),
         ),
         showStatusBar: true,
         routeName: 'testPageB ',
@@ -31,27 +33,27 @@ RouteResult getRouteResult({String name, Map<String, dynamic> arguments}) {
         exts: <String, dynamic>{'group': 'Simple', 'order': 1},
       );
     case '''flutterCandies://testPage' "D''':
-      return RouteResult(
+      return FFRouteSettings(
         name: name,
         widget: <String, Widget>{
           '': TestPageD(
-            arguments['argument'] as String,
-            optional: arguments['optional'] as bool ?? false,
-            id: arguments['id'] as String ?? 'flutterCandies',
+            asT<String>(arguments['argument']),
+            optional: asT<bool>(arguments['optional'], false),
+            id: asT<String>(arguments['id'], 'flutterCandies'),
           ),
           'another0': TestPageD.another0(
-            argument: arguments['argument'] as String,
+            argument: asT<String>(arguments['argument']),
           ),
           'another1': TestPageD.another1(
-            arguments['argument'] as String,
-            arguments['optional'] as bool ?? false,
+            asT<String>(arguments['argument']),
+            asT<bool>(arguments['optional'], false),
           ),
           'another2': TestPageD.another2(
-            arguments['argument'] as String,
+            asT<String>(arguments['argument']),
           ),
           'another3': TestPageD.another3(
-            arguments['argument'] as String,
-            optional: arguments['optional'] as bool,
+            asT<String>(arguments['argument']),
+            optional: asT<bool>(arguments['optional']),
           ),
         }[arguments[constructorName] as String ?? ''],
         showStatusBar: true,
@@ -61,33 +63,25 @@ RouteResult getRouteResult({String name, Map<String, dynamic> arguments}) {
         exts: <String, dynamic>{'group': 'Complex', 'order': 0},
       );
     case 'flutterCandies://testPageA':
-      return RouteResult(
+      return FFRouteSettings(
         name: name,
         widget: TestPageA(),
         routeName: 'testPageA',
         description: 'This is test page A.',
         exts: <String, dynamic>{'group': 'Simple', 'order': 0},
       );
-    case 'flutterCandies://testPageC':
-      return RouteResult(
-        name: name,
-        widget: TestPageC(),
-        routeName: 'testPageC',
-        description: 'This is test page c in other module.',
-        exts: <String, dynamic>{'group': 'Simple', 'order': 2},
-      );
     case 'flutterCandies://testPageE':
-      return RouteResult(
+      return FFRouteSettings(
         name: name,
         widget: <String, Widget>{
           '': TestPageE(
-            testMode: arguments['testMode'] as TestMode ??
-                const TestMode(id: 2, isTest: false),
-            testMode1: arguments['testMode1'] as TestMode1,
+            testMode: asT<TestMode>(
+                arguments['testMode'], const TestMode(id: 2, isTest: false)),
+            testMode1: asT<TestMode1>(arguments['testMode1']),
           ),
           'test': TestPageE.test(),
           'requiredC': TestPageE.requiredC(
-            testMode: arguments['testMode'] as TestMode,
+            testMode: asT<TestMode>(arguments['testMode']),
           ),
         }[arguments[constructorName] as String ?? ''],
         routeName: 'testPageE',
@@ -95,56 +89,21 @@ RouteResult getRouteResult({String name, Map<String, dynamic> arguments}) {
         exts: <String, dynamic>{'group': 'Complex', 'order': 1},
       );
     case 'fluttercandies://demogrouppage':
-      return RouteResult(
+      return FFRouteSettings(
         name: name,
         widget: DemoGroupPage(
-          keyValue:
-              arguments['keyValue'] as MapEntry<String, List<DemoRouteResult>>,
+          keyValue: asT<MapEntry<String, List<DemoRouteResult>>>(
+              arguments['keyValue']),
         ),
         routeName: 'DemoGroupPage',
       );
     case 'fluttercandies://mainpage':
-      return RouteResult(
+      return FFRouteSettings(
         name: name,
         widget: MainPage(),
         routeName: 'MainPage',
       );
     default:
-      return const RouteResult(name: 'flutterCandies://notfound');
+      return const FFRouteSettings(name: '404', routeName: '404_page');
   }
-}
-
-class RouteResult {
-  const RouteResult({
-    @required this.name,
-    this.widget,
-    this.showStatusBar = true,
-    this.routeName = '',
-    this.pageRouteType,
-    this.description = '',
-    this.exts,
-  });
-
-  /// The name of the route (e.g., "/settings").
-  ///
-  /// If null, the route is anonymous.
-  final String name;
-
-  /// The Widget return base on route
-  final Widget widget;
-
-  /// Whether show this route with status bar.
-  final bool showStatusBar;
-
-  /// The route name to track page
-  final String routeName;
-
-  /// The type of page route
-  final PageRouteType pageRouteType;
-
-  /// The description of route
-  final String description;
-
-  /// The extend arguments
-  final Map<String, dynamic> exts;
 }

@@ -1,7 +1,7 @@
 import 'package:example/example_routes.dart';
 import 'package:example/src/model/test_model.dart';
 import 'package:example/src/model/test_model1.dart';
-import 'package:ff_annotation_route/ff_annotation_route.dart';
+import 'package:ff_annotation_route_library/ff_annotation_route_library.dart';
 import 'package:flutter/material.dart';
 
 @FFRoute(

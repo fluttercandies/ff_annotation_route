@@ -1,8 +1,7 @@
+import 'package:ff_annotation_route_library/ff_annotation_route_library.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'example_route.dart';
-import 'example_route_helper.dart';
 import 'example_routes.dart';
 
 void main() => runApp(MyApp());
@@ -19,29 +18,22 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: Routes.fluttercandiesMainpage,
       onGenerateRoute: (RouteSettings settings) {
-        //when refresh web, route will as following
-        //   /
-        //   /fluttercandies:
-        //   /fluttercandies:/
-        //   /fluttercandies://mainpage
-        if (kIsWeb && settings.name.startsWith('/')) {
-          return onGenerateRouteHelper(
-            settings.copyWith(name: settings.name.replaceFirst('/', '')),
-            notFoundFallback:
-                getRouteResult(name: Routes.fluttercandiesMainpage).widget,
-          );
-        }
-        return onGenerateRouteHelper(settings,
-            builder: (Widget child, RouteResult result) {
-          if (settings.name == Routes.fluttercandiesMainpage ||
-              settings.name == Routes.fluttercandiesDemogrouppage.name) {
-            return child;
-          }
-          return CommonWidget(
-            child: child,
-            result: result,
-          );
-        });
+        return onGenerateRoute(
+          settings: settings,
+          getRouteSettings: getRouteSettings,
+          routeWrapper: (FFRouteSettings ffRouteSettings) {
+            if (ffRouteSettings.name == Routes.fluttercandiesMainpage ||
+                ffRouteSettings.name ==
+                    Routes.fluttercandiesDemogrouppage.name) {
+              return ffRouteSettings;
+            }
+            return ffRouteSettings.copyWith(
+                widget: CommonWidget(
+              child: ffRouteSettings.widget,
+              page: ffRouteSettings,
+            ));
+          },
+        );
       },
     );
   }
@@ -50,17 +42,17 @@ class MyApp extends StatelessWidget {
 class CommonWidget extends StatelessWidget {
   const CommonWidget({
     this.child,
-    this.result,
+    this.page,
   });
   final Widget child;
-  final RouteResult result;
+  final FFRouteSettings page;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          result.routeName,
+          page.routeName,
         ),
       ),
       body: child,

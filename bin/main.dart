@@ -3,32 +3,17 @@ import 'dart:io';
 
 import 'package:ff_annotation_route/ff_annotation_route.dart';
 import 'package:ff_annotation_route/src/arg/arg_parser.dart';
-import 'package:ff_annotation_route/src/arg/const_ignore.dart';
-import 'package:ff_annotation_route/src/arg/git.dart';
-import 'package:ff_annotation_route/src/arg/help.dart';
-import 'package:ff_annotation_route/src/arg/name.dart';
-import 'package:ff_annotation_route/src/arg/output.dart';
-import 'package:ff_annotation_route/src/arg/package.dart';
-import 'package:ff_annotation_route/src/arg/path.dart';
-import 'package:ff_annotation_route/src/arg/route_constants.dart';
-import 'package:ff_annotation_route/src/arg/route_helper.dart';
-import 'package:ff_annotation_route/src/arg/route_names.dart';
-import 'package:ff_annotation_route/src/arg/routes_file_output.dart';
-import 'package:ff_annotation_route/src/arg/save.dart';
-import 'package:ff_annotation_route/src/arg/settings_no_arguments.dart';
-import 'package:ff_annotation_route/src/arg/settings_no_is_initial_route.dart';
-import 'package:ff_annotation_route/src/arg/super_arguments.dart';
+import 'package:ff_annotation_route/src/arg/args.dart';
 import 'package:ff_annotation_route/src/package_graph.dart';
 import 'package:io/ansi.dart';
 import 'package:path/path.dart';
 
 const String argumentsFile = 'ff_annotation_route_commands';
-const String debugCommands =
-    '--route-constants --route-helper --route-names --no-is-initial-route --path example/ -g xx,dd,ff --supper-arguments --const-ignore demogrouppage';
+const String debugCommands = '--path example1/ --supper-arguments';
 
 Future<void> main(List<String> arguments) async {
   //debug
-  //arguments = debugCommands.split(' ');
+  arguments = debugCommands.split(' ');
   bool runFromLocal = false;
   if (arguments.isEmpty) {
     final io.File file = io.File(join('./', argumentsFile));
@@ -59,25 +44,15 @@ Future<void> main(List<String> arguments) async {
     }
   }
 
-  final Help help = Help();
-  final Path path = Path();
-  final Name name = Name();
-  final Output output = Output();
-  final Git git = Git();
-  final RoutesFileOutput routesFileOutput = RoutesFileOutput();
-  final ConstIgnore constIgnore = ConstIgnore();
-  final RouteNames routeNames = RouteNames();
-  final RouteHelper routeHelper = RouteHelper();
-  final RouteConstants routeConstants = RouteConstants();
-  final SettingsNoArguments settingsNoArguments = SettingsNoArguments();
-  final Package package = Package();
-  final SettingsNoIsInitialRoute settingsNoIsInitialRoute =
-      SettingsNoIsInitialRoute();
-  final SupperArguments supperArguments = SupperArguments();
-  final Save save = Save();
+  arguments.remove('--route-helper');
+  arguments.remove('--no-is-initial-route');
+  arguments.remove('--no-arguments');
+  arguments.remove('--route-constants');
+  arguments.remove('--route-names');
+
   parseArgs(arguments);
 
-  if (arguments.isEmpty || help.value) {
+  if (arguments.isEmpty || Args().help.value) {
     print(green.wrap(parser.usage));
     return;
   }
@@ -86,28 +61,7 @@ Future<void> main(List<String> arguments) async {
 
   print(green.wrap('\nff_annotation_route ------ Start'));
 
-  final PackageGraph packageGraph = PackageGraph.forPath(path.value);
-
-  final String className = name.value;
-
-  final bool shouldGenerateRouteNames = routeNames.value;
-
-  final bool shouldGenerateRouteConstants = routeConstants.value;
-
-  final bool shouldGenerateRouteHelper = routeHelper.value;
-
-  final bool isRouteSettingsNoArguments = settingsNoArguments.value;
-
-  final List<String> gitNames = git.value ?? <String>[];
-
-  final bool isPackage = package.value;
-
-  final bool isRouteSettingsHasIsInitialRoute = settingsNoIsInitialRoute.value;
-
-  final bool enableSupperArguments = supperArguments.value;
-
-  final RegExp regExp =
-      constIgnore.value != null ? RegExp(constIgnore.value) : null;
+  final PackageGraph packageGraph = PackageGraph.forPath(Args().path.value);
 
   // Only check path which imports ff_annotation_route
   final List<PackageNode> annotationPackages =
@@ -115,11 +69,11 @@ Future<void> main(List<String> arguments) async {
     (PackageNode x) {
       final bool matchPackage = x.dependencyType == DependencyType.path ||
           (x.dependencyType == DependencyType.github &&
-              gitNames.firstWhere((String key) => x.name == key,
+              Args().gitNames.firstWhere((String key) => x.name == key,
                       orElse: () => null) !=
                   null);
       final bool matchFFRoute = x.dependencies.firstWhere(
-            (PackageNode dep) => dep?.name == 'ff_annotation_route',
+            (PackageNode dep) => dep?.name == 'ff_annotation_route_library',
             orElse: () => null,
           ) !=
           null;
@@ -133,27 +87,11 @@ Future<void> main(List<String> arguments) async {
     annotationPackages.add(packageGraph.root);
   }
 
-  final String outputPath = output.value;
-
-  final String routesFileOutputPath = routesFileOutput.value;
-
   generate(
     annotationPackages,
-    generateRouteNames: shouldGenerateRouteNames,
-    outputPath: outputPath,
-    className: className,
-    generateRouteConstants: shouldGenerateRouteConstants,
-    generateRouteHelper: shouldGenerateRouteHelper,
-    routeSettingsNoArguments: isRouteSettingsNoArguments,
-    rootAnnotationRouteEnable: isRootAnnotationRouteEnabled,
-    isPackage: isPackage,
-    routeSettingsNoIsInitialRoute: isRouteSettingsHasIsInitialRoute,
-    routesFileOutputPath: routesFileOutputPath,
-    enableSupperArguments: enableSupperArguments,
-    constIgnore: regExp,
   );
 
-  if (save.value && !runFromLocal) {
+  if (Args().save.value && !runFromLocal) {
     final File file = File(join('./', argumentsFile));
     if (!file.existsSync()) {
       file.createSync();

@@ -7,14 +7,15 @@ import 'package:analyzer/dart/ast/ast.dart';
 
 // ignore: implementation_imports
 import 'package:analyzer/src/dart/ast/ast.dart';
+import 'package:ff_annotation_route_core/ff_annotation_route_core.dart';
 import 'package:path/path.dart' as p;
 
-import 'ff_route.dart';
+import 'arg/args.dart';
 import 'file_info.dart';
 import 'package_graph.dart';
 import 'route_info.dart';
 import 'routes_file_generator.dart';
-import 'utils.dart';
+import 'template.dart';
 import 'utils/convert.dart';
 import 'utils/format.dart';
 
@@ -127,12 +128,6 @@ class RouteGenerator {
                       case 'showStatusBar:':
                         showStatusBar = toT<bool>(item.expression);
                         break;
-                      // case 'argumentNames:':
-                      //   argumentNames = toT<List<String>>(item.expression);
-                      //   break;
-                      // case 'argumentTypes:':
-                      //   argumentTypes = toT<List<String>>(item.expression);
-                      //   break;
                       case 'pageRouteType:':
                         pageRouteType = PageRouteType.values.firstWhere(
                           (PageRouteType type) => type.toString() == source,
@@ -195,18 +190,11 @@ class RouteGenerator {
 
   void generateFile({
     List<RouteGenerator> nodes,
-    bool generateRouteNames = false,
-    bool generateRouteConstants = false,
-    String outputPath,
-    String routesFileOutputPath,
-    bool enableSupperArguments = false,
-    RegExp constIgnore,
-    String className,
   }) {
     final String name = '${packageNode.name}_route.dart';
     String routePath;
-    if (outputPath != null) {
-      routePath = p.join(_lib.path, outputPath, name);
+    if (isRoot && Args().outputPath != null) {
+      routePath = p.join(_lib.path, Args().outputPath, name);
     } else {
       routePath = p.join(_lib.path, name);
     }
@@ -245,7 +233,7 @@ class RouteGenerator {
       imports.addAll(export.split('\n'));
       imports.add('import \'package:flutter/widgets.dart\';');
       imports.add(
-          'import \'package:ff_annotation_route/ff_annotation_route.dart\';');
+          'import \'package:ff_annotation_route_library/ff_annotation_route_library.dart\';');
 
       final StringBuffer caseSb = StringBuffer();
       final List<RouteInfo> routes = _fileInfoList
@@ -280,15 +268,9 @@ class RouteGenerator {
 
       sb.write(rootFile.replaceAll('{0}', caseSb.toString()));
       RoutesFileGenerator(
-        generateRouteConstants: generateRouteConstants,
-        generateRouteNames: generateRouteNames,
-        routesFileOutputPath: routesFileOutputPath,
         routes: routes,
-        enableSupperArguments: enableSupperArguments,
         lib: _lib,
         packageNode: packageNode,
-        constIgnore: constIgnore,
-        className: className,
       ).generateRoutesFile();
     }
 
@@ -297,37 +279,5 @@ class RouteGenerator {
       file.writeAsStringSync(formatDart(fileHeader + sb.toString()));
       print('Generate : ${p.relative(file.path, from: packageNode.path)}');
     }
-  }
-
-  void generateHelperFile({
-    List<RouteGenerator> nodes,
-    bool routeSettingsNoArguments = false,
-    bool generateRouteHelper = false,
-    bool routeSettingsNoIsInitialRoute = false,
-    String outputPath,
-  }) {
-    final List<String> parts = <String>[];
-    parts.add(_lib.path);
-    if (outputPath != null) {
-      parts.add(outputPath);
-    }
-    parts.add('${packageNode.name}_route_helper.dart');
-    final File file = File(p.joinAll(parts));
-    if (file.existsSync()) {
-      file.deleteSync();
-    }
-    if (!generateRouteHelper) {
-      return;
-    }
-
-    file.createSync(recursive: true);
-
-    file.writeAsStringSync(formatDart('$fileHeader\n'
-        '${routeHelper(
-      packageNode.name,
-      routeSettingsNoArguments,
-      routeSettingsNoIsInitialRoute,
-    )}\n'));
-    print('Generate : ${p.relative(file.path, from: packageNode.path)}');
   }
 }

@@ -1,7 +1,10 @@
 import 'package:args/args.dart';
 
-final ArgParser parser = ArgParser();
+import 'args.dart';
+
+ArgParser parser = ArgParser();
 ArgResults argResults;
 void parseArgs(List<String> args) {
+  Args();
   argResults ??= parser.parse(args);
 }

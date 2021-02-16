@@ -10,11 +10,11 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  ff_annotation_route_core: ^1.0.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  ff_annotation_route:
-    path: ../../
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
