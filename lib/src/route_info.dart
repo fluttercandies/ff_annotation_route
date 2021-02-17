@@ -52,20 +52,12 @@ class RouteInfo {
               '\'${rawConstructor.name ?? ''}\': ${getConstructorString(rawConstructor)}';
           keyValues += ',';
         }
-        return '<String,Widget>{$keyValues}[arguments[constructorName] as String ??\'\']';
+        return '<String,Widget>{$keyValues}[safeArguments[constructorName] as String ??\'\']';
       } else {
         return '${getConstructorString(constructors.first)}';
       }
     }
     return '$className()';
-    // String params = '';
-    // if (ffRoute.argumentNames != null && ffRoute.argumentNames.isNotEmpty) {
-    //   for (final String key in ffRoute.argumentNames) {
-    //     params +=
-    //         '${key.replaceAll('\'', '').replaceAll('\"', '')}:arguments[${safeToString(key)}],';
-    //   }
-    // }
-    // return '$className($params)';
   }
 
   String get caseString {
@@ -73,6 +65,7 @@ class RouteInfo {
 
     return FFRouteSettings(
       name: name,
+      arguments: arguments,
       widget:  $constructor,
       ${ffRoute.showStatusBar != null ? 'showStatusBar: ${ffRoute.showStatusBar},' : ''}
       ${ffRoute.routeName != null ? 'routeName: ${safeToString(ffRoute.routeName)},' : ''}
@@ -88,7 +81,7 @@ class RouteInfo {
 
   String getIsOptional(String name, FormalParameter parameter,
       ConstructorDeclaration rawConstructor) {
-    String value = 'arguments[\'$name\']';
+    String value = 'safeArguments[\'$name\']';
 
     final String type = getParameterType(name, parameter, rawConstructor);
     if (type != null) {
@@ -132,9 +125,9 @@ class RouteInfo {
             } else {
               final String type = getParameterType(name, item, rawConstructor);
               if (type != null) {
-                constructorString += 'asT<$type>(arguments[\'$name\'])';
+                constructorString += 'asT<$type>(safeArguments[\'$name\'])';
               } else {
-                constructorString += 'arguments[\'$name\']';
+                constructorString += 'safeArguments[\'$name\']';
               }
             }
 

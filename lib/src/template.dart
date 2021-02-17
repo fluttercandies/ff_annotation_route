@@ -12,7 +12,7 @@ const String rootFile = """
 
 // ignore_for_file: prefer_const_literals_to_create_immutables
 FFRouteSettings getRouteSettings({@required String name, Map<String, dynamic> arguments,}) {
-  arguments = arguments ?? const <String, dynamic>{};
+  final Map<String, dynamic> safeArguments =arguments ?? const <String, dynamic>{};
   switch (name) {
 {0}   default:
       return const FFRouteSettings(name:'404',routeName: '404_page');

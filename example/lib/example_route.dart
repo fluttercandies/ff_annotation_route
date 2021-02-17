@@ -18,13 +18,15 @@ FFRouteSettings getRouteSettings({
   @required String name,
   Map<String, dynamic> arguments,
 }) {
-  arguments = arguments ?? const <String, dynamic>{};
+  final Map<String, dynamic> safeArguments =
+      arguments ?? const <String, dynamic>{};
   switch (name) {
     case '''flutterCandies://testPage' "B''':
       return FFRouteSettings(
         name: name,
+        arguments: arguments,
         widget: TestPageB(
-          argument: asT<String>(arguments['argument']),
+          argument: asT<String>(safeArguments['argument']),
         ),
         showStatusBar: true,
         routeName: 'testPageB ',
@@ -35,27 +37,28 @@ FFRouteSettings getRouteSettings({
     case '''flutterCandies://testPage' "D''':
       return FFRouteSettings(
         name: name,
+        arguments: arguments,
         widget: <String, Widget>{
           '': TestPageD(
-            asT<String>(arguments['argument']),
-            optional: asT<bool>(arguments['optional'], false),
-            id: asT<String>(arguments['id'], 'flutterCandies'),
+            asT<String>(safeArguments['argument']),
+            optional: asT<bool>(safeArguments['optional'], false),
+            id: asT<String>(safeArguments['id'], 'flutterCandies'),
           ),
           'another0': TestPageD.another0(
-            argument: asT<String>(arguments['argument']),
+            argument: asT<String>(safeArguments['argument']),
           ),
           'another1': TestPageD.another1(
-            asT<String>(arguments['argument']),
-            asT<bool>(arguments['optional'], false),
+            asT<String>(safeArguments['argument']),
+            asT<bool>(safeArguments['optional'], false),
           ),
           'another2': TestPageD.another2(
-            asT<String>(arguments['argument']),
+            asT<String>(safeArguments['argument']),
           ),
           'another3': TestPageD.another3(
-            asT<String>(arguments['argument']),
-            optional: asT<bool>(arguments['optional']),
+            asT<String>(safeArguments['argument']),
+            optional: asT<bool>(safeArguments['optional']),
           ),
-        }[arguments[constructorName] as String ?? ''],
+        }[safeArguments[constructorName] as String ?? ''],
         showStatusBar: true,
         routeName: 'testPageD ',
         pageRouteType: PageRouteType.material,
@@ -65,6 +68,7 @@ FFRouteSettings getRouteSettings({
     case 'flutterCandies://testPageA':
       return FFRouteSettings(
         name: name,
+        arguments: arguments,
         widget: TestPageA(),
         routeName: 'testPageA',
         description: 'This is test page A.',
@@ -73,17 +77,18 @@ FFRouteSettings getRouteSettings({
     case 'flutterCandies://testPageE':
       return FFRouteSettings(
         name: name,
+        arguments: arguments,
         widget: <String, Widget>{
           '': TestPageE(
-            testMode: asT<TestMode>(
-                arguments['testMode'], const TestMode(id: 2, isTest: false)),
-            testMode1: asT<TestMode1>(arguments['testMode1']),
+            testMode: asT<TestMode>(safeArguments['testMode'],
+                const TestMode(id: 2, isTest: false)),
+            testMode1: asT<TestMode1>(safeArguments['testMode1']),
           ),
           'test': TestPageE.test(),
           'requiredC': TestPageE.requiredC(
-            testMode: asT<TestMode>(arguments['testMode']),
+            testMode: asT<TestMode>(safeArguments['testMode']),
           ),
-        }[arguments[constructorName] as String ?? ''],
+        }[safeArguments[constructorName] as String ?? ''],
         routeName: 'testPageE',
         description: 'This is test page E.',
         exts: <String, dynamic>{'group': 'Complex', 'order': 1},
@@ -91,15 +96,17 @@ FFRouteSettings getRouteSettings({
     case 'fluttercandies://demogrouppage':
       return FFRouteSettings(
         name: name,
+        arguments: arguments,
         widget: DemoGroupPage(
           keyValue: asT<MapEntry<String, List<DemoRouteResult>>>(
-              arguments['keyValue']),
+              safeArguments['keyValue']),
         ),
         routeName: 'DemoGroupPage',
       );
     case 'fluttercandies://mainpage':
       return FFRouteSettings(
         name: name,
+        arguments: arguments,
         widget: MainPage(),
         routeName: 'MainPage',
       );

@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:ff_annotation_route_library/ff_annotation_route_library.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -5,7 +6,16 @@ import 'package:flutter/material.dart';
 import 'example1_route.dart';
 import 'example1_routes.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  FFConvert.convert = <T>(dynamic value) {
+    if (value == null) {
+      return null;
+    }
+    // you can convert your data base on your case.
+    return json.decode(value.toString()) as T;
+  };
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   final FFRouteInformationParser _ffRouteInformationParser =
@@ -13,15 +23,21 @@ class MyApp extends StatelessWidget {
 
   final FFRouterDelegate _ffRouterDelegate = FFRouterDelegate(
       getRouteSettings: getRouteSettings,
-      routeWrapper: (FFRouteSettings ffRouteSettings) {
-        if (ffRouteSettings.name == Routes.fluttercandiesMainpage ||
-            ffRouteSettings.name == Routes.fluttercandiesDemogrouppage.name) {
-          return ffRouteSettings;
+      pageWrapper: (FFPage ffPage) {
+        if (ffPage.name == Routes.fluttercandiesMainpage ||
+            ffPage.name == Routes.fluttercandiesDemogrouppage.name) {
+          // define key if this page is unique
+          // The key associated with this page.
+          //
+          // This key will be used for comparing pages in [canUpdate].
+          return ffPage.copyWith(
+            key: ValueKey<String>('${ffPage.name}-${ffPage.arguments}'),
+          );
         }
-        return ffRouteSettings.copyWith(
+        return ffPage.copyWith(
             widget: CommonWidget(
-          child: ffRouteSettings.widget,
-          page: ffRouteSettings,
+          child: ffPage.widget,
+          page: ffPage,
         ));
       });
   // This widget is the root of your application.
@@ -50,7 +66,7 @@ class CommonWidget extends StatelessWidget {
     this.page,
   });
   final Widget child;
-  final FFRouteSettings page;
+  final FFPage page;
 
   @override
   Widget build(BuildContext context) {
