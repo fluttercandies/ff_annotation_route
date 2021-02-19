@@ -1,8 +1,10 @@
+import 'package:ff_annotation_route_library/ff_annotation_route_library.dart';
+
 class TestMode {
   const TestMode({this.id, this.isTest});
   factory TestMode.test() => const TestMode(id: 1, isTest: true);
-  factory TestMode.fromJson(Map<String, dynamic> json) =>
-      TestMode(id: json['id'] as int, isTest: json['isTest'] as bool);
+  factory TestMode.fromJson(Map<dynamic, dynamic> json) =>
+      TestMode(id: asT<int>(json['id']), isTest: asT<bool>(json['isTest']));
 
   final int id;
   final bool isTest;

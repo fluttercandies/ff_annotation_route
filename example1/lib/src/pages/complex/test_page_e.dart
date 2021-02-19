@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 @FFRoute(
   name: 'flutterCandies://testPageE',
   routeName: 'testPageE',
-  description: 'This is test page E.',
+  description: 'Show how to push new page with arguments(class)',
   argumentImports: <String>[
     'import \'package:example1/src/model/test_model.dart\';',
     'import \'package:example1/src/model/test_model1.dart\';',
@@ -55,17 +55,16 @@ class TestPageE extends StatelessWidget {
         FlatButton(
           onPressed: () {
             FFRouterDelegate.of(context).pushNamed(
-              Routes.flutterCandiesTestPageE.name,
-              arguments: Routes.flutterCandiesTestPageE.requiredC(
-                testMode: const TestMode(
-                  id: 100,
-                  isTest: true,
-                ),
+              Routes.flutterCandiesTestPageF.name,
+              arguments: Routes.flutterCandiesTestPageF.d(
+                <int>[1, 2, 3],
+                map: <String, String>{'ddd': 'dddd'},
+                testMode: const TestMode(id: 1, isTest: true),
               ),
             );
           },
           child: const Text(
-            'TestPageE.required()',
+            'TestPageF',
           ),
         ),
       ],

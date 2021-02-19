@@ -9,9 +9,12 @@ import 'package:ff_annotation_route_library/ff_annotation_route_library.dart';
 import 'package:flutter/widgets.dart';
 import 'src/pages/complex/test_page_d.dart';
 import 'src/pages/complex/test_page_e.dart';
+import 'src/pages/complex/test_page_f.dart';
 import 'src/pages/main_page.dart';
 import 'src/pages/simple/test_page_a.dart';
 import 'src/pages/simple/test_page_b.dart';
+import 'src/pages/simple/test_page_c.dart';
+import 'src/pages/simple/test_page_g.dart';
 
 // ignore_for_file: prefer_const_literals_to_create_immutables
 FFRouteSettings getRouteSettings({
@@ -42,6 +45,15 @@ FFRouteSettings getRouteSettings({
         pageRouteType: PageRouteType.material,
         description: "This is test ' page B.",
         exts: <String, dynamic>{'group': 'Simple', 'order': 1},
+      );
+    case 'flutterCandies://testPageC':
+      return FFRouteSettings(
+        name: name,
+        arguments: arguments,
+        widget: TestPageC(),
+        routeName: 'testPageC',
+        description: 'Push/Pop test page.',
+        exts: <String, dynamic>{'group': 'Simple', 'order': 2},
       );
     case 'flutterCandies://testPageD':
       return FFRouteSettings(
@@ -90,8 +102,32 @@ FFRouteSettings getRouteSettings({
           ),
         }[safeArguments[constructorName] as String ?? ''],
         routeName: 'testPageE',
-        description: 'This is test page E.',
+        description: 'Show how to push new page with arguments(class)',
         exts: <String, dynamic>{'group': 'Complex', 'order': 1},
+      );
+    case 'flutterCandies://testPageF':
+      return FFRouteSettings(
+        name: name,
+        arguments: arguments,
+        widget: TestPageF(
+          asT<List<int>>(safeArguments['list']),
+          map: asT<Map<String, String>>(safeArguments['map']),
+          testMode: asT<TestMode>(safeArguments['testMode']),
+        ),
+        showStatusBar: true,
+        routeName: 'testPageF',
+        pageRouteType: PageRouteType.material,
+        description: 'This is test page F.',
+        exts: <String, dynamic>{'group': 'Complex', 'order': 2},
+      );
+    case 'flutterCandies://testPageG':
+      return FFRouteSettings(
+        name: name,
+        arguments: arguments,
+        widget: TestPageG(),
+        routeName: 'testPageG',
+        description: 'Pop with result test page(push from TestPageC)',
+        exts: <String, dynamic>{'group': 'Simple', 'order': 3},
       );
     case 'fluttercandies://demogrouppage':
       return FFRouteSettings(

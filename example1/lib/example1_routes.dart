@@ -11,8 +11,11 @@ import 'src/pages/main_page.dart';
 const List<String> routeNames = <String>[
   'flutterCandies://testPageA',
   'flutterCandies://testPageB',
+  'flutterCandies://testPageC',
   'flutterCandies://testPageD',
   'flutterCandies://testPageE',
+  'flutterCandies://testPageF',
+  'flutterCandies://testPageG',
   'fluttercandies://demogrouppage',
   'fluttercandies://mainpage',
 ];
@@ -51,6 +54,17 @@ class Routes {
   static const _FlutterCandiesTestPageB flutterCandiesTestPageB =
       _FlutterCandiesTestPageB();
 
+  /// 'Push/Pop test page.'
+  ///
+  /// [name] : 'flutterCandies://testPageC'
+  ///
+  /// [routeName] : 'testPageC'
+  ///
+  /// [description] : 'Push/Pop test page.'
+  ///
+  /// [exts] : {group: Simple, order: 2}
+  static const String flutterCandiesTestPageC = 'flutterCandies://testPageC';
+
   /// "This is test ' page D."
   ///
   /// [name] : 'flutterCandies://testPageD'
@@ -79,13 +93,13 @@ class Routes {
   static const _FlutterCandiesTestPageD flutterCandiesTestPageD =
       _FlutterCandiesTestPageD();
 
-  /// 'This is test page E.'
+  /// 'Show how to push new page with arguments(class)'
   ///
   /// [name] : 'flutterCandies://testPageE'
   ///
   /// [routeName] : 'testPageE'
   ///
-  /// [description] : 'This is test page E.'
+  /// [description] : 'Show how to push new page with arguments(class)'
   ///
   /// [constructors] :
   ///
@@ -98,6 +112,37 @@ class Routes {
   /// [exts] : {group: Complex, order: 1}
   static const _FlutterCandiesTestPageE flutterCandiesTestPageE =
       _FlutterCandiesTestPageE();
+
+  /// 'This is test page F.'
+  ///
+  /// [name] : 'flutterCandies://testPageF'
+  ///
+  /// [routeName] : 'testPageF'
+  ///
+  /// [description] : 'This is test page F.'
+  ///
+  /// [constructors] :
+  ///
+  /// TestPageF : [List<int>(required) list, Map<String, String> map, TestMode testMode]
+  ///
+  /// [showStatusBar] : true
+  ///
+  /// [pageRouteType] : PageRouteType.material
+  ///
+  /// [exts] : {group: Complex, order: 2}
+  static const _FlutterCandiesTestPageF flutterCandiesTestPageF =
+      _FlutterCandiesTestPageF();
+
+  /// 'Pop with result test page(push from TestPageC)'
+  ///
+  /// [name] : 'flutterCandies://testPageG'
+  ///
+  /// [routeName] : 'testPageG'
+  ///
+  /// [description] : 'Pop with result test page(push from TestPageC)'
+  ///
+  /// [exts] : {group: Simple, order: 3}
+  static const String flutterCandiesTestPageG = 'flutterCandies://testPageG';
 
   /// 'DemoGroupPage'
   ///
@@ -199,6 +244,23 @@ class _FlutterCandiesTestPageE {
       <String, dynamic>{
         'testMode': testMode,
         'constructorName': 'requiredC',
+      };
+
+  @override
+  String toString() => name;
+}
+
+class _FlutterCandiesTestPageF {
+  const _FlutterCandiesTestPageF();
+
+  String get name => 'flutterCandies://testPageF';
+
+  Map<String, dynamic> d(List<int> list,
+          {Map<String, String> map, TestMode testMode}) =>
+      <String, dynamic>{
+        'list': list,
+        'map': map,
+        'testMode': testMode,
       };
 
   @override

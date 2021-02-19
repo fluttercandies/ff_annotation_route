@@ -9,11 +9,11 @@ import 'package:io/ansi.dart';
 import 'package:path/path.dart';
 
 const String argumentsFile = 'ff_annotation_route_commands';
-const String debugCommands = '--path example/ --supper-arguments';
+const String debugCommands = '--path example1/ --supper-arguments';
 
 Future<void> main(List<String> arguments) async {
   //debug
-  //arguments = debugCommands.split(' ');
+  arguments = debugCommands.split(' ');
   bool runFromLocal = false;
   if (arguments.isEmpty) {
     final io.File file = io.File(join('./', argumentsFile));
@@ -63,7 +63,7 @@ Future<void> main(List<String> arguments) async {
 
   final PackageGraph packageGraph = PackageGraph.forPath(Args().path.value);
 
-  // Only check path which imports ff_annotation_route
+  // Only check path which imports ff_annotation_route_core or ff_annotation_route_library
   final List<PackageNode> annotationPackages =
       packageGraph.allPackages.values.where(
     (PackageNode x) {
@@ -73,7 +73,9 @@ Future<void> main(List<String> arguments) async {
                       orElse: () => null) !=
                   null);
       final bool matchFFRoute = x.dependencies.firstWhere(
-            (PackageNode dep) => dep?.name == 'ff_annotation_route_library',
+            (PackageNode dep) =>
+                dep?.name == 'ff_annotation_route_core' ||
+                dep?.name == 'ff_annotation_route_library',
             orElse: () => null,
           ) !=
           null;

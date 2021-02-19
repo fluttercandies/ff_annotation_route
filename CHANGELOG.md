@@ -9,6 +9,7 @@
   remove --route-names
 
 * add Navigator 2.0 support
+
 ## 4.2.3
 
 * Hide parameters.

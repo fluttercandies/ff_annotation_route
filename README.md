@@ -11,7 +11,7 @@ Provide a route generator to create route map quickly by annotations.
 - [ff_annotation_route](#ff_annotation_route)
   - [Description](#description)
   - [Usage](#usage)
-    - [Add packages to dev_dependencies](#add-packages-to-dev_dependencies)
+    - [Add packages to dependencies](#add-packages-to-dependencies)
     - [Add annotation](#add-annotation)
       - [Empty Constructor](#empty-constructor)
       - [Constructor with arguments](#constructor-with-arguments)
@@ -21,21 +21,29 @@ Provide a route generator to create route map quickly by annotations.
       - [Activate the plugin](#activate-the-plugin)
       - [Execute command](#execute-command)
       - [Command Parameter](#command-parameter)
-    - [Main.dart](#maindart)
-    - [Push](#push)
-      - [Push name](#push-name)
-      - [Push name with arguments](#push-name-with-arguments)
-      - [Code Hints](#code-hints)
+    - [Navigator1.0](#navigator10)
+      - [Main.dart](#maindart)
+      - [Push](#push)
+        - [Push name](#push-name)
+        - [Push name with arguments](#push-name-with-arguments)
+    - [Navigator2.0](#navigator20)
+      - [Main.dart](#maindart-1)
+      - [FFRouteInformationParser](#ffrouteinformationparser)
+      - [Push](#push-1)
+        - [Push name](#push-name-1)
+        - [Push name with arguments](#push-name-with-arguments-1)
+    - [Code Hints](#code-hints)
 
 ## Usage
 
-### Add packages to dev_dependencies
+### Add packages to dependencies
 
-Add the package to `dev_dependencies` in your project/packages's `pubspec.yaml`
+Add the package to `dependencies` in your project/packages's `pubspec.yaml`
 
 ```yaml
-dev_dependencies:
-  ff_annotation_route: latest-version
+dependencies:
+  ff_annotation_route_core: any
+  ff_annotation_route_library: any
 ```
 
 Download with `flutter packages get`
@@ -64,7 +72,7 @@ The tool will handle it. What you should take care is that provide import url by
 class/enum argument.
 
 ```dart
-import 'package:ff_annotation_route/ff_annotation_route.dart';
+import 'package:ff_annotation_route_core/ff_annotation_route_core.dart';
 
 @FFRoute(
   name: 'flutterCandies://testPageE',
@@ -120,7 +128,7 @@ Add dart bin into to your `$PATH`.
 
 `cache\dart-sdk\bin`
 
-[`More info`](https://dart.dev/tools/pub/cmd/pub-global)
+[`pub-global`](https://dart.dev/tools/pub/cmd/pub-global)
 
 #### Activate the plugin
 
@@ -137,39 +145,33 @@ Go to your project's root and execute command.
 Available commands:
 
 ```markdown
--h, --[no-]help                   Help usage.
-
--p, --path                        Flutter project root path.
-                                  (defaults to ".")
-
--o, --output                      The path of main project route file and helper file.It is relative to the lib directory.
-
--n, --name                        The class name for the routes constant.
-                                  (defaults to "Routes")
-
--g, --git                         Scan git lib (you should specify package names and split multiple by ,)
-    --routes-file-output          The path of routes file. It is relative to the lib directory
-    --const-ignore                The regular to ignore some route consts    
-    --[no-]route-names            Whether generate route names as a list
-    --[no-]route-helper           Whether generate xxx_route_helper.dart
-    --[no-]route-constants        Whether generate route names as constants
-    --[no-]no-arguments           Whether RouteSettings has arguments(for lower flutter sdk)
-    --[no-]package                Is it a package
-    --[no-]no-is-initial-route    Whether RouteSettings has isInitialRoute(for higher flutter sdk)
-    --[no-]supper-arguments       Whether generate page arguments helper class
-
--s, --[no-]save                   Whether save the arguments into the local
-                                  It will execute the local arguments if run "ff_route" without any arguments.
+-h, --[no-]help                Help usage
+-p, --path                     Flutter project root path
+                               (defaults to ".")
+-n, --name                     Routes constant class name.
+                               (defaults to "Routes")
+-o, --output                   The path of main project route file and helper file.It is relative to the lib directory
+-g, --git                      scan git lib(you should specify package names and split multiple by ,)
+    --routes-file-output       The path of routes file. It is relative to the lib directory
+    --const-ignore             The regular to ignore some route consts
+    --[no-]package             Is it a package
+    --[no-]supper-arguments    Whether generate page arguments helper class
+-s, --[no-]save                Whether save the arguments into the local
+                               It will execute the local arguments if run "ff_route" without any arguments
 ```
-### Main.dart
+### Navigator1.0
 
-- If you execute command with `--route-helper`, `FFNavigatorObserver/FFRouteSettings` will generate in `xxx_route_helper.dart`
-  which help you to track page or change status bar state.
-
-- If you execute command with `--route-helper`, `FFTransparentPageRoute` will generate in `xxx_route_helper.dart`
-  which helps you to push a transparent page route.
+you can see full demo in example/
+#### Main.dart
 
 ```dart
+import 'package:ff_annotation_route_library/ff_annotation_route_library.dart';
+import 'package:flutter/material.dart';
+import 'example_route.dart';
+import 'example_routes.dart';
+
+void main() => runApp(MyApp());
+
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
@@ -182,44 +184,163 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: Routes.fluttercandiesMainpage,
       onGenerateRoute: (RouteSettings settings) {
-        //when refresh web, route will as following
-        //   /
-        //   /fluttercandies:
-        //   /fluttercandies:/
-        //   /fluttercandies://mainpage
-        if (kIsWeb && settings.name.startsWith('/')) {
-          return onGenerateRouteHelper(
-            settings.copyWith(name: settings.name.replaceFirst('/', '')),
-            notFoundFallback:
-                getRouteResult(name: Routes.fluttercandiesMainpage).widget,
-          );
-        }
-        return onGenerateRouteHelper(settings,
-            builder: (Widget child, RouteResult result) {
-          if (settings.name == Routes.fluttercandiesMainpage ||
-              settings.name == Routes.fluttercandiesDemogrouppage) {
-            return child;
-          }
-          return CommonWidget(
-            child: child,
-            result: result,
-          );
-        });
+        return onGenerateRoute(
+          settings: settings,
+          getRouteSettings: getRouteSettings,
+          routeWrapper: (FFRouteSettings ffRouteSettings) {
+            if (ffRouteSettings.name == Routes.fluttercandiesMainpage ||
+                ffRouteSettings.name ==
+                    Routes.fluttercandiesDemogrouppage.name) {
+              return ffRouteSettings;
+            }
+            return ffRouteSettings.copyWith(
+                widget: CommonWidget(
+              child: ffRouteSettings.widget,
+              page: ffRouteSettings,
+            ));
+          },
+        );
       },
     );
   }
 }
 ```
 
-### Push
+#### Push
 
-#### Push name
+##### Push name
 
 ```dart
   Navigator.pushNamed(context, Routes.fluttercandiesMainpage /* fluttercandies://mainpage */);
 ```
 
-#### Push name with arguments
+##### Push name with arguments
+
+* `arguments` **MUST** be a `Map<String, dynamic>`
+
+```dart
+  Navigator.pushNamed(
+    context,
+    Routes.flutterCandiesTestPageE,
+    arguments: <String, dynamic>{
+      constructorName: 'required',
+      'testMode': const TestMode(
+        id: 100,
+        isTest: true,
+      ),
+    },
+  );
+```
+* enable --supper-arguments
+
+```dart
+  Navigator.pushNamed(
+    context,
+    Routes.flutterCandiesTestPageE.name,
+    arguments: Routes.flutterCandiesTestPageE.requiredC(
+      testMode: const TestMode(
+        id: 100,
+        isTest: true,
+      ),
+    ),
+  );
+```
+### Navigator2.0
+
+you can see full demo in example1/
+#### Main.dart
+
+```dart
+import 'dart:convert';
+import 'package:example1/src/model/test_model.dart';
+import 'package:ff_annotation_route_library/ff_annotation_route_library.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'example1_route.dart';
+import 'example1_routes.dart';
+
+void main() {
+  // simple types(int,double,bool etc.) are handled, but not all of them.
+  // for example, you can type in web browser
+  // http://localhost:64916/#flutterCandies://testPageF?list=[4,5,6]&map={"ddd":123}&testMode={"id":2,"isTest":true}
+  // the queryParameters will be converted base on your case.
+  FFConvert.convert = <T>(dynamic value) {
+    if (value == null) {
+      return null;
+    }
+    print(T);
+    final dynamic output = json.decode(value.toString());
+    if (<int>[] is T && output is List<dynamic>) {
+      return output.map<int>((dynamic e) => asT<int>(e)).toList() as T;
+    } else if (<String, String>{} is T && output is Map<dynamic, dynamic>) {
+      return output.map<String, String>((dynamic key, dynamic value) =>
+          MapEntry<String, String>(key.toString(), value.toString())) as T;
+    } else if (const TestMode() is T && output is Map<dynamic, dynamic>) {
+      return TestMode.fromJson(output) as T;
+    }
+
+    return json.decode(value.toString()) as T;
+  };
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  final FFRouteInformationParser _ffRouteInformationParser =
+      FFRouteInformationParser();
+
+  final FFRouterDelegate _ffRouterDelegate = FFRouterDelegate(
+      getRouteSettings: getRouteSettings,
+      pageWrapper: (FFPage ffPage) {
+        if (ffPage.name == Routes.fluttercandiesMainpage ||
+            ffPage.name == Routes.fluttercandiesDemogrouppage.name) {
+          // define key if this page is unique
+          // The key associated with this page.
+          //
+          // This key will be used for comparing pages in [canUpdate].
+          return ffPage.copyWith(
+            key: ValueKey<String>('${ffPage.name}-${ffPage.arguments}'),
+          );
+        }
+        return ffPage.copyWith(
+            widget: CommonWidget(
+          child: ffPage.widget,
+          page: ffPage,
+        ));
+      });
+  // This widget is the root of your application.
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp.router(
+      title: 'ff_annotation_route demo',
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      routeInformationProvider: PlatformRouteInformationProvider(
+        initialRouteInformation: const RouteInformation(
+          location: Routes.fluttercandiesMainpage,
+        ),
+      ),
+      routeInformationParser: kIsWeb ? _ffRouteInformationParser : null,
+      routerDelegate: _ffRouterDelegate,
+    );
+  }
+}
+```
+
+#### FFRouteInformationParser
+
+FFRouteInformationParser is working on web. It will parse uri into RouteSettings or restore RouteSettings into uri.
+
+#### Push
+
+##### Push name
+
+```dart
+  Navigator.pushNamed(context, Routes.fluttercandiesMainpage /* fluttercandies://mainpage */);
+```
+
+##### Push name with arguments
 
 * `arguments` **MUST** be a `Map<String, dynamic>`
 
@@ -251,7 +372,7 @@ class MyApp extends StatelessWidget {
   );
 ```
 
-#### Code Hints
+### Code Hints
 
 you can use route as 'Routes.flutterCandiesTestPageE', and see Code Hints from ide.
 
