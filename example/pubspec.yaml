@@ -23,7 +23,8 @@ dependencies:
   module_a:
     path: module_a
   url_launcher: any
-  ff_annotation_route_library: ^1.0.0
+  ff_annotation_route_library: ^1.2.0
+
 dev_dependencies:
   ff_annotation_route:
     path: ../

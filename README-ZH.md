@@ -23,12 +23,20 @@ Languages: [English](README.md) | 中文简体
       - [激活](#激活)
       - [执行命令](#执行命令)
       - [命令参数](#命令参数)
-    - [Main.dart](#maindart)
-    - [Push](#push)
-      - [Push name](#push-name)
-      - [Push name with arguments](#push-name-with-arguments)
-      - [Code Hints](#code-hints)
-  - [☕️Buy me a coffee](#️buy-me-a-coffee)
+    - [Navigator 1.0](#navigator-10)
+      - [Main.dart](#maindart)
+      - [Push](#push)
+        - [Push name](#push-name)
+        - [Push name with arguments](#push-name-with-arguments)
+    - [Navigator 2.0](#navigator-20)
+      - [Main.dart](#maindart-1)
+      - [FFRouteInformationParser](#ffrouteinformationparser)
+      - [FFRouterDelegate](#ffrouterdelegate)
+      - [Push](#push-1)
+        - [Push name](#push-name-1)
+        - [Push name with arguments](#push-name-with-arguments-1)
+    - [Code Hints](#code-hints)
+  - [来杯可乐](#来杯可乐)
 
 ## 使用
 
@@ -152,27 +160,27 @@ class TestPageE extends StatelessWidget {
 -g, --git                         扫描 git 引用的 package，你需要指定 package 的名字，多个用 `,` 分开
     --routes-file-output          routes 文件的输出目录路径，路径相对于主项目的lib文件夹
     --const-ignore                使用正则表达式忽略一些const(不是全部const都希望生成)  
-    --[no-]route-names            是否在根项目中的 `xxx_route.dart` 生成全部路由的名字
-    --[no-]route-helper           生成 `xxx_route_helper.dart` 来帮助你处理路由
     --[no-]route-constants        是否在根项目中的 `xxx_route.dart` 生成全部路由的静态常量
-    --[no-]no-arguments           FFRouteSettings 将没有 arguments 这个参数，适配 Flutter 低版本
     --[no-]package                这个是否是一个 package
-    --[no-]no-is-initial-route    FFRouteSettings 将没有 isInitialRoute 这个参数，适配 Flutter 高版本
     --[no-]supper-arguments       是否生成路由参数帮助类
 
 -s, --[no-]save                   是否保存命令到本地。如果保存了，下一次就只需要执行 `ff_route` 就可以了。
 
 ```
 
-### Main.dart
+### Navigator 1.0
 
-- 如果运行的命令带有参数 `--route-helper` , `FFNavigatorObserver/FFRouteSettings`
-  将会生成在 `xxx_route_helper.dart` 中，用于协助追踪页面和设置状态栏。
-
-- 如果运行的命令带有参数 `--route-helper` ，`FFTransparentPageRoute` 将会生成在
-  `xxx_route_helper.dart` 中，可以使用它来 `push` 一个透明的 `PageRoute` 。
+完整代码在 example 中 
+#### Main.dart
 
 ```dart
+import 'package:ff_annotation_route_library/ff_annotation_route_library.dart';
+import 'package:flutter/material.dart';
+import 'example_route.dart';
+import 'example_routes.dart';
+
+void main() => runApp(MyApp());
+
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
@@ -185,44 +193,36 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: Routes.fluttercandiesMainpage,
       onGenerateRoute: (RouteSettings settings) {
-        //when refresh web, route will as following
-        //   /
-        //   /fluttercandies:
-        //   /fluttercandies:/
-        //   /fluttercandies://mainpage
-        if (kIsWeb && settings.name.startsWith('/')) {
-          return onGenerateRouteHelper(
-            settings.copyWith(name: settings.name.replaceFirst('/', '')),
-            notFoundFallback:
-                getRouteResult(name: Routes.fluttercandiesMainpage).widget,
-          );
-        }
-        return onGenerateRouteHelper(settings,
-            builder: (Widget child, RouteResult result) {
-          if (settings.name == Routes.fluttercandiesMainpage ||
-              settings.name == Routes.fluttercandiesDemogrouppage) {
-            return child;
-          }
-          return CommonWidget(
-            child: child,
-            result: result,
-          );
-        });
+        return onGenerateRoute(
+          settings: settings,
+          getRouteSettings: getRouteSettings,
+          routeSettingsWrapper: (FFRouteSettings ffRouteSettings) {
+            if (ffRouteSettings.name == Routes.fluttercandiesMainpage ||
+                ffRouteSettings.name ==
+                    Routes.fluttercandiesDemogrouppage.name) {
+              return ffRouteSettings;
+            }
+            return ffRouteSettings.copyWith(
+                widget: CommonWidget(
+              child: ffRouteSettings.widget,
+              title: ffRouteSettings.routeName,
+            ));
+          },
+        );
       },
     );
   }
 }
 ```
+#### Push
 
-### Push
-
-#### Push name
+##### Push name
 
 ```dart
   Navigator.pushNamed(context, Routes.fluttercandiesMainpage /* fluttercandies://mainpage */);
 ```
 
-#### Push name with arguments
+##### Push name with arguments
 
 * 参数必须是一个 `Map<String, dynamic>`
 
@@ -254,7 +254,148 @@ class MyApp extends StatelessWidget {
   );
 ```
 
-#### Code Hints
+### Navigator 2.0
+
+完整代码在 example1 中 
+#### Main.dart
+
+```dart
+import 'dart:convert';
+import 'package:example1/src/model/test_model.dart';
+import 'package:ff_annotation_route_library/ff_annotation_route_library.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'example1_route.dart';
+import 'example1_routes.dart';
+
+void main() {
+  // 工具将处理简单的类型，但是没法处理全部的
+  // 比如在浏览器中输入以下地址
+  // http://localhost:64916/#flutterCandies://testPageF?list=[4,5,6]&map={"ddd":123}&testMode={"id":2,"isTest":true}
+  // queryParameters 将会根据你自身的情况转换成你对应的类型
+  FFConvert.convert = <T>(dynamic value) {
+    if (value == null) {
+      return null;
+    }
+    print(T);
+    final dynamic output = json.decode(value.toString());
+    if (<int>[] is T && output is List<dynamic>) {
+      return output.map<int>((dynamic e) => asT<int>(e)).toList() as T;
+    } else if (<String, String>{} is T && output is Map<dynamic, dynamic>) {
+      return output.map<String, String>((dynamic key, dynamic value) =>
+          MapEntry<String, String>(key.toString(), value.toString())) as T;
+    } else if (const TestMode() is T && output is Map<dynamic, dynamic>) {
+      return TestMode.fromJson(output) as T;
+    }
+
+    return json.decode(value.toString()) as T;
+  };
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  final FFRouteInformationParser _ffRouteInformationParser =
+      FFRouteInformationParser();
+
+  final FFRouterDelegate _ffRouterDelegate = FFRouterDelegate(
+    getRouteSettings: getRouteSettings,
+    pageWrapper: <T>(FFPage<T> ffPage) {
+      return ffPage.copyWith(
+        widget: ffPage.name == Routes.fluttercandiesMainpage ||
+                ffPage.name == Routes.fluttercandiesDemogrouppage.name
+            ? ffPage.widget
+            : CommonWidget(
+                child: ffPage.widget,
+                routeName: ffPage.routeName,
+              ),
+      );
+    },
+  );
+  // This widget is the root of your application.
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp.router(
+      title: 'ff_annotation_route demo',
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      // 初始化第一个页面
+      routeInformationProvider: PlatformRouteInformationProvider(
+        initialRouteInformation: const RouteInformation(
+          location: Routes.fluttercandiesMainpage,
+        ),
+      ),
+      routeInformationParser: kIsWeb ? _ffRouteInformationParser : null,
+      routerDelegate: _ffRouterDelegate,
+    );
+  }
+}
+```
+
+#### FFRouteInformationParser
+
+用在 Web 平台，当你在浏览器上面输入的时候路由配置转换成为[RouteSettings]，或者当反馈给浏览器的时候将[RouteSettings]转换成路由配置
+
+举个例子:
+
+`xxx?a=1&b=2` <=> `RouteSettings(name:'xxx',arguments:<String, dynamic>{'a':'1','b':'2'})`
+
+
+#### FFRouterDelegate
+
+用于创建和配置导航的委托，它提供 [Navigator] 中相似的方法.
+
+```dart
+  FFRouterDelegate.of(context).pushNamed<void>(
+    Routes.flutterCandiesTestPageF.name,
+    arguments: Routes.flutterCandiesTestPageF.d(
+      <int>[1, 2, 3],
+      map: <String, String>{'ddd': 'dddd'},
+      testMode: const TestMode(id: 1, isTest: true),
+    ),
+  );
+```
+
+你可以在 `test_page_c.dart` 页面里面找到更多的例子
+
+#### Push
+
+##### Push name
+
+```dart
+  FFRouterDelegate.of(context).pushNamed<void>(
+    Routes.flutterCandiesTestPageA,
+  );
+```
+
+##### Push name with arguments
+
+* 参数必须是一个 `Map<String, dynamic>`
+
+```dart
+  FFRouterDelegate.of(context).pushNamed<void>(
+    Routes.flutterCandiesTestPageF.name,
+    arguments: Routes.flutterCandiesTestPageF.d(
+      <int>[1, 2, 3],
+      map: <String, String>{'ddd': 'dddd'},
+      testMode: const TestMode(id: 1, isTest: true),
+    ),
+  );
+```
+* 开启 --supper-arguments
+
+```dart
+  FFRouterDelegate.of(context).pushNamed<void>(
+    Routes.flutterCandiesTestPageF.name,
+    arguments: <String, dynamic>{
+        'list': <int>[1, 2, 3],
+        'map': <String, String>{'ddd': 'dddd'},
+        'testMode': const TestMode(id: 1, isTest: true),
+     }
+  ) 
+```
+### Code Hints
 
 你能这样使用路由 'Routes.flutterCandiesTestPageE', 并且在编辑器中看到代码提示。
 包括页面描述，构造，参数类型，参数名字，参数是否必填。
@@ -334,6 +475,6 @@ class MyApp extends StatelessWidget {
 
 ```      
 
-## ☕️Buy me a coffee
+## 来杯可乐
 
 ![img](http://zmtzawqlp.gitee.io/my_images/images/qrcode.png)

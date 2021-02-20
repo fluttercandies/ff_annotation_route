@@ -9,6 +9,9 @@ import 'package:flutter/foundation.dart';
 import 'src/pages/main_page.dart';
 
 const List<String> routeNames = <String>[
+  'ChildRouterPage',
+  'NestedMainPage',
+  'NestedTestPage',
   'flutterCandies://testPageA',
   'flutterCandies://testPageB',
   'flutterCandies://testPageC',
@@ -22,6 +25,33 @@ const List<String> routeNames = <String>[
 
 class Routes {
   const Routes._();
+
+  /// 'ChildRouterPage'
+  ///
+  /// [name] : 'ChildRouterPage'
+  ///
+  /// [routeName] : 'ChildRouterPage'
+  ///
+  /// [description] : 'ChildRouterPage'
+  static const String childRouterPage = 'ChildRouterPage';
+
+  /// 'NestedMainPage'
+  ///
+  /// [name] : 'NestedMainPage'
+  ///
+  /// [routeName] : 'NestedMainPage'
+  ///
+  /// [description] : 'NestedMainPage'
+  static const String nestedMainPage = 'NestedMainPage';
+
+  /// 'NestedTestPage'
+  ///
+  /// [name] : 'NestedTestPage'
+  ///
+  /// [routeName] : 'NestedTestPage'
+  ///
+  /// [description] : 'NestedTestPage'
+  static const String nestedTestPage = 'NestedTestPage';
 
   /// 'This is test page A.'
   ///

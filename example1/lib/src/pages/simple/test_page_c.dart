@@ -23,7 +23,7 @@ class TestPageC extends StatelessWidget {
       children: <Widget>[
         FlatButton(
           onPressed: () {
-            FFRouterDelegate.of(context).pushNamed(
+            FFRouterDelegate.of(context).pushNamed<void>(
               Routes.flutterCandiesTestPageF.name,
               arguments: Routes.flutterCandiesTestPageF.d(
                 <int>[1, 2, 3],
@@ -40,14 +40,14 @@ class TestPageC extends StatelessWidget {
             final FFRouteSettings routeSettings =
                 getRouteSettings(name: Routes.flutterCandiesTestPageA);
             final FFPage<void> page = routeSettings.toFFPage<void>(
-                key:
-                    delegate.getUniqueKey(name: Routes.flutterCandiesTestPageA),
+                // make sure it has unique key
+                key: delegate.getUniqueKey(),
                 widget: CommonWidget(
                   child: TestPageA(),
                   routeName: routeSettings.routeName,
                 ));
 
-            delegate.push(page);
+            delegate.push<void>(page);
           },
           child: const Text('push'),
         ),
@@ -69,15 +69,9 @@ class TestPageC extends StatelessWidget {
         FlatButton(
           onPressed: () {
             final FFRouterDelegate delegate = FFRouterDelegate.of(context);
-            final FFRouteSettings routeSettings =
-                getRouteSettings(name: Routes.flutterCandiesTestPageA);
-            final FFPage<void> page = routeSettings.toFFPage<void>(
-              key: delegate.getUniqueKey(name: Routes.flutterCandiesTestPageA),
-              widget: CommonWidget(
-                child: TestPageA(),
-                routeName: routeSettings.routeName,
-              ),
-            );
+
+            final FFPage<void> page = delegate.getRoutePage<void>(
+                name: Routes.flutterCandiesTestPageA);
 
             delegate.pages.add(page);
             delegate.updatePages();

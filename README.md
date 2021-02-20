@@ -21,14 +21,15 @@ Provide a route generator to create route map quickly by annotations.
       - [Activate the plugin](#activate-the-plugin)
       - [Execute command](#execute-command)
       - [Command Parameter](#command-parameter)
-    - [Navigator1.0](#navigator10)
+    - [Navigator 1.0](#navigator-10)
       - [Main.dart](#maindart)
       - [Push](#push)
         - [Push name](#push-name)
         - [Push name with arguments](#push-name-with-arguments)
-    - [Navigator2.0](#navigator20)
+    - [Navigator 2.0](#navigator-20)
       - [Main.dart](#maindart-1)
       - [FFRouteInformationParser](#ffrouteinformationparser)
+      - [FFRouterDelegate](#ffrouterdelegate)
       - [Push](#push-1)
         - [Push name](#push-name-1)
         - [Push name with arguments](#push-name-with-arguments-1)
@@ -159,9 +160,9 @@ Available commands:
 -s, --[no-]save                Whether save the arguments into the local
                                It will execute the local arguments if run "ff_route" without any arguments
 ```
-### Navigator1.0
+### Navigator 1.0
 
-you can see full demo in example/
+you can see full demo in example
 #### Main.dart
 
 ```dart
@@ -187,7 +188,7 @@ class MyApp extends StatelessWidget {
         return onGenerateRoute(
           settings: settings,
           getRouteSettings: getRouteSettings,
-          routeWrapper: (FFRouteSettings ffRouteSettings) {
+          routeSettingsWrapper: (FFRouteSettings ffRouteSettings) {
             if (ffRouteSettings.name == Routes.fluttercandiesMainpage ||
                 ffRouteSettings.name ==
                     Routes.fluttercandiesDemogrouppage.name) {
@@ -196,7 +197,7 @@ class MyApp extends StatelessWidget {
             return ffRouteSettings.copyWith(
                 widget: CommonWidget(
               child: ffRouteSettings.widget,
-              page: ffRouteSettings,
+              title: ffRouteSettings.routeName,
             ));
           },
         );
@@ -210,7 +211,7 @@ class MyApp extends StatelessWidget {
 
 ##### Push name
 
-```dart
+``` dart
   Navigator.pushNamed(context, Routes.fluttercandiesMainpage /* fluttercandies://mainpage */);
 ```
 
@@ -233,7 +234,7 @@ class MyApp extends StatelessWidget {
 ```
 * enable --supper-arguments
 
-```dart
+``` dart
   Navigator.pushNamed(
     context,
     Routes.flutterCandiesTestPageE.name,
@@ -245,12 +246,12 @@ class MyApp extends StatelessWidget {
     ),
   );
 ```
-### Navigator2.0
+### Navigator 2.0
 
-you can see full demo in example1/
+you can see full demo in example1
 #### Main.dart
 
-```dart
+``` dart
 import 'dart:convert';
 import 'package:example1/src/model/test_model.dart';
 import 'package:ff_annotation_route_library/ff_annotation_route_library.dart';
@@ -260,7 +261,7 @@ import 'example1_route.dart';
 import 'example1_routes.dart';
 
 void main() {
-  // simple types(int,double,bool etc.) are handled, but not all of them.
+  // tool will handle simple types(int,double,bool etc.), but not all of them.
   // for example, you can type in web browser
   // http://localhost:64916/#flutterCandies://testPageF?list=[4,5,6]&map={"ddd":123}&testMode={"id":2,"isTest":true}
   // the queryParameters will be converted base on your case.
@@ -289,24 +290,19 @@ class MyApp extends StatelessWidget {
       FFRouteInformationParser();
 
   final FFRouterDelegate _ffRouterDelegate = FFRouterDelegate(
-      getRouteSettings: getRouteSettings,
-      pageWrapper: (FFPage ffPage) {
-        if (ffPage.name == Routes.fluttercandiesMainpage ||
-            ffPage.name == Routes.fluttercandiesDemogrouppage.name) {
-          // define key if this page is unique
-          // The key associated with this page.
-          //
-          // This key will be used for comparing pages in [canUpdate].
-          return ffPage.copyWith(
-            key: ValueKey<String>('${ffPage.name}-${ffPage.arguments}'),
-          );
-        }
-        return ffPage.copyWith(
-            widget: CommonWidget(
-          child: ffPage.widget,
-          page: ffPage,
-        ));
-      });
+    getRouteSettings: getRouteSettings,
+    pageWrapper: <T>(FFPage<T> ffPage) {
+      return ffPage.copyWith(
+        widget: ffPage.name == Routes.fluttercandiesMainpage ||
+                ffPage.name == Routes.fluttercandiesDemogrouppage.name
+            ? ffPage.widget
+            : CommonWidget(
+                child: ffPage.widget,
+                routeName: ffPage.routeName,
+              ),
+      );
+    },
+  );
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -316,6 +312,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
+      // initialRoute
       routeInformationProvider: PlatformRouteInformationProvider(
         initialRouteInformation: const RouteInformation(
           location: Routes.fluttercandiesMainpage,
@@ -330,14 +327,41 @@ class MyApp extends StatelessWidget {
 
 #### FFRouteInformationParser
 
-FFRouteInformationParser is working on web. It will parse uri into RouteSettings or restore RouteSettings into uri.
+It's working on Web when you type in browser or report to browser. A delegate that is used by the [Router] widget to parse a route information
+into a configuration of type [RouteSettings]. 
+
+for example:
+
+`xxx?a=1&b=2` <=> `RouteSettings(name:'xxx',arguments:<String, dynamic>{'a':'1','b':'2'})`
+
+
+#### FFRouterDelegate
+
+A delegate that is used by the [Router] widget to build and configure anavigating widget. 
+
+It provides push/pop methods like [Navigator].
+
+``` dart
+  FFRouterDelegate.of(context).pushNamed<void>(
+    Routes.flutterCandiesTestPageF.name,
+    arguments: Routes.flutterCandiesTestPageF.d(
+      <int>[1, 2, 3],
+      map: <String, String>{'ddd': 'dddd'},
+      testMode: const TestMode(id: 1, isTest: true),
+    ),
+  );
+```
+
+you can find more demo in `test_page_c.dart`.
 
 #### Push
 
 ##### Push name
 
-```dart
-  Navigator.pushNamed(context, Routes.fluttercandiesMainpage /* fluttercandies://mainpage */);
+``` dart
+  FFRouterDelegate.of(context).pushNamed<void>(
+    Routes.flutterCandiesTestPageA,
+  );
 ```
 
 ##### Push name with arguments
@@ -345,31 +369,26 @@ FFRouteInformationParser is working on web. It will parse uri into RouteSettings
 * `arguments` **MUST** be a `Map<String, dynamic>`
 
 ```dart
-  Navigator.pushNamed(
-    context,
-    Routes.flutterCandiesTestPageE,
-    arguments: <String, dynamic>{
-      constructorName: 'required',
-      'testMode': const TestMode(
-        id: 100,
-        isTest: true,
-      ),
-    },
+  FFRouterDelegate.of(context).pushNamed<void>(
+    Routes.flutterCandiesTestPageF.name,
+    arguments: Routes.flutterCandiesTestPageF.d(
+      <int>[1, 2, 3],
+      map: <String, String>{'ddd': 'dddd'},
+      testMode: const TestMode(id: 1, isTest: true),
+    ),
   );
 ```
 * enable --supper-arguments
 
-```dart
-  Navigator.pushNamed(
-    context,
-    Routes.flutterCandiesTestPageE.name,
-    arguments: Routes.flutterCandiesTestPageE.requiredC(
-      testMode: const TestMode(
-        id: 100,
-        isTest: true,
-      ),
-    ),
-  );
+``` dart
+  FFRouterDelegate.of(context).pushNamed<void>(
+    Routes.flutterCandiesTestPageF.name,
+    arguments: <String, dynamic>{
+        'list': <int>[1, 2, 3],
+        'map': <String, String>{'ddd': 'dddd'},
+        'testMode': const TestMode(id: 1, isTest: true),
+     }
+  ) 
 ```
 
 ### Code Hints
@@ -378,7 +397,7 @@ you can use route as 'Routes.flutterCandiesTestPageE', and see Code Hints from i
 
 * default
 
-```dart
+``` dart
   /// 'This is test page E.'
   ///
   /// [name] : 'flutterCandies://testPageE'
@@ -401,7 +420,7 @@ you can use route as 'Routes.flutterCandiesTestPageE', and see Code Hints from i
 
 * enable --supper-arguments
 
-```dart
+``` dart
   /// 'This is test page E.'
   ///
   /// [name] : 'flutterCandies://testPageE'
@@ -449,4 +468,4 @@ you can use route as 'Routes.flutterCandiesTestPageE', and see Code Hints from i
     String toString() => name;
   }
 
-```      
+```

@@ -7,6 +7,7 @@ import 'package:example1/src/model/test_model.dart';
 import 'package:example1/src/model/test_model1.dart';
 import 'package:ff_annotation_route_library/ff_annotation_route_library.dart';
 import 'package:flutter/widgets.dart';
+import 'nested_router_demo.dart';
 import 'src/pages/complex/test_page_d.dart';
 import 'src/pages/complex/test_page_e.dart';
 import 'src/pages/complex/test_page_f.dart';
@@ -24,6 +25,30 @@ FFRouteSettings getRouteSettings({
   final Map<String, dynamic> safeArguments =
       arguments ?? const <String, dynamic>{};
   switch (name) {
+    case 'ChildRouterPage':
+      return FFRouteSettings(
+        name: name,
+        arguments: arguments,
+        widget: ChildRouterPage(),
+        routeName: 'ChildRouterPage',
+        description: 'ChildRouterPage',
+      );
+    case 'NestedMainPage':
+      return FFRouteSettings(
+        name: name,
+        arguments: arguments,
+        widget: NestedMainPage(),
+        routeName: 'NestedMainPage',
+        description: 'NestedMainPage',
+      );
+    case 'NestedTestPage':
+      return FFRouteSettings(
+        name: name,
+        arguments: arguments,
+        widget: NestedTestPage(),
+        routeName: 'NestedTestPage',
+        description: 'NestedTestPage',
+      );
     case 'flutterCandies://testPageA':
       return FFRouteSettings(
         name: name,

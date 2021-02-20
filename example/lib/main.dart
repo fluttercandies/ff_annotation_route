@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
         return onGenerateRoute(
           settings: settings,
           getRouteSettings: getRouteSettings,
-          routeWrapper: (FFRouteSettings ffRouteSettings) {
+          routeSettingsWrapper: (FFRouteSettings ffRouteSettings) {
             if (ffRouteSettings.name == Routes.fluttercandiesMainpage ||
                 ffRouteSettings.name ==
                     Routes.fluttercandiesDemogrouppage.name) {
@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
             return ffRouteSettings.copyWith(
                 widget: CommonWidget(
               child: ffRouteSettings.widget,
-              page: ffRouteSettings,
+              title: ffRouteSettings.routeName,
             ));
           },
         );
@@ -41,17 +41,17 @@ class MyApp extends StatelessWidget {
 class CommonWidget extends StatelessWidget {
   const CommonWidget({
     this.child,
-    this.page,
+    this.title,
   });
   final Widget child;
-  final FFRouteSettings page;
+  final String title;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          page.routeName,
+          title,
         ),
       ),
       body: child,
