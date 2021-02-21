@@ -162,7 +162,7 @@ Available commands:
 ```
 ### Navigator 1.0
 
-you can see full demo in example
+you can see full demo in [example](https://github.com/fluttercandies/ff_annotation_route/tree/master/example)
 #### Main.dart
 
 ```dart
@@ -248,7 +248,7 @@ class MyApp extends StatelessWidget {
 ```
 ### Navigator 2.0
 
-you can see full demo in example1
+you can see full demo in [example1](https://github.com/fluttercandies/ff_annotation_route/tree/master/example1)
 #### Main.dart
 
 ``` dart
@@ -328,7 +328,7 @@ class MyApp extends StatelessWidget {
 #### FFRouteInformationParser
 
 It's working on Web when you type in browser or report to browser. A delegate that is used by the [Router] widget to parse a route information
-into a configuration of type [RouteSettings]. 
+into a configuration of type [RouteSettings].
 
 for example:
 
@@ -337,7 +337,7 @@ for example:
 
 #### FFRouterDelegate
 
-A delegate that is used by the [Router] widget to build and configure anavigating widget. 
+A delegate that is used by the [Router] widget to build and configure anavigating widget.
 
 It provides push/pop methods like [Navigator].
 
@@ -352,7 +352,7 @@ It provides push/pop methods like [Navigator].
   );
 ```
 
-you can find more demo in `test_page_c.dart`.
+you can find more demo in [test_page_c.dart](https://github.com/fluttercandies/ff_annotation_route/tree/master/example1/lib/src/pages/simple/test_page_c.dart).
 
 #### Push
 
@@ -388,7 +388,7 @@ you can find more demo in `test_page_c.dart`.
         'map': <String, String>{'ddd': 'dddd'},
         'testMode': const TestMode(id: 1, isTest: true),
      }
-  ) 
+  )
 ```
 
 ### Code Hints
@@ -443,9 +443,9 @@ you can use route as 'Routes.flutterCandiesTestPageE', and see Code Hints from i
 
   class _FlutterCandiesTestPageE {
     const _FlutterCandiesTestPageE();
-  
+
     String get name => 'flutterCandies://testPageE';
-  
+
     Map<String, dynamic> d(
             {TestMode testMode = const TestMode(id: 2, isTest: false),
             TestMode1 testMode1}) =>
@@ -453,17 +453,17 @@ you can use route as 'Routes.flutterCandiesTestPageE', and see Code Hints from i
           'testMode': testMode,
           'testMode1': testMode1,
         };
-  
+
     Map<String, dynamic> test() => const <String, dynamic>{
           'constructorName': 'test',
         };
-  
+
     Map<String, dynamic> requiredC({@required TestMode testMode}) =>
         <String, dynamic>{
           'testMode': testMode,
           'constructorName': 'requiredC',
         };
-  
+
     @override
     String toString() => name;
   }

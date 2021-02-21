@@ -42,11 +42,12 @@ Languages: [English](README.md) | 中文简体
 
 ### 增加引用
 
-添加引用到`dev_dependencies`，及你需要注解的 project/packages 到`pubspec.yaml`中
+添加引用到`dependencies`，及你需要注解的 project/packages 到`pubspec.yaml`中
 
 ```yaml
 dev_dependencies:
-  ff_annotation_route: latest-version
+  ff_annotation_route_core: any
+  ff_annotation_route_library: any
 ```
 
 执行 `flutter packages get` 下载
@@ -159,7 +160,7 @@ class TestPageE extends StatelessWidget {
 
 -g, --git                         扫描 git 引用的 package，你需要指定 package 的名字，多个用 `,` 分开
     --routes-file-output          routes 文件的输出目录路径，路径相对于主项目的lib文件夹
-    --const-ignore                使用正则表达式忽略一些const(不是全部const都希望生成)  
+    --const-ignore                使用正则表达式忽略一些const(不是全部const都希望生成)
     --[no-]route-constants        是否在根项目中的 `xxx_route.dart` 生成全部路由的静态常量
     --[no-]package                这个是否是一个 package
     --[no-]supper-arguments       是否生成路由参数帮助类
@@ -170,7 +171,7 @@ class TestPageE extends StatelessWidget {
 
 ### Navigator 1.0
 
-完整代码在 example 中 
+完整代码在 [example](https://github.com/fluttercandies/ff_annotation_route/tree/master/example) 中
 #### Main.dart
 
 ```dart
@@ -256,7 +257,7 @@ class MyApp extends StatelessWidget {
 
 ### Navigator 2.0
 
-完整代码在 example1 中 
+完整代码在 [example1](https://github.com/fluttercandies/ff_annotation_route/tree/master/example1) 中
 #### Main.dart
 
 ```dart
@@ -357,7 +358,7 @@ class MyApp extends StatelessWidget {
   );
 ```
 
-你可以在 `test_page_c.dart` 页面里面找到更多的例子
+你可以在 [test_page_c.dart](https://github.com/fluttercandies/ff_annotation_route/tree/master/example1/lib/src/pages/simple/test_page_c.dart) 页面里面找到更多的例子
 
 #### Push
 
@@ -393,7 +394,7 @@ class MyApp extends StatelessWidget {
         'map': <String, String>{'ddd': 'dddd'},
         'testMode': const TestMode(id: 1, isTest: true),
      }
-  ) 
+  )
 ```
 ### Code Hints
 
@@ -448,9 +449,9 @@ class MyApp extends StatelessWidget {
 
   class _FlutterCandiesTestPageE {
     const _FlutterCandiesTestPageE();
-  
+
     String get name => 'flutterCandies://testPageE';
-  
+
     Map<String, dynamic> d(
             {TestMode testMode = const TestMode(id: 2, isTest: false),
             TestMode1 testMode1}) =>
@@ -458,22 +459,22 @@ class MyApp extends StatelessWidget {
           'testMode': testMode,
           'testMode1': testMode1,
         };
-  
+
     Map<String, dynamic> test() => const <String, dynamic>{
           'constructorName': 'test',
         };
-  
+
     Map<String, dynamic> requiredC({@required TestMode testMode}) =>
         <String, dynamic>{
           'testMode': testMode,
           'constructorName': 'requiredC',
         };
-  
+
     @override
     String toString() => name;
   }
 
-```      
+```
 
 ## 来杯可乐
 
