@@ -318,7 +318,7 @@ class MyApp extends StatelessWidget {
           location: Routes.fluttercandiesMainpage,
         ),
       ),
-      routeInformationParser: kIsWeb ? _ffRouteInformationParser : null,
+      routeInformationParser: _ffRouteInformationParser,
       routerDelegate: _ffRouterDelegate,
     );
   }

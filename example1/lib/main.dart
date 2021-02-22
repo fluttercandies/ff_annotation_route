@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'package:example1/src/model/test_model.dart';
 import 'package:ff_annotation_route_library/ff_annotation_route_library.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'example1_route.dart';
 import 'example1_routes.dart';
@@ -64,7 +63,7 @@ class MyApp extends StatelessWidget {
           location: Routes.fluttercandiesMainpage,
         ),
       ),
-      routeInformationParser: kIsWeb ? _ffRouteInformationParser : null,
+      routeInformationParser: _ffRouteInformationParser,
       routerDelegate: _ffRouterDelegate,
     );
   }

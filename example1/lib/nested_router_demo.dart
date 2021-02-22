@@ -9,10 +9,10 @@ void main() {
   runApp(MyApp());
 }
 
-/// NestedMainPage(Router=>Navigator) => NestedTestPage
-///                                            ‖
-///                                            v
-///                                    ChildRouterPage(Router=>Navigator)  => TestPageA
+/// MyApp (Router=>Navigator) => NestedMainPage push
+///                                             ‖
+///                                             v
+///                                    ChildRouterPage(Router=>Navigator) => NestedTestPage push => TestPageA
 ///
 /// click Android hardware back button or web browser back button
 ///
