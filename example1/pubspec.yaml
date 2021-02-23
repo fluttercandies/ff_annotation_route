@@ -27,10 +27,6 @@ dependencies:
   url_launcher: any
   ff_annotation_route_library: ^1.2.0
 
-dev_dependencies:
-  ff_annotation_route:
-    path: ../
-
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 

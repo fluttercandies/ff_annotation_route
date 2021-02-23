@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:analyzer/dart/analysis/features.dart';
 import 'package:analyzer/dart/analysis/utilities.dart';
 import 'package:analyzer/dart/ast/ast.dart';
+import 'package:analyzer/dart/ast/syntactic_entity.dart';
 
 // ignore: implementation_imports
 import 'package:analyzer/src/dart/ast/ast.dart';
@@ -67,6 +68,36 @@ class RouteGenerator {
             path: item.path,
             featureSet: FeatureSet.fromEnableFlags(<String>[]),
           ).unit;
+          final List<String> argumentImports = <String>[];
+          for (final SyntacticEntity child in astRoot.childEntities) {
+            if (child is ImportDirectiveImpl) {
+              final SyntacticEntity syntacticEntity = child.childEntities
+                  .firstWhere(
+                      (SyntacticEntity element) => element is AnnotationImpl,
+                      orElse: () => null);
+
+              if (syntacticEntity != null) {
+                final AnnotationImpl annotationImpl =
+                    syntacticEntity as AnnotationImpl;
+                if (annotationImpl.name?.name ==
+                    typeOf<FFArgumentImport>().toString()) {
+                  final NodeList<Expression> parameters =
+                      annotationImpl.arguments?.arguments;
+                  String import = child
+                      .toString()
+                      .replaceAll(annotationImpl.toString(), '');
+                  import = import.replaceAll(';', '');
+                  if (parameters != null && parameters.isNotEmpty) {
+                    import = import +
+                        ' ' +
+                        parameters.first.toString().replaceAll('\'', '');
+                  }
+                  import += ';\n';
+                  argumentImports.add(import);
+                }
+              }
+            }
+          }
 
           FileInfo fileInfo;
           for (final CompilationUnitMember declaration
@@ -107,7 +138,6 @@ class RouteGenerator {
                 PageRouteType pageRouteType;
                 String description;
                 Map<String, dynamic> exts;
-                List<String> argumentImports;
 
                 for (final Expression item in parameters) {
                   if (item is NamedExpressionImpl) {
@@ -138,7 +168,8 @@ class RouteGenerator {
                         description = toT<String>(item.expression);
                         break;
                       case 'argumentImports:':
-                        argumentImports = toT<List<String>>(item.expression);
+                        argumentImports
+                            .addAll(toT<List<String>>(item.expression));
                         break;
                       case 'exts:':
                         source = source.substring(source.indexOf('{'));

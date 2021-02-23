@@ -1,3 +1,6 @@
+## 5.1.0
+
+* Add @FFArgumentImport() instead of @FFRoute.argumentImports
 ## 5.0.1
 
 * Fix uncomment debug arguments

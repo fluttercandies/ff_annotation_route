@@ -45,7 +45,7 @@ Languages: [English](README.md) | 中文简体
 添加引用到`dependencies`，及你需要注解的 project/packages 到`pubspec.yaml`中
 
 ```yaml
-dev_dependencies:
+dependencies:
   ff_annotation_route_core: any
   ff_annotation_route_library: any
 ```
@@ -75,16 +75,21 @@ class MainPage extends StatelessWidget
 工具会自动处理带参数的构造，不需要做特殊处理。唯一需要注意的是，你需要使用 `argumentImports` 为class/enum的参数提供 import 地址。
 
 ```dart
-import 'package:ff_annotation_route/ff_annotation_route.dart';
+@FFArgumentImport('hide TestMode2')
+import 'package:example1/src/model/test_model.dart';
+@FFArgumentImport()
+import 'package:example1/src/model/test_model1.dart' hide TestMode3;
+import 'package:ff_annotation_route_library/ff_annotation_route_library.dart';
 
 @FFRoute(
   name: 'flutterCandies://testPageE',
   routeName: 'testPageE',
-  description: 'This is test page E.',
-  argumentImports: <String>[
-    'import \'package:example/src/model/test_model.dart\';',
-    'import \'package:example/src/model/test_model1.dart\';'
-  ],
+  description: 'Show how to push new page with arguments(class)',
+  // 为了防止 @FFArgumentImport() 不能完全表达的情况， 依然保留 argumentImports。
+  // argumentImports: <String>[
+  //   'import \'package:example1/src/model/test_model.dart\';',
+  //   'import \'package:example1/src/model/test_model1.dart\';',
+  // ],
   exts: <String, dynamic>{
     'group': 'Complex',
     'order': 1,
@@ -121,7 +126,7 @@ class TestPageE extends StatelessWidget {
 | pageRouteType | 路由的类型 (material, cupertino, transparent) | -        |
 | description   | 路由的描述                                    | ''       |
 | exts          | 其他扩展参数.                                 | -        |
-| argumentImports | 某些参数的导入.有一些参数是类或者枚举，需要指定它们的导入地址 | -        |
+| argumentImports | 某些参数的导入.有一些参数是类或者枚举，需要指定它们的导入地址.现在你可以使用 @FFArgumentImport()来替代  | -        |
 
 ### 生成文件
 

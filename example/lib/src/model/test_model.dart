@@ -9,3 +9,8 @@ class TestMode {
     return 'id:$id,isTest:$isTest';
   }
 }
+
+class TestMode2
+{
+
+}

@@ -73,16 +73,21 @@ The tool will handle it. What you should take care is that provide import url by
 class/enum argument.
 
 ```dart
-import 'package:ff_annotation_route_core/ff_annotation_route_core.dart';
+@FFArgumentImport('hide TestMode2')
+import 'package:example1/src/model/test_model.dart';
+@FFArgumentImport()
+import 'package:example1/src/model/test_model1.dart' hide TestMode3;
+import 'package:ff_annotation_route_library/ff_annotation_route_library.dart';
 
 @FFRoute(
   name: 'flutterCandies://testPageE',
   routeName: 'testPageE',
-  description: 'This is test page E.',
-  argumentImports: <String>[
-    'import \'package:example/src/model/test_model.dart\';',
-    'import \'package:example/src/model/test_model1.dart\';'
-  ],
+  description: 'Show how to push new page with arguments(class)',
+  // argumentImports are still work for some cases which you can't use @FFArgumentImport()
+  // argumentImports: <String>[
+  //   'import \'package:example1/src/model/test_model.dart\';',
+  //   'import \'package:example1/src/model/test_model1.dart\';',
+  // ],
   exts: <String, dynamic>{
     'group': 'Complex',
     'order': 1,
@@ -119,7 +124,7 @@ class TestPageE extends StatelessWidget {
 | pageRouteType   | The type of page route.(material, cupertino, transparent)                             | -        |
 | description     | The description of the route.                                                         | ''       |
 | exts            | The extend arguments.                                                                 | -        |
-| argumentImports | The imports of arguments. For example, class/enum argument should provide import url. | -        |
+| argumentImports | The imports of arguments. For example, class/enum argument should provide import url. you can use @FFArgumentImport() instead now. | -        |
 
 ### Generate Route File
 

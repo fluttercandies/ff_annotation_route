@@ -8,3 +8,8 @@ class TestMode1 {
     return 'id:$id,isTest:$isTest';
   }
 }
+
+class TestMode3
+{
+
+}

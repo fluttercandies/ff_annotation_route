@@ -3,6 +3,7 @@ library ff_annotation_route;
 import 'src/arg/args.dart';
 import 'src/package_graph.dart';
 import 'src/route_generator.dart';
+export 'src/route_generator.dart';
 
 void generate(List<PackageNode> annotationPackages) {
   RouteGenerator root;
