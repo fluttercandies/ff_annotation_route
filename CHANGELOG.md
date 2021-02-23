@@ -1,3 +1,6 @@
+## 5.0.1
+
+* Fix uncomment debug arguments
 ## 5.0.0
 
 * breaking change :
