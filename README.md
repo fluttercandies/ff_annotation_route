@@ -70,7 +70,7 @@ class MainPage extends StatelessWidget
 #### Constructor with arguments
 
 The tool will handle it. What you should take care is that provide import url by setting `argumentImports` if it has
-class/enum argument.
+class/enum argument.you can use `@FFArgumentImport()` instead now. 
 
 ```dart
 @FFArgumentImport('hide TestMode2')

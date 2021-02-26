@@ -1,3 +1,6 @@
+## 5.1.1
+
+* Fix Cannot remove from a fixed-length list
 ## 5.1.0
 
 * Add @FFArgumentImport() instead of @FFRoute.argumentImports

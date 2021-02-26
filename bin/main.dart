@@ -44,6 +44,8 @@ Future<void> main(List<String> arguments) async {
     }
   }
 
+  arguments = arguments.toList();
+
   arguments.remove('--route-helper');
   arguments.remove('--no-is-initial-route');
   arguments.remove('--no-arguments');

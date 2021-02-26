@@ -72,7 +72,7 @@ class MainPage extends StatelessWidget
 
 #### 带参数构造
 
-工具会自动处理带参数的构造，不需要做特殊处理。唯一需要注意的是，你需要使用 `argumentImports` 为class/enum的参数提供 import 地址。
+工具会自动处理带参数的构造，不需要做特殊处理。唯一需要注意的是，你需要使用 `argumentImports` 为class/enum的参数提供 import 地址。现在你可以使用 `@FFArgumentImport()` 来替代.
 
 ```dart
 @FFArgumentImport('hide TestMode2')
