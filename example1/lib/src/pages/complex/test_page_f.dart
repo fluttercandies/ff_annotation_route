@@ -3,7 +3,7 @@ import 'package:ff_annotation_route_library/ff_annotation_route_library.dart';
 import 'package:flutter/material.dart';
 
 @FFRoute(
-  name: 'flutterCandies://testPageF',
+  name: '/testPageF',
   routeName: 'testPageF',
   description: 'This is test page F.',
   exts: <String, dynamic>{
@@ -20,9 +20,9 @@ class TestPageF extends StatelessWidget {
     this.testMode,
   });
 
-  final List<int> list;
-  final Map<String, String> map;
-  final TestMode testMode;
+  final List<int>? list;
+  final Map<String, String>? map;
+  final TestMode? testMode;
   @override
   Widget build(BuildContext context) {
     return Center(

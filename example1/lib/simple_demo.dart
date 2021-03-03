@@ -25,7 +25,7 @@ class _NavigatorDemoState extends State<NavigatorDemo> {
             ),
             Row(
               children: <Widget>[
-                FlatButton(
+                TextButton(
                   onPressed: () {
                     _pages.add(
                       MyPage(
@@ -37,7 +37,7 @@ class _NavigatorDemoState extends State<NavigatorDemo> {
                   },
                   child: const Text('Push PageA'),
                 ),
-                FlatButton(
+                TextButton(
                   onPressed: () {
                     if (_pages.length > 1) {
                       _pages.removeLast();
@@ -46,10 +46,10 @@ class _NavigatorDemoState extends State<NavigatorDemo> {
                   },
                   child: const Text('Pop'),
                 ),
-                FlatButton(
+                TextButton(
                   onPressed: () {
                     // This will invoke onPopPage call back
-                    navigatorKey.currentState.pop();
+                    navigatorKey.currentState!.pop();
                   },
                   child: const Text('Pop'),
                 ),
@@ -85,7 +85,7 @@ class _NavigatorDemoState extends State<NavigatorDemo> {
 
   void _debugCheckDuplicatedPageKeys() {
     assert(() {
-      final Set<Key> keyReservation = <Key>{};
+      final Set<Key?> keyReservation = <Key?>{};
       for (final Page<dynamic> page in _pages) {
         if (page.key != null) {
           assert(!keyReservation.contains(page.key));
@@ -115,10 +115,10 @@ class TestPage extends StatelessWidget {
 
 class MyPage extends Page<void> {
   const MyPage({
-    @required LocalKey key,
-    @required String name,
-    @required this.widget,
-    Object arguments,
+    required LocalKey key,
+    required String name,
+    required this.widget,
+    Object? arguments,
   }) : super(
           key: key,
           name: name,

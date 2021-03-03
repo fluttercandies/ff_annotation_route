@@ -17,8 +17,8 @@ import 'src/pages/simple/test_page_b.dart';
 
 // ignore_for_file: prefer_const_literals_to_create_immutables
 FFRouteSettings getRouteSettings({
-  @required String name,
-  Map<String, dynamic> arguments,
+  required String name,
+  Map<String, dynamic>? arguments,
 }) {
   final Map<String, dynamic> safeArguments =
       arguments ?? const <String, dynamic>{};
@@ -28,7 +28,7 @@ FFRouteSettings getRouteSettings({
         name: name,
         arguments: arguments,
         widget: TestPageB(
-          argument: asT<String>(safeArguments['argument']),
+          argument: asT<String?>(safeArguments['argument']),
         ),
         showStatusBar: true,
         routeName: 'testPageB ',
@@ -42,25 +42,27 @@ FFRouteSettings getRouteSettings({
         arguments: arguments,
         widget: <String, Widget>{
           '': TestPageD(
-            asT<String>(safeArguments['argument']),
-            optional: asT<bool>(safeArguments['optional'], false),
-            id: asT<String>(safeArguments['id'], 'flutterCandies'),
+            asT<String?>(safeArguments['argument']),
+            optional: asT<bool?>(safeArguments['optional'], false),
+            id: asT<String?>(safeArguments['id'], 'flutterCandies'),
           ),
           'another0': TestPageD.another0(
-            argument: asT<String>(safeArguments['argument']),
+            argument: asT<String?>(safeArguments['argument']),
           ),
           'another1': TestPageD.another1(
-            asT<String>(safeArguments['argument']),
-            asT<bool>(safeArguments['optional'], false),
+            asT<String?>(safeArguments['argument']),
+            asT<bool?>(safeArguments['optional'], false),
           ),
           'another2': TestPageD.another2(
-            asT<String>(safeArguments['argument']),
+            asT<String?>(safeArguments['argument']),
           ),
           'another3': TestPageD.another3(
-            asT<String>(safeArguments['argument']),
-            optional: asT<bool>(safeArguments['optional']),
+            asT<String?>(safeArguments['argument']),
+            optional: asT<bool?>(safeArguments['optional']),
           ),
-        }[safeArguments[constructorName] as String ?? ''],
+        }[safeArguments[constructorName] != null
+            ? safeArguments[constructorName] as String
+            : ''],
         showStatusBar: true,
         routeName: 'testPageD ',
         pageRouteType: PageRouteType.material,
@@ -91,15 +93,17 @@ FFRouteSettings getRouteSettings({
         arguments: arguments,
         widget: <String, Widget>{
           '': TestPageE(
-            testMode: asT<TestMode>(safeArguments['testMode'],
+            testMode: asT<TestMode?>(safeArguments['testMode'],
                 const TestMode(id: 2, isTest: false)),
-            testMode1: asT<TestMode1>(safeArguments['testMode1']),
+            testMode1: asT<TestMode1?>(safeArguments['testMode1']),
           ),
           'test': TestPageE.test(),
           'requiredC': TestPageE.requiredC(
-            testMode: asT<TestMode>(safeArguments['testMode']),
+            testMode: asT<TestMode?>(safeArguments['testMode']),
           ),
-        }[safeArguments[constructorName] as String ?? ''],
+        }[safeArguments[constructorName] != null
+            ? safeArguments[constructorName] as String
+            : ''],
         routeName: 'testPageE',
         description: 'Show how to push new page with arguments(class)',
         exts: <String, dynamic>{'group': 'Complex', 'order': 1},
@@ -110,7 +114,7 @@ FFRouteSettings getRouteSettings({
         arguments: arguments,
         widget: DemoGroupPage(
           keyValue: asT<MapEntry<String, List<DemoRouteResult>>>(
-              safeArguments['keyValue']),
+              safeArguments['keyValue'])!,
         ),
         routeName: 'DemoGroupPage',
       );

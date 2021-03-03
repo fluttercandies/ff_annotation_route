@@ -32,12 +32,12 @@ class TestPageE extends StatelessWidget {
         testMode: TestMode.test(),
       );
 
-  factory TestPageE.requiredC({@required TestMode testMode}) => TestPageE(
+  factory TestPageE.requiredC({required TestMode? testMode}) => TestPageE(
         testMode: testMode,
       );
 
-  final TestMode testMode;
-  final TestMode1 testMode1;
+  final TestMode? testMode;
+  final TestMode1? testMode1;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -45,7 +45,7 @@ class TestPageE extends StatelessWidget {
         Center(
           child: Text('TestPageE $testMode'),
         ),
-        FlatButton(
+        TextButton(
           onPressed: () {
             Navigator.pushNamed(context, Routes.flutterCandiesTestPageE.name,
                 arguments: Routes.flutterCandiesTestPageE.test());
@@ -54,7 +54,7 @@ class TestPageE extends StatelessWidget {
             'TestPageE.deafult()',
           ),
         ),
-        FlatButton(
+        TextButton(
           onPressed: () {
             Navigator.pushNamed(
               context,

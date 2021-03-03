@@ -180,7 +180,13 @@ Map<String, String> _parsePackageLocations(String rootPackagePath) {
   }
   final Map<String, String> packageLocations = <String, String>{};
   for (final String line in packagesFile.readAsLinesSync().skip(1)) {
+    if (line.startsWith('#')) {
+      continue;
+    }
     final int firstColon = line.indexOf(':');
+    if (firstColon < 0) {
+      continue;
+    }
     final String name = line.substring(0, firstColon);
     assert(line.endsWith('lib/'));
     // Start after package_name:, and strip out trailing 'lib/'.

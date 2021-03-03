@@ -1,5 +1,6 @@
 import 'package:example1/example1_route.dart';
 import 'package:example1/example1_routes.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:ff_annotation_route_library/ff_annotation_route_library.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -7,15 +8,15 @@ import 'package:collection/collection.dart';
 import 'package:example1/example1_routes.dart' as example_routes;
 
 @FFRoute(
-  name: 'fluttercandies://mainpage',
+  name: '/root',
   routeName: 'MainPage',
 )
 class MainPage extends StatelessWidget {
   MainPage() {
     final List<String> routeNames = <String>[];
     routeNames.addAll(example_routes.routeNames);
-    routeNames.remove(Routes.fluttercandiesMainpage);
-    routeNames.remove(Routes.fluttercandiesDemogrouppage.name);
+    routeNames.remove(Routes.root);
+    routeNames.remove(Routes.demogrouppage.name);
     routesGroup.addAll(groupBy<DemoRouteResult, String>(
         routeNames
             .map<FFRouteSettings>((String name) => getRouteSettings(name: name))
@@ -40,7 +41,7 @@ class MainPage extends StatelessWidget {
           ButtonTheme(
             minWidth: 0.0,
             padding: const EdgeInsets.symmetric(horizontal: 10.0),
-            child: FlatButton(
+            child: TextButton(
               child: const Text(
                 'Github',
                 style: TextStyle(
@@ -54,17 +55,18 @@ class MainPage extends StatelessWidget {
               },
             ),
           ),
-          ButtonTheme(
-            padding: const EdgeInsets.only(right: 10.0),
-            minWidth: 0.0,
-            child: FlatButton(
-              child:
-                  Image.network('https://pub.idqqimg.com/wpa/images/group.png'),
-              onPressed: () {
-                launch('https://jq.qq.com/?_wv=1027&k=5bcc0gy');
-              },
-            ),
-          )
+          if (!kIsWeb)
+            ButtonTheme(
+              padding: const EdgeInsets.only(right: 10.0),
+              minWidth: 0.0,
+              child: TextButton(
+                child: Image.network(
+                    'https://pub.idqqimg.com/wpa/images/group.png'),
+                onPressed: () {
+                  launch('https://jq.qq.com/?_wv=1027&k=5bcc0gy');
+                },
+              ),
+            )
         ],
       ),
       body: ListView.builder(
@@ -91,8 +93,8 @@ class MainPage extends StatelessWidget {
                 ),
                 onTap: () {
                   FFRouterDelegate.of(context).pushNamed(
-                      Routes.fluttercandiesDemogrouppage.name,
-                      arguments: Routes.fluttercandiesDemogrouppage
+                      Routes.demogrouppage.name,
+                      arguments: Routes.demogrouppage
                           .d(keyValue: routesGroup.entries.toList()[index]));
                 },
               ));
@@ -104,12 +106,12 @@ class MainPage extends StatelessWidget {
 }
 
 @FFRoute(
-  name: 'fluttercandies://demogrouppage',
+  name: '/demogrouppage',
   routeName: 'DemoGroupPage',
   argumentImports: <String>['import \'src/pages/main_page.dart\';'],
 )
 class DemoGroupPage extends StatelessWidget {
-  DemoGroupPage({MapEntry<String, List<DemoRouteResult>> keyValue})
+  DemoGroupPage({required MapEntry<String, List<DemoRouteResult>> keyValue})
       : routes = keyValue.value
           ..sort((DemoRouteResult a, DemoRouteResult b) =>
               a.order.compareTo(b.order)),
@@ -133,17 +135,17 @@ class DemoGroupPage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
-                    (index + 1).toString() + '.' + page.routeResult.routeName,
+                    (index + 1).toString() + '.' + page.routeResult.routeName!,
                     //style: TextStyle(inherit: false),
                   ),
                   Text(
-                    page.routeResult.description,
+                    page.routeResult.description!,
                     style: const TextStyle(color: Colors.grey),
                   )
                 ],
               ),
               onTap: () {
-                FFRouterDelegate.of(context).pushNamed(page.routeResult.name,
+                FFRouterDelegate.of(context).pushNamed(page.routeResult.name!,
                     arguments: <String, dynamic>{
                       'argument': 'I\m argument',
                       'optional': true,
@@ -162,10 +164,16 @@ class DemoGroupPage extends StatelessWidget {
 class DemoRouteResult {
   DemoRouteResult(
     this.routeResult,
-  )   : order = routeResult.exts['order'] as int,
-        group = routeResult.exts['group'] as String;
+  )   : order = routeResult.exts!['order'] as int,
+        group = routeResult.exts!['group'] as String;
 
   final int order;
   final String group;
   final FFRouteSettings routeResult;
+
+  Map<String, dynamic> get toJson => <String, dynamic>{
+        'order': order,
+        'group': group,
+        'routeResult': routeResult,
+      };
 }

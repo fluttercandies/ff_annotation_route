@@ -52,7 +52,7 @@ class NestedMainPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: FlatButton(
+        child: TextButton(
           child: const Text('Push to ChildRouterPage'),
           onPressed: () {
             FFRouterDelegate.of(context).pushNamed(Routes.childRouterPage);
@@ -72,11 +72,10 @@ class NestedTestPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: FlatButton(
+      child: TextButton(
         child: const Text('Push to TestPageA'),
         onPressed: () {
-          FFRouterDelegate.of(context)
-              .pushNamed(Routes.flutterCandiesTestPageA);
+          FFRouterDelegate.of(context).pushNamed(Routes.testPageA);
         },
       ),
     );
@@ -93,7 +92,7 @@ class ChildRouterPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final ChildBackButtonDispatcher childBackButtonDispatcher =
         Router.of(context)
-            .backButtonDispatcher
+            .backButtonDispatcher!
             .createChildBackButtonDispatcher();
     childBackButtonDispatcher.takePriority();
     return Router<RouteSettings>(

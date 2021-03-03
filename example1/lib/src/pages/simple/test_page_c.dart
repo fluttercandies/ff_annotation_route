@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'test_page_a.dart';
 
 @FFRoute(
-  name: 'flutterCandies://testPageC',
+  name: '/testPageC',
   routeName: 'testPageC',
   description: 'Push/Pop test page.',
   exts: <String, dynamic>{
@@ -21,11 +21,11 @@ class TestPageC extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        FlatButton(
+        TextButton(
           onPressed: () {
-            FFRouterDelegate.of(context).pushNamed<void>(
-              Routes.flutterCandiesTestPageF.name,
-              arguments: Routes.flutterCandiesTestPageF.d(
+            FFRouterDelegate.of(context).pushNamed(
+              Routes.testPageF.name,
+              arguments: Routes.testPageF.d(
                 <int>[1, 2, 3],
                 map: <String, String>{'ddd': 'dddd'},
                 testMode: const TestMode(id: 1, isTest: true),
@@ -34,11 +34,11 @@ class TestPageC extends StatelessWidget {
           },
           child: const Text('pushNamed'),
         ),
-        FlatButton(
+        TextButton(
           onPressed: () {
             final FFRouterDelegate delegate = FFRouterDelegate.of(context);
             final FFRouteSettings routeSettings =
-                getRouteSettings(name: Routes.flutterCandiesTestPageA);
+                getRouteSettings(name: Routes.testPageA);
             final FFPage<void> page = routeSettings.toFFPage<void>(
                 // make sure it has unique key
                 key: delegate.getUniqueKey(),
@@ -51,41 +51,41 @@ class TestPageC extends StatelessWidget {
           },
           child: const Text('push'),
         ),
-        FlatButton(
+        TextButton(
           onPressed: () {
-            FFRouterDelegate.of(context).pushNamedAndRemoveUntil<void>(
-                Routes.flutterCandiesTestPageA, (FFPage<dynamic> page) {
-              return page.name == Routes.fluttercandiesMainpage;
+            FFRouterDelegate.of(context).pushNamedAndRemoveUntil(
+                Routes.testPageA, (FFPage<dynamic> page) {
+              return page.name == Routes.root;
             });
           },
           child: const Text('pushNamedAndRemoveUntil'),
         ),
-        FlatButton(
+        TextButton(
           onPressed: () {
             FFRouterDelegate.of(context).pop('pop result');
           },
           child: const Text('pop'),
         ),
-        FlatButton(
+        TextButton(
           onPressed: () {
             final FFRouterDelegate delegate = FFRouterDelegate.of(context);
 
-            final FFPage<void> page = delegate.getRoutePage<void>(
-                name: Routes.flutterCandiesTestPageA);
+            final FFPage<void> page =
+                delegate.getRoutePage(name: Routes.testPageA);
 
             delegate.pages.add(page);
             delegate.updatePages();
           },
           child: const Text('custom'),
         ),
-        FlatButton(
+        TextButton(
           onPressed: () {
             FFRouterDelegate.of(context)
                 .pushNamed<String>(
-              Routes.flutterCandiesTestPageG,
+              Routes.testPageG,
             )
-                .then((String value) {
-              print(value);
+                .then((String? value) {
+              print(value!);
             });
           },
           child: const Text('pushNamed and pop with result'),

@@ -1,3 +1,7 @@
+## 6.0.0
+
+* Add `--null-safety` to support null-safety
+
 ## 5.1.1
 
 * Fix Cannot remove from a fixed-length list
@@ -30,12 +34,12 @@
 
 ## 4.2.1
 
-* fix the method 'firstWhere' was called on null,gitNames is null
+* fix the method `firstWhere` was called on null,gitNames is null
 
 ## 4.2.0
 
-* add '--supper-arguments' which generate page arguments helper class
-* add '--const-ignore' is the regular to ignore some route consts
+* add `--supper-arguments` which generate page arguments helper class
+* add `--const-ignore` is the regular to ignore some route consts
 
 ## 4.1.0
 

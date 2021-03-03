@@ -9,15 +9,15 @@ void main() {
   // tool will handle simple types(int,double,bool etc.), but not all of them.
   // in this case, you can override following method,convert the queryParameters base on your case.
   // for example, you can type in web browser
-  // http://localhost:64916/#flutterCandies://testPageF?list=[4,5,6]&map={"ddd":123}&testMode={"id":2,"isTest":true}
-  FFConvert.convert = <T>(dynamic value) {
+  // http://localhost:64916/#/testPageF?list=[4,5,6]&map={"ddd":123}&testMode={"id":2,"isTest":true}
+  FFConvert.convert = <T extends Object?>(dynamic value) {
     if (value == null) {
       return null;
     }
     print(T);
     final dynamic output = json.decode(value.toString());
     if (<int>[] is T && output is List<dynamic>) {
-      return output.map<int>((dynamic e) => asT<int>(e)).toList() as T;
+      return output.map<int?>((dynamic e) => asT<int>(e)).toList() as T;
     } else if (<String, String>{} is T && output is Map<dynamic, dynamic>) {
       return output.map<String, String>((dynamic key, dynamic value) =>
           MapEntry<String, String>(key.toString(), value.toString())) as T;
@@ -25,21 +25,22 @@ void main() {
       return TestMode.fromJson(output) as T;
     }
 
-    return json.decode(value.toString()) as T;
+    return json.decode(value.toString()) as T?;
   };
+
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
   final FFRouteInformationParser _ffRouteInformationParser =
-      FFRouteInformationParser();
+      FFRouteInformationParser(initialRoute: Routes.root);
 
   final FFRouterDelegate _ffRouterDelegate = FFRouterDelegate(
     getRouteSettings: getRouteSettings,
     pageWrapper: <T>(FFPage<T> ffPage) {
       return ffPage.copyWith(
-        widget: ffPage.name == Routes.fluttercandiesMainpage ||
-                ffPage.name == Routes.fluttercandiesDemogrouppage.name
+        widget: ffPage.name == Routes.root ||
+                ffPage.name == Routes.demogrouppage.name
             ? ffPage.widget
             : CommonWidget(
                 child: ffPage.widget,
@@ -47,6 +48,7 @@ class MyApp extends StatelessWidget {
               ),
       );
     },
+    reportsRouteUpdateToEngine: true,
   );
   // This widget is the root of your application.
   @override
@@ -58,11 +60,11 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       // initialRoute
-      routeInformationProvider: PlatformRouteInformationProvider(
-        initialRouteInformation: const RouteInformation(
-          location: Routes.fluttercandiesMainpage,
-        ),
-      ),
+      // routeInformationProvider: PlatformRouteInformationProvider(
+      //   initialRouteInformation: const RouteInformation(
+      //     location: Routes.mainpage,
+      //   ),
+      // ),
       routeInformationParser: _ffRouteInformationParser,
       routerDelegate: _ffRouterDelegate,
     );
@@ -74,15 +76,15 @@ class CommonWidget extends StatelessWidget {
     this.child,
     this.routeName,
   });
-  final Widget child;
-  final String routeName;
+  final Widget? child;
+  final String? routeName;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          routeName,
+          routeName!,
         ),
       ),
       body: child,

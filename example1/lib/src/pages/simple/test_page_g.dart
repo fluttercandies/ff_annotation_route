@@ -2,7 +2,7 @@ import 'package:ff_annotation_route_library/ff_annotation_route_library.dart';
 import 'package:flutter/material.dart';
 
 @FFRoute(
-  name: 'flutterCandies://testPageG',
+  name: '/testPageG',
   routeName: 'testPageG',
   description: 'Pop with result test page(push from TestPageC)',
   exts: <String, dynamic>{
@@ -15,7 +15,7 @@ class TestPageG extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        FlatButton(
+        TextButton(
           onPressed: () {
             FFRouterDelegate.of(context).pop('pop result');
           },

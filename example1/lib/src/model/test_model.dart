@@ -6,8 +6,8 @@ class TestMode {
   factory TestMode.fromJson(Map<dynamic, dynamic> json) =>
       TestMode(id: asT<int>(json['id']), isTest: asT<bool>(json['isTest']));
 
-  final int id;
-  final bool isTest;
+  final int? id;
+  final bool? isTest;
   Map<String, dynamic> get toJson => <String, dynamic>{
         'id': id,
         'isTest': isTest,

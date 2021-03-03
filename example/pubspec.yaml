@@ -12,18 +12,21 @@ description: A new Flutter project.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 version: 1.0.0+1
-
+publish_to: none
 environment:
-  sdk: ">=2.6.0 <3.0.0"
+  sdk: '>=2.12.0-259.16.beta <3.0.0'
 
 dependencies:
+  cupertino_icons: ^1.0.2
+  ff_annotation_route_library: ^1.2.4-nullsafety
+
   flutter:
     sdk: flutter
-  cupertino_icons: ^0.1.2
+
   module_a:
     path: module_a
-  url_launcher: any
-  ff_annotation_route_library: ^1.2.0
+  url_launcher: ^6.0.2
+
 
 dev_dependencies:
 

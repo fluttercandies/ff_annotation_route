@@ -66,6 +66,7 @@ class RouteGenerator {
             item.path.endsWith('.dart')) {
           final CompilationUnit astRoot = parseFile(
             path: item.path,
+            // ignore: deprecated_member_use
             featureSet: FeatureSet.fromEnableFlags(<String>[]),
           ).unit;
           final List<String> argumentImports = <String>[];
@@ -297,7 +298,10 @@ class RouteGenerator {
 
       writeImports(imports, sb);
 
-      sb.write(rootFile.replaceAll('{0}', caseSb.toString()));
+      sb.write(rootFile
+          .replaceAll('{0}', caseSb.toString())
+          .replaceAll('{1}', Args().enableNullSafety ? 'required' : '@required')
+          .replaceAll('{2}', Args().enableNullSafety ? '?' : ''));
       RoutesFileGenerator(
         routes: routes,
         lib: _lib,

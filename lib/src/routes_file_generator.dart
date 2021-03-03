@@ -83,7 +83,8 @@ class RoutesFileGenerator {
             continue;
           }
           constantsSb.write(it.argumentsClass);
-          if (it.argumentsClass.contains('@required')) {
+          if (!Args().enableNullSafety &&
+              it.argumentsClass.contains('@required')) {
             if (!imports.contains(requiredS)) {
               imports.add(requiredS);
             }

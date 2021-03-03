@@ -17,7 +17,7 @@ class TestPageB extends StatelessWidget {
     this.argument,
   });
   //const TestPageB._(this.argument);
-  final String argument;
+  final String? argument;
   @override
   Widget build(BuildContext context) {
     return Center(

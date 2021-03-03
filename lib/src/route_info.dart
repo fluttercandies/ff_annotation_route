@@ -52,7 +52,7 @@ class RouteInfo {
               '\'${rawConstructor.name ?? ''}\': ${getConstructorString(rawConstructor)}';
           keyValues += ',';
         }
-        return '<String,Widget>{$keyValues}[safeArguments[constructorName] as String ??\'\']';
+        return '<String,Widget>{$keyValues}[safeArguments[constructorName]!=null? safeArguments[constructorName] as String:\'\']';
       } else {
         return '${getConstructorString(constructors.first)}';
       }
@@ -94,6 +94,9 @@ class RouteInfo {
 
     if (type != null) {
       value += ')';
+      if (!type.endsWith('?')) {
+        value += '!';
+      }
     }
 
     if (!parameter.isPositional) {
@@ -117,7 +120,7 @@ class RouteInfo {
           final String name = item.identifier?.toString();
           if (name != null) {
             hasParameters = true;
-            if (item.isOptional) {
+            if (item.isOptional || item.isRequiredNamed) {
               constructorString += getIsOptional(name, item, rawConstructor);
               // if (!item.isRequired) {
               //   optionals.add(item);
@@ -126,6 +129,9 @@ class RouteInfo {
               final String type = getParameterType(name, item, rawConstructor);
               if (type != null) {
                 constructorString += 'asT<$type>(safeArguments[\'$name\'])';
+                if (!type.endsWith('?')) {
+                  constructorString += '!';
+                }
               } else {
                 constructorString += 'safeArguments[\'$name\']';
               }
@@ -167,7 +173,7 @@ class RouteInfo {
       typeString = type.toString();
       //getTypeImport();
     }
-    typeString ??= parameter.beginToken?.toString();
+    typeString ??= parameter.childEntities.first.toString();
     // if (ffRoute.argumentImports == null) {
     //   alertType(typeString);
     // }
@@ -250,6 +256,9 @@ class RouteInfo {
         .replaceAll('-', '_');
     while (_constant.startsWith('_')) {
       _constant = _constant.replaceFirst('_', '');
+    }
+    if (_name.replaceAll('\'', '') == '/') {
+      _constant = 'root';
     }
 
     sb.write('/// $_firstLine\n');

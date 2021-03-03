@@ -7,7 +7,7 @@ import 'package:ff_annotation_route_library/ff_annotation_route_library.dart';
 import 'package:flutter/material.dart';
 
 @FFRoute(
-  name: 'flutterCandies://testPageE',
+  name: '/testPageE',
   routeName: 'testPageE',
   description: 'Show how to push new page with arguments(class)',
   // argumentImports are still work for some cases which you can't use @FFArgumentImport()
@@ -32,12 +32,12 @@ class TestPageE extends StatelessWidget {
         testMode: TestMode.test(),
       );
 
-  factory TestPageE.requiredC({@required TestMode testMode}) => TestPageE(
+  factory TestPageE.requiredC({required TestMode? testMode}) => TestPageE(
         testMode: testMode,
       );
 
-  final TestMode testMode;
-  final TestMode1 testMode1;
+  final TestMode? testMode;
+  final TestMode1? testMode1;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -45,21 +45,20 @@ class TestPageE extends StatelessWidget {
         Center(
           child: Text('TestPageE $testMode'),
         ),
-        FlatButton(
+        TextButton(
           onPressed: () {
-            FFRouterDelegate.of(context).pushNamed(
-                Routes.flutterCandiesTestPageE.name,
-                arguments: Routes.flutterCandiesTestPageE.test());
+            FFRouterDelegate.of(context).pushNamed(Routes.testPageE.name,
+                arguments: Routes.testPageE.test());
           },
           child: const Text(
             'TestPageE.deafult()',
           ),
         ),
-        FlatButton(
+        TextButton(
           onPressed: () {
             FFRouterDelegate.of(context).pushNamed(
-              Routes.flutterCandiesTestPageF.name,
-              arguments: Routes.flutterCandiesTestPageF.d(
+              Routes.testPageF.name,
+              arguments: Routes.testPageF.d(
                 <int>[1, 2, 3],
                 map: <String, String>{'ddd': 'dddd'},
                 testMode: const TestMode(id: 1, isTest: true),

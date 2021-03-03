@@ -1,3 +1,5 @@
+import 'package:ff_annotation_route/src/arg/null_safety.dart';
+
 import 'const_ignore.dart';
 import 'git.dart';
 import 'help.dart';
@@ -21,7 +23,8 @@ class Args {
         constIgnore = ConstIgnore(),
         package = Package(),
         supperArguments = SupperArguments(),
-        save = Save();
+        save = Save(),
+        nullSafety = NullSafety();
   static Args args;
   final Help help;
   final Path path;
@@ -33,6 +36,7 @@ class Args {
   final Package package;
   final SupperArguments supperArguments;
   final Save save;
+  final NullSafety nullSafety;
 
   String get className => name.value;
 
@@ -48,4 +52,6 @@ class Args {
   String get outputPath => output.value;
 
   String get routesFileOutputPath => routesFileOutput.value;
+
+  bool get enableNullSafety => nullSafety.value;
 }
