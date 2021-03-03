@@ -14,7 +14,7 @@ const String debugCommands =
 
 Future<void> main(List<String> arguments) async {
   //debug
-  arguments = debugCommands.split(' ');
+  //arguments = debugCommands.split(' ');
   bool runFromLocal = false;
   if (arguments.isEmpty) {
     final io.File file = io.File(join('./', argumentsFile));

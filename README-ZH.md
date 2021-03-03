@@ -44,11 +44,25 @@ Languages: [English](README.md) | 中文简体
 
 添加引用到`dependencies`，及你需要注解的 project/packages 到`pubspec.yaml`中
 
-```yaml
+*  null-safety
+
+``` yaml
+environment:
+  sdk: '>=2.12.0 <3.0.0'
 dependencies:
-  ff_annotation_route_core: any
-  ff_annotation_route_library: any
-```
+  ff_annotation_route_core: ^2.0.0
+  ff_annotation_route_library: ^2.0.0
+``` 
+
+*  non-null-safety
+  
+``` yaml
+environment:
+  sdk: '>=2.6.0 <2.12.0'
+dependencies:
+  ff_annotation_route_core: ^2.0.1-non-null-safety
+  ff_annotation_route_library: ^2.0.1-non-null-safety
+``` 
 
 执行 `flutter packages get` 下载
 
@@ -142,7 +156,13 @@ class TestPageE extends StatelessWidget {
 
 #### 激活
 
+*  null-safety
+
 `pub global activate ff_annotation_route`
+
+*  non-null-safety
+  
+`pub global activate ff_annotation_route 6.x.x-non-null-safety`
 
 #### 执行命令
 
@@ -171,7 +191,7 @@ class TestPageE extends StatelessWidget {
     --[no-]supper-arguments       是否生成路由参数帮助类
 
 -s, --[no-]save                   是否保存命令到本地。如果保存了，下一次就只需要执行 `ff_route` 就可以了。
-
+    --[no-]null-safety            是否支持空安全，默认 `true`
 ```
 
 ### Navigator 1.0

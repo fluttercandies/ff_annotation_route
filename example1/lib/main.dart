@@ -33,7 +33,7 @@ void main() {
 
 class MyApp extends StatelessWidget {
   final FFRouteInformationParser _ffRouteInformationParser =
-      FFRouteInformationParser(initialRoute: Routes.root);
+      FFRouteInformationParser();
 
   final FFRouterDelegate _ffRouterDelegate = FFRouterDelegate(
     getRouteSettings: getRouteSettings,

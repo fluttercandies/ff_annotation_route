@@ -18,13 +18,11 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: '>=2.12.0-259.16.beta <3.0.0'
+  sdk: '>=2.12.0 <3.0.0'
 
 dependencies:
   cupertino_icons: ^1.0.2
-  #ff_annotation_route_library: ^1.2.4-nullsafety
-  ff_annotation_route_library: 
-    path: /Users/zmt/Documents/github/ff_annotation_route_library/
+  ff_annotation_route_library: ^2.0.0
   flutter:
     sdk: flutter
 

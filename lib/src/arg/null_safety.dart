@@ -5,7 +5,7 @@ class NullSafety extends Argument<bool> {
   String get abbr => null;
 
   @override
-  bool get defaultsTo => false;
+  bool get defaultsTo => true;
 
   @override
   String get help => 'enable null-safety';
