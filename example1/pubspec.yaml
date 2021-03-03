@@ -25,7 +25,7 @@ dependencies:
     sdk: flutter
   cupertino_icons: ^0.1.2
   url_launcher: any
-  ff_annotation_route_library: ^1.2.0
+  ff_annotation_route_library: ^2.0.1-non-null-safety
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

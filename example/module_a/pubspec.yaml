@@ -10,7 +10,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  ff_annotation_route_core: ^1.0.0
+  ff_annotation_route_core: ^2.0.1-non-null-safety
 
 dev_dependencies:
   flutter_test:

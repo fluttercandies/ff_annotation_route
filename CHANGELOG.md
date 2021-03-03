@@ -1,3 +1,6 @@
+## 6.0.0-non-null-safety
+
+* non-null-safety
 ## 5.1.1
 
 * Fix Cannot remove from a fixed-length list

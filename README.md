@@ -41,11 +41,25 @@ Provide a route generator to create route map quickly by annotations.
 
 Add the package to `dependencies` in your project/packages's `pubspec.yaml`
 
-```yaml
+*  null-safety
+
+``` yaml
+environment:
+  sdk: '>=2.12.0 <3.0.0'
 dependencies:
-  ff_annotation_route_core: any
-  ff_annotation_route_library: any
-```
+  ff_annotation_route_core: ^2.0.0
+  ff_annotation_route_library: ^2.0.0
+``` 
+
+*  non-null-safety
+  
+``` yaml
+environment:
+  sdk: '>=2.6.0 <2.12.0'
+dependencies:
+  ff_annotation_route_core: ^2.0.1-non-null-safety
+  ff_annotation_route_library: ^2.0.1-non-null-safety
+``` 
 
 Download with `flutter packages get`
 
@@ -138,7 +152,13 @@ Add dart bin into to your `$PATH`.
 
 #### Activate the plugin
 
+*  null-safety
+
 `pub global activate ff_annotation_route`
+
+*  non-null-safety
+  
+`pub global activate ff_annotation_route 6.x.x-non-null-safety`
 
 #### Execute command
 
@@ -164,6 +184,8 @@ Available commands:
     --[no-]supper-arguments    Whether generate page arguments helper class
 -s, --[no-]save                Whether save the arguments into the local
                                It will execute the local arguments if run "ff_route" without any arguments
+    --[no-]null-safety         enable null-safety
+                               (defaults to on)
 ```
 ### Navigator 1.0
 
