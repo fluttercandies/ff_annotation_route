@@ -95,7 +95,7 @@ class RouteInfo {
 
     if (type != null) {
       value += ')';
-      if (!type.endsWith('?')) {
+      if (Args().enableNullSafety && !type.endsWith('?')) {
         value += '!';
       }
     }

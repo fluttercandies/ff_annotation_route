@@ -1,4 +1,4 @@
-## 6.0.1
+## 6.0.2
 
 * Fix `--null-safety` `!` error
 * Add unused_local_variable
