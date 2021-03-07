@@ -12,7 +12,7 @@ import 'save.dart';
 import 'super_arguments.dart';
 
 class Args {
-  factory Args() => args ??= Args._();
+  factory Args() => _args ??= Args._();
   Args._()
       : help = Help(),
         path = Path(),
@@ -25,7 +25,7 @@ class Args {
         supperArguments = SupperArguments(),
         save = Save(),
         nullSafety = NullSafety();
-  static Args args;
+  static Args _args;
   final Help help;
   final Path path;
   final Name name;

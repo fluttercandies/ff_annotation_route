@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/ast/syntactic_entity.dart';
 import 'package:analyzer/src/dart/ast/ast.dart';
+import 'package:ff_annotation_route/src/arg/args.dart';
 import 'package:ff_annotation_route_core/ff_annotation_route_core.dart';
 //import 'package:io/ansi.dart'
 import 'utils/camel_under_score_converter.dart';
@@ -129,7 +130,7 @@ class RouteInfo {
               final String type = getParameterType(name, item, rawConstructor);
               if (type != null) {
                 constructorString += 'asT<$type>(safeArguments[\'$name\'])';
-                if (!type.endsWith('?')) {
+                if (Args().enableNullSafety && !type.endsWith('?')) {
                   constructorString += '!';
                 }
               } else {
