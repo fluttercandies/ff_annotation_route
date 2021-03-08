@@ -10,7 +10,7 @@ const String fileHeader = '''// GENERATED CODE - DO NOT MODIFY MANUALLY
 
 const String rootFile = """
 
-// ignore_for_file: prefer_const_literals_to_create_immutables,unused_local_variable
+// ignore_for_file: prefer_const_literals_to_create_immutables,unused_local_variable,unused_import
 FFRouteSettings getRouteSettings({{1} String name, Map<String, dynamic>{2} arguments,}) {
   final Map<String, dynamic> safeArguments =arguments ?? const <String, dynamic>{};
   switch (name) {

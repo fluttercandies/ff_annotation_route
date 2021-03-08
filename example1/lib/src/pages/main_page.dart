@@ -8,7 +8,7 @@ import 'package:collection/collection.dart';
 import 'package:example1/example1_routes.dart' as example_routes;
 
 @FFRoute(
-  name: '/root',
+  name: '/',
   routeName: 'MainPage',
 )
 class MainPage extends StatelessWidget {

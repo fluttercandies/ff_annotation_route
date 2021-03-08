@@ -48,7 +48,6 @@ class MyApp extends StatelessWidget {
               ),
       );
     },
-    reportsRouteUpdateToEngine: true,
   );
   // This widget is the root of your application.
   @override
@@ -59,6 +58,9 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
+      // flutter issue https://github.com/flutter/flutter/issues/77143
+      // before fix, you can define your initial route to '/'
+      // after fix, you can define your initial route as following
       // initialRoute
       // routeInformationProvider: PlatformRouteInformationProvider(
       //   initialRouteInformation: const RouteInformation(

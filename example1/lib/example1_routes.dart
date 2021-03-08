@@ -9,8 +9,8 @@ import 'package:example1/src/model/test_model1.dart' hide TestMode3;
 import 'src/pages/main_page.dart';
 
 const List<String> routeNames = <String>[
+  '/',
   '/demogrouppage',
-  '/root',
   '/testPageA',
   '/testPageB',
   '/testPageC',
@@ -26,6 +26,17 @@ const List<String> routeNames = <String>[
 class Routes {
   const Routes._();
 
+  /// 'MainPage'
+  ///
+  /// [name] : '/'
+  ///
+  /// [routeName] : 'MainPage'
+  ///
+  /// [constructors] :
+  ///
+  /// MainPage : []
+  static const String root = '/';
+
   /// 'DemoGroupPage'
   ///
   /// [name] : '/demogrouppage'
@@ -36,17 +47,6 @@ class Routes {
   ///
   /// DemoGroupPage : [MapEntry<String, List<DemoRouteResult>>(required) keyValue]
   static const _Demogrouppage demogrouppage = _Demogrouppage();
-
-  /// 'MainPage'
-  ///
-  /// [name] : '/root'
-  ///
-  /// [routeName] : 'MainPage'
-  ///
-  /// [constructors] :
-  ///
-  /// MainPage : []
-  static const String root = '/root';
 
   /// 'This is test page A.'
   ///

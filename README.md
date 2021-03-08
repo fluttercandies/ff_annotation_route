@@ -47,8 +47,8 @@ Add the package to `dependencies` in your project/packages's `pubspec.yaml`
 environment:
   sdk: '>=2.12.0 <3.0.0'
 dependencies:
-  ff_annotation_route_core: ^2.0.0
-  ff_annotation_route_library: ^2.0.0
+  ff_annotation_route_core: ^2.0.2
+  ff_annotation_route_library: ^2.0.1
 ``` 
 
 *  non-null-safety
@@ -57,8 +57,8 @@ dependencies:
 environment:
   sdk: '>=2.6.0 <2.12.0'
 dependencies:
-  ff_annotation_route_core: ^2.0.1-non-null-safety
-  ff_annotation_route_library: ^2.0.1-non-null-safety
+  ff_annotation_route_core: ^2.0.2-non-null-safety
+  ff_annotation_route_library: ^2.0.2-non-null-safety
 ``` 
 
 Download with `flutter packages get`

@@ -1,3 +1,7 @@
+## 6.0.3
+
+* Add unused_import
+
 ## 6.0.2
 
 * Fix `--null-safety` `!` error

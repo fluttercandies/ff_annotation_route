@@ -17,7 +17,7 @@ import 'src/pages/simple/test_page_b.dart';
 import 'src/pages/simple/test_page_c.dart';
 import 'src/pages/simple/test_page_g.dart';
 
-// ignore_for_file: prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_literals_to_create_immutables,unused_local_variable,unused_import
 FFRouteSettings getRouteSettings({
   required String name,
   Map<String, dynamic>? arguments,
@@ -25,6 +25,13 @@ FFRouteSettings getRouteSettings({
   final Map<String, dynamic> safeArguments =
       arguments ?? const <String, dynamic>{};
   switch (name) {
+    case '/':
+      return FFRouteSettings(
+        name: name,
+        arguments: arguments,
+        widget: MainPage(),
+        routeName: 'MainPage',
+      );
     case '/demogrouppage':
       return FFRouteSettings(
         name: name,
@@ -34,13 +41,6 @@ FFRouteSettings getRouteSettings({
               safeArguments['keyValue'])!,
         ),
         routeName: 'DemoGroupPage',
-      );
-    case '/root':
-      return FFRouteSettings(
-        name: name,
-        arguments: arguments,
-        widget: MainPage(),
-        routeName: 'MainPage',
       );
     case '/testPageA':
       return FFRouteSettings(
