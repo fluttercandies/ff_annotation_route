@@ -2,7 +2,7 @@ import 'arg.dart';
 
 class SupperArguments extends Argument<bool> {
   @override
-  String get abbr => null;
+  String? get abbr => null;
 
   @override
   bool get defaultsTo => false;

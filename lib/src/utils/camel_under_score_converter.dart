@@ -3,14 +3,14 @@
 /// </summary>
 /// <param name='name'></param>
 /// <returns></returns>
-String underScoreName(String name) {
+String underScoreName(String? name) {
   if (isNullOrWhiteSpace(name)) {
     return '';
   }
 
   final StringBuffer result = StringBuffer();
 
-  result.write(name.substring(0, 1).toLowerCase());
+  result.write(name!.substring(0, 1).toLowerCase());
   for (int i = 1; i < name.length; i++) {
     final String temp = name[i];
     if (!isNullOrWhiteSpace(temp) &&
@@ -31,12 +31,12 @@ String underScoreName(String name) {
 /// <param name='name'></param>
 /// <returns></returns>
 
-String camelName(String name) {
+String camelName(String? name) {
   final StringBuffer result = StringBuffer();
   if (isNullOrWhiteSpace(name)) {
     return '';
   }
-  if (!name.contains('_')) {
+  if (!name!.contains('_')) {
     result.write(name.substring(0, 1).toLowerCase());
     result.write(name.substring(1));
     return result.toString();
@@ -66,12 +66,12 @@ String camelName(String name) {
 /// </summary>
 /// <param name='name'></param>
 /// <returns></returns>
-String upcaseCamelName(String name) {
+String upcaseCamelName(String? name) {
   final StringBuffer result = StringBuffer();
   if (isNullOrWhiteSpace(name)) {
     return '';
   }
-  if (!name.contains('_')) {
+  if (!name!.contains('_')) {
     result.write(name.substring(0, 1).toUpperCase());
     result.write(name.substring(1));
     return result.toString();
@@ -87,6 +87,6 @@ String upcaseCamelName(String name) {
   return result.toString();
 }
 
-bool isNullOrWhiteSpace(String value) {
+bool isNullOrWhiteSpace(String? value) {
   return value == null || value == '';
 }

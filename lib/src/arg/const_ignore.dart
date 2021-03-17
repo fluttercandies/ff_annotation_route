@@ -1,11 +1,11 @@
 import 'arg.dart';
 
-class ConstIgnore extends Argument<String> {
+class ConstIgnore extends Argument<String?> {
   @override
-  String get abbr => null;
+  String? get abbr => null;
 
   @override
-  String get defaultsTo => null;
+  String? get defaultsTo => null;
 
   @override
   String get help => 'The regular to ignore some route consts';

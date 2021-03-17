@@ -15,7 +15,7 @@ import 'src/pages/main_page.dart';
 import 'src/pages/simple/test_page_a.dart';
 import 'src/pages/simple/test_page_b.dart';
 
-// ignore_for_file: prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_literals_to_create_immutables,unused_local_variable,unused_import
 FFRouteSettings getRouteSettings({
   required String name,
   Map<String, dynamic>? arguments,
@@ -30,7 +30,6 @@ FFRouteSettings getRouteSettings({
         widget: TestPageB(
           argument: asT<String?>(safeArguments['argument']),
         ),
-        showStatusBar: true,
         routeName: 'testPageB ',
         pageRouteType: PageRouteType.material,
         description: "This is test ' page B.",
@@ -63,7 +62,6 @@ FFRouteSettings getRouteSettings({
         }[safeArguments[constructorName] != null
             ? safeArguments[constructorName] as String
             : ''],
-        showStatusBar: true,
         routeName: 'testPageD ',
         pageRouteType: PageRouteType.material,
         description: "This is test ' page D.",

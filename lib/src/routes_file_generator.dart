@@ -21,21 +21,21 @@ class RoutesFileGenerator {
     this.packageNode,
   });
 
-  final List<RouteInfo> routes;
-  final Directory lib;
-  final PackageNode packageNode;
+  final List<RouteInfo>? routes;
+  final Directory? lib;
+  final PackageNode? packageNode;
 
   void generateRoutesFile() {
-    final RegExp constIgnore = Args().constIgnoreRegExp;
-    final String routesFileOutputPath = Args().routesFileOutputPath;
+    final RegExp? constIgnore = Args().constIgnoreRegExp;
+    final String? routesFileOutputPath = Args().routesFileOutputPath;
     final StringBuffer constantsSb = StringBuffer();
-    final String name = '${packageNode.name}_routes.dart';
+    final String name = '${packageNode!.name}_routes.dart';
     String routePath;
 
     if (routesFileOutputPath != null) {
-      routePath = p.join(lib.path, routesFileOutputPath, name);
+      routePath = p.join(lib!.path, routesFileOutputPath, name);
     } else {
-      routePath = p.join(lib.path, name);
+      routePath = p.join(lib!.path, name);
     }
 
     final File file = File(routePath);
@@ -46,7 +46,7 @@ class RoutesFileGenerator {
     //constantsSb.write(fileHeader);
 
     final StringBuffer routeNamesString = StringBuffer();
-    for (final RouteInfo item in routes) {
+    for (final RouteInfo item in routes!) {
       if (constIgnore != null && constIgnore.hasMatch(item.ffRoute.name)) {
         continue;
       }
@@ -63,35 +63,35 @@ class RoutesFileGenerator {
     if (constantsSb.isEmpty) {
       constantsSb.write(fileHeader);
     }
-    final String className = Args().className;
+    final String? className = Args().className;
     constantsSb.write('class $className {\n');
     constantsSb.write('const $className._();\n');
 
-    final bool enableSupperArguments = Args().enableSupperArguments;
-    for (final RouteInfo it in routes) {
+    final bool? enableSupperArguments = Args().enableSupperArguments;
+    for (final RouteInfo it in routes!) {
       if (constIgnore != null && constIgnore.hasMatch(it.ffRoute.name)) {
         continue;
       }
-      it.getRouteConst(enableSupperArguments, constantsSb);
+      it.getRouteConst(enableSupperArguments!, constantsSb);
     }
     constantsSb.write('}');
 
-    if (enableSupperArguments) {
-      for (final RouteInfo it in routes) {
+    if (enableSupperArguments!) {
+      for (final RouteInfo it in routes!) {
         if (it.argumentsClass != null) {
           if (constIgnore != null && constIgnore.hasMatch(it.ffRoute.name)) {
             continue;
           }
           constantsSb.write(it.argumentsClass);
           if (!Args().enableNullSafety &&
-              it.argumentsClass.contains('@required')) {
+              it.argumentsClass!.contains('@required')) {
             if (!imports.contains(requiredS)) {
               imports.add(requiredS);
             }
           }
           if (it.ffRoute.argumentImports != null &&
-              it.ffRoute.argumentImports.isNotEmpty) {
-            for (final String item in it.ffRoute.argumentImports) {
+              it.ffRoute.argumentImports!.isNotEmpty) {
+            for (final String item in it.ffRoute.argumentImports!) {
               if (!imports.contains(item)) {
                 imports.add('$item');
               }
@@ -101,7 +101,7 @@ class RoutesFileGenerator {
       }
     }
 
-    String constants;
+    String? constants;
 
     if (constantsSb.isNotEmpty) {
       constants = constantsSb.toString();
@@ -117,7 +117,7 @@ class RoutesFileGenerator {
     if (constants != null) {
       file.createSync(recursive: true);
       file.writeAsStringSync(formatDart(constants));
-      print('Generate : ${p.relative(file.path, from: packageNode.path)}');
+      print('Generate : ${p.relative(file.path, from: packageNode!.path)}');
     }
   }
 }

@@ -6,7 +6,7 @@ import 'src/route_generator.dart';
 export 'src/route_generator.dart';
 
 void generate(List<PackageNode> annotationPackages) {
-  RouteGenerator root;
+  RouteGenerator? root;
   final List<RouteGenerator> nodes = <RouteGenerator>[];
   for (final PackageNode annotationPackage in annotationPackages) {
     final RouteGenerator routeGenerator = RouteGenerator(
@@ -28,7 +28,7 @@ void generate(List<PackageNode> annotationPackages) {
   }
   nodes.sort(
     (RouteGenerator a, RouteGenerator b) =>
-        a.packageNode.name.compareTo(b.packageNode.name),
+        a.packageNode.name!.compareTo(b.packageNode.name!),
   );
   root?.getLib();
 

@@ -2,7 +2,7 @@ import 'arg.dart';
 
 class NullSafety extends Argument<bool> {
   @override
-  String get abbr => null;
+  String? get abbr => null;
 
   @override
   bool get defaultsTo => true;

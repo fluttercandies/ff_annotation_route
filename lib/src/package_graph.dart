@@ -16,7 +16,7 @@ final PackageNode _sdkPackageNode =
 
 /// A graph of the package dependencies for an application.
 class PackageGraph {
-  PackageGraph._(this.root, Map<String, PackageNode> allPackages)
+  PackageGraph._(this.root, Map<String?, PackageNode?> allPackages)
       : allPackages = Map<String, PackageNode>.unmodifiable(
             Map<String, PackageNode>.from(allPackages)
               ..putIfAbsent(r'$sdk', () => _sdkPackageNode)) {
@@ -24,21 +24,21 @@ class PackageGraph {
       throw ArgumentError('Root node must indicate `isRoot`');
     }
     if (allPackages.values
-        .where((PackageNode n) => n != root)
-        .any((PackageNode n) => n.isRoot)) {
+        .where((PackageNode? n) => n != root)
+        .any((PackageNode? n) => n!.isRoot)) {
       throw ArgumentError('No nodes other than the root may indicate `isRoot`');
     }
   }
 
   /// Creates a [PackageGraph] given the [root] [PackageNode].
   factory PackageGraph.fromRoot(PackageNode root) {
-    final Map<String, PackageNode> allPackages = <String, PackageNode>{
+    final Map<String?, PackageNode?> allPackages = <String?, PackageNode?>{
       root.name: root
     };
 
     void addDependency(PackageNode package) {
-      for (final PackageNode dep in package.dependencies) {
-        if (allPackages.containsKey(dep.name)) {
+      for (final PackageNode? dep in package.dependencies) {
+        if (allPackages.containsKey(dep!.name)) {
           continue;
         }
         allPackages[dep.name] = dep;
@@ -61,8 +61,8 @@ class PackageGraph {
           'Unable to generate package graph, no `pubspec.yaml` found. '
           'This program must be ran from the root directory of your package.');
     }
-    final YamlMap rootPubspec = pubspecForPath(packagePath);
-    final String rootPackageName = rootPubspec['name'] as String;
+    final YamlMap rootPubspec = pubspecForPath(packagePath)!;
+    final String? rootPackageName = rootPubspec['name'] as String?;
 
     final Map<String, String> packageLocations =
         _parsePackageLocations(packagePath)..remove(rootPackageName);
@@ -70,7 +70,7 @@ class PackageGraph {
     final Map<String, DependencyType> dependencyTypes =
         _parseDependencyTypes(packagePath);
 
-    final Map<String, PackageNode> nodes = <String, PackageNode>{};
+    final Map<String?, PackageNode> nodes = <String?, PackageNode>{};
     final PackageNode rootNode = PackageNode(
       rootPackageName,
       packagePath,
@@ -84,7 +84,7 @@ class PackageGraph {
       }
       nodes[packageName] = PackageNode(
         packageName,
-        packageLocations[packageName],
+        packageLocations[packageName]!,
         dependencyTypes[packageName],
         isRoot: false,
       );
@@ -100,8 +100,8 @@ class PackageGraph {
     final Map<String, Set<String>> packageDependencies =
         _parsePackageDependencies(packageLocations);
     for (final String packageName in packageDependencies.keys) {
-      nodes[packageName].dependencies.addAll(
-            packageDependencies[packageName].map((String n) => nodes[n]),
+      nodes[packageName]!.dependencies.addAll(
+            packageDependencies[packageName]!.map((String n) => nodes[n]),
           );
     }
     return PackageGraph._(rootNode, nodes);
@@ -118,7 +118,7 @@ class PackageGraph {
   final Map<String, PackageNode> allPackages;
 
   /// Shorthand to get a package by name.
-  PackageNode operator [](String packageName) => allPackages[packageName];
+  PackageNode? operator [](String packageName) => allPackages[packageName];
 
   @override
   String toString() {
@@ -136,19 +136,19 @@ class PackageNode {
     this.name,
     String path,
     this.dependencyType, {
-    bool isRoot,
-  })  : path = _toAbsolute(path),
+    bool? isRoot,
+  })  : path = _toAbsolute(path)!,
         isRoot = isRoot ?? false;
 
   /// The name of the package as listed in `pubspec.yaml`.
-  final String name;
+  final String? name;
 
   /// The type of dependency being used to pull in this package.
   /// May be `null`.
-  final DependencyType dependencyType;
+  final DependencyType? dependencyType;
 
   /// All the packages that this package directly depends on.
-  final List<PackageNode> dependencies = <PackageNode>[];
+  final List<PackageNode?> dependencies = <PackageNode?>[];
 
   /// The absolute path of the current version of this package.
   /// Paths are platform dependent.
@@ -162,11 +162,11 @@ class PackageNode {
   $name:
     type: $dependencyType
     path: $path
-    dependencies: [${dependencies.map((PackageNode d) => d.name).join(', ')}]''';
+    dependencies: [${dependencies.map((PackageNode? d) => d!.name).join(', ')}]''';
 
   /// Converts [path] to a canonical absolute path, returns `null` if given
   /// `null`.
-  static String _toAbsolute(String path) =>
+  static String? _toAbsolute(String? path) =>
       (path == null) ? null : p.canonicalize(path);
 }
 
@@ -224,14 +224,14 @@ Map<String, DependencyType> _parseDependencyTypes(String rootPackagePath) {
   final YamlMap dependencies =
       loadYaml(pubspecLock.readAsStringSync()) as YamlMap;
   for (final dynamic packageName in dependencies['packages'].keys) {
-    final String source =
-        dependencies['packages'][packageName]['source'] as String;
+    final String? source =
+        dependencies['packages'][packageName]['source'] as String?;
     dependencyTypes[packageName.toString()] = _dependencyTypeFromSource(source);
   }
   return dependencyTypes;
 }
 
-DependencyType _dependencyTypeFromSource(String source) {
+DependencyType _dependencyTypeFromSource(String? source) {
   switch (source) {
     case 'git':
       return DependencyType.github;
@@ -252,7 +252,7 @@ Map<String, Set<String>> _parsePackageDependencies(
 ) {
   final Map<String, Set<String>> dependencies = <String, Set<String>>{};
   for (final String packageName in packageLocations.keys) {
-    final YamlMap pubspec = pubspecForPath(packageLocations[packageName]);
+    final YamlMap pubspec = pubspecForPath(packageLocations[packageName]!)!;
     dependencies[packageName] = _dependenciesFromYaml(pubspec);
   }
   return dependencies;
@@ -262,24 +262,24 @@ Map<String, Set<String>> _parsePackageDependencies(
 /// dependency_overrides.
 Set<String> _dependenciesFromYaml(YamlMap yaml, {bool isRoot = false}) {
   final Set<String> dependencies = <String>{}
-    ..addAll(_stringKeys(yaml['dependencies'] as YamlMap));
+    ..addAll(_stringKeys(yaml['dependencies'] as YamlMap?));
   // if (isRoot) {
-  dependencies.addAll(_stringKeys(yaml['dev_dependencies'] as YamlMap));
-  dependencies.addAll(_stringKeys(yaml['dependency_overrides'] as YamlMap));
+  dependencies.addAll(_stringKeys(yaml['dev_dependencies'] as YamlMap?));
+  dependencies.addAll(_stringKeys(yaml['dependency_overrides'] as YamlMap?));
   // }
   return dependencies;
 }
 
-Iterable<String> _stringKeys(YamlMap m) =>
-    m?.keys?.cast<String>() ?? const <String>[];
+Iterable<String> _stringKeys(YamlMap? m) =>
+    m?.keys.cast<String>() ?? const <String>[];
 
 /// Should point to the top level directory for the package.
-YamlMap pubspecForPath(String absolutePath) {
+YamlMap? pubspecForPath(String absolutePath) {
   final String pubspecPath = p.join(absolutePath, 'pubspec.yaml');
   final File pubspec = File(pubspecPath);
   if (!pubspec.existsSync()) {
     throw StateError(
         'Unable to generate package graph, no `$pubspecPath` found.');
   }
-  return loadYaml(pubspec.readAsStringSync()) as YamlMap;
+  return loadYaml(pubspec.readAsStringSync()) as YamlMap?;
 }

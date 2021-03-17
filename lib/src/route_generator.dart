@@ -8,6 +8,7 @@ import 'package:analyzer/dart/ast/syntactic_entity.dart';
 
 // ignore: implementation_imports
 import 'package:analyzer/src/dart/ast/ast.dart';
+import 'package:collection/collection.dart' show IterableExtension;
 import 'package:ff_annotation_route_core/ff_annotation_route_core.dart';
 import 'package:path/path.dart' as p;
 
@@ -27,7 +28,7 @@ class RouteGenerator {
 
   List<FileInfo> get fileInfoList => _fileInfoList;
 
-  Directory _lib;
+  Directory? _lib;
 
   final PackageNode packageNode;
   final bool isRoot;
@@ -46,7 +47,7 @@ class RouteGenerator {
       }
 
       _fileInfoList
-          .sort((FileInfo a, FileInfo b) => a.export.compareTo(b.export));
+          .sort((FileInfo a, FileInfo b) => a.export!.compareTo(b.export!));
 
       for (final FileInfo info in _fileInfoList) {
         sb.write("${isRoot ? "import" : "export"} '${info.export}';\n");
@@ -56,11 +57,11 @@ class RouteGenerator {
     return '';
   }
 
-  void scanLib([String output]) {
+  void scanLib([String? output]) {
     if (_lib != null) {
       print('');
       print('Scanning package : ${packageNode.name}');
-      for (final FileSystemEntity item in _lib.listSync(recursive: true)) {
+      for (final FileSystemEntity item in _lib!.listSync(recursive: true)) {
         final FileStat file = item.statSync();
         if (file.type == FileSystemEntityType.file &&
             item.path.endsWith('.dart')) {
@@ -72,17 +73,16 @@ class RouteGenerator {
           final List<String> argumentImports = <String>[];
           for (final SyntacticEntity child in astRoot.childEntities) {
             if (child is ImportDirectiveImpl) {
-              final SyntacticEntity syntacticEntity = child.childEntities
-                  .firstWhere(
-                      (SyntacticEntity element) => element is AnnotationImpl,
-                      orElse: () => null);
+              final SyntacticEntity? syntacticEntity = child.childEntities
+                  .firstWhereOrNull(
+                      (SyntacticEntity element) => element is AnnotationImpl);
 
               if (syntacticEntity != null) {
                 final AnnotationImpl annotationImpl =
                     syntacticEntity as AnnotationImpl;
-                if (annotationImpl.name?.name ==
+                if (annotationImpl.name.name ==
                     typeOf<FFArgumentImport>().toString()) {
-                  final NodeList<Expression> parameters =
+                  final NodeList<Expression>? parameters =
                       annotationImpl.arguments?.arguments;
                   String import = child
                       .toString()
@@ -100,17 +100,17 @@ class RouteGenerator {
             }
           }
 
-          FileInfo fileInfo;
+          FileInfo? fileInfo;
           for (final CompilationUnitMember declaration
               in astRoot.declarations) {
             for (final Annotation metadata in declaration.metadata) {
               if (metadata is AnnotationImpl &&
-                  metadata.name?.name == typeOf<FFRoute>().toString() &&
+                  metadata.name.name == typeOf<FFRoute>().toString() &&
                   metadata.parent is ClassDeclarationImpl) {
                 final ClassDeclarationImpl parent =
                     metadata.parent as ClassDeclarationImpl;
 
-                final String className = parent.name?.name;
+                final String className = parent.name.name;
 
                 final String routePath =
                     '${p.relative(item.path, from: packageNode.path)} ------ class : $className';
@@ -130,15 +130,17 @@ class RouteGenerator {
                         .replaceAll('\\', '/'),
                     packageName: packageNode.name);
 
-                final NodeList<Expression> parameters =
+                final NodeList<Expression>? parameters =
                     metadata.arguments?.arguments;
-
-                String name;
-                bool showStatusBar;
-                String routeName;
-                PageRouteType pageRouteType;
-                String description;
-                Map<String, dynamic> exts;
+                if (parameters == null) {
+                  continue;
+                }
+                String? name;
+                bool? showStatusBar;
+                String? routeName;
+                PageRouteType? pageRouteType;
+                String? description;
+                Map<String, dynamic>? exts;
 
                 for (final Expression item in parameters) {
                   if (item is NamedExpressionImpl) {
@@ -160,9 +162,8 @@ class RouteGenerator {
                         showStatusBar = toT<bool>(item.expression);
                         break;
                       case 'pageRouteType:':
-                        pageRouteType = PageRouteType.values.firstWhere(
+                        pageRouteType = PageRouteType.values.firstWhereOrNull(
                           (PageRouteType type) => type.toString() == source,
-                          orElse: () => null,
                         );
                         break;
                       case 'description:':
@@ -170,14 +171,14 @@ class RouteGenerator {
                         break;
                       case 'argumentImports:':
                         argumentImports
-                            .addAll(toT<List<String>>(item.expression));
+                            .addAll(toT<List<String>>(item.expression)!);
                         break;
                       case 'exts:':
                         source = source.substring(source.indexOf('{'));
                         source = source.replaceAll("'''", '\'');
                         source = source.replaceAll('"', '\'');
                         source = source.replaceAll('\'', '"');
-                        exts = json.decode(source) as Map<String, dynamic>;
+                        exts = json.decode(source) as Map<String, dynamic>?;
                         break;
                     }
                   }
@@ -186,13 +187,13 @@ class RouteGenerator {
                 final RouteInfo routeInfo = RouteInfo(
                   className: className,
                   ffRoute: FFRoute(
-                    name: name,
-                    showStatusBar: showStatusBar,
-                    routeName: routeName,
+                    name: name!,
+                    showStatusBar: showStatusBar ?? true,
+                    routeName: routeName ?? '',
                     pageRouteType: pageRouteType,
-                    description: description,
+                    description: description ?? '',
                     exts: exts,
-                    argumentImports: argumentImports ?? <String>[],
+                    argumentImports: argumentImports,
                   ),
                   constructors: parent.members
                       .whereType<ConstructorDeclaration>()
@@ -221,14 +222,14 @@ class RouteGenerator {
   }
 
   void generateFile({
-    List<RouteGenerator> nodes,
+    List<RouteGenerator>? nodes,
   }) {
     final String name = '${packageNode.name}_route.dart';
     String routePath;
     if (isRoot && Args().outputPath != null) {
-      routePath = p.join(_lib.path, Args().outputPath, name);
+      routePath = p.join(_lib!.path, Args().outputPath, name);
     } else {
-      routePath = p.join(_lib.path, name);
+      routePath = p.join(_lib!.path, name);
     }
 
     final File file = File(routePath);
@@ -286,8 +287,8 @@ class RouteGenerator {
 
       for (final RouteInfo it in routes) {
         if (it.ffRoute.argumentImports != null &&
-            it.ffRoute.argumentImports.isNotEmpty) {
-          for (final String element in it.ffRoute.argumentImports) {
+            it.ffRoute.argumentImports!.isNotEmpty) {
+          for (final String element in it.ffRoute.argumentImports!) {
             if (!imports.contains(element)) {
               imports.add(element);
             }

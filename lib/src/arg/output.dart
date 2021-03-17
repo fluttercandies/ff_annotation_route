@@ -1,11 +1,11 @@
 import 'arg.dart';
 
-class Output extends Argument<String> {
+class Output extends Argument<String?> {
   @override
   String get abbr => 'o';
 
   @override
-  String get defaultsTo => null;
+  String? get defaultsTo => null;
 
   @override
   String get help =>

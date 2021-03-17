@@ -58,7 +58,6 @@ FFRouteSettings getRouteSettings({
         widget: TestPageB(
           argument: asT<String?>(safeArguments['argument']),
         ),
-        showStatusBar: true,
         routeName: 'testPageB ',
         pageRouteType: PageRouteType.material,
         description: "This is test ' page B.",
@@ -100,7 +99,6 @@ FFRouteSettings getRouteSettings({
         }[safeArguments[constructorName] != null
             ? safeArguments[constructorName] as String
             : ''],
-        showStatusBar: true,
         routeName: 'testPageD ',
         pageRouteType: PageRouteType.material,
         description: "This is test ' page D.",
@@ -136,7 +134,6 @@ FFRouteSettings getRouteSettings({
           map: asT<Map<String, String>?>(safeArguments['map']),
           testMode: asT<TestMode?>(safeArguments['testMode']),
         ),
-        showStatusBar: true,
         routeName: 'testPageF',
         pageRouteType: PageRouteType.material,
         description: 'This is test page F.',

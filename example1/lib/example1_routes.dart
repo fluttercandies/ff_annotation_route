@@ -71,8 +71,6 @@ class Routes {
   ///
   /// TestPageB : [String? argument]
   ///
-  /// [showStatusBar] : true
-  ///
   /// [pageRouteType] : PageRouteType.material
   ///
   /// [exts] : {group: Simple, order: 1}
@@ -109,8 +107,6 @@ class Routes {
   ///
   /// TestPageD.another3 : [String?(required) argument, bool? optional]
   ///
-  /// [showStatusBar] : true
-  ///
   /// [pageRouteType] : PageRouteType.material
   ///
   /// [exts] : {group: Complex, order: 0}
@@ -146,8 +142,6 @@ class Routes {
   /// [constructors] :
   ///
   /// TestPageF : [List<int>?(required) list, Map<String, String>? map, TestMode? testMode]
-  ///
-  /// [showStatusBar] : true
   ///
   /// [pageRouteType] : PageRouteType.material
   ///

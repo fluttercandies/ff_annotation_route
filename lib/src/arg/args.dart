@@ -25,7 +25,7 @@ class Args {
         supperArguments = SupperArguments(),
         save = Save(),
         nullSafety = NullSafety();
-  static Args _args;
+  static Args? _args;
   final Help help;
   final Path path;
   final Name name;
@@ -38,20 +38,20 @@ class Args {
   final Save save;
   final NullSafety nullSafety;
 
-  String get className => name.value;
+  String get className => name.value!;
 
-  List<String> get gitNames => git.value;
+  List<String>? get gitNames => git.value;
 
-  bool get isPackage => package.value;
+  bool get isPackage => package.value!;
 
-  bool get enableSupperArguments => supperArguments.value;
+  bool get enableSupperArguments => supperArguments.value!;
 
-  RegExp get constIgnoreRegExp =>
-      constIgnore.value != null ? RegExp(constIgnore.value) : null;
+  RegExp? get constIgnoreRegExp =>
+      constIgnore.value != null ? RegExp(constIgnore.value!) : null;
 
-  String get outputPath => output.value;
+  String? get outputPath => output.value;
 
-  String get routesFileOutputPath => routesFileOutput.value;
+  String? get routesFileOutputPath => routesFileOutput.value;
 
-  bool get enableNullSafety => nullSafety.value;
+  bool get enableNullSafety => nullSafety.value!;
 }

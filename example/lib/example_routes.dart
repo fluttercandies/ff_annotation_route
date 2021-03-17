@@ -33,8 +33,6 @@ class Routes {
   ///
   /// TestPageB : [String? argument]
   ///
-  /// [showStatusBar] : true
-  ///
   /// [pageRouteType] : PageRouteType.material
   ///
   /// [exts] : {group: Simple, order: 1}
@@ -60,8 +58,6 @@ class Routes {
   /// TestPageD.another2 : [String?(required) argument]
   ///
   /// TestPageD.another3 : [String?(required) argument, bool? optional]
-  ///
-  /// [showStatusBar] : true
   ///
   /// [pageRouteType] : PageRouteType.material
   ///

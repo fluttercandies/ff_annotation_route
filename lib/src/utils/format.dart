@@ -4,19 +4,19 @@ import 'package:io/ansi.dart';
 
 final DartFormatter _formatter = DartFormatter();
 
-Future<void> formatFile(File file) async {
+Future<void> formatFile(File? file) async {
   if (file == null) {
     return;
   }
 
   if (!file.existsSync()) {
-    print(red.wrap('format error: ${file?.absolute?.path} doesn\'t exist\n'));
+    print(red.wrap('format error: ${file.absolute.path} doesn\'t exist\n'));
     return;
   }
 
   processRunSync(
     executable: 'flutter',
-    arguments: 'format ${file?.absolute?.path}',
+    arguments: 'format ${file.absolute.path}',
     runInShell: true,
   );
 }
@@ -31,8 +31,8 @@ String formatDart(String input) {
 }
 
 void processRunSync({
-  String executable,
-  String arguments,
+  required String executable,
+  required String arguments,
   bool runInShell = false,
 }) {
   final ProcessResult result = Process.runSync(

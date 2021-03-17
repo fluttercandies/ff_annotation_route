@@ -5,7 +5,7 @@ class Git extends Argument<List<String>> {
   String get abbr => 'g';
 
   @override
-  List<String> get defaultsTo => <String>[];
+  List<String>? get defaultsTo => null;
 
   @override
   String get help =>

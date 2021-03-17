@@ -1,6 +1,7 @@
 import 'dart:io' as io;
 import 'dart:io';
 
+import 'package:collection/collection.dart' show IterableExtension;
 import 'package:ff_annotation_route/ff_annotation_route.dart';
 import 'package:ff_annotation_route/src/arg/arg_parser.dart';
 import 'package:ff_annotation_route/src/arg/args.dart';
@@ -9,8 +10,7 @@ import 'package:io/ansi.dart';
 import 'package:path/path.dart';
 
 const String argumentsFile = 'ff_annotation_route_commands';
-const String debugCommands =
-    '--path example1/ --supper-arguments --null-safety';
+const String debugCommands = '--path example/ --supper-arguments --null-safety';
 
 Future<void> main(List<String> arguments) async {
   //debug
@@ -55,7 +55,7 @@ Future<void> main(List<String> arguments) async {
 
   parseArgs(arguments);
 
-  if (arguments.isEmpty || Args().help.value) {
+  if (arguments.isEmpty || Args().help.value!) {
     print(green.wrap(parser.usage));
     return;
   }
@@ -64,7 +64,7 @@ Future<void> main(List<String> arguments) async {
 
   print(green.wrap('\nff_annotation_route ------ Start'));
 
-  final PackageGraph packageGraph = PackageGraph.forPath(Args().path.value);
+  final PackageGraph packageGraph = PackageGraph.forPath(Args().path.value!);
 
   // Only check path which imports ff_annotation_route_core or ff_annotation_route_library
   final List<PackageNode> annotationPackages =
@@ -72,11 +72,12 @@ Future<void> main(List<String> arguments) async {
     (PackageNode x) {
       final bool matchPackage = x.dependencyType == DependencyType.path ||
           (x.dependencyType == DependencyType.github &&
-              Args().gitNames.firstWhere((String key) => x.name == key,
-                      orElse: () => null) !=
+              Args()
+                      .gitNames!
+                      .firstWhereOrNull((String key) => x.name == key) !=
                   null);
       final bool matchFFRoute = x.dependencies.firstWhere(
-            (PackageNode dep) =>
+            (PackageNode? dep) =>
                 dep?.name == 'ff_annotation_route_core' ||
                 dep?.name == 'ff_annotation_route_library',
             orElse: () => null,
@@ -96,7 +97,7 @@ Future<void> main(List<String> arguments) async {
     annotationPackages,
   );
 
-  if (Args().save.value && !runFromLocal) {
+  if (Args().save.value! && !runFromLocal) {
     final File file = File(join('./', argumentsFile));
     if (!file.existsSync()) {
       file.createSync();
