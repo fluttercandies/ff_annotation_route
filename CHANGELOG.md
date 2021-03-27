@@ -1,3 +1,7 @@
+## 7.0.1
+
+* Fix null operator check on git args.
+
 ## 7.0.0
 
 * null-safety
@@ -6,6 +10,7 @@
 
 * Fix `--null-safety` `!` error
 * Add unused_local_variable
+
 ## 6.0.0
 
 * Add `--null-safety` to support null-safety
@@ -17,9 +22,11 @@
 ## 5.1.0
 
 * Add @FFArgumentImport() instead of @FFRoute.argumentImports
+
 ## 5.0.1
 
 * Fix uncomment debug arguments
+
 ## 5.0.0
 
 * breaking change :
