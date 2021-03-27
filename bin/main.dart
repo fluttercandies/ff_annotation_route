@@ -73,8 +73,8 @@ Future<void> main(List<String> arguments) async {
       final bool matchPackage = x.dependencyType == DependencyType.path ||
           (x.dependencyType == DependencyType.github &&
               Args()
-                      .gitNames!
-                      .firstWhereOrNull((String key) => x.name == key) !=
+                      .gitNames
+                      ?.firstWhereOrNull((String key) => x.name == key) !=
                   null);
       final bool matchFFRoute = x.dependencies.firstWhere(
             (PackageNode? dep) =>
