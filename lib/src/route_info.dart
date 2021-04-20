@@ -350,6 +350,9 @@ class RouteInfo {
               }
             }
           }
+          if (!Args().enableNullSafety) {
+            args = args.replaceAll('?', '');
+          }
           nameMap += ''''$name':$name,''';
         }
         if (name != null) {
