@@ -1,3 +1,8 @@
+## 7.0.2
+
+* Fix required annotation detect for inner fields.
+* Fix not handled nullable type annotation in no null safety mode.
+
 ## 7.0.1
 
 * Fix null operator check on git args.
