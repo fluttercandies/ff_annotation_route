@@ -7,6 +7,7 @@ import 'package:analyzer/dart/ast/syntactic_entity.dart';
 import 'package:analyzer/src/dart/ast/ast.dart';
 import 'package:ff_annotation_route/src/arg/args.dart';
 import 'package:ff_annotation_route_core/ff_annotation_route_core.dart';
+
 //import 'package:io/ansi.dart'
 import 'utils/camel_under_score_converter.dart';
 import 'utils/convert.dart';
@@ -310,6 +311,7 @@ class RouteInfo {
   }
 
   String? argumentsClass;
+
   String? _getArgumentsClass() {
     constructors?.removeWhere(
         (ConstructorDeclaration element) => element.name?.toString() == '_');
@@ -330,11 +332,26 @@ class RouteInfo {
             for (final FieldDeclaration item in fields!) {
               if (item.fields.endToken.toString() == name) {
                 final TypeAnnotation? type = item.fields.type;
-                args = args.replaceFirst(parameterS,
-                    parameterS.replaceAll('this.', '${type.toString()} '));
+                final String _requiredS;
+                if (parameter.isRequiredNamed) {
+                  if (Args().enableNullSafety) {
+                    _requiredS = 'required ';
+                  } else {
+                    _requiredS = '@required ';
+                  }
+                } else {
+                  _requiredS = '';
+                }
+                args = args.replaceFirst(
+                  parameterS,
+                  parameterS.replaceAll('this.', '$_requiredS$type '),
+                );
                 break;
               }
             }
+          }
+          if (!Args().enableNullSafety) {
+            args = args.replaceAll('?', '');
           }
           nameMap += ''''$name':$name,''';
         }

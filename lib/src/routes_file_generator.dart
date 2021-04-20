@@ -67,16 +67,16 @@ class RoutesFileGenerator {
     constantsSb.write('class $className {\n');
     constantsSb.write('const $className._();\n');
 
-    final bool? enableSupperArguments = Args().enableSupperArguments;
+    final bool enableSupperArguments = Args().enableSupperArguments;
     for (final RouteInfo it in routes!) {
       if (constIgnore != null && constIgnore.hasMatch(it.ffRoute.name)) {
         continue;
       }
-      it.getRouteConst(enableSupperArguments!, constantsSb);
+      it.getRouteConst(enableSupperArguments, constantsSb);
     }
     constantsSb.write('}');
 
-    if (enableSupperArguments!) {
+    if (enableSupperArguments) {
       for (final RouteInfo it in routes!) {
         if (it.argumentsClass != null) {
           if (constIgnore != null && constIgnore.hasMatch(it.ffRoute.name)) {
