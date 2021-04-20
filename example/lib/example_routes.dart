@@ -5,6 +5,7 @@
 
 import 'package:example/src/model/test_model.dart' hide TestMode2;
 import 'package:example/src/model/test_model1.dart' hide TestMode3;
+import 'package:flutter/foundation.dart';
 
 import 'src/pages/main_page.dart';
 
@@ -13,6 +14,7 @@ const List<String> routeNames = <String>[
   '''flutterCandies://testPage' "D''',
   'flutterCandies://testPageA',
   'flutterCandies://testPageC',
+  'flutterCandies://testPageCC',
   'flutterCandies://testPageE',
   'fluttercandies://demogrouppage',
   'fluttercandies://mainpage',
@@ -86,6 +88,22 @@ class Routes {
   ///
   /// [exts] : {group: Simple, order: 2}
   static const String flutterCandiesTestPageC = 'flutterCandies://testPageC';
+
+  /// 'This is test page CC.'
+  ///
+  /// [name] : 'flutterCandies://testPageCC'
+  ///
+  /// [routeName] : 'testPageCC'
+  ///
+  /// [description] : 'This is test page CC.'
+  ///
+  /// [constructors] :
+  ///
+  /// TestPageCC : [int(required) testArg, Key? key, String(required) testRequiredArg, bool? testBoolean]
+  ///
+  /// TestPageCC.positioned : [int(required) testArg, bool? testBoolean, String testRequiredArg, Key? key]
+  static const _FlutterCandiesTestPageCC flutterCandiesTestPageCC =
+      _FlutterCandiesTestPageCC();
 
   /// 'Show how to push new page with arguments(class)'
   ///
@@ -180,6 +198,34 @@ class _FlutterCandiesTestPageD {
         'argument': argument,
         'optional': optional,
         'constructorName': 'another3',
+      };
+
+  @override
+  String toString() => name;
+}
+
+class _FlutterCandiesTestPageCC {
+  const _FlutterCandiesTestPageCC();
+
+  String get name => 'flutterCandies://testPageCC';
+
+  Map<String, dynamic> d(int testArg,
+          {Key? key, required String testRequiredArg, bool? testBoolean}) =>
+      <String, dynamic>{
+        'testArg': testArg,
+        'key': key,
+        'testRequiredArg': testRequiredArg,
+        'testBoolean': testBoolean,
+      };
+
+  Map<String, dynamic> positioned(int testArg,
+          [bool? testBoolean, String testRequiredArg = '', Key? key]) =>
+      <String, dynamic>{
+        'testArg': testArg,
+        'testBoolean': testBoolean,
+        'testRequiredArg': testRequiredArg,
+        'key': key,
+        'constructorName': 'positioned',
       };
 
   @override

@@ -5,6 +5,7 @@
 
 import 'package:example/src/model/test_model.dart' hide TestMode2;
 import 'package:example/src/model/test_model1.dart' hide TestMode3;
+import 'package:flutter/foundation.dart';
 import 'package:ff_annotation_route_library/ff_annotation_route_library.dart';
 import 'package:flutter/widgets.dart';
 import 'package:module_a/module_a_route.dart';
@@ -14,6 +15,7 @@ import 'src/pages/complex/test_page_e.dart';
 import 'src/pages/main_page.dart';
 import 'src/pages/simple/test_page_a.dart';
 import 'src/pages/simple/test_page_b.dart';
+import 'src/pages/simple/test_page_c.dart';
 
 // ignore_for_file: prefer_const_literals_to_create_immutables,unused_local_variable,unused_import
 FFRouteSettings getRouteSettings({
@@ -84,6 +86,29 @@ FFRouteSettings getRouteSettings({
         routeName: 'testPageC',
         description: 'This is test page c in other module.',
         exts: <String, dynamic>{'group': 'Simple', 'order': 2},
+      );
+    case 'flutterCandies://testPageCC':
+      return FFRouteSettings(
+        name: name,
+        arguments: arguments,
+        widget: <String, Widget>{
+          '': TestPageCC(
+            asT<int>(safeArguments['testArg'])!,
+            key: asT<Key?>(safeArguments['key']),
+            testRequiredArg: asT<String>(safeArguments['testRequiredArg'])!,
+            testBoolean: asT<bool?>(safeArguments['testBoolean']),
+          ),
+          'positioned': TestPageCC.positioned(
+            asT<int>(safeArguments['testArg'])!,
+            asT<bool?>(safeArguments['testBoolean']),
+            asT<String>(safeArguments['testRequiredArg'], '')!,
+            asT<Key?>(safeArguments['key']),
+          ),
+        }[safeArguments[constructorName] != null
+            ? safeArguments[constructorName] as String
+            : ''],
+        routeName: 'testPageCC',
+        description: 'This is test page CC.',
       );
     case 'flutterCandies://testPageE':
       return FFRouteSettings(

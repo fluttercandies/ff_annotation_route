@@ -1,1 +1,1 @@
---supper-arguments --null-safety
+--supper-arguments --null-safety -s
