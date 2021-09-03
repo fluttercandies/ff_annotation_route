@@ -37,6 +37,12 @@ class MyApp extends StatelessWidget {
 
   final FFRouterDelegate _ffRouterDelegate = FFRouterDelegate(
     getRouteSettings: getRouteSettings,
+    notFoundWidget: Scaffold(
+      appBar: AppBar(),
+      body: const Center(
+        child: Text('not find page'),
+      ),
+    ),
     pageWrapper: <T>(FFPage<T> ffPage) {
       return ffPage.copyWith(
         widget: ffPage.name == Routes.root ||

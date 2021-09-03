@@ -224,7 +224,7 @@ class RouteInfo {
     return ctor;
   }
 
-  void getRouteConst(bool enableSupperArguments, StringBuffer sb) {
+  void getRouteConst(bool enableSuperArguments, StringBuffer sb) {
     final FFRoute _route = ffRoute;
 
     final String _name = safeToString(_route.name)!;
@@ -284,7 +284,7 @@ class RouteInfo {
       sb.write('\n/// [exts] : $_exts');
     }
 
-    if (enableSupperArguments && _getArgumentsClass() != null) {
+    if (enableSuperArguments && _getArgumentsClass() != null) {
       String argumentsClassName = camelName(_constant);
       if (argumentsClassName.length == 1) {
         argumentsClassName = argumentsClassName.toUpperCase();

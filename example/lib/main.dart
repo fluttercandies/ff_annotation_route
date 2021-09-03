@@ -20,6 +20,12 @@ class MyApp extends StatelessWidget {
         return onGenerateRoute(
           settings: settings,
           getRouteSettings: getRouteSettings,
+          notFoundWidget: Scaffold(
+            appBar: AppBar(),
+            body: const Center(
+              child: Text('not find page'),
+            ),
+          ),
           routeSettingsWrapper: (FFRouteSettings ffRouteSettings) {
             if (ffRouteSettings.name == Routes.fluttercandiesMainpage ||
                 ffRouteSettings.name ==

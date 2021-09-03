@@ -1,3 +1,8 @@
+## 7.0.3
+
+* Fix typo (Supper => Super)
+* Add notFoundWidget for Page is not found.
+
 ## 7.0.2
 
 * Fix required annotation detect for inner fields.
@@ -58,7 +63,7 @@
 
 ## 4.2.0
 
-* add `--supper-arguments` which generate page arguments helper class
+* add `--super-arguments` which generate page arguments helper class
 * add `--const-ignore` is the regular to ignore some route consts
 
 ## 4.1.0

@@ -188,7 +188,7 @@ class TestPageE extends StatelessWidget {
     --const-ignore                使用正则表达式忽略一些const(不是全部const都希望生成)
     --[no-]route-constants        是否在根项目中的 `xxx_route.dart` 生成全部路由的静态常量
     --[no-]package                这个是否是一个 package
-    --[no-]supper-arguments       是否生成路由参数帮助类
+    --[no-]super-arguments       是否生成路由参数帮助类
 
 -s, --[no-]save                   是否保存命令到本地。如果保存了，下一次就只需要执行 `ff_route` 就可以了。
     --[no-]null-safety            是否支持空安全，默认 `true`
@@ -265,7 +265,7 @@ class MyApp extends StatelessWidget {
     },
   );
 ```
-* 开启 --supper-arguments
+* 开启 --super-arguments
 
 ```dart
   Navigator.pushNamed(
@@ -409,7 +409,7 @@ class MyApp extends StatelessWidget {
     ),
   );
 ```
-* 开启 --supper-arguments
+* 开启 --super-arguments
 
 ```dart
   FFRouterDelegate.of(context).pushNamed<void>(
@@ -449,7 +449,7 @@ class MyApp extends StatelessWidget {
   static const String flutterCandiesTestPageE = 'flutterCandies://testPageE';
 ```
 
-* 开启 --supper-arguments
+* 开启 --super-arguments
 
 ```dart
   /// 'This is test page E.'

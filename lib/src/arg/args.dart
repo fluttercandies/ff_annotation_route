@@ -22,7 +22,7 @@ class Args {
         routesFileOutput = RoutesFileOutput(),
         constIgnore = ConstIgnore(),
         package = Package(),
-        supperArguments = SupperArguments(),
+        superArguments = SuperArguments(),
         save = Save(),
         nullSafety = NullSafety();
   static Args? _args;
@@ -34,7 +34,7 @@ class Args {
   final RoutesFileOutput routesFileOutput;
   final ConstIgnore constIgnore;
   final Package package;
-  final SupperArguments supperArguments;
+  final SuperArguments superArguments;
   final Save save;
   final NullSafety nullSafety;
 
@@ -44,7 +44,7 @@ class Args {
 
   bool get isPackage => package.value!;
 
-  bool get enableSupperArguments => supperArguments.value!;
+  bool get enableSuperArguments => superArguments.value!;
 
   RegExp? get constIgnoreRegExp =>
       constIgnore.value != null ? RegExp(constIgnore.value!) : null;

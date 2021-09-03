@@ -1,6 +1,6 @@
 import 'arg.dart';
 
-class SupperArguments extends Argument<bool> {
+class SuperArguments extends Argument<bool> {
   @override
   String? get abbr => null;
 
@@ -11,5 +11,5 @@ class SupperArguments extends Argument<bool> {
   String get help => 'Whether generate page arguments helper class';
 
   @override
-  String get name => 'supper-arguments';
+  String get name => 'super-arguments';
 }

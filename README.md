@@ -181,7 +181,7 @@ Available commands:
     --routes-file-output       The path of routes file. It is relative to the lib directory
     --const-ignore             The regular to ignore some route consts
     --[no-]package             Is it a package
-    --[no-]supper-arguments    Whether generate page arguments helper class
+    --[no-]super-arguments    Whether generate page arguments helper class
 -s, --[no-]save                Whether save the arguments into the local
                                It will execute the local arguments if run "ff_route" without any arguments
     --[no-]null-safety         enable null-safety
@@ -259,7 +259,7 @@ class MyApp extends StatelessWidget {
     },
   );
 ```
-* enable --supper-arguments
+* enable --super-arguments
 
 ``` dart
   Navigator.pushNamed(
@@ -405,7 +405,7 @@ you can find more demo in [test_page_c.dart](https://github.com/fluttercandies/f
     ),
   );
 ```
-* enable --supper-arguments
+* enable --super-arguments
 
 ``` dart
   FFRouterDelegate.of(context).pushNamed<void>(
@@ -445,7 +445,7 @@ you can use route as 'Routes.flutterCandiesTestPageE', and see Code Hints from i
   static const String flutterCandiesTestPageE = 'flutterCandies://testPageE';
 ```
 
-* enable --supper-arguments
+* enable --super-arguments
 
 ``` dart
   /// 'This is test page E.'

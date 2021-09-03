@@ -10,7 +10,7 @@ import 'package:io/ansi.dart';
 import 'package:path/path.dart';
 
 const String argumentsFile = 'ff_annotation_route_commands';
-const String debugCommands = '--path example/ --supper-arguments --null-safety';
+const String debugCommands = '--path example/ --super-arguments --null-safety';
 
 Future<void> main(List<String> arguments) async {
   //debug
