@@ -331,20 +331,12 @@ class RouteInfo {
           if (parameterS.contains('this.')) {
             for (final FieldDeclaration item in fields!) {
               if (item.fields.endToken.toString() == name) {
-                final TypeAnnotation? type = item.fields.type;
-                final String _requiredS;
-                if (parameter.isRequiredNamed) {
-                  if (Args().enableNullSafety) {
-                    _requiredS = 'required ';
-                  } else {
-                    _requiredS = '@required ';
-                  }
-                } else {
-                  _requiredS = '';
-                }
                 args = args.replaceFirst(
                   parameterS,
-                  parameterS.replaceAll('this.', '$_requiredS$type '),
+                  parameterS.replaceAll(
+                    'this.',
+                    '${item.fields.type.toString()} ',
+                  ),
                 );
                 break;
               }

@@ -1,3 +1,8 @@
+## 8.0.0-dev.1
+
+* Support Flutter 2.5.0, basically with the type alias support. Also drop supports below Flutter 2.5.0 .
+* Revert the `required` keyword extra handling since this fix has addressed in the `analyzer`.
+
 ## 7.0.3
 
 * Fix typo (Supper => Super)
