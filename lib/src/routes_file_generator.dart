@@ -58,7 +58,7 @@ class RoutesFileGenerator {
         'const List<String> routeNames = <String>[${routeNamesString.toString()}];');
     constantsSb.write('\n');
 
-    final List<String> imports = <String>[];
+    final Set<String> imports = <String>{};
 
     if (constantsSb.isEmpty) {
       constantsSb.write(fileHeader);
@@ -85,17 +85,11 @@ class RoutesFileGenerator {
           constantsSb.write(it.argumentsClass);
           if (!Args().enableNullSafety &&
               it.argumentsClass!.contains('@required')) {
-            if (!imports.contains(requiredS)) {
-              imports.add(requiredS);
-            }
+            imports.add(requiredS);
           }
           if (it.ffRoute.argumentImports != null &&
               it.ffRoute.argumentImports!.isNotEmpty) {
-            for (final String item in it.ffRoute.argumentImports!) {
-              if (!imports.contains(item)) {
-                imports.add('$item');
-              }
-            }
+            imports.addAll(it.ffRoute.argumentImports!);
           }
         }
       }
@@ -108,7 +102,7 @@ class RoutesFileGenerator {
 
       if (imports.isNotEmpty) {
         final StringBuffer sb = StringBuffer();
-        writeImports(imports, sb);
+        writeImports(imports.toList(), sb);
         constants = sb.toString() + constants;
       }
       constants = fileHeader + constants;

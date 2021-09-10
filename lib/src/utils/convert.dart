@@ -35,33 +35,47 @@ String? safeToString(String? input) {
 }
 
 void writeImports(List<String> imports, StringBuffer sb) {
+  // Remove empty imports.
+  imports.removeWhere((String v) => v.trim().isEmpty);
   if (imports.isNotEmpty) {
     sb.write('\n');
-    imports.sort((String a, String b) => a.compareTo(b));
-    final List<String> packages = imports
-        .where((String element) => element.contains('package:'))
-        .toList();
-    final List<String> darts =
-        imports.where((String element) => element.contains('dart:')).toList();
+    // Trim all imports and de-duplication.
+    imports = imports.map((String v) => v.trim()).toSet().toList();
+    imports.sort((String a, String b) {
+      final int _compare = a.compareTo(b);
+      // First sort dart imports.
+      if (a.isDartImport) {
+        return 2 + _compare;
+      }
+      // Then package imports.
+      if (a.isPackageImport) {
+        return 1 + _compare;
+      }
+      // Others imports at last.
+      return a.compareTo(b);
+    });
 
-    for (final String dart in darts) {
-      sb.write(dart);
-      imports.remove(dart);
-    }
-
-    for (final String package in packages) {
-      sb.write(package);
-      imports.remove(package);
-    }
-
-    if (packages.isNotEmpty) {
-      sb.write('\n');
-    }
-
+    bool _startToWriteOtherImports = false;
     for (int i = 0; i < imports.length; i++) {
-      sb.write(imports[i]);
+      final String _import = imports[i];
+      if (!_startToWriteOtherImports &&
+          !_import.isDartImport &&
+          !_import.isPackageImport) {
+        _startToWriteOtherImports = true;
+        sb.write('\n');
+      }
+      sb.write('${imports[i]}\n');
     }
 
     sb.write('\n');
   }
 }
+
+extension _ImportExtension on String {
+  bool get isDartImport => startsWith(_importExp('dart'));
+
+  bool get isPackageImport => startsWith(_importExp('package'));
+}
+
+RegExp _importExp(String startsWith) =>
+    RegExp('^(import [\'"]$startsWith:)[\s\S]*');
