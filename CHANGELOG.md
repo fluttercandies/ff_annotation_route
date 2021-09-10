@@ -1,3 +1,8 @@
+## 8.0.0-dev.2
+
+* De-duplicate all imports.
+* Sort imports alphabetically.
+
 ## 8.0.0-dev.1
 
 * Support Flutter 2.5.0, basically with the type alias support. Also drop supports below Flutter 2.5.0 .
