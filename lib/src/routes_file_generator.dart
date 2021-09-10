@@ -102,7 +102,7 @@ class RoutesFileGenerator {
 
       if (imports.isNotEmpty) {
         final StringBuffer sb = StringBuffer();
-        writeImports(imports.toList(), sb);
+        writeImports(imports, sb);
         constants = sb.toString() + constants;
       }
       constants = fileHeader + constants;

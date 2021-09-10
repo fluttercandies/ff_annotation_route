@@ -34,48 +34,34 @@ String? safeToString(String? input) {
   return "'$input'";
 }
 
-void writeImports(List<String> imports, StringBuffer sb) {
-  // Remove empty imports.
-  imports.removeWhere((String v) => v.trim().isEmpty);
-  if (imports.isNotEmpty) {
-    sb.write('\n');
-    // Trim all imports and de-duplication.
-    imports = imports.map((String v) => v.trim()).toSet().toList();
-    imports.sort((String a, String b) {
-      final int _compare = a.compareTo(b);
-      // First sort dart imports.
-      if (a.isDartImport) {
-        return 2 + _compare;
-      }
-      // Then package imports.
-      if (a.isPackageImport) {
-        return 1 + _compare;
-      }
-      // Others imports at last.
-      return a.compareTo(b);
-    });
-
-    bool _startToWriteOtherImports = false;
-    for (int i = 0; i < imports.length; i++) {
-      final String _import = imports[i];
-      if (!_startToWriteOtherImports &&
-          !_import.isDartImport &&
-          !_import.isPackageImport) {
-        _startToWriteOtherImports = true;
-        sb.write('\n');
-      }
-      sb.write('${imports[i]}\n');
+void writeImports(Set<String> imports, StringBuffer sb) {
+  final List<String> dartImports = <String>[];
+  final List<String> packageImports = <String>[];
+  final List<String> otherImports = <String>[];
+  final Set<String> distinctImports =
+      imports.map((String e) => e.trim()).toSet();
+  for (final String import in distinctImports) {
+    if (import.isDartImport) {
+      dartImports.add(import);
+    } else if (import.isPackageImport) {
+      packageImports.add(import);
+    } else {
+      otherImports.add(import);
     }
-
-    sb.write('\n');
   }
+  dartImports.sort((String a, String b) => a.compareTo(b));
+  packageImports.sort((String a, String b) => a.compareTo(b));
+  otherImports.sort((String a, String b) => a.compareTo(b));
+  final String output = <String>[
+    dartImports.join('\n'),
+    packageImports.join('\n'),
+    otherImports.join('\n')
+  ].join('\n\n').trim();
+  sb.write(output);
 }
 
 extension _ImportExtension on String {
-  bool get isDartImport => startsWith(_importExp('dart'));
+  bool get isDartImport => contains('dart:');
 
-  bool get isPackageImport => startsWith(_importExp('package'));
+  bool get isPackageImport => contains('package:');
 }
-
-RegExp _importExp(String startsWith) =>
-    RegExp('^(import [\'"]$startsWith:)[\s\S]*');

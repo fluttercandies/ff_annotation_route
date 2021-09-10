@@ -242,17 +242,12 @@ class RouteGenerator {
 
     final StringBuffer sb = StringBuffer();
 
-    final List<String> imports = <String>[];
+    final Set<String> imports = <String>{};
 
     /// Nodes import
     if (isRoot && nodes != null && nodes.isNotEmpty) {
       for (final RouteGenerator node in nodes) {
-        final String import = '${node.import}\n';
-        if (!imports.contains(import)) {
-          imports.add(import);
-        }
-
-        //sb.write('${node.import}\n');
+        imports.add('${node.import}\n');
       }
     }
 
@@ -266,7 +261,8 @@ class RouteGenerator {
       imports.addAll(export.split('\n'));
       imports.add('import \'package:flutter/widgets.dart\';');
       imports.add(
-          'import \'package:ff_annotation_route_library/ff_annotation_route_library.dart\';');
+        'import \'package:ff_annotation_route_library/ff_annotation_route_library.dart\';',
+      );
 
       final StringBuffer caseSb = StringBuffer();
       final List<RouteInfo> routes = _fileInfoList
@@ -282,17 +278,14 @@ class RouteGenerator {
               .expand((List<RouteInfo> it) => it),
         );
       }
-      routes.sort((RouteInfo a, RouteInfo b) =>
-          a.ffRoute.name.compareTo(b.ffRoute.name));
+      routes.sort(
+        (RouteInfo a, RouteInfo b) => a.ffRoute.name.compareTo(b.ffRoute.name),
+      );
 
       for (final RouteInfo it in routes) {
         if (it.ffRoute.argumentImports != null &&
             it.ffRoute.argumentImports!.isNotEmpty) {
-          for (final String element in it.ffRoute.argumentImports!) {
-            if (!imports.contains(element)) {
-              imports.add(element);
-            }
-          }
+          imports.addAll(it.ffRoute.argumentImports!);
         }
         caseSb.write(it.caseString);
       }
