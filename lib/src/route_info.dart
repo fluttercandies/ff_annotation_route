@@ -68,7 +68,7 @@ class RouteInfo {
     return FFRouteSettings(
       name: name,
       arguments: arguments,
-      widget:  $constructor,
+      widget:  ${ffRoute.routeImportAs.isNotEmpty ? ffRoute.routeImportAs + '.' : ''}$constructor,
       ${ffRoute.showStatusBar != true ? 'showStatusBar: ${ffRoute.showStatusBar},' : ''}
       ${ffRoute.routeName != '' ? 'routeName: ${safeToString(ffRoute.routeName)},' : ''}
       ${ffRoute.pageRouteType != null ? 'pageRouteType: ${ffRoute.pageRouteType},' : ''}
