@@ -50,7 +50,7 @@ class RouteGenerator {
           .sort((FileInfo a, FileInfo b) => a.export!.compareTo(b.export!));
 
       for (final FileInfo info in _fileInfoList) {
-        sb.write("${isRoot ? "import" : "export"} '${info.export}';\n");
+        sb.write("${isRoot ? "import" : "export"} ${info.export};\n");
       }
       return sb.toString();
     }
@@ -61,6 +61,9 @@ class RouteGenerator {
     if (_lib != null) {
       print('');
       print('Scanning package : ${packageNode.name}');
+
+      final Map<String, int> conflictClassMap = <String, int>{};
+
       for (final FileSystemEntity item in _lib!.listSync(recursive: true)) {
         final FileStat file = item.statSync();
         if (file.type == FileSystemEntityType.file &&
@@ -79,7 +82,7 @@ class RouteGenerator {
 
               if (syntacticEntity != null) {
                 final AnnotationImpl annotationImpl =
-                    syntacticEntity as AnnotationImpl;
+                syntacticEntity as AnnotationImpl;
                 if (annotationImpl.name.name ==
                     typeOf<FFArgumentImport>().toString()) {
                   final NodeList<Expression>? parameters =
@@ -102,19 +105,21 @@ class RouteGenerator {
 
           FileInfo? fileInfo;
           for (final CompilationUnitMember declaration
-              in astRoot.declarations) {
+          in astRoot.declarations) {
             for (final Annotation metadata in declaration.metadata) {
               if (metadata is AnnotationImpl &&
                   metadata.name.name == typeOf<FFRoute>().toString() &&
                   metadata.parent is ClassDeclarationImpl) {
                 final ClassDeclarationImpl parent =
-                    metadata.parent as ClassDeclarationImpl;
+                metadata.parent as ClassDeclarationImpl;
 
                 final String className = parent.name.name;
 
                 final String routePath =
-                    '${p.relative(item.path, from: packageNode.path)} ------ class : $className';
-                print('Found annotation route : $routePath');
+                p.relative(item.path, from: packageNode.path);
+
+                print(
+                    'Found annotation route : $routePath ------ class : $className');
 
                 final List<String> relativeParts = <String>[
                   packageNode.path,
@@ -124,12 +129,6 @@ class RouteGenerator {
                   relativeParts.add(output);
                 }
 
-                fileInfo ??= FileInfo(
-                    export: p
-                        .relative(item.path, from: p.joinAll(relativeParts))
-                        .replaceAll('\\', '/'),
-                    packageName: packageNode.name);
-
                 final NodeList<Expression>? parameters =
                     metadata.arguments?.arguments;
                 if (parameters == null) {
@@ -137,6 +136,7 @@ class RouteGenerator {
                 }
                 String? name;
                 bool? showStatusBar;
+                String? routeImportAs;
                 String? routeName;
                 PageRouteType? pageRouteType;
                 String? description;
@@ -154,6 +154,9 @@ class RouteGenerator {
                     switch (key) {
                       case 'name:':
                         name = toT<String>(item.expression);
+                        break;
+                      case 'routeImportAs:':
+                        routeImportAs = toT<String>(item.expression);
                         break;
                       case 'routeName:':
                         routeName = toT<String>(item.expression);
@@ -184,11 +187,40 @@ class RouteGenerator {
                   }
                 }
 
+                final String export;
+                if (routeImportAs != null) {
+                  export =
+                  "'${p
+                      .relative(item.path, from: p.joinAll(relativeParts))
+                      .replaceAll('\\', '/')}' as $routeImportAs";
+                } else {
+                  if (conflictClassMap.containsKey(className)) {
+                    conflictClassMap[className] =
+                        conflictClassMap[className]! + 1;
+
+                    routeImportAs = '$className${conflictClassMap[className]}';
+                    export =
+                    "'${p
+                        .relative(item.path, from: p.joinAll(relativeParts))
+                        .replaceAll('\\', '/')}' as $routeImportAs";
+                  } else {
+                    conflictClassMap[className] = 0;
+                    export =
+                    "'${p
+                        .relative(item.path, from: p.joinAll(relativeParts))
+                        .replaceAll('\\', '/')}'";
+                  }
+                }
+
+                fileInfo ??=
+                    FileInfo(export: export, packageName: packageNode.name);
+
                 final RouteInfo routeInfo = RouteInfo(
                   className: className,
                   ffRoute: FFRoute(
                     name: name!,
                     showStatusBar: showStatusBar ?? true,
+                    routeImportAs: routeImportAs ?? '',
                     routeName: routeName ?? '',
                     pageRouteType: pageRouteType,
                     description: description ?? '',
@@ -202,6 +234,7 @@ class RouteGenerator {
                   routePath: routePath,
                   classDeclarationImpl: parent,
                 );
+
                 fileInfo.routes.add(routeInfo);
               }
             }
@@ -242,12 +275,17 @@ class RouteGenerator {
 
     final StringBuffer sb = StringBuffer();
 
-    final Set<String> imports = <String>{};
+    final List<String> imports = <String>[];
 
     /// Nodes import
     if (isRoot && nodes != null && nodes.isNotEmpty) {
       for (final RouteGenerator node in nodes) {
-        imports.add('${node.import}\n');
+        final String import = '${node.import}\n';
+        if (!imports.contains(import)) {
+          imports.add(import);
+        }
+
+        //sb.write('${node.import}\n');
       }
     }
 
@@ -278,9 +316,8 @@ class RouteGenerator {
               .expand((List<RouteInfo> it) => it),
         );
       }
-      routes.sort(
-        (RouteInfo a, RouteInfo b) => a.ffRoute.name.compareTo(b.ffRoute.name),
-      );
+      routes.sort((RouteInfo a, RouteInfo b) =>
+          a.ffRoute.name.compareTo(b.ffRoute.name));
 
       for (final RouteInfo it in routes) {
         if (it.ffRoute.argumentImports != null &&
