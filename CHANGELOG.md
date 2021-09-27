@@ -1,3 +1,8 @@
+## 8.0.0-dev.3
+
+* Brought `ignore_for_file` front.
+* Apply trailing comma to super arguments for the `require_trailing_commas` lint rule.
+
 ## 8.0.0-dev.2
 
 * De-duplicate all imports.
