@@ -319,13 +319,13 @@ class RouteInfo {
       final StringBuffer sb = StringBuffer();
       for (final ConstructorDeclaration rawConstructor in constructors!) {
         final String? name = rawConstructor.name?.toString();
-        if (name == null && rawConstructor.parameters.parameters.isEmpty) {
+        final FormalParameterList parameters = rawConstructor.parameters;
+        if (name == null && parameters.parameters.isEmpty) {
           continue;
         }
-        String args = rawConstructor.parameters.toString();
+        String args = parameters.toString();
         String nameMap = '';
-        for (final FormalParameter parameter
-            in rawConstructor.parameters.parameters) {
+        for (final FormalParameter parameter in parameters.parameters) {
           final String parameterS = parameter.toString();
           final String name = parameter.identifier!.name;
           if (parameterS.contains('this.')) {
@@ -349,6 +349,15 @@ class RouteInfo {
         }
         if (name != null) {
           nameMap += ''''$constructorName':'$name',''';
+        }
+        if (args.isNotEmpty && parameters.parameters.isNotEmpty) {
+          if (args.endsWith('})')) {
+            args = args.replaceAll('})', ',})');
+          } else if (args.endsWith('])')) {
+            args = args.replaceAll('])', ',])');
+          } else {
+            args = args.replaceAll(')', ',)');
+          }
         }
 
         sb.write(routeConstClassMethodTemplate
