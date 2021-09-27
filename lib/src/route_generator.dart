@@ -62,8 +62,6 @@ class RouteGenerator {
       print('');
       print('Scanning package : ${packageNode.name}');
 
-      final Map<String, int> conflictClassMap = <String, int>{};
-
       for (final FileSystemEntity item in _lib!.listSync(recursive: true)) {
         final FileStat file = item.statSync();
         if (file.type == FileSystemEntityType.file &&
@@ -116,7 +114,7 @@ class RouteGenerator {
                 final String className = parent.name.name;
 
                 final String routePath =
-                p.relative(item.path, from: packageNode.path);
+                    p.relative(item.path, from: packageNode.path);
 
                 print(
                     'Found annotation route : $routePath ------ class : $className');
@@ -187,27 +185,17 @@ class RouteGenerator {
                   }
                 }
 
-                final String export;
-                if (routeImportAs != null) {
-                  export =
-                  "'${p.relative(item.path, from: p.joinAll(relativeParts)).replaceAll('\\', '/')}' as $routeImportAs";
-                } else {
-                  if (conflictClassMap.containsKey(className)) {
-                    conflictClassMap[className] =
-                        conflictClassMap[className]! + 1;
+                // use `routeImportAs` in import if not empty
+                final String importAsSuffix = routeImportAs?.isNotEmpty ?? false
+                    ? ' as $routeImportAs'
+                    : '';
 
-                    routeImportAs = '$className${conflictClassMap[className]}';
-                    export =
-                    "'${p.relative(item.path, from: p.joinAll(relativeParts)).replaceAll('\\', '/')}' as $routeImportAs";
-                  } else {
-                    conflictClassMap[className] = 0;
-                    export =
-                    "'${p.relative(item.path, from: p.joinAll(relativeParts)).replaceAll('\\', '/')}'";
-                  }
-                }
-
-                fileInfo ??=
-                    FileInfo(export: export, packageName: packageNode.name);
+                fileInfo ??= FileInfo(
+                  export:
+                      "'${p.relative(item.path, from: p.joinAll(relativeParts)).replaceAll('\\', '/')}'" +
+                          importAsSuffix,
+                  packageName: packageNode.name,
+                );
 
                 final RouteInfo routeInfo = RouteInfo(
                   className: className,
