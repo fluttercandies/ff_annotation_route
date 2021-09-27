@@ -1,5 +1,7 @@
+import 'dart:convert';
 import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/ast/syntactic_entity.dart';
+import 'package:crypto/crypto.dart' as crypto;
 
 T? toT<T>(Expression expression) {
   if ('' is T && expression is SimpleStringLiteral) {
@@ -64,4 +66,8 @@ extension _ImportExtension on String {
   bool get isDartImport => contains('dart:');
 
   bool get isPackageImport => contains('package:');
+}
+
+extension MD5Extension on String {
+  String get md5 => crypto.md5.convert(utf8.encode(this)).toString();
 }

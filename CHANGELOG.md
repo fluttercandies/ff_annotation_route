@@ -1,3 +1,7 @@
+## 8.0.0-dev.4
+
+* Support fix Class Name conflict. (notice: do not use the same class name in one package, we can't export them correctly)
+
 ## 8.0.0-dev.3
 
 * Brought `ignore_for_file` front.

@@ -35,22 +35,72 @@ class RouteGenerator {
 
   bool get hasAnnotationRoute => _lib != null && _fileInfoList.isNotEmpty;
 
-  String get import =>
+  String get packageImport =>
       "import 'package:${packageNode.name}/${packageNode.name}_route.dart';";
 
-  String get export {
+  // get imports in root
+  String get imports {
     if (_fileInfoList.isNotEmpty) {
       final StringBuffer sb = StringBuffer();
 
-      if (!isRoot) {
-        sb.write('library ${packageNode.name}_route;\n');
+      _fileInfoList
+          .sort((FileInfo a, FileInfo b) => a.export!.compareTo(b.export!));
+      List<String> classNames = <String>[];
+      int pageCount = 0;
+      for (final FileInfo info in _fileInfoList) {
+        if (isRoot) {
+          classNames = <String>[];
+        }
+        String import = isRoot
+            ? "import '${info.export}'"
+            : packageImport.replaceRange(packageImport.length - 1, null, '');
+        for (final RouteInfo route in info.routes) {
+          if (route.classNameConflictPrefix != null) {
+            sb.write('$import as ${route.classNameConflictPrefix};\n');
+            classNames.add(route.className);
+          }
+          pageCount++;
+        }
+
+        if (isRoot) {
+          if (classNames.length != info.routes.length || classNames.isEmpty) {
+            if (classNames.isNotEmpty) {
+              import += ' hide ';
+              import += classNames.join(',');
+            }
+            sb.write('$import;\n');
+          }
+        }
       }
+      if (!isRoot) {
+        String import =
+            packageImport.replaceRange(packageImport.length - 1, null, '');
+        if (classNames.length != pageCount || classNames.isEmpty) {
+          if (classNames.isNotEmpty) {
+            import += ' hide ';
+            import += classNames.join(',');
+          }
+          sb.write('$import;\n');
+        }
+      }
+      return sb.toString();
+    }
+    return '';
+  }
+
+  // for package
+  String get export {
+    if (_fileInfoList.isNotEmpty) {
+      assert(!isRoot);
+      final StringBuffer sb = StringBuffer();
+
+      sb.write('library ${packageNode.name}_route;\n');
 
       _fileInfoList
           .sort((FileInfo a, FileInfo b) => a.export!.compareTo(b.export!));
 
       for (final FileInfo info in _fileInfoList) {
-        sb.write("${isRoot ? "import" : "export"} '${info.export}';\n");
+        sb.write("export '${info.export}';\n");
       }
       return sb.toString();
     }
@@ -201,6 +251,7 @@ class RouteGenerator {
                   fields: parent.members.whereType<FieldDeclaration>().toList(),
                   routePath: routePath,
                   classDeclarationImpl: parent,
+                  node: this,
                 );
                 fileInfo.routes.add(routeInfo);
               }
@@ -244,13 +295,6 @@ class RouteGenerator {
 
     final Set<String> imports = <String>{};
 
-    /// Nodes import
-    if (isRoot && nodes != null && nodes.isNotEmpty) {
-      for (final RouteGenerator node in nodes) {
-        imports.add('${node.import}\n');
-      }
-    }
-
     if (!isRoot) {
       /// Export
       sb.write(export);
@@ -258,7 +302,6 @@ class RouteGenerator {
 
     /// Create route generator
     if (isRoot) {
-      imports.addAll(export.split('\n'));
       imports.add('import \'package:flutter/widgets.dart\';');
       imports.add(
         'import \'package:ff_annotation_route_library/ff_annotation_route_library.dart\';',
@@ -269,6 +312,7 @@ class RouteGenerator {
           .map((FileInfo it) => it.routes)
           .expand((List<RouteInfo> it) => it)
           .toList();
+
       if (nodes != null && nodes.isNotEmpty) {
         routes.addAll(
           nodes
@@ -281,6 +325,32 @@ class RouteGenerator {
       routes.sort(
         (RouteInfo a, RouteInfo b) => a.ffRoute.name.compareTo(b.ffRoute.name),
       );
+
+      final Map<String, List<RouteInfo>> conflictClassNames =
+          routes.groupListsBy((RouteInfo element) => element.className);
+
+      for (final String key in conflictClassNames.keys) {
+        final List<RouteInfo>? routes = conflictClassNames[key];
+        // ClassName is conflict
+        if (routes != null && routes.length > 1) {
+          for (final RouteInfo route in routes) {
+            route.classNameConflictPrefix =
+                route.className.toLowerCase() + route.ffRoute.name.md5;
+          }
+        }
+      }
+
+      /// Nodes import
+      ///
+      if (nodes != null && nodes.isNotEmpty) {
+        for (final RouteGenerator node in nodes) {
+          // add root imports
+          imports.addAll(node.imports.split('\n'));
+        }
+      }
+
+      // add root imports
+      imports.addAll(this.imports.split('\n'));
 
       for (final RouteInfo it in routes) {
         if (it.ffRoute.argumentImports != null &&

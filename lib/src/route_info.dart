@@ -9,6 +9,7 @@ import 'package:ff_annotation_route/src/arg/args.dart';
 import 'package:ff_annotation_route_core/ff_annotation_route_core.dart';
 
 //import 'package:io/ansi.dart'
+import 'route_generator.dart';
 import 'utils/camel_under_score_converter.dart';
 import 'utils/convert.dart';
 
@@ -20,6 +21,7 @@ class RouteInfo {
     this.fields,
     this.routePath,
     this.classDeclarationImpl,
+    required this.node,
   });
 
   final String className;
@@ -29,6 +31,12 @@ class RouteInfo {
   final String? routePath;
   final Map<String?, List<String>> constructorsMap = <String?, List<String>>{};
   final ClassDeclarationImpl? classDeclarationImpl;
+  final RouteGenerator node;
+
+  String? classNameConflictPrefix;
+
+  String get classNameConflictPrefixText =>
+      classNameConflictPrefix != null ? '$classNameConflictPrefix.' : '';
 
   String? get constructorsString {
     if (constructorsMap.isNotEmpty) {
@@ -59,7 +67,7 @@ class RouteInfo {
         return '${getConstructorString(constructors!.first)}';
       }
     }
-    return '$className()';
+    return classNameConflictPrefixText + '$className()';
   }
 
   String get caseString {
@@ -140,6 +148,7 @@ class RouteInfo {
     if (!hasParameters) {
       constructorsMap[getConstructor(rawConstructor)] ??= <String>[];
     }
+
     if (rawConstructor.constKeyword != null && !hasParameters) {
       constructorString = 'const ' + constructorString;
     }
@@ -221,7 +230,7 @@ class RouteInfo {
     if (rawConstructor.name != null) {
       ctor += '.${rawConstructor.name.toString()}';
     }
-    return ctor;
+    return classNameConflictPrefixText + ctor;
   }
 
   void getRouteConst(bool enableSuperArguments, StringBuffer sb) {
