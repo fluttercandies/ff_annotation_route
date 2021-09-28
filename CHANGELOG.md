@@ -1,3 +1,7 @@
+## 8.0.0-dev.5
+
+* Apply trailing comma to safe arguments for the `require_trailing_commas` lint rule.
+
 ## 8.0.0-dev.4
 
 * Support fix Class Name conflict. (notice: do not use the same class name in one package, we can't export them correctly)
