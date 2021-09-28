@@ -101,7 +101,7 @@ class RouteInfo {
       value += ',${parameter.defaultValue}';
     }
 
-    value += ')';
+    value += ',)';
     if (Args().enableNullSafety && !type.endsWith('?')) {
       value += '!';
     }
@@ -134,7 +134,7 @@ class RouteInfo {
         } else {
           final String type = getParameterType(name, item, rawConstructor);
 
-          constructorString += 'asT<$type>(safeArguments[\'$name\'])';
+          constructorString += 'asT<$type>(safeArguments[\'$name\'],)';
           if (Args().enableNullSafety && !type.endsWith('?')) {
             constructorString += '!';
           }
