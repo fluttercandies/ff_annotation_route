@@ -10,14 +10,13 @@ dependencies:
   analyzer: ^2.2.0
   args: ^2.2.0
   collection: ^1.15.0
-  crypto: ^3.0.1  
+  crypto: ^3.0.1
   dart_style: ^2.1.0
   ff_annotation_route_core: ^2.0.2
   io: ^1.0.3
   meta: ^1.7.0
-  path: ^1.8.0    
+  path: ^1.8.0
   yaml: ^3.1.0
-
 
 executables:
   ff_route: main
