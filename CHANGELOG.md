@@ -1,3 +1,7 @@
+## 8.0.0-dev.6
+
+* Use constants value from core in the template.
+
 ## 8.0.0-dev.5
 
 * Apply trailing comma to safe arguments for the `require_trailing_commas` lint rule.
