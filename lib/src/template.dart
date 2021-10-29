@@ -1,5 +1,3 @@
-import 'package:ff_annotation_route_core/ff_annotation_route_core.dart';
-
 Type typeOf<T>() => T;
 
 const String fileHeader = '''// GENERATED CODE - DO NOT MODIFY MANUALLY
@@ -22,8 +20,8 @@ FFRouteSettings getRouteSettings({
   switch (name) {
 {0}   default:
     return FFRouteSettings(
-      name: ${FFRoute.notFoundName},
-      routeName: ${FFRoute.notFoundRouteName},
+      name: FFRoute.notFoundName,
+      routeName: FFRoute.notFoundRouteName,
       widget: notFoundWidget,
     );
   }
