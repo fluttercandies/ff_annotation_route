@@ -12,7 +12,7 @@ dependencies:
   collection: ^1.15.0
   crypto: ^3.0.1
   dart_style: ^2.1.0
-  ff_annotation_route_core: ^2.0.2
+  ff_annotation_route_core: ^2.0.3
   io: ^1.0.3
   meta: ^1.7.0
   path: ^1.8.0

@@ -1,3 +1,5 @@
+import 'package:ff_annotation_route_core/ff_annotation_route_core.dart';
+
 Type typeOf<T>() => T;
 
 const String fileHeader = '''// GENERATED CODE - DO NOT MODIFY MANUALLY
@@ -9,12 +11,21 @@ const String fileHeader = '''// GENERATED CODE - DO NOT MODIFY MANUALLY
 
 /// ignore_for_file: argument_type_not_assignable
 
-const String rootFile = """
-FFRouteSettings getRouteSettings({{1} String name, Map<String, dynamic>{2} arguments,Widget{2} notFoundWidget,}) {
-  final Map<String, dynamic> safeArguments =arguments ?? const <String, dynamic>{};
+const String rootFile = '''
+FFRouteSettings getRouteSettings({
+  {1} String name,
+  Map<String, dynamic>{2} arguments,
+  Widget{2} notFoundWidget,
+}) {
+  final Map<String, dynamic> safeArguments =
+      arguments ?? const <String, dynamic>{};
   switch (name) {
 {0}   default:
-      return  FFRouteSettings(name:'404',routeName: '404_page',widget:notFoundWidget,);
+    return FFRouteSettings(
+      name: ${FFRoute.notFoundName},
+      routeName: ${FFRoute.notFoundRouteName},
+      widget: notFoundWidget,
+    );
   }
 }
-""";
+''';
