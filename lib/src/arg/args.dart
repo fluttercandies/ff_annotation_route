@@ -1,6 +1,7 @@
 import 'package:ff_annotation_route/src/arg/null_safety.dart';
 
 import 'const_ignore.dart';
+import 'exclude_packages.dart';
 import 'git.dart';
 import 'help.dart';
 import 'name.dart';
@@ -13,12 +14,14 @@ import 'super_arguments.dart';
 
 class Args {
   factory Args() => _args ??= Args._();
+
   Args._()
       : help = Help(),
         path = Path(),
         name = Name(),
         output = Output(),
         git = Git(),
+        excludePackages = ExcludePackages(),
         routesFileOutput = RoutesFileOutput(),
         constIgnore = ConstIgnore(),
         package = Package(),
@@ -31,6 +34,7 @@ class Args {
   final Name name;
   final Output output;
   final Git git;
+  final ExcludePackages excludePackages;
   final RoutesFileOutput routesFileOutput;
   final ConstIgnore constIgnore;
   final Package package;
@@ -50,6 +54,8 @@ class Args {
       constIgnore.value != null ? RegExp(constIgnore.value!) : null;
 
   String? get outputPath => output.value;
+
+  List<String> get excludedPackagesName => excludePackages.value ?? <String>[];
 
   String? get routesFileOutputPath => routesFileOutput.value;
 

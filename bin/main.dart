@@ -83,7 +83,10 @@ Future<void> main(List<String> arguments) async {
             orElse: () => null,
           ) !=
           null;
-      return matchPackage && matchFFRoute;
+      final bool isNotExcluded = x.name != null &&
+          x.name!.isNotEmpty &&
+          !Args().excludedPackagesName.contains(x.name!);
+      return matchPackage && matchFFRoute && isNotExcluded;
     },
   ).toList();
 
