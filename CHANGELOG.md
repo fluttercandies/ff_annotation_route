@@ -1,8 +1,8 @@
 ## 8.0.0
 
 * Support Flutter 2.5.0, basically with the type alias support.
-  Also drop supports below Flutter 2.5.0 .
-* Revert the `required` keyword extra handling since this fix has addressed in the `analyzer`.
+  Also, drop supports below Flutter 2.5.0 .
+* Revert the `required` keyword extra handling since this fix has been addressed in the `analyzer`.
 * De-duplicate all imports.
 * Sort imports alphabetically.
 * Brought `ignore_for_file` front.
