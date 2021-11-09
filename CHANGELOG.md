@@ -1,29 +1,15 @@
-## 8.0.0-dev.6
+## 8.0.0
 
-* Use constants value from core in the template.
-
-## 8.0.0-dev.5
-
-* Apply trailing comma to safe arguments for the `require_trailing_commas` lint rule.
-
-## 8.0.0-dev.4
-
-* Support fix Class Name conflict. (notice: do not use the same class name in one package, we can't export them correctly)
-
-## 8.0.0-dev.3
-
-* Brought `ignore_for_file` front.
-* Apply trailing comma to super arguments for the `require_trailing_commas` lint rule.
-
-## 8.0.0-dev.2
-
+* Support Flutter 2.5.0, basically with the type alias support.
+  Also drop supports below Flutter 2.5.0 .
+* Revert the `required` keyword extra handling since this fix has addressed in the `analyzer`.
 * De-duplicate all imports.
 * Sort imports alphabetically.
-
-## 8.0.0-dev.1
-
-* Support Flutter 2.5.0, basically with the type alias support. Also drop supports below Flutter 2.5.0 .
-* Revert the `required` keyword extra handling since this fix has addressed in the `analyzer`.
+* Brought `ignore_for_file` front.
+* Apply trailing comma to safe/super arguments for the `require_trailing_commas` lint rule.
+* Support fix class names conflict.
+  (Do not use the same class name in one package, they can't be exported correctly.)
+* Use constants value from core in the template.
 
 ## 7.0.3
 
