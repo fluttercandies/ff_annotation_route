@@ -33,6 +33,9 @@ Provide a route generator to create route map quickly by annotations.
       - [Push](#push-1)
         - [Push name](#push-name-1)
         - [Push name with arguments](#push-name-with-arguments-1)
+    - [GetX](#getx)
+      - [How to use](#how-to-use)
+      - [How to set the parameter of GetPageRoute](#how-to-set-the-parameter-of-getpageroute)
     - [Code Hints](#code-hints)
 
 ## Usage
@@ -47,8 +50,8 @@ Add the package to `dependencies` in your project/packages's `pubspec.yaml`
 environment:
   sdk: '>=2.12.0 <3.0.0'
 dependencies:
-  ff_annotation_route_core: ^2.0.2
-  ff_annotation_route_library: ^2.0.1
+  ff_annotation_route_core: ^2.0.0
+  ff_annotation_route_library: ^3.0.0
 ``` 
 
 *  non-null-safety
@@ -139,6 +142,7 @@ class TestPageE extends StatelessWidget {
 | description     | The description of the route.                                                         | ''       |
 | exts            | The extend arguments.                                                                 | -        |
 | argumentImports | The imports of arguments. For example, class/enum argument should provide import url. you can use @FFArgumentImport() instead now. | -        |
+| codes | to support something can't write in annotation, it will be hadnled as a code when generate route. [see](https://github.com/fluttercandies/ff_annotation_route/tree/master/example_getx) | -        |
 
 ### Generate Route File
 
@@ -171,21 +175,22 @@ Go to your project's root and execute command.
 Available commands:
 
 ```markdown
--h, --[no-]help                Help usage
--p, --path                     Flutter project root path
-                               (defaults to ".")
--n, --name                     Routes constant class name.
-                               (defaults to "Routes")
--o, --output                   The path of main project route file and helper file.It is relative to the lib directory
--g, --git                      scan git lib(you should specify package names and split multiple by ,)
-    --routes-file-output       The path of routes file. It is relative to the lib directory
-    --const-ignore             The regular to ignore some route consts
-    --[no-]package             Is it a package
+-h, --[no-]help               Help usage
+-p, --path                    Flutter project root path
+                              (defaults to ".")
+-n, --name                    Routes constant class name.
+                              (defaults to "Routes")
+-o, --output                  The path of main project route file and helper file.It is relative to the lib directory
+-g, --git                     scan git lib(you should specify package names and split multiple by ,)
+    --exclude-packages        Exclude given packages from scanning
+    --routes-file-output      The path of routes file. It is relative to the lib directory
+    --const-ignore            The regular to ignore some route consts
+    --[no-]package            Is this a package
     --[no-]super-arguments    Whether generate page arguments helper class
--s, --[no-]save                Whether save the arguments into the local
-                               It will execute the local arguments if run "ff_route" without any arguments
-    --[no-]null-safety         enable null-safety
-                               (defaults to on)
+-s, --[no-]save               Whether save the arguments into the local
+                              It will execute the local arguments if run "ff_route" without any arguments
+    --[no-]null-safety        enable null-safety
+                              (defaults to on)
 ```
 ### Navigator 1.0
 
@@ -417,6 +422,142 @@ you can find more demo in [test_page_c.dart](https://github.com/fluttercandies/f
      }
   )
 ```
+
+### GetX
+
+#### How to use
+Getx is supported, you just need to convert `FFRouteSettings` to `GetPageRoute`
+
+``` dart
+void main() => runApp(const MyApp());
+
+class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return GetMaterialApp(
+      title: 'ff_annotation_route demo',
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      initialRoute: Routes.fluttercandiesMainpage.name,
+      onGenerateRoute: (RouteSettings settings) {
+        FFRouteSettings ffRouteSettings = getRouteSettings(
+          name: settings.name!,
+          arguments: settings.arguments as Map<String, dynamic>?,
+          notFoundPageBuilder: () => Scaffold(
+            appBar: AppBar(),
+            body: const Center(
+              child: Text('not find page'),
+            ),
+          ),
+        );
+        Bindings? binding;
+        if (ffRouteSettings.codes != null) {
+          binding = ffRouteSettings.codes!['binding'] as Bindings?;
+        }
+
+        Transition? transition;
+        bool opaque = true;
+        if (ffRouteSettings.pageRouteType != null) {
+          switch (ffRouteSettings.pageRouteType) {
+            case PageRouteType.cupertino:
+              transition = Transition.cupertino;
+              break;
+            case PageRouteType.material:
+              transition = Transition.downToUp;
+              break;
+            case PageRouteType.transparent:
+              opaque = false;
+              break;
+            default:
+          }
+        }
+
+        return GetPageRoute(
+          binding: binding,
+          opaque: opaque,
+          settings: ffRouteSettings,
+          transition: transition,
+          page: () => ffRouteSettings.builder(),
+        );
+      },
+    );
+  }
+}
+```
+
+#### How to set the parameter of GetPageRoute
+
+for example:
+'Bindings' is not const class, so it can't write in annotation, but you can set it as following codes:
+
+1. define it in `codes`
+2. add import url in `argumentImports`
+3. get it in `onGenerateRoute`
+
+``` dart
+@FFRoute(
+  name: "/BindingsPage",
+  routeName: 'BindingsPage',
+  description: 'how to use Bindings with Annotation.',
+  codes: <String, String>{
+    'binding': 'Bindings1()',
+  },
+  argumentImports: <String>[
+    'import \'package:example_getx/src/bindings/bindings1.dart\';'
+  ],
+)
+
+```
+
+``` dart
+      onGenerateRoute: (RouteSettings settings) {
+        FFRouteSettings ffRouteSettings = getRouteSettings(
+          name: settings.name!,
+          arguments: settings.arguments as Map<String, dynamic>?,
+          notFoundPageBuilder: () => Scaffold(
+            appBar: AppBar(),
+            body: const Center(
+              child: Text('not find page'),
+            ),
+          ),
+        );
+        Bindings? binding;
+        if (ffRouteSettings.codes != null) {
+          binding = ffRouteSettings.codes!['binding'] as Bindings?;
+        }
+
+        Transition? transition;
+        bool opaque = true;
+        if (ffRouteSettings.pageRouteType != null) {
+          switch (ffRouteSettings.pageRouteType) {
+            case PageRouteType.cupertino:
+              transition = Transition.cupertino;
+              break;
+            case PageRouteType.material:
+              transition = Transition.downToUp;
+              break;
+            case PageRouteType.transparent:
+              opaque = false;
+              break;
+            default:
+          }
+        }
+
+        return GetPageRoute(
+          binding: binding,
+          opaque: opaque,
+          settings: ffRouteSettings,
+          transition: transition,
+          page: () => ffRouteSettings.builder(),
+        );
+      },
+
+```
+
 
 ### Code Hints
 

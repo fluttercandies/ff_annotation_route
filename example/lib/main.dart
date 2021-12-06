@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
         return onGenerateRoute(
           settings: settings,
           getRouteSettings: getRouteSettings,
-          notFoundWidget: Scaffold(
+          notFoundPageBuilder: () => Scaffold(
             appBar: AppBar(),
             body: const Center(
               child: Text('not find page'),
@@ -32,11 +32,13 @@ class MyApp extends StatelessWidget {
                     Routes.fluttercandiesDemogrouppage.name) {
               return ffRouteSettings;
             }
-            return ffRouteSettings.copyWith(
-                widget: CommonWidget(
-              child: ffRouteSettings.widget,
-              title: ffRouteSettings.routeName,
-            ));
+
+            return ffRouteSettings.copyWith(builder: () {
+              return CommonWidget(
+                child: ffRouteSettings.builder(),
+                title: ffRouteSettings.routeName,
+              );
+            });
           },
         );
       },

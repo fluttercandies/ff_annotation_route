@@ -87,6 +87,9 @@ class RoutesFileGenerator {
               it.argumentsClass!.contains('@required')) {
             imports.add(requiredS);
           }
+          if (it.argumentsClass!.contains('Key')) {
+            imports.add(requiredS);
+          }
           if (it.ffRoute.argumentImports != null &&
               it.ffRoute.argumentImports!.isNotEmpty) {
             imports.addAll(it.ffRoute.argumentImports!);

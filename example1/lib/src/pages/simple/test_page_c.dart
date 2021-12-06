@@ -42,10 +42,10 @@ class TestPageC extends StatelessWidget {
             final FFPage<void> page = routeSettings.toFFPage<void>(
                 // make sure it has unique key
                 key: delegate.getUniqueKey(),
-                widget: CommonWidget(
-                  child: TestPageA(),
-                  routeName: routeSettings.routeName,
-                ));
+                builder: () => CommonWidget(
+                      child: TestPageA(),
+                      routeName: routeSettings.routeName,
+                    ));
 
             delegate.push<void>(page);
           },

@@ -37,7 +37,7 @@ import 'src/pages/simple/test_page_c_copy_copy.dart'
 FFRouteSettings getRouteSettings({
   required String name,
   Map<String, dynamic>? arguments,
-  Widget? notFoundWidget,
+  PageBuilder? notFoundPageBuilder,
 }) {
   final Map<String, dynamic> safeArguments =
       arguments ?? const <String, dynamic>{};
@@ -46,8 +46,10 @@ FFRouteSettings getRouteSettings({
       return FFRouteSettings(
         name: name,
         arguments: arguments,
-        widget: testpagebf579848b341a854d92dd7bfb0a9adf6c.TestPageB(
-          argument: asT<String?>(safeArguments['argument']),
+        builder: () => testpagebf579848b341a854d92dd7bfb0a9adf6c.TestPageB(
+          argument: asT<String?>(
+            safeArguments['argument'],
+          ),
         ),
         routeName: 'testPageB ',
         pageRouteType: PageRouteType.material,
@@ -58,8 +60,10 @@ FFRouteSettings getRouteSettings({
       return FFRouteSettings(
         name: name,
         arguments: arguments,
-        widget: testpageba7e2423296cea41a98c971570832499c.TestPageB(
-          argument: asT<String?>(safeArguments['argument']),
+        builder: () => testpageba7e2423296cea41a98c971570832499c.TestPageB(
+          argument: asT<String?>(
+            safeArguments['argument'],
+          ),
         ),
         routeName: 'testPageB ',
         pageRouteType: PageRouteType.material,
@@ -70,8 +74,10 @@ FFRouteSettings getRouteSettings({
       return FFRouteSettings(
         name: name,
         arguments: arguments,
-        widget: testpagebe750dc97cdd9ac79db01471ef9768749.TestPageB(
-          argument: asT<String?>(safeArguments['argument']),
+        builder: () => testpagebe750dc97cdd9ac79db01471ef9768749.TestPageB(
+          argument: asT<String?>(
+            safeArguments['argument'],
+          ),
         ),
         routeName: 'testPageB ',
         pageRouteType: PageRouteType.material,
@@ -82,8 +88,10 @@ FFRouteSettings getRouteSettings({
       return FFRouteSettings(
         name: name,
         arguments: arguments,
-        widget: testpageb1afeb9c992bb2f1098d1acc6becb2a6c.TestPageB(
-          argument: asT<String?>(safeArguments['argument']),
+        builder: () => testpageb1afeb9c992bb2f1098d1acc6becb2a6c.TestPageB(
+          argument: asT<String?>(
+            safeArguments['argument'],
+          ),
         ),
         routeName: 'testPageB ',
         pageRouteType: PageRouteType.material,
@@ -94,33 +102,54 @@ FFRouteSettings getRouteSettings({
       return FFRouteSettings(
         name: name,
         arguments: arguments,
-        widget: <String, Widget>{
+        builder: () => <String, Widget>{
           '': testpaged6c4b232f91f77ae9eb7103223363b84e.TestPageD(
-            asT<String?>(safeArguments['argument']),
-            optional: asT<bool?>(safeArguments['optional'], false),
-            id: asT<String?>(safeArguments['id'], 'flutterCandies'),
+            asT<String?>(
+              safeArguments['argument'],
+            ),
+            optional: asT<bool?>(
+              safeArguments['optional'],
+              false,
+            ),
+            id: asT<String?>(
+              safeArguments['id'],
+              'flutterCandies',
+            ),
           ),
           'another0':
               testpaged6c4b232f91f77ae9eb7103223363b84e.TestPageD.another0(
-            argument: asT<String?>(safeArguments['argument']),
+            argument: asT<String?>(
+              safeArguments['argument'],
+            ),
           ),
           'another1':
               testpaged6c4b232f91f77ae9eb7103223363b84e.TestPageD.another1(
-            asT<String?>(safeArguments['argument']),
-            asT<bool?>(safeArguments['optional'], false),
+            asT<String?>(
+              safeArguments['argument'],
+            ),
+            asT<bool?>(
+              safeArguments['optional'],
+              false,
+            ),
           ),
           'another2':
               testpaged6c4b232f91f77ae9eb7103223363b84e.TestPageD.another2(
-            asT<String?>(safeArguments['argument']),
+            asT<String?>(
+              safeArguments['argument'],
+            ),
           ),
           'another3':
               testpaged6c4b232f91f77ae9eb7103223363b84e.TestPageD.another3(
-            asT<String?>(safeArguments['argument']),
-            optional: asT<bool?>(safeArguments['optional']),
+            asT<String?>(
+              safeArguments['argument'],
+            ),
+            optional: asT<bool?>(
+              safeArguments['optional'],
+            ),
           ),
         }[safeArguments[constructorName] != null
             ? safeArguments[constructorName] as String
-            : ''],
+            : '']!,
         routeName: 'testPageD ',
         pageRouteType: PageRouteType.material,
         description: "This is test ' page D.",
@@ -130,7 +159,7 @@ FFRouteSettings getRouteSettings({
       return FFRouteSettings(
         name: name,
         arguments: arguments,
-        widget: TestPageA(),
+        builder: () => TestPageA(),
         routeName: 'testPageA',
         description: 'This is test page A.',
         exts: <String, dynamic>{'group': 'Simple', 'order': 0},
@@ -139,7 +168,7 @@ FFRouteSettings getRouteSettings({
       return FFRouteSettings(
         name: name,
         arguments: arguments,
-        widget: testpagec23b284ff92265eaaa6c065105cf47f2a.TestPageC(),
+        builder: () => testpagec23b284ff92265eaaa6c065105cf47f2a.TestPageC(),
         routeName: 'testPageC',
         description: 'This is test page c in other module.',
         exts: <String, dynamic>{'group': 'Simple', 'order': 2},
@@ -148,22 +177,39 @@ FFRouteSettings getRouteSettings({
       return FFRouteSettings(
         name: name,
         arguments: arguments,
-        widget: <String, Widget>{
+        builder: () => <String, Widget>{
           '': TestPageCC(
-            asT<int>(safeArguments['testArg'])!,
-            key: asT<Key?>(safeArguments['key']),
-            testRequiredArg: asT<String>(safeArguments['testRequiredArg'])!,
-            testBoolean: asT<bool?>(safeArguments['testBoolean']),
+            asT<int>(
+              safeArguments['testArg'],
+            )!,
+            key: asT<Key?>(
+              safeArguments['key'],
+            ),
+            testRequiredArg: asT<String>(
+              safeArguments['testRequiredArg'],
+            )!,
+            testBoolean: asT<bool?>(
+              safeArguments['testBoolean'],
+            ),
           ),
           'positioned': TestPageCC.positioned(
-            asT<int>(safeArguments['testArg'])!,
-            asT<bool?>(safeArguments['testBoolean']),
-            asT<String>(safeArguments['testRequiredArg'], '')!,
-            asT<Key?>(safeArguments['key']),
+            asT<int>(
+              safeArguments['testArg'],
+            )!,
+            asT<bool?>(
+              safeArguments['testBoolean'],
+            ),
+            asT<String>(
+              safeArguments['testRequiredArg'],
+              '',
+            )!,
+            asT<Key?>(
+              safeArguments['key'],
+            ),
           ),
         }[safeArguments[constructorName] != null
             ? safeArguments[constructorName] as String
-            : ''],
+            : '']!,
         routeName: 'testPageCC',
         description: 'This is test page CC.',
       );
@@ -171,7 +217,7 @@ FFRouteSettings getRouteSettings({
       return FFRouteSettings(
         name: name,
         arguments: arguments,
-        widget: testpagec24a74dc0abd3133051a047c62e4d4227.TestPageC(),
+        builder: () => testpagec24a74dc0abd3133051a047c62e4d4227.TestPageC(),
         routeName: 'testPageC',
         description:
             'This is test page c has the same name with moudle_a TestPageC.',
@@ -181,7 +227,7 @@ FFRouteSettings getRouteSettings({
       return FFRouteSettings(
         name: name,
         arguments: arguments,
-        widget: testpagecf10ae9a1919e70b4efb736483bc2992d.TestPageC(),
+        builder: () => testpagecf10ae9a1919e70b4efb736483bc2992d.TestPageC(),
         routeName: 'testPageC',
         description:
             'This is test page c has the same name with moudle_a TestPageC.',
@@ -191,7 +237,7 @@ FFRouteSettings getRouteSettings({
       return FFRouteSettings(
         name: name,
         arguments: arguments,
-        widget: testpaged05a916dda13cd9d2b973ee75b8e74f9d.TestPageD(),
+        builder: () => testpaged05a916dda13cd9d2b973ee75b8e74f9d.TestPageD(),
         routeName: 'testPageA',
         description: 'This is test page D. in module a',
         exts: <String, dynamic>{'group': 'Simple', 'order': 0},
@@ -200,19 +246,25 @@ FFRouteSettings getRouteSettings({
       return FFRouteSettings(
         name: name,
         arguments: arguments,
-        widget: <String, Widget>{
+        builder: () => <String, Widget>{
           '': TestPageE(
-            testMode: asT<TestMode?>(safeArguments['testMode'],
-                const TestMode(id: 2, isTest: false)),
-            testMode1: asT<TestMode1?>(safeArguments['testMode1']),
+            testMode: asT<TestMode?>(
+              safeArguments['testMode'],
+              const TestMode(id: 2, isTest: false),
+            ),
+            testMode1: asT<TestMode1?>(
+              safeArguments['testMode1'],
+            ),
           ),
           'test': TestPageE.test(),
           'requiredC': TestPageE.requiredC(
-            testMode: asT<TestMode?>(safeArguments['testMode']),
+            testMode: asT<TestMode?>(
+              safeArguments['testMode'],
+            ),
           ),
         }[safeArguments[constructorName] != null
             ? safeArguments[constructorName] as String
-            : ''],
+            : '']!,
         routeName: 'testPageE',
         description: 'Show how to push new page with arguments(class)',
         exts: <String, dynamic>{'group': 'Complex', 'order': 1},
@@ -221,7 +273,7 @@ FFRouteSettings getRouteSettings({
       return FFRouteSettings(
         name: name,
         arguments: arguments,
-        widget: TestPageF(),
+        builder: () => TestPageF(),
         routeName: 'testPageA',
         description: 'This is test page F. in module a',
         exts: <String, dynamic>{'group': 'Simple', 'order': 0},
@@ -230,9 +282,10 @@ FFRouteSettings getRouteSettings({
       return FFRouteSettings(
         name: name,
         arguments: arguments,
-        widget: DemoGroupPage(
+        builder: () => DemoGroupPage(
           keyValue: asT<MapEntry<String, List<DemoRouteResult>>>(
-              safeArguments['keyValue'])!,
+            safeArguments['keyValue'],
+          )!,
         ),
         routeName: 'DemoGroupPage',
       );
@@ -240,14 +293,14 @@ FFRouteSettings getRouteSettings({
       return FFRouteSettings(
         name: name,
         arguments: arguments,
-        widget: MainPage(),
+        builder: () => MainPage(),
         routeName: 'MainPage',
       );
     default:
       return FFRouteSettings(
-        name: '404',
-        routeName: '404_page',
-        widget: notFoundWidget,
+        name: FFRoute.notFoundName,
+        routeName: FFRoute.notFoundRouteName,
+        builder: notFoundPageBuilder ?? () => Container(),
       );
   }
 }

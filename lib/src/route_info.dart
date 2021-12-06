@@ -62,7 +62,7 @@ class RouteInfo {
               '\'${rawConstructor.name ?? ''}\': ${getConstructorString(rawConstructor)}';
           keyValues += ',';
         }
-        return '<String,Widget>{$keyValues}[safeArguments[constructorName]!=null? safeArguments[constructorName] as String:\'\']';
+        return '<String,Widget>{$keyValues}[safeArguments[constructorName]!=null? safeArguments[constructorName] as String:\'\']${Args().enableNullSafety ? '!' : ''}';
       } else {
         return '${getConstructorString(constructors!.first)}';
       }
@@ -71,12 +71,23 @@ class RouteInfo {
   }
 
   String get caseString {
+    String codes = '';
+    if (ffRoute.codes != null && ffRoute.codes!.isNotEmpty) {
+      codes += 'codes: <String,dynamic>{';
+
+      for (final String key in ffRoute.codes!.keys) {
+        codes += '\'$key\':${ffRoute.codes![key]},';
+      }
+      codes += '},';
+    }
+
     return '''case ${safeToString(ffRoute.name)}:
 
     return FFRouteSettings(
       name: name,
       arguments: arguments,
-      widget:  $constructor,
+      builder: () =>  $constructor,
+      $codes
       ${ffRoute.showStatusBar != true ? 'showStatusBar: ${ffRoute.showStatusBar},' : ''}
       ${ffRoute.routeName != '' ? 'routeName: ${safeToString(ffRoute.routeName)},' : ''}
       ${ffRoute.pageRouteType != null ? 'pageRouteType: ${ffRoute.pageRouteType},' : ''}

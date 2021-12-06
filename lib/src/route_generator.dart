@@ -191,7 +191,7 @@ class RouteGenerator {
                 PageRouteType? pageRouteType;
                 String? description;
                 Map<String, dynamic>? exts;
-
+                Map<String, String>? codes;
                 for (final Expression item in parameters) {
                   if (item is NamedExpressionImpl) {
                     String source;
@@ -230,6 +230,13 @@ class RouteGenerator {
                         source = source.replaceAll('\'', '"');
                         exts = json.decode(source) as Map<String, dynamic>?;
                         break;
+                      case 'codes:':
+                        source = source.substring(source.indexOf('{'));
+                        source = source.replaceAll("'''", '\'');
+                        source = source.replaceAll('"', '\'');
+                        source = source.replaceAll('\'', '"');
+                        codes = (json.decode(source) as Map<String, dynamic>?)
+                            ?.cast();
                     }
                   }
                 }
@@ -244,6 +251,7 @@ class RouteGenerator {
                     description: description ?? '',
                     exts: exts,
                     argumentImports: argumentImports,
+                    codes: codes,
                   ),
                   constructors: parent.members
                       .whereType<ConstructorDeclaration>()

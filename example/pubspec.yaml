@@ -18,8 +18,7 @@ environment:
 
 dependencies:
   cupertino_icons: ^1.0.2
-  ff_annotation_route_library: ^2.0.1
-
+  ff_annotation_route_library: ^3.0.0
   flutter:
     sdk: flutter
 

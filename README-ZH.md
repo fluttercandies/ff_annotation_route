@@ -35,6 +35,9 @@ Languages: [English](README.md) | 中文简体
       - [Push](#push-1)
         - [Push name](#push-name-1)
         - [Push name with arguments](#push-name-with-arguments-1)
+    - [GetX](#getx)
+      - [How to use](#how-to-use)
+      - [设置 GetPageRoute 的参数](#设置-getpageroute-的参数)
     - [Code Hints](#code-hints)
   - [来杯可乐](#来杯可乐)
 
@@ -50,8 +53,8 @@ Languages: [English](README.md) | 中文简体
 environment:
   sdk: '>=2.12.0 <3.0.0'
 dependencies:
-  ff_annotation_route_core: ^2.0.2
-  ff_annotation_route_library: ^2.0.1
+  ff_annotation_route_core: ^2.0.0
+  ff_annotation_route_library: ^3.0.0
 ``` 
 
 *  non-null-safety
@@ -141,7 +144,7 @@ class TestPageE extends StatelessWidget {
 | description   | 路由的描述                                    | ''       |
 | exts          | 其他扩展参数.                                 | -        |
 | argumentImports | 某些参数的导入.有一些参数是类或者枚举，需要指定它们的导入地址.现在你可以使用 @FFArgumentImport()来替代  | -        |
-
+| codes | 有些代码无法直接写在注释里面, 你可以使用该参数，生成路由的时候会生成对应代码. [see](https://github.com/fluttercandies/ff_annotation_route/tree/master/example_getx) | -        |
 ### 生成文件
 
 #### 环境
@@ -183,7 +186,8 @@ class TestPageE extends StatelessWidget {
 
 -n, --name                        路由常量类的名称，默认为 `Routes`。
 
--g, --git                         扫描 git 引用的 package，你需要指定 package 的名字，多个用 `,` 分开
+-g, --git                         扫描 git 引用的 package，你需要指定 package 的名字，多个用 `,` 分开    
+    --exclude-packages            排除某些 packages 被扫描
     --routes-file-output          routes 文件的输出目录路径，路径相对于主项目的lib文件夹
     --const-ignore                使用正则表达式忽略一些const(不是全部const都希望生成)
     --[no-]route-constants        是否在根项目中的 `xxx_route.dart` 生成全部路由的静态常量
@@ -421,6 +425,142 @@ class MyApp extends StatelessWidget {
      }
   )
 ```
+
+### GetX
+
+#### How to use
+支持 Getx 的用法, 你只需要转换 `FFRouteSettings` 成为 `GetPageRoute`
+
+``` dart
+void main() => runApp(const MyApp());
+
+class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return GetMaterialApp(
+      title: 'ff_annotation_route demo',
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      initialRoute: Routes.fluttercandiesMainpage.name,
+      onGenerateRoute: (RouteSettings settings) {
+        FFRouteSettings ffRouteSettings = getRouteSettings(
+          name: settings.name!,
+          arguments: settings.arguments as Map<String, dynamic>?,
+          notFoundPageBuilder: () => Scaffold(
+            appBar: AppBar(),
+            body: const Center(
+              child: Text('not find page'),
+            ),
+          ),
+        );
+        Bindings? binding;
+        if (ffRouteSettings.codes != null) {
+          binding = ffRouteSettings.codes!['binding'] as Bindings?;
+        }
+
+        Transition? transition;
+        bool opaque = true;
+        if (ffRouteSettings.pageRouteType != null) {
+          switch (ffRouteSettings.pageRouteType) {
+            case PageRouteType.cupertino:
+              transition = Transition.cupertino;
+              break;
+            case PageRouteType.material:
+              transition = Transition.downToUp;
+              break;
+            case PageRouteType.transparent:
+              opaque = false;
+              break;
+            default:
+          }
+        }
+
+        return GetPageRoute(
+          binding: binding,
+          opaque: opaque,
+          settings: ffRouteSettings,
+          transition: transition,
+          page: () => ffRouteSettings.builder(),
+        );
+      },
+    );
+  }
+}
+```
+
+#### 设置 GetPageRoute 的参数
+
+比如：
+'Bindings' 不是 const class, 所以它没法直接写在注解里面, 但是你可以这么做:
+
+1. 把它定义在 `codes` 里面
+2. 不要忘记添加对应的引用地址 `argumentImports`
+3. 最后在 `onGenerateRoute` 中获取到它
+
+``` dart
+@FFRoute(
+  name: "/BindingsPage",
+  routeName: 'BindingsPage',
+  description: 'how to use Bindings with Annotation.',
+  codes: <String, String>{
+    'binding': 'Bindings1()',
+  },
+  argumentImports: <String>[
+    'import \'package:example_getx/src/bindings/bindings1.dart\';'
+  ],
+)
+
+```
+
+``` dart
+      onGenerateRoute: (RouteSettings settings) {
+        FFRouteSettings ffRouteSettings = getRouteSettings(
+          name: settings.name!,
+          arguments: settings.arguments as Map<String, dynamic>?,
+          notFoundPageBuilder: () => Scaffold(
+            appBar: AppBar(),
+            body: const Center(
+              child: Text('not find page'),
+            ),
+          ),
+        );
+        Bindings? binding;
+        if (ffRouteSettings.codes != null) {
+          binding = ffRouteSettings.codes!['binding'] as Bindings?;
+        }
+
+        Transition? transition;
+        bool opaque = true;
+        if (ffRouteSettings.pageRouteType != null) {
+          switch (ffRouteSettings.pageRouteType) {
+            case PageRouteType.cupertino:
+              transition = Transition.cupertino;
+              break;
+            case PageRouteType.material:
+              transition = Transition.downToUp;
+              break;
+            case PageRouteType.transparent:
+              opaque = false;
+              break;
+            default:
+          }
+        }
+
+        return GetPageRoute(
+          binding: binding,
+          opaque: opaque,
+          settings: ffRouteSettings,
+          transition: transition,
+          page: () => ffRouteSettings.builder(),
+        );
+      },
+
+```
+
 ### Code Hints
 
 你能这样使用路由 'Routes.flutterCandiesTestPageE', 并且在编辑器中看到代码提示。

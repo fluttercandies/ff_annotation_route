@@ -13,7 +13,7 @@ const String rootFile = '''
 FFRouteSettings getRouteSettings({
   {1} String name,
   Map<String, dynamic>{2} arguments,
-  Widget{2} notFoundWidget,
+  PageBuilder{2} notFoundPageBuilder,
 }) {
   final Map<String, dynamic> safeArguments =
       arguments ?? const <String, dynamic>{};
@@ -22,7 +22,7 @@ FFRouteSettings getRouteSettings({
     return FFRouteSettings(
       name: FFRoute.notFoundName,
       routeName: FFRoute.notFoundRouteName,
-      widget: notFoundWidget,
+      builder: notFoundPageBuilder??()=>Container(),
     );
   }
 }

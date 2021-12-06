@@ -37,22 +37,22 @@ class MyApp extends StatelessWidget {
 
   final FFRouterDelegate _ffRouterDelegate = FFRouterDelegate(
     getRouteSettings: getRouteSettings,
-    notFoundWidget: Scaffold(
+    notFoundPageBuilder: () => Scaffold(
       appBar: AppBar(),
       body: const Center(
         child: Text('not find page'),
       ),
     ),
     pageWrapper: <T>(FFPage<T> ffPage) {
-      return ffPage.copyWith(
-        widget: ffPage.name == Routes.root ||
-                ffPage.name == Routes.demogrouppage.name
-            ? ffPage.widget
-            : CommonWidget(
-                child: ffPage.widget,
-                routeName: ffPage.routeName,
-              ),
-      );
+      if (ffPage.name == Routes.root ||
+          ffPage.name == Routes.demogrouppage.name) {
+        return ffPage.copyWith(
+            builder: () => CommonWidget(
+                  child: ffPage.builder(),
+                  routeName: ffPage.routeName,
+                ));
+      }
+      return ffPage;
     },
   );
   // This widget is the root of your application.

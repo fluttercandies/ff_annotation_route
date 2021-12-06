@@ -1,3 +1,11 @@
+## 9.0.0
+
+* Breaking change: use `FFRouteSettings.builder` instead of `FFRouteSettings.widget`
+* Breaking change: use `FFPage.builder` instead of `FFPage.widget`
+* Breaking change: use `notFoundPageBuilder` instead of `notFoundWidget` 
+* Add `FFRoute.codes` to support something can't write in annotation
+* Add GetX support
+
 ## 8.0.0
 
 * Support Flutter 2.5.0, basically with the type alias support.

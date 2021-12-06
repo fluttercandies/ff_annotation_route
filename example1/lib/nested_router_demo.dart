@@ -100,8 +100,8 @@ class ChildRouterPage extends StatelessWidget {
         getRouteSettings: getRouteSettings,
         pageWrapper: <T>(FFPage<T> ffPage) {
           return ffPage.copyWith(
-            widget: CommonWidget(
-              child: ffPage.widget,
+            builder: () => CommonWidget(
+              child: ffPage.builder(),
               routeName: ffPage.routeName,
             ),
           );
