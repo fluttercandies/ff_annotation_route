@@ -1,3 +1,7 @@
+## 9.0.1
+
+* Add unnecessary_import for generate files header
+
 ## 9.0.0
 
 * Breaking change: use `FFRouteSettings.builder` instead of `FFRouteSettings.widget`
