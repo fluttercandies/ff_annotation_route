@@ -1,6 +1,4 @@
 import 'package:ff_annotation_route_library/ff_annotation_route_library.dart';
-@FFArgumentImport()
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 @FFRoute(

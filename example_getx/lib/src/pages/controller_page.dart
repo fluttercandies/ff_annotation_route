@@ -3,7 +3,6 @@ import 'package:example_getx/src/controller/controller2.dart';
 import 'package:ff_annotation_route_library/ff_annotation_route_library.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/instance_manager.dart';
 
 @FFRoute(
   name: '/ControllerPage',

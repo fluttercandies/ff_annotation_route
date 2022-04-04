@@ -1,8 +1,6 @@
 import 'package:example_getx/example_getx_route.dart';
 import 'package:ff_annotation_route_library/ff_annotation_route_library.dart';
 import 'package:flutter/material.dart';
-import 'package:get/instance_manager.dart';
-import 'package:get/route_manager.dart';
 import 'example_getx_routes.dart';
 import 'package:get/get.dart';
 

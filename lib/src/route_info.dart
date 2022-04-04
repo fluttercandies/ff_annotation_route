@@ -56,18 +56,45 @@ class RouteInfo {
         (ConstructorDeclaration element) => element.name?.toString() == '_');
     if (constructors != null && constructors!.isNotEmpty) {
       if (constructors!.length > 1) {
-        String keyValues = '';
+        String switchCase = '';
+        String defaultCtor = '';
         for (final ConstructorDeclaration rawConstructor in constructors!) {
-          keyValues +=
-              '\'${rawConstructor.name ?? ''}\': ${getConstructorString(rawConstructor)}';
-          keyValues += ',';
+          final String ctorName = rawConstructor.name?.toString() ?? '';
+          if (ctorName.isEmpty) {
+            defaultCtor = '''
+case '':
+default:
+return ${getConstructorString(rawConstructor)};
+''';
+          } else {
+            switchCase += '''
+              case \'$ctorName\':
+              return ${getConstructorString(rawConstructor)};
+           ''';
+          }
+
+          // keyValues +=
+          //     '\'${rawConstructor.name ?? ''}\': ${getConstructorString(rawConstructor)}';
+          // keyValues += ',';
         }
-        return '<String,Widget>{$keyValues}[safeArguments[constructorName]!=null? safeArguments[constructorName] as String:\'\']${Args().enableNullSafety ? '!' : ''}';
+
+        switchCase += defaultCtor;
+
+        switchCase = '''
+         (){
+           final String ctorName = safeArguments[constructorName]!=null? safeArguments[constructorName] as String:\'\';
+         switch (ctorName) {
+            $switchCase
+          }
+         }
+        ''';
+
+        return switchCase;
       } else {
-        return '${getConstructorString(constructors!.first)}';
+        return ' () =>  ${getConstructorString(constructors!.first)}';
       }
     }
-    return classNameConflictPrefixText + '$className()';
+    return '() =>' + classNameConflictPrefixText + '$className()';
   }
 
   String get caseString {
@@ -86,7 +113,7 @@ class RouteInfo {
     return FFRouteSettings(
       name: name,
       arguments: arguments,
-      builder: () =>  $constructor,
+      builder: $constructor,
       $codes
       ${ffRoute.showStatusBar != true ? 'showStatusBar: ${ffRoute.showStatusBar},' : ''}
       ${ffRoute.routeName != '' ? 'routeName: ${safeToString(ffRoute.routeName)},' : ''}

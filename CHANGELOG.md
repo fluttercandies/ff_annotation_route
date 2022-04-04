@@ -1,3 +1,7 @@
+## 9.0.2
+
+* Fix multi constructor nullsafety error 
+
 ## 9.0.1
 
 * Add unnecessary_import for generate files header
