@@ -1,3 +1,7 @@
+## 9.1.0
+
+* Add `--arguments-case-sensitive` to support igore arguments case sensitive
+
 ## 9.0.2
 
 * Fix multi constructor nullsafety error 

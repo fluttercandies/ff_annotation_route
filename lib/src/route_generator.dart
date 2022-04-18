@@ -373,7 +373,21 @@ class RouteGenerator {
       sb.write(rootFile
           .replaceAll('{0}', caseSb.toString())
           .replaceAll('{1}', Args().enableNullSafety ? 'required' : '@required')
-          .replaceAll('{2}', Args().enableNullSafety ? '?' : ''));
+          .replaceAll('{2}', Args().enableNullSafety ? '?' : '')
+          .replaceAll(
+              '{3}',
+              Args().argumentsIsCaseSensitive
+                  ? '''  final Map<String, dynamic> safeArguments =
+      arguments ?? const <String, dynamic>{};'''
+                  : '''  Map<String, dynamic> safeArguments = arguments ?? const <String, dynamic>{};
+  if (arguments != null && arguments.isNotEmpty) {
+    final Map<String, dynamic> ignoreCaseMap = <String, dynamic>{};
+    safeArguments.forEach((String key, dynamic value) {
+      ignoreCaseMap[key.toLowerCase()] = value;
+    });
+    safeArguments = ignoreCaseMap;
+  }'''));
+
       RoutesFileGenerator(
         routes: routes,
         lib: _lib,

@@ -129,7 +129,8 @@ return ${getConstructorString(rawConstructor)};
 
   String getIsOptional(String name, FormalParameter parameter,
       ConstructorDeclaration rawConstructor) {
-    String value = 'safeArguments[\'$name\']';
+    String value =
+        'safeArguments[\'${Args().argumentsIsCaseSensitive ? name : name.toLowerCase()}\']';
 
     final String type = getParameterType(name, parameter, rawConstructor);
 
@@ -172,7 +173,8 @@ return ${getConstructorString(rawConstructor)};
         } else {
           final String type = getParameterType(name, item, rawConstructor);
 
-          constructorString += 'asT<$type>(safeArguments[\'$name\'],)';
+          constructorString +=
+              'asT<$type>(safeArguments[\'${Args().argumentsIsCaseSensitive ? name : name.toLowerCase()}\'],)';
           if (Args().enableNullSafety && !type.endsWith('?')) {
             constructorString += '!';
           }

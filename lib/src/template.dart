@@ -15,8 +15,7 @@ FFRouteSettings getRouteSettings({
   Map<String, dynamic>{2} arguments,
   PageBuilder{2} notFoundPageBuilder,
 }) {
-  final Map<String, dynamic> safeArguments =
-      arguments ?? const <String, dynamic>{};
+  {3}    
   switch (name) {
 {0}   default:
     return FFRouteSettings(

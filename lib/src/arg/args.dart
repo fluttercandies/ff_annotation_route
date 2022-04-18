@@ -1,3 +1,4 @@
+import 'package:ff_annotation_route/src/arg/arguments_case_sensitive.dart';
 import 'package:ff_annotation_route/src/arg/null_safety.dart';
 
 import 'const_ignore.dart';
@@ -27,7 +28,8 @@ class Args {
         package = Package(),
         superArguments = SuperArguments(),
         save = Save(),
-        nullSafety = NullSafety();
+        nullSafety = NullSafety(),
+        argumentsCaseSensitive = ArgumentsCaseSensitive();
   static Args? _args;
   final Help help;
   final Path path;
@@ -41,6 +43,7 @@ class Args {
   final SuperArguments superArguments;
   final Save save;
   final NullSafety nullSafety;
+  final ArgumentsCaseSensitive argumentsCaseSensitive;
 
   String get className => name.value!;
 
@@ -60,4 +63,6 @@ class Args {
   String? get routesFileOutputPath => routesFileOutput.value;
 
   bool get enableNullSafety => nullSafety.value!;
+
+  bool get argumentsIsCaseSensitive => argumentsCaseSensitive.value!;
 }

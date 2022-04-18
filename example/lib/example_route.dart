@@ -6,7 +6,6 @@
 import 'package:example/src/model/test_model.dart' hide TestMode2;
 import 'package:example/src/model/test_model1.dart' hide TestMode3;
 import 'package:ff_annotation_route_library/ff_annotation_route_library.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:module_a/module_a_route.dart'
     as testpageb1afeb9c992bb2f1098d1acc6becb2a6c;
@@ -39,8 +38,14 @@ FFRouteSettings getRouteSettings({
   Map<String, dynamic>? arguments,
   PageBuilder? notFoundPageBuilder,
 }) {
-  final Map<String, dynamic> safeArguments =
-      arguments ?? const <String, dynamic>{};
+  Map<String, dynamic> safeArguments = arguments ?? const <String, dynamic>{};
+  if (arguments != null && arguments.isNotEmpty) {
+    final Map<String, dynamic> ignoreCaseMap = <String, dynamic>{};
+    safeArguments.forEach((String key, dynamic value) {
+      ignoreCaseMap[key.toLowerCase()] = value;
+    });
+    safeArguments = ignoreCaseMap;
+  }
   switch (name) {
     case '''flutterCandies://testPage' "B''':
       return FFRouteSettings(
@@ -194,13 +199,13 @@ FFRouteSettings getRouteSettings({
             case 'positioned':
               return TestPageCC.positioned(
                 asT<int>(
-                  safeArguments['testArg'],
+                  safeArguments['testarg'],
                 )!,
                 asT<bool?>(
-                  safeArguments['testBoolean'],
+                  safeArguments['testboolean'],
                 ),
                 asT<String>(
-                  safeArguments['testRequiredArg'],
+                  safeArguments['testrequiredarg'],
                   '',
                 )!,
                 asT<Key?>(
@@ -211,16 +216,16 @@ FFRouteSettings getRouteSettings({
             default:
               return TestPageCC(
                 asT<int>(
-                  safeArguments['testArg'],
+                  safeArguments['testarg'],
                 )!,
                 key: asT<Key?>(
                   safeArguments['key'],
                 ),
                 testRequiredArg: asT<String>(
-                  safeArguments['testRequiredArg'],
+                  safeArguments['testrequiredarg'],
                 )!,
                 testBoolean: asT<bool?>(
-                  safeArguments['testBoolean'],
+                  safeArguments['testboolean'],
                 ),
               );
           }
@@ -271,18 +276,18 @@ FFRouteSettings getRouteSettings({
             case 'requiredC':
               return TestPageE.requiredC(
                 testMode: asT<TestMode?>(
-                  safeArguments['testMode'],
+                  safeArguments['testmode'],
                 ),
               );
             case '':
             default:
               return TestPageE(
                 testMode: asT<TestMode?>(
-                  safeArguments['testMode'],
+                  safeArguments['testmode'],
                   const TestMode(id: 2, isTest: false),
                 ),
                 testMode1: asT<TestMode1?>(
-                  safeArguments['testMode1'],
+                  safeArguments['testmode1'],
                 ),
               );
           }
@@ -306,7 +311,7 @@ FFRouteSettings getRouteSettings({
         arguments: arguments,
         builder: () => DemoGroupPage(
           keyValue: asT<MapEntry<String, List<DemoRouteResult>>>(
-            safeArguments['keyValue'],
+            safeArguments['keyvalue'],
           )!,
         ),
         routeName: 'DemoGroupPage',
