@@ -108,9 +108,8 @@ FFRouteSettings getRouteSettings({
         name: name,
         arguments: arguments,
         builder: () {
-          final String ctorName = safeArguments[constructorName] != null
-              ? safeArguments[constructorName] as String
-              : '';
+          final String ctorName =
+              safeArguments[constructorName.toLowerCase()]?.toString() ?? '';
           switch (ctorName) {
             case 'another0':
               return testpaged6c4b232f91f77ae9eb7103223363b84e.TestPageD
@@ -192,9 +191,8 @@ FFRouteSettings getRouteSettings({
         name: name,
         arguments: arguments,
         builder: () {
-          final String ctorName = safeArguments[constructorName] != null
-              ? safeArguments[constructorName] as String
-              : '';
+          final String ctorName =
+              safeArguments[constructorName.toLowerCase()]?.toString() ?? '';
           switch (ctorName) {
             case 'positioned':
               return TestPageCC.positioned(
@@ -267,9 +265,8 @@ FFRouteSettings getRouteSettings({
         name: name,
         arguments: arguments,
         builder: () {
-          final String ctorName = safeArguments[constructorName] != null
-              ? safeArguments[constructorName] as String
-              : '';
+          final String ctorName =
+              safeArguments[constructorName.toLowerCase()]?.toString() ?? '';
           switch (ctorName) {
             case 'test':
               return TestPageE.test();

@@ -1,3 +1,7 @@
+## 9.1.1
+
+* Fix `--arguments-case-sensitive` is not working for constructorName
+
 ## 9.1.0
 
 * Add `--arguments-case-sensitive` to support igore arguments case sensitive

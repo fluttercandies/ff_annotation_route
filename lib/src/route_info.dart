@@ -82,7 +82,8 @@ return ${getConstructorString(rawConstructor)};
 
         switchCase = '''
          (){
-           final String ctorName = safeArguments[constructorName]!=null? safeArguments[constructorName] as String:\'\';
+      final String ctorName =
+              safeArguments[constructorName${Args().argumentsIsCaseSensitive ? '' : '.toLowerCase()'}]?.toString() ?? \'\';
          switch (ctorName) {
             $switchCase
           }
