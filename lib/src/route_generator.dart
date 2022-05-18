@@ -117,8 +117,7 @@ class RouteGenerator {
             item.path.endsWith('.dart')) {
           final CompilationUnit astRoot = parseFile(
             path: item.path,
-            // ignore: deprecated_member_use
-            featureSet: FeatureSet.fromEnableFlags(<String>[]),
+            featureSet: FeatureSet.latestLanguageVersion(),
           ).unit;
           final List<String> argumentImports = <String>[];
           for (final SyntacticEntity child in astRoot.childEntities) {

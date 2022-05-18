@@ -1,3 +1,7 @@
+## 9.2.0
+
+* Support Flutter 3.
+
 ## 9.1.1
 
 * Fix `--arguments-case-sensitive` is not working for constructorName
