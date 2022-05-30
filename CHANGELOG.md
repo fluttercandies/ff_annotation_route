@@ -1,3 +1,7 @@
+## 9.2.1
+
+* Support generate consts when it's a package.
+
 ## 9.2.0
 
 * Support Flutter 3.

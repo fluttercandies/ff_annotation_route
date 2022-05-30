@@ -81,9 +81,8 @@ FFRouteSettings getRouteSettings({
         name: name,
         arguments: arguments,
         builder: () {
-          final String ctorName = safeArguments[constructorName] != null
-              ? safeArguments[constructorName] as String
-              : '';
+          final String ctorName =
+              safeArguments[constructorName]?.toString() ?? '';
           switch (ctorName) {
             case 'another0':
               return TestPageD.another0(
@@ -143,9 +142,8 @@ FFRouteSettings getRouteSettings({
         name: name,
         arguments: arguments,
         builder: () {
-          final String ctorName = safeArguments[constructorName] != null
-              ? safeArguments[constructorName] as String
-              : '';
+          final String ctorName =
+              safeArguments[constructorName]?.toString() ?? '';
           switch (ctorName) {
             case 'test':
               return TestPageE.test();

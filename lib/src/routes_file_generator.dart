@@ -7,6 +7,7 @@
 
 import 'dart:io';
 import 'package:ff_annotation_route/src/arg/args.dart';
+import 'package:ff_annotation_route/src/utils/camel_under_score_converter.dart';
 import 'package:path/path.dart' as p;
 import 'package_graph.dart';
 import 'route_info.dart';
@@ -53,9 +54,12 @@ class RoutesFileGenerator {
       routeNamesString.write(safeToString(item.ffRoute.name));
       routeNamesString.write(',');
     }
-
+    String routeNames = 'routeNames';
+    if (Args().isPackage) {
+      routeNames = '${camelName(packageNode!.name)}RouteNames';
+    }
     constantsSb.write(
-        'const List<String> routeNames = <String>[${routeNamesString.toString()}];');
+        'const List<String> $routeNames = <String>[${routeNamesString.toString()}];');
     constantsSb.write('\n');
 
     final Set<String> imports = <String>{};

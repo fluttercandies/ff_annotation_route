@@ -300,52 +300,49 @@ class RouteGenerator {
 
     final StringBuffer sb = StringBuffer();
 
-    final Set<String> imports = <String>{};
+    final List<RouteInfo> routes = _fileInfoList
+        .map((FileInfo it) => it.routes)
+        .expand((List<RouteInfo> it) => it)
+        .toList();
 
-    if (!isRoot) {
-      /// Export
-      sb.write(export);
+    if (nodes != null && nodes.isNotEmpty) {
+      routes.addAll(
+        nodes
+            .map((RouteGenerator it) => it.fileInfoList)
+            .expand((List<FileInfo> it) => it)
+            .map((FileInfo it) => it.routes)
+            .expand((List<RouteInfo> it) => it),
+      );
+    }
+    routes.sort(
+      (RouteInfo a, RouteInfo b) => a.ffRoute.name.compareTo(b.ffRoute.name),
+    );
+
+    final Map<String, List<RouteInfo>> conflictClassNames =
+        routes.groupListsBy((RouteInfo element) => element.className);
+
+    for (final String key in conflictClassNames.keys) {
+      final List<RouteInfo>? routes = conflictClassNames[key];
+      // ClassName is conflict
+      if (routes != null && routes.length > 1) {
+        for (final RouteInfo route in routes) {
+          route.classNameConflictPrefix =
+              route.className.toLowerCase() + route.ffRoute.name.md5;
+        }
+      }
     }
 
-    /// Create route generator
     if (isRoot) {
+      final Set<String> imports = <String>{};
+
+      final StringBuffer caseSb = StringBuffer();
+
+      /// Create route generator
+
       imports.add('import \'package:flutter/widgets.dart\';');
       imports.add(
         'import \'package:ff_annotation_route_library/ff_annotation_route_library.dart\';',
       );
-
-      final StringBuffer caseSb = StringBuffer();
-      final List<RouteInfo> routes = _fileInfoList
-          .map((FileInfo it) => it.routes)
-          .expand((List<RouteInfo> it) => it)
-          .toList();
-
-      if (nodes != null && nodes.isNotEmpty) {
-        routes.addAll(
-          nodes
-              .map((RouteGenerator it) => it.fileInfoList)
-              .expand((List<FileInfo> it) => it)
-              .map((FileInfo it) => it.routes)
-              .expand((List<RouteInfo> it) => it),
-        );
-      }
-      routes.sort(
-        (RouteInfo a, RouteInfo b) => a.ffRoute.name.compareTo(b.ffRoute.name),
-      );
-
-      final Map<String, List<RouteInfo>> conflictClassNames =
-          routes.groupListsBy((RouteInfo element) => element.className);
-
-      for (final String key in conflictClassNames.keys) {
-        final List<RouteInfo>? routes = conflictClassNames[key];
-        // ClassName is conflict
-        if (routes != null && routes.length > 1) {
-          for (final RouteInfo route in routes) {
-            route.classNameConflictPrefix =
-                route.className.toLowerCase() + route.ffRoute.name.md5;
-          }
-        }
-      }
 
       /// Nodes import
       ///
@@ -366,7 +363,6 @@ class RouteGenerator {
         }
         caseSb.write(it.caseString);
       }
-
       writeImports(imports, sb);
 
       sb.write(rootFile
@@ -386,7 +382,13 @@ class RouteGenerator {
     });
     safeArguments = ignoreCaseMap;
   }'''));
+    } else {
+      /// Export
+      sb.write(export);
+    }
 
+    // this is root project or this is package
+    if (isRoot || Args().isPackage) {
       RoutesFileGenerator(
         routes: routes,
         lib: _lib,
