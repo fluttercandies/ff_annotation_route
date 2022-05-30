@@ -47,24 +47,12 @@ Languages: [English](README.md) | 中文简体
 
 添加引用到`dependencies`，及你需要注解的 project/packages 到`pubspec.yaml`中
 
-*  null-safety
-
 ``` yaml
-environment:
-  sdk: '>=2.12.0 <3.0.0'
 dependencies:
-  ff_annotation_route_core: ^2.0.0
-  ff_annotation_route_library: ^3.0.0
-``` 
-
-*  non-null-safety
-  
-``` yaml
-environment:
-  sdk: '>=2.6.0 <2.12.0'
-dependencies:
-  ff_annotation_route_core: ^2.0.2-non-null-safety
-  ff_annotation_route_library: ^2.0.2-non-null-safety
+  # 如果是一个package，只用添加 ff_annotation_route_core
+  ff_annotation_route_core: any
+  # 如果是一个主项目，只需要添加 ff_annotation_route_library
+  ff_annotation_route_library: any
 ``` 
 
 执行 `flutter packages get` 下载
@@ -159,13 +147,7 @@ class TestPageE extends StatelessWidget {
 
 #### 激活
 
-*  null-safety
-
-`pub global activate ff_annotation_route`
-
-*  non-null-safety
-  
-`pub global activate ff_annotation_route 6.x.x-non-null-safety`
+`dart pub global activate ff_annotation_route`
 
 #### 执行命令
 

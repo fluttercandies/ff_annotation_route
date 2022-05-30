@@ -1,3 +1,7 @@
+## 9.2.2
+
+* Remove old command support.
+
 ## 9.2.1
 
 * Support generate consts when it's a package.

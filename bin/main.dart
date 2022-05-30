@@ -20,38 +20,38 @@ Future<void> main(List<String> arguments) async {
     final io.File file = io.File(join('./', argumentsFile));
     if (file.existsSync()) {
       final String content = file.readAsStringSync();
-      if (content.contains(',')) {
-        //old style
-        arguments = content.split(',');
-      } else {
-        arguments = content.split(' ');
-      }
+      // if (content.contains(',')) {
+      //   //old style
+      //   arguments = content.split(',');
+      // } else {
+      arguments = content.split(' ');
+      //}
       runFromLocal = true;
     }
   }
 
   //keep old work
-  for (int i = 0; i < arguments.length; i++) {
-    if (arguments[i] == '-rc') {
-      arguments[i] = '--route-constants';
-    } else if (arguments[i] == '-rh') {
-      arguments[i] = '--route-helper';
-    } else if (arguments[i] == '-rn') {
-      arguments[i] = '--route-names';
-    } else if (arguments[i] == '-rfo') {
-      arguments[i] = '--routes-file-output';
-    } else if (arguments[i] == '-na') {
-      arguments[i] = '--no-arguments';
-    }
-  }
+  // for (int i = 0; i < arguments.length; i++) {
+  //   if (arguments[i] == '-rc') {
+  //     arguments[i] = '--route-constants';
+  //   } else if (arguments[i] == '-rh') {
+  //     arguments[i] = '--route-helper';
+  //   } else if (arguments[i] == '-rn') {
+  //     arguments[i] = '--route-names';
+  //   } else if (arguments[i] == '-rfo') {
+  //     arguments[i] = '--routes-file-output';
+  //   } else if (arguments[i] == '-na') {
+  //     arguments[i] = '--no-arguments';
+  //   }
+  // }
 
-  arguments = arguments.toList();
+  // arguments = arguments.toList();
 
-  arguments.remove('--route-helper');
-  arguments.remove('--no-is-initial-route');
-  arguments.remove('--no-arguments');
-  arguments.remove('--route-constants');
-  arguments.remove('--route-names');
+  // arguments.remove('--route-helper');
+  // arguments.remove('--no-is-initial-route');
+  // arguments.remove('--no-arguments');
+  // arguments.remove('--route-constants');
+  // arguments.remove('--route-names');
 
   parseArgs(arguments);
 
@@ -105,11 +105,7 @@ Future<void> main(List<String> arguments) async {
     if (!file.existsSync()) {
       file.createSync();
     }
-    String argumentsS = '';
-    for (final String item in arguments) {
-      argumentsS += '$item ';
-    }
-    file.writeAsStringSync(argumentsS.trim());
+    file.writeAsStringSync(arguments.join(' '));
   }
 
   final Duration diff = DateTime.now().difference(before);

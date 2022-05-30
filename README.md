@@ -47,21 +47,11 @@ Add the package to `dependencies` in your project/packages's `pubspec.yaml`
 *  null-safety
 
 ``` yaml
-environment:
-  sdk: '>=2.12.0 <3.0.0'
 dependencies:
-  ff_annotation_route_core: ^2.0.0
-  ff_annotation_route_library: ^3.0.0
-``` 
-
-*  non-null-safety
-  
-``` yaml
-environment:
-  sdk: '>=2.6.0 <2.12.0'
-dependencies:
-  ff_annotation_route_core: ^2.0.2-non-null-safety
-  ff_annotation_route_library: ^2.0.2-non-null-safety
+  # add for a package
+  ff_annotation_route_core: any
+  # add only for a project
+  ff_annotation_route_library: any
 ``` 
 
 Download with `flutter packages get`
@@ -156,13 +146,7 @@ Add dart bin into to your `$PATH`.
 
 #### Activate the plugin
 
-*  null-safety
-
-`pub global activate ff_annotation_route`
-
-*  non-null-safety
-  
-`pub global activate ff_annotation_route 6.x.x-non-null-safety`
+`dart pub global activate ff_annotation_route`
 
 #### Execute command
 
