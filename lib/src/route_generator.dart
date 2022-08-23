@@ -286,8 +286,7 @@ class RouteGenerator {
     Annotation metadata,
     FileSystemEntity file,
   ) {
-    if (metadata is AnnotationImpl &&
-        metadata.name.name == typeOf<FFRoute>().toString()) {
+    if (metadata.name.name == typeOf<FFRoute>().toString()) {
       final AstNode node = metadata.parent;
       if (node is ClassDeclaration) {
         return node;
