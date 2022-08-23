@@ -38,6 +38,8 @@ Languages: [English](README.md) | 中文简体
     - [GetX](#getx)
       - [How to use](#how-to-use)
       - [设置 GetPageRoute 的参数](#设置-getpageroute-的参数)
+    - [Functional Widget](#functional-widget)
+      - [How to use](#%E5%A6%82%E4%BD%95%E4%B8%8E-functional_widget-%E4%B8%80%E8%B5%B7%E4%BD%BF%E7%94%A8)
     - [Code Hints](#code-hints)
   - [来杯可乐](#来杯可乐)
 
@@ -542,6 +544,30 @@ class MyApp extends StatelessWidget {
       },
 
 ```
+
+
+### Functional Widget
+
+#### 如何与 [functional_widget](https://github.com/rrousselGit/functional_widget) 一起使用？
+
+```dart  
+@swidget
+@FFRoute(
+  name: 'flutterCandies://func1',
+  routeName: 'test-func-1',
+)
+Widget func1(
+  int a,
+  String? b, {
+  bool? c,
+  required double d,
+}) {
+  return Container();
+}
+```
+
+[示例代码](example/lib/src/pages/func/func.dart) 可以在这里找到.
+
 
 ### Code Hints
 

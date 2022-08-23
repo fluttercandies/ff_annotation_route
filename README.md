@@ -35,7 +35,9 @@ Provide a route generator to create route map quickly by annotations.
         - [Push name with arguments](#push-name-with-arguments-1)
     - [GetX](#getx)
       - [How to use](#how-to-use)
-      - [How to set the parameter of GetPageRoute](#how-to-set-the-parameter-of-getpageroute)
+      - [How to set the parameter of GetPageRoute](#how-to-set-the-parameter-of-getpageroute)  
+    - [Functional Widget](#functional-widget)
+      - [How to use](#how-to-use-with-functional_widget)
     - [Code Hints](#code-hints)
 
 ## Usage
@@ -541,6 +543,30 @@ for example:
       },
 
 ```
+
+
+
+### Functional Widget
+
+#### How to use with [functional_widget](https://github.com/rrousselGit/functional_widget)?
+
+```dart  
+@swidget
+@FFRoute(
+  name: 'flutterCandies://func1',
+  routeName: 'test-func-1',
+)
+Widget func1(
+  int a,
+  String? b, {
+  bool? c,
+  required double d,
+}) {
+  return Container();
+}
+```
+
+[Simple code](example/lib/src/pages/func/func.dart) is here.
 
 
 ### Code Hints
