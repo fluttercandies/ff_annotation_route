@@ -1,3 +1,7 @@
+## 9.3.0
+
+* Support [functional_widget](https://github.com/rrousselGit/functional_widget) (#38)
+
 ## 9.2.2
 
 * Remove old command support.
