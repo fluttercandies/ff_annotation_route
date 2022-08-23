@@ -1,10 +1,8 @@
 import 'dart:convert';
-//import 'dart:mirrors';
 
 // ignore_for_file: implementation_imports
 import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/ast/syntactic_entity.dart';
-import 'package:analyzer/src/dart/ast/ast.dart';
 import 'package:ff_annotation_route/src/arg/args.dart';
 import 'package:ff_annotation_route_core/ff_annotation_route_core.dart';
 
@@ -20,7 +18,7 @@ class RouteInfo {
     this.constructors,
     this.fields,
     this.routePath,
-    this.classDeclarationImpl,
+    this.classDeclaration,
     required this.node,
   });
 
@@ -30,7 +28,7 @@ class RouteInfo {
   final List<FieldDeclaration>? fields;
   final String? routePath;
   final Map<String?, List<String>> constructorsMap = <String?, List<String>>{};
-  final ClassDeclarationImpl? classDeclarationImpl;
+  final ClassDeclaration? classDeclaration;
   final RouteGenerator node;
 
   String? classNameConflictPrefix;
@@ -245,7 +243,7 @@ return ${getConstructorString(rawConstructor)};
 
   void getTypeImport() {
     final CompilationUnit compilationUnit =
-        classDeclarationImpl!.parent as CompilationUnit;
+        classDeclaration!.parent as CompilationUnit;
     for (final SyntacticEntity item in compilationUnit.childEntities) {
       if (item is ImportDirective) {
         if (item.toString().contains('package:flutter') ||

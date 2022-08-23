@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:analyzer/dart/analysis/features.dart';
+import 'package:analyzer/dart/analysis/results.dart';
 import 'package:analyzer/dart/analysis/utilities.dart';
 import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/ast/syntactic_entity.dart';
@@ -111,31 +112,31 @@ class RouteGenerator {
     if (_lib != null) {
       print('');
       print('Scanning package : ${packageNode.name}');
-      for (final FileSystemEntity item in _lib!.listSync(recursive: true)) {
+      final List<FileSystemEntity> files = _lib!.listSync(recursive: true);
+      for (final FileSystemEntity item in files) {
         final FileStat file = item.statSync();
         if (file.type == FileSystemEntityType.file &&
             item.path.endsWith('.dart')) {
-          final CompilationUnit astRoot = parseFile(
+          final ParseStringResult result = parseFile(
             path: item.path,
             featureSet: FeatureSet.latestLanguageVersion(),
-          ).unit;
+          );
+          final CompilationUnit astRoot = result.unit;
           final List<String> argumentImports = <String>[];
           for (final SyntacticEntity child in astRoot.childEntities) {
-            if (child is ImportDirectiveImpl) {
+            if (child is ImportDirective) {
               final SyntacticEntity? syntacticEntity = child.childEntities
                   .firstWhereOrNull(
-                      (SyntacticEntity element) => element is AnnotationImpl);
+                      (SyntacticEntity element) => element is Annotation);
 
               if (syntacticEntity != null) {
-                final AnnotationImpl annotationImpl =
-                    syntacticEntity as AnnotationImpl;
-                if (annotationImpl.name.name ==
+                final Annotation annotation = syntacticEntity as AnnotationImpl;
+                if (annotation.name.name ==
                     typeOf<FFArgumentImport>().toString()) {
                   final NodeList<Expression>? parameters =
-                      annotationImpl.arguments?.arguments;
-                  String import = child
-                      .toString()
-                      .replaceAll(annotationImpl.toString(), '');
+                      annotation.arguments?.arguments;
+                  String import =
+                      child.toString().replaceAll(annotation.toString(), '');
                   import = import.replaceAll(';', '');
                   if (parameters != null && parameters.isNotEmpty) {
                     import = import +
@@ -153,14 +154,10 @@ class RouteGenerator {
           for (final CompilationUnitMember declaration
               in astRoot.declarations) {
             for (final Annotation metadata in declaration.metadata) {
-              if (metadata is AnnotationImpl &&
-                  metadata.name.name == typeOf<FFRoute>().toString() &&
-                  metadata.parent is ClassDeclarationImpl) {
-                final ClassDeclarationImpl parent =
-                    metadata.parent as ClassDeclarationImpl;
-
-                final String className = parent.name.name;
-
+              final ClassDeclaration? ffRefClassDef =
+                  getFFRouteRefClassDeclaration(metadata, item);
+              if (ffRefClassDef != null) {
+                final String className = ffRefClassDef.name2.toString();
                 final String routePath =
                     '${p.relative(item.path, from: packageNode.path)} ------ class : $className';
                 print('Found annotation route : $routePath');
@@ -252,12 +249,14 @@ class RouteGenerator {
                     argumentImports: argumentImports,
                     codes: codes,
                   ),
-                  constructors: parent.members
+                  constructors: ffRefClassDef.members
                       .whereType<ConstructorDeclaration>()
                       .toList(),
-                  fields: parent.members.whereType<FieldDeclaration>().toList(),
+                  fields: ffRefClassDef.members
+                      .whereType<FieldDeclaration>()
+                      .toList(),
                   routePath: routePath,
-                  classDeclarationImpl: parent,
+                  classDeclaration: ffRefClassDef,
                   node: this,
                 );
                 fileInfo.routes.add(routeInfo);
@@ -270,6 +269,64 @@ class RouteGenerator {
         }
       }
     }
+  }
+
+  final Set<String> _functionalWidgetAnnotations = <String>{
+    'FunctionalWidget',
+    'swidget',
+    'hwidget',
+    'hcwidget',
+    'cwidget',
+  };
+
+  final Map<String, Iterable<ClassDeclaration>> _partClassDeclarations =
+      <String, Iterable<ClassDeclaration>>{};
+
+  ClassDeclaration? getFFRouteRefClassDeclaration(
+    Annotation metadata,
+    FileSystemEntity file,
+  ) {
+    if (metadata.name.name == typeOf<FFRoute>().toString()) {
+      final AstNode node = metadata.parent;
+      if (node is ClassDeclaration) {
+        return node;
+      } else if (node is FunctionDeclaration) {
+        final bool isFuncWidget = node.metadata.any((Annotation e) =>
+            _functionalWidgetAnnotations.contains(e.name.name));
+        if (isFuncWidget) {
+          final Iterable<PartDirective> parts = (node.parent as CompilationUnit)
+              .directives
+              .whereType<PartDirective>();
+          final String funcName = node.name2.toString();
+          final String className =
+              funcName[0].toUpperCase() + funcName.substring(1);
+          for (final PartDirective part in parts) {
+            final String join = p.join(file.parent.path, part.uri.stringValue!);
+            final String path = p.normalize(join);
+            final Iterable<ClassDeclaration> classes;
+            if (_partClassDeclarations.containsKey(path)) {
+              classes = _partClassDeclarations[path]!;
+            } else {
+              final CompilationUnit astRoot = parseFile(
+                path: path,
+                featureSet: FeatureSet.latestLanguageVersion(),
+              ).unit;
+              classes = astRoot.declarations.whereType<ClassDeclaration>();
+              _partClassDeclarations[path] = classes;
+            }
+            final ClassDeclaration? find = classes.firstWhereOrNull(
+                (ClassDeclaration clazz) =>
+                    clazz.name2.toString() == className);
+            if (find != null) {
+              return find;
+            }
+          }
+          throw StateError(
+              '[$className] class not found, please run `flutter pub run build_runner build` before execute this.');
+        }
+      }
+    }
+    return null;
   }
 
   void getLib() {
