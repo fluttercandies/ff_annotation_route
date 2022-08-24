@@ -87,3 +87,37 @@ class Func4 extends ConsumerWidget {
   Widget build(BuildContext _context, WidgetRef _ref) =>
       func4(a, b, c: c, d: d);
 }
+
+class Func5 extends ConsumerWidget {
+  const Func5(this.a, this.b, {Key? key, this.c, required this.d})
+      : super(key: key);
+
+  final int a;
+
+  final String? b;
+
+  final bool? c;
+
+  final double d;
+
+  @override
+  Widget build(BuildContext _context, WidgetRef _ref) =>
+      _func5(a, b, c: c, d: d);
+}
+
+class $7Func extends ConsumerWidget {
+  const $7Func(this.a, this.b, {Key? key, this.c, required this.d})
+      : super(key: key);
+
+  final int a;
+
+  final String? b;
+
+  final bool? c;
+
+  final double d;
+
+  @override
+  Widget build(BuildContext _context, WidgetRef _ref) =>
+      _$7func(a, b, c: c, d: d);
+}

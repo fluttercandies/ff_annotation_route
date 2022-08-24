@@ -75,3 +75,62 @@ Widget func4(
 }) {
   return Container();
 }
+
+@cwidget
+@FFRoute(
+  name: 'flutterCandies://func5',
+  routeName: 'test-func-5',
+)
+Widget _func5(
+  int a,
+  String? b, {
+  bool? c,
+  required double d,
+}) {
+  return Container();
+}
+
+// Routes not support private class.
+// @cwidget
+// @FFRoute(
+//   name: 'flutterCandies://func6',
+//   routeName: 'test-func-6',
+// )
+// Widget __func6(
+//     int a,
+//     String? b, {
+//       bool? c,
+//       required double d,
+//     }) {
+//   return Container();
+// }
+
+@cwidget
+@FFRoute(
+  name: 'flutterCandies://func7',
+  routeName: 'test-func-7',
+)
+Widget _$7func(
+  int a,
+  String? b, {
+  bool? c,
+  required double d,
+}) {
+  return Container();
+}
+
+// Routes not support private class.
+// @cwidget
+// @FFRoute(
+//   name: 'flutterCandies://func8',
+//   routeName: 'test-func-8',
+// )
+// Widget ___func8(
+//     int a,
+//     String? b, {
+//       bool? c,
+//       required double d,
+//     }) {
+//
+//   return Container();
+// }

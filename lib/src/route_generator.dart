@@ -298,8 +298,7 @@ class RouteGenerator {
               .directives
               .whereType<PartDirective>();
           final String funcName = node.name2.toString();
-          final String className =
-              funcName[0].toUpperCase() + funcName.substring(1);
+          final String className = _funcName2ClassName(funcName);
           for (final PartDirective part in parts) {
             final String join = p.join(file.parent.path, part.uri.stringValue!);
             final String path = p.normalize(join);
@@ -327,6 +326,15 @@ class RouteGenerator {
       }
     }
     return null;
+  }
+
+  String _funcName2ClassName(String funcName) {
+    if (funcName.isNotEmpty && funcName[0] == '_') {
+      funcName = funcName.substring(1);
+    }
+    return funcName.replaceFirstMapped(RegExp('[a-zA-Z]'), (Match match) {
+      return match.group(0)!.toUpperCase();
+    });
   }
 
   void getLib() {
