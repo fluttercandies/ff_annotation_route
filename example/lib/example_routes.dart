@@ -15,6 +15,8 @@ const List<String> routeNames = <String>[
   'flutterCandies://func2',
   'flutterCandies://func3',
   'flutterCandies://func4',
+  'flutterCandies://func5',
+  'flutterCandies://func7',
   '''flutterCandies://testPage' "B''',
   '''flutterCandies://testPage' "B_Copy''',
   '''flutterCandies://testPage' "B_Copy_Copy''',
@@ -93,6 +95,30 @@ class Routes {
   /// Func4 : [int(required) a, String?(required) b, Key? key, bool? c, double(required) d]
   static const _FlutterCandiesFunc4 flutterCandiesFunc4 =
       _FlutterCandiesFunc4();
+
+  /// 'test-func-5'
+  ///
+  /// [name] : 'flutterCandies://func5'
+  ///
+  /// [routeName] : 'test-func-5'
+  ///
+  /// [constructors] :
+  ///
+  /// Func5 : [int(required) a, String?(required) b, Key? key, bool? c, double(required) d]
+  static const _FlutterCandiesFunc5 flutterCandiesFunc5 =
+      _FlutterCandiesFunc5();
+
+  /// 'test-func-7'
+  ///
+  /// [name] : 'flutterCandies://func7'
+  ///
+  /// [routeName] : 'test-func-7'
+  ///
+  /// [constructors] :
+  ///
+  /// $7Func : [int(required) a, String?(required) b, Key? key, bool? c, double(required) d]
+  static const _FlutterCandiesFunc7 flutterCandiesFunc7 =
+      _FlutterCandiesFunc7();
 
   /// "This is test ' page B."
   ///
@@ -422,6 +448,54 @@ class _FlutterCandiesFunc4 {
   const _FlutterCandiesFunc4();
 
   String get name => 'flutterCandies://func4';
+
+  Map<String, dynamic> d(
+    int a,
+    String? b, {
+    Key? key,
+    bool? c,
+    required double d,
+  }) =>
+      <String, dynamic>{
+        'a': a,
+        'b': b,
+        'key': key,
+        'c': c,
+        'd': d,
+      };
+
+  @override
+  String toString() => name;
+}
+
+class _FlutterCandiesFunc5 {
+  const _FlutterCandiesFunc5();
+
+  String get name => 'flutterCandies://func5';
+
+  Map<String, dynamic> d(
+    int a,
+    String? b, {
+    Key? key,
+    bool? c,
+    required double d,
+  }) =>
+      <String, dynamic>{
+        'a': a,
+        'b': b,
+        'key': key,
+        'c': c,
+        'd': d,
+      };
+
+  @override
+  String toString() => name;
+}
+
+class _FlutterCandiesFunc7 {
+  const _FlutterCandiesFunc7();
+
+  String get name => 'flutterCandies://func7';
 
   Map<String, dynamic> d(
     int a,

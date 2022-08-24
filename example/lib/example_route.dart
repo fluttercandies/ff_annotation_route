@@ -157,6 +157,52 @@ FFRouteSettings getRouteSettings({
         ),
         routeName: 'test-func-4',
       );
+    case 'flutterCandies://func5':
+      return FFRouteSettings(
+        name: name,
+        arguments: arguments,
+        builder: () => Func5(
+          asT<int>(
+            safeArguments['a'],
+          )!,
+          asT<String?>(
+            safeArguments['b'],
+          ),
+          key: asT<Key?>(
+            safeArguments['key'],
+          ),
+          c: asT<bool?>(
+            safeArguments['c'],
+          ),
+          d: asT<double>(
+            safeArguments['d'],
+          )!,
+        ),
+        routeName: 'test-func-5',
+      );
+    case 'flutterCandies://func7':
+      return FFRouteSettings(
+        name: name,
+        arguments: arguments,
+        builder: () => $7Func(
+          asT<int>(
+            safeArguments['a'],
+          )!,
+          asT<String?>(
+            safeArguments['b'],
+          ),
+          key: asT<Key?>(
+            safeArguments['key'],
+          ),
+          c: asT<bool?>(
+            safeArguments['c'],
+          ),
+          d: asT<double>(
+            safeArguments['d'],
+          )!,
+        ),
+        routeName: 'test-func-7',
+      );
     case '''flutterCandies://testPage' "B''':
       return FFRouteSettings(
         name: name,

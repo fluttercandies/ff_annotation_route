@@ -1,6 +1,10 @@
+## 9.3.1
+
+* [functional_widget](https://github.com/rrousselGit/functional_widget) support ugly function name. (#39)
+
 ## 9.3.0
 
-* Support [functional_widget](https://github.com/rrousselGit/functional_widget) (#38)
+* Support [functional_widget](https://github.com/rrousselGit/functional_widget). (#38)
 
 ## 9.2.2
 
