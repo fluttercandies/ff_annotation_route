@@ -39,8 +39,14 @@ FFRouteSettings getRouteSettings({
   Map<String, dynamic>? arguments,
   PageBuilder? notFoundPageBuilder,
 }) {
-  final Map<String, dynamic> safeArguments =
-      arguments ?? const <String, dynamic>{};
+  Map<String, dynamic> safeArguments = arguments ?? const <String, dynamic>{};
+  if (arguments != null && arguments.isNotEmpty) {
+    final Map<String, dynamic> ignoreCaseMap = <String, dynamic>{};
+    safeArguments.forEach((String key, dynamic value) {
+      ignoreCaseMap[key.toLowerCase()] = value;
+    });
+    safeArguments = ignoreCaseMap;
+  }
   switch (name) {
     case 'flutterCandies://func':
       return FFRouteSettings(
@@ -265,7 +271,7 @@ FFRouteSettings getRouteSettings({
         arguments: arguments,
         builder: () {
           final String ctorName =
-              safeArguments[constructorName]?.toString() ?? '';
+              safeArguments[constructorName.toLowerCase()]?.toString() ?? '';
           switch (ctorName) {
             case 'another0':
               return testpaged6c4b232f91f77ae9eb7103223363b84e.TestPageD
@@ -348,18 +354,18 @@ FFRouteSettings getRouteSettings({
         arguments: arguments,
         builder: () {
           final String ctorName =
-              safeArguments[constructorName]?.toString() ?? '';
+              safeArguments[constructorName.toLowerCase()]?.toString() ?? '';
           switch (ctorName) {
             case 'positioned':
               return TestPageCC.positioned(
                 asT<int>(
-                  safeArguments['testArg'],
+                  safeArguments['testarg'],
                 )!,
                 asT<bool?>(
-                  safeArguments['testBoolean'],
+                  safeArguments['testboolean'],
                 ),
                 asT<String>(
-                  safeArguments['testRequiredArg'],
+                  safeArguments['testrequiredarg'],
                   '',
                 )!,
                 asT<Key?>(
@@ -370,16 +376,16 @@ FFRouteSettings getRouteSettings({
             default:
               return TestPageCC(
                 asT<int>(
-                  safeArguments['testArg'],
+                  safeArguments['testarg'],
                 )!,
                 key: asT<Key?>(
                   safeArguments['key'],
                 ),
                 testRequiredArg: asT<String>(
-                  safeArguments['testRequiredArg'],
+                  safeArguments['testrequiredarg'],
                 )!,
                 testBoolean: asT<bool?>(
-                  safeArguments['testBoolean'],
+                  safeArguments['testboolean'],
                 ),
               );
           }
@@ -422,25 +428,25 @@ FFRouteSettings getRouteSettings({
         arguments: arguments,
         builder: () {
           final String ctorName =
-              safeArguments[constructorName]?.toString() ?? '';
+              safeArguments[constructorName.toLowerCase()]?.toString() ?? '';
           switch (ctorName) {
             case 'test':
               return TestPageE.test();
             case 'requiredC':
               return TestPageE.requiredC(
                 testMode: asT<TestMode?>(
-                  safeArguments['testMode'],
+                  safeArguments['testmode'],
                 ),
               );
             case '':
             default:
               return TestPageE(
                 testMode: asT<TestMode?>(
-                  safeArguments['testMode'],
+                  safeArguments['testmode'],
                   const TestMode(id: 2, isTest: false),
                 ),
                 testMode1: asT<TestMode1?>(
-                  safeArguments['testMode1'],
+                  safeArguments['testmode1'],
                 ),
               );
           }
@@ -464,7 +470,7 @@ FFRouteSettings getRouteSettings({
         arguments: arguments,
         builder: () => DemoGroupPage(
           keyValue: asT<MapEntry<String, List<DemoRouteResult>>>(
-            safeArguments['keyValue'],
+            safeArguments['keyvalue'],
           )!,
         ),
         routeName: 'DemoGroupPage',

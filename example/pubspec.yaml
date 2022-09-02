@@ -19,13 +19,14 @@ environment:
 dependencies:
   cupertino_icons: ^1.0.2
   ff_annotation_route_library: ^3.0.0
+
   flutter:
     sdk: flutter
-
+  functional_widget_annotation: ^0.10.0  
   module_a:
     path: module_a
   url_launcher: ^6.0.2
-  functional_widget_annotation: ^0.10.0
+
   flutter_hooks: ^0.18.5+1
   hooks_riverpod: ^1.0.4
 

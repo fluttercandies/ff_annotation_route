@@ -9,13 +9,13 @@ import 'package:analyzer/dart/ast/syntactic_entity.dart';
 
 // ignore: implementation_imports
 import 'package:analyzer/src/dart/ast/ast.dart';
+import 'package:build_runner_core/build_runner_core.dart';
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:ff_annotation_route_core/ff_annotation_route_core.dart';
 import 'package:path/path.dart' as p;
 
 import 'arg/args.dart';
 import 'file_info.dart';
-import 'package_graph.dart';
 import 'route_info.dart';
 import 'routes_file_generator.dart';
 import 'template.dart';

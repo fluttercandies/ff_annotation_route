@@ -1,6 +1,8 @@
 ## 9.3.1
 
 * [functional_widget](https://github.com/rrousselGit/functional_widget) support ugly function name. (#39)
+  
+* add ff_annotation_route_core instead of PackageGraphs
 
 ## 9.3.0
 

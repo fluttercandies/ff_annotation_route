@@ -1,9 +1,9 @@
 library ff_annotation_route;
 
+import 'package:build_runner_core/build_runner_core.dart';
+
 import 'src/arg/args.dart';
-import 'src/package_graph.dart';
 import 'src/route_generator.dart';
-export 'src/route_generator.dart';
 
 void generate(List<PackageNode> annotationPackages) {
   RouteGenerator? root;
@@ -28,7 +28,7 @@ void generate(List<PackageNode> annotationPackages) {
   }
   nodes.sort(
     (RouteGenerator a, RouteGenerator b) =>
-        a.packageNode.name!.compareTo(b.packageNode.name!),
+        a.packageNode.name.compareTo(b.packageNode.name),
   );
   root?.getLib();
 

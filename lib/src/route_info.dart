@@ -51,13 +51,13 @@ class RouteInfo {
   String get constructor {
     //remove private constructor
     constructors?.removeWhere(
-        (ConstructorDeclaration element) => element.name?.toString() == '_');
+        (ConstructorDeclaration element) => element.name2?.toString() == '_');
     if (constructors != null && constructors!.isNotEmpty) {
       if (constructors!.length > 1) {
         String switchCase = '';
         String defaultCtor = '';
         for (final ConstructorDeclaration rawConstructor in constructors!) {
-          final String ctorName = rawConstructor.name?.toString() ?? '';
+          final String ctorName = rawConstructor.name2?.toString() ?? '';
           if (ctorName.isEmpty) {
             defaultCtor = '''
 case '':
@@ -161,7 +161,7 @@ return ${getConstructorString(rawConstructor)};
     //final List<FormalParameter> optionals = <FormalParameter>[];
 
     for (final FormalParameter item in rawConstructor.parameters.parameters) {
-      final String? name = item.identifier?.toString();
+      final String? name = item.name?.toString();
       if (name != null) {
         hasParameters = true;
         if (item.isOptional || item.isRequiredNamed) {
@@ -266,8 +266,8 @@ return ${getConstructorString(rawConstructor)};
 
   String getConstructor(ConstructorDeclaration rawConstructor) {
     String ctor = className;
-    if (rawConstructor.name != null) {
-      ctor += '.${rawConstructor.name.toString()}';
+    if (rawConstructor.name2 != null) {
+      ctor += '.${rawConstructor.name2.toString()}';
     }
     return classNameConflictPrefixText + ctor;
   }
@@ -362,11 +362,11 @@ return ${getConstructorString(rawConstructor)};
 
   String? _getArgumentsClass() {
     constructors?.removeWhere(
-        (ConstructorDeclaration element) => element.name?.toString() == '_');
+        (ConstructorDeclaration element) => element.name2?.toString() == '_');
     if (constructors != null && constructors!.isNotEmpty) {
       final StringBuffer sb = StringBuffer();
       for (final ConstructorDeclaration rawConstructor in constructors!) {
-        final String? name = rawConstructor.name?.toString();
+        final String? name = rawConstructor.name2?.toString();
         final FormalParameterList parameters = rawConstructor.parameters;
         if (name == null && parameters.parameters.isEmpty) {
           continue;
@@ -375,7 +375,7 @@ return ${getConstructorString(rawConstructor)};
         String nameMap = '';
         for (final FormalParameter parameter in parameters.parameters) {
           final String parameterS = parameter.toString();
-          final String name = parameter.identifier!.name;
+          final String? name = parameter.name?.toString();
           if (parameterS.contains('this.')) {
             for (final FieldDeclaration item in fields!) {
               if (item.fields.endToken.toString() == name) {

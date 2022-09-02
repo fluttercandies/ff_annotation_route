@@ -6,10 +6,10 @@
  */
 
 import 'dart:io';
+import 'package:build_runner_core/build_runner_core.dart';
 import 'package:ff_annotation_route/src/arg/args.dart';
 import 'package:ff_annotation_route/src/utils/camel_under_score_converter.dart';
 import 'package:path/path.dart' as p;
-import 'package_graph.dart';
 import 'route_info.dart';
 import 'template.dart';
 import 'utils/convert.dart';

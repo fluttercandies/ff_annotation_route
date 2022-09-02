@@ -18,7 +18,7 @@ dependencies:
   meta: ^1.7.0
   path: ^1.8.1
   yaml: ^3.1.1
-
+  build_runner_core: ^7.2.3
 executables:
   ff_route: main
 

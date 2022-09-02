@@ -1,11 +1,11 @@
 import 'dart:io' as io;
 import 'dart:io';
 
+import 'package:build_runner_core/build_runner_core.dart';
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:ff_annotation_route/ff_annotation_route.dart';
 import 'package:ff_annotation_route/src/arg/arg_parser.dart';
 import 'package:ff_annotation_route/src/arg/args.dart';
-import 'package:ff_annotation_route/src/package_graph.dart';
 import 'package:io/ansi.dart';
 import 'package:path/path.dart';
 
@@ -64,7 +64,8 @@ Future<void> main(List<String> arguments) async {
 
   print(green.wrap('\nff_annotation_route ------ Start'));
 
-  final PackageGraph packageGraph = PackageGraph.forPath(Args().path.value!);
+  final PackageGraph packageGraph =
+      await PackageGraph.forPath(Args().path.value!);
 
   // Only check path which imports ff_annotation_route_core or ff_annotation_route_library
   final List<PackageNode> annotationPackages =
@@ -76,16 +77,14 @@ Future<void> main(List<String> arguments) async {
                       .gitNames
                       ?.firstWhereOrNull((String key) => x.name == key) !=
                   null);
-      final bool matchFFRoute = x.dependencies.firstWhere(
+      final bool matchFFRoute = x.dependencies.firstWhereOrNull(
             (PackageNode? dep) =>
                 dep?.name == 'ff_annotation_route_core' ||
                 dep?.name == 'ff_annotation_route_library',
-            orElse: () => null,
           ) !=
           null;
-      final bool isNotExcluded = x.name != null &&
-          x.name!.isNotEmpty &&
-          !Args().excludedPackagesName.contains(x.name!);
+      final bool isNotExcluded =
+          x.name.isNotEmpty && !Args().excludedPackagesName.contains(x.name);
       return matchPackage && matchFFRoute && isNotExcluded;
     },
   ).toList();
