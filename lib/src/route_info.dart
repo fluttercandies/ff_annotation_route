@@ -206,6 +206,8 @@ return ${getConstructorString(rawConstructor)};
           break;
         }
       }
+    } else if (parameter.toString() == 'super.key') {
+      return 'Key?';
     } else if (parameter is DefaultFormalParameter &&
         parameter.parameter is SimpleFormalParameter) {
       final TypeAnnotation? type =
@@ -389,6 +391,14 @@ return ${getConstructorString(rawConstructor)};
                 break;
               }
             }
+          } else if (parameter.toString() == 'super.key') {
+            args = args.replaceFirst(
+              parameterS,
+              parameterS.replaceAll(
+                'super.',
+                'Key? ',
+              ),
+            );
           }
           if (!Args().enableNullSafety) {
             args = args.replaceAll('?', '');

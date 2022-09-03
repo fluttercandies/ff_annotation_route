@@ -11,10 +11,10 @@ import 'package:url_launcher/url_launcher.dart';
   routeName: 'MainPage',
 )
 class MainPage extends StatelessWidget {
-  MainPage() {
+  MainPage({super.key}) {
     final List<String> routeNames = <String>[];
     routeNames.addAll(example_routes.routeNames);
-    routeNames.remove(Routes.fluttercandiesMainpage);
+    routeNames.remove(Routes.fluttercandiesMainpage.name);
     routeNames.remove(Routes.fluttercandiesDemogrouppage.name);
     routesGroup.addAll(groupBy<DemoRouteResult, String>(
         routeNames

@@ -39,14 +39,8 @@ FFRouteSettings getRouteSettings({
   Map<String, dynamic>? arguments,
   PageBuilder? notFoundPageBuilder,
 }) {
-  Map<String, dynamic> safeArguments = arguments ?? const <String, dynamic>{};
-  if (arguments != null && arguments.isNotEmpty) {
-    final Map<String, dynamic> ignoreCaseMap = <String, dynamic>{};
-    safeArguments.forEach((String key, dynamic value) {
-      ignoreCaseMap[key.toLowerCase()] = value;
-    });
-    safeArguments = ignoreCaseMap;
-  }
+  final Map<String, dynamic> safeArguments =
+      arguments ?? const <String, dynamic>{};
   switch (name) {
     case 'flutterCandies://func':
       return FFRouteSettings(
@@ -271,7 +265,7 @@ FFRouteSettings getRouteSettings({
         arguments: arguments,
         builder: () {
           final String ctorName =
-              safeArguments[constructorName.toLowerCase()]?.toString() ?? '';
+              safeArguments[constructorName]?.toString() ?? '';
           switch (ctorName) {
             case 'another0':
               return testpaged6c4b232f91f77ae9eb7103223363b84e.TestPageD
@@ -354,18 +348,18 @@ FFRouteSettings getRouteSettings({
         arguments: arguments,
         builder: () {
           final String ctorName =
-              safeArguments[constructorName.toLowerCase()]?.toString() ?? '';
+              safeArguments[constructorName]?.toString() ?? '';
           switch (ctorName) {
             case 'positioned':
               return TestPageCC.positioned(
                 asT<int>(
-                  safeArguments['testarg'],
+                  safeArguments['testArg'],
                 )!,
                 asT<bool?>(
-                  safeArguments['testboolean'],
+                  safeArguments['testBoolean'],
                 ),
                 asT<String>(
-                  safeArguments['testrequiredarg'],
+                  safeArguments['testRequiredArg'],
                   '',
                 )!,
                 asT<Key?>(
@@ -376,16 +370,16 @@ FFRouteSettings getRouteSettings({
             default:
               return TestPageCC(
                 asT<int>(
-                  safeArguments['testarg'],
+                  safeArguments['testArg'],
                 )!,
                 key: asT<Key?>(
                   safeArguments['key'],
                 ),
                 testRequiredArg: asT<String>(
-                  safeArguments['testrequiredarg'],
+                  safeArguments['testRequiredArg'],
                 )!,
                 testBoolean: asT<bool?>(
-                  safeArguments['testboolean'],
+                  safeArguments['testBoolean'],
                 ),
               );
           }
@@ -428,25 +422,25 @@ FFRouteSettings getRouteSettings({
         arguments: arguments,
         builder: () {
           final String ctorName =
-              safeArguments[constructorName.toLowerCase()]?.toString() ?? '';
+              safeArguments[constructorName]?.toString() ?? '';
           switch (ctorName) {
             case 'test':
               return TestPageE.test();
             case 'requiredC':
               return TestPageE.requiredC(
                 testMode: asT<TestMode?>(
-                  safeArguments['testmode'],
+                  safeArguments['testMode'],
                 ),
               );
             case '':
             default:
               return TestPageE(
                 testMode: asT<TestMode?>(
-                  safeArguments['testmode'],
+                  safeArguments['testMode'],
                   const TestMode(id: 2, isTest: false),
                 ),
                 testMode1: asT<TestMode1?>(
-                  safeArguments['testmode1'],
+                  safeArguments['testMode1'],
                 ),
               );
           }
@@ -470,7 +464,7 @@ FFRouteSettings getRouteSettings({
         arguments: arguments,
         builder: () => DemoGroupPage(
           keyValue: asT<MapEntry<String, List<DemoRouteResult>>>(
-            safeArguments['keyvalue'],
+            safeArguments['keyValue'],
           )!,
         ),
         routeName: 'DemoGroupPage',
@@ -479,7 +473,11 @@ FFRouteSettings getRouteSettings({
       return FFRouteSettings(
         name: name,
         arguments: arguments,
-        builder: () => MainPage(),
+        builder: () => MainPage(
+          key: asT<Key?>(
+            safeArguments['key'],
+          ),
+        ),
         routeName: 'MainPage',
       );
     default:

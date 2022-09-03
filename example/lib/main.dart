@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      initialRoute: Routes.fluttercandiesMainpage,
+      initialRoute: Routes.fluttercandiesMainpage.name,
       onGenerateRoute: (RouteSettings settings) {
         return onGenerateRoute(
           settings: settings,
@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
             ),
           ),
           routeSettingsWrapper: (FFRouteSettings ffRouteSettings) {
-            if (ffRouteSettings.name == Routes.fluttercandiesMainpage ||
+            if (ffRouteSettings.name == Routes.fluttercandiesMainpage.name ||
                 ffRouteSettings.name ==
                     Routes.fluttercandiesDemogrouppage.name) {
               return ffRouteSettings;

@@ -341,11 +341,8 @@ class Routes {
   /// [name] : 'fluttercandies://mainpage'
   ///
   /// [routeName] : 'MainPage'
-  ///
-  /// [constructors] :
-  ///
-  /// MainPage : []
-  static const String fluttercandiesMainpage = 'fluttercandies://mainpage';
+  static const _FluttercandiesMainpage fluttercandiesMainpage =
+      _FluttercandiesMainpage();
 }
 
 class _FlutterCandiesFunc {
@@ -712,6 +709,22 @@ class _FluttercandiesDemogrouppage {
   }) =>
       <String, dynamic>{
         'keyValue': keyValue,
+      };
+
+  @override
+  String toString() => name;
+}
+
+class _FluttercandiesMainpage {
+  const _FluttercandiesMainpage();
+
+  String get name => 'fluttercandies://mainpage';
+
+  Map<String, dynamic> d({
+    Key? key,
+  }) =>
+      <String, dynamic>{
+        'key': key,
       };
 
   @override

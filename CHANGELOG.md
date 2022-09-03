@@ -1,3 +1,7 @@
+## 9.3.2
+
+* support super.key as default Key? key.
+
 ## 9.3.1
 
 * [functional_widget](https://github.com/rrousselGit/functional_widget) support ugly function name. (#39)
