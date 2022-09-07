@@ -134,7 +134,7 @@ class Routes {
   ///
   /// [pageRouteType] : PageRouteType.material
   ///
-  /// [exts] : {group: Simple, order: 1}
+  /// [exts] : {'group': 'Simple', 'order': 1}
   static const _FlutterCandiesTestPageB flutterCandiesTestPageB =
       _FlutterCandiesTestPageB();
 
@@ -152,7 +152,7 @@ class Routes {
   ///
   /// [pageRouteType] : PageRouteType.material
   ///
-  /// [exts] : {group: Simple, order: 1}
+  /// [exts] : {'group': 'Simple', 'order': 1}
   static const _FlutterCandiesTestPageBCopy flutterCandiesTestPageBCopy =
       _FlutterCandiesTestPageBCopy();
 
@@ -170,7 +170,7 @@ class Routes {
   ///
   /// [pageRouteType] : PageRouteType.material
   ///
-  /// [exts] : {group: Simple, order: 1}
+  /// [exts] : {'group': 'Simple', 'order': 1}
   static const _FlutterCandiesTestPageBCopyCopy
       flutterCandiesTestPageBCopyCopy = _FlutterCandiesTestPageBCopyCopy();
 
@@ -188,7 +188,7 @@ class Routes {
   ///
   /// [pageRouteType] : PageRouteType.material
   ///
-  /// [exts] : {group: Simple, order: 1}
+  /// [exts] : {'group': 'Simple', 'order': 1}
   static const _FlutterCandiesTestPageBModuleA flutterCandiesTestPageBModuleA =
       _FlutterCandiesTestPageBModuleA();
 
@@ -214,7 +214,7 @@ class Routes {
   ///
   /// [pageRouteType] : PageRouteType.material
   ///
-  /// [exts] : {group: Complex, order: 0}
+  /// [exts] : {'group': 'Complex', 'order': 0}
   static const _FlutterCandiesTestPageD flutterCandiesTestPageD =
       _FlutterCandiesTestPageD();
 
@@ -226,7 +226,7 @@ class Routes {
   ///
   /// [description] : 'This is test page A.'
   ///
-  /// [exts] : {group: Simple, order: 0}
+  /// [exts] : {'group': 'Simple', 'order': 0}
   static const String flutterCandiesTestPageA = 'flutterCandies://testPageA';
 
   /// 'This is test page c in other module.'
@@ -237,7 +237,7 @@ class Routes {
   ///
   /// [description] : 'This is test page c in other module.'
   ///
-  /// [exts] : {group: Simple, order: 2}
+  /// [exts] : {'group': 'Simple', 'order': 2}
   static const String flutterCandiesTestPageC = 'flutterCandies://testPageC';
 
   /// 'This is test page CC.'
@@ -264,7 +264,7 @@ class Routes {
   ///
   /// [description] : 'This is test page c has the same name with moudle_a TestPageC.'
   ///
-  /// [exts] : {group: Simple, order: 2}
+  /// [exts] : {'group': 'Simple', 'order': 2}
   static const String flutterCandiesTestPageCCopy =
       'flutterCandies://testPageC_Copy';
 
@@ -276,7 +276,7 @@ class Routes {
   ///
   /// [description] : 'This is test page c has the same name with moudle_a TestPageC.'
   ///
-  /// [exts] : {group: Simple, order: 2}
+  /// [exts] : {'group': 'Simple', 'order': 2}
   static const String flutterCandiesTestPageCCopyCopy =
       'flutterCandies://testPageC_Copy_Copy';
 
@@ -288,7 +288,7 @@ class Routes {
   ///
   /// [description] : 'This is test page D. in module a'
   ///
-  /// [exts] : {group: Simple, order: 0}
+  /// [exts] : {'group': 'Simple', 'order': 0}
   static const String flutterCandiesTestPageDModuleA =
       'flutterCandies://testPageD_moduleA';
 
@@ -308,7 +308,7 @@ class Routes {
   ///
   /// TestPageE.requiredC : [TestMode?(required) testMode]
   ///
-  /// [exts] : {group: Complex, order: 1}
+  /// [exts] : {'group': 'Complex', 'order': 1}
   static const _FlutterCandiesTestPageE flutterCandiesTestPageE =
       _FlutterCandiesTestPageE();
 
@@ -320,7 +320,7 @@ class Routes {
   ///
   /// [description] : 'This is test page F. in module a'
   ///
-  /// [exts] : {group: Simple, order: 0}
+  /// [exts] : {'group': 'Simple', 'order': 0}
   static const String flutterCandiesTestPageFModuleA =
       'flutterCandies://testPageF_moduleA';
 

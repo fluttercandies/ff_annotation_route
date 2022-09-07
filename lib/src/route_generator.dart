@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:analyzer/dart/analysis/features.dart';
@@ -6,7 +5,6 @@ import 'package:analyzer/dart/analysis/results.dart';
 import 'package:analyzer/dart/analysis/utilities.dart';
 import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/ast/syntactic_entity.dart';
-
 // ignore: implementation_imports
 import 'package:analyzer/src/dart/ast/ast.dart';
 import 'package:build_runner_core/build_runner_core.dart';
@@ -188,6 +186,7 @@ class RouteGenerator {
                 String? description;
                 Map<String, dynamic>? exts;
                 Map<String, String>? codes;
+
                 for (final Expression item in parameters) {
                   if (item is NamedExpressionImpl) {
                     String source;
@@ -220,19 +219,27 @@ class RouteGenerator {
                             .addAll(toT<List<String>>(item.expression)!);
                         break;
                       case 'exts:':
-                        source = source.substring(source.indexOf('{'));
-                        source = source.replaceAll("'''", '\'');
-                        source = source.replaceAll('"', '\'');
-                        source = source.replaceAll('\'', '"');
-                        exts = json.decode(source) as Map<String, dynamic>?;
-                        break;
                       case 'codes:':
-                        source = source.substring(source.indexOf('{'));
-                        source = source.replaceAll("'''", '\'');
-                        source = source.replaceAll('"', '\'');
-                        source = source.replaceAll('\'', '"');
-                        codes = (json.decode(source) as Map<String, dynamic>?)
-                            ?.cast();
+                        if (item.expression is SetOrMapLiteralImpl) {
+                          final SetOrMapLiteralImpl setOrMapLiteralImpl =
+                              item.expression as SetOrMapLiteralImpl;
+                          final bool isCodes = key == 'codes:';
+                          if (setOrMapLiteralImpl.elements.isNotEmpty) {
+                            final Map<String, dynamic> map = isCodes
+                                ? codes ??= <String, String>{}
+                                : exts ??= <String, dynamic>{};
+                            for (final CollectionElement element
+                                in setOrMapLiteralImpl.elements) {
+                              final MapLiteralEntryImpl entry =
+                                  element as MapLiteralEntryImpl;
+                              String value = entry.value.toString();
+                              if (isCodes) {
+                                value = value.replaceAll('\'', '');
+                              }
+                              map[entry.key.toString()] = value;
+                            }
+                          }
+                        }
                     }
                   }
                 }

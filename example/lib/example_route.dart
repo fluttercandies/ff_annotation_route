@@ -215,7 +215,10 @@ FFRouteSettings getRouteSettings({
         routeName: 'testPageB ',
         pageRouteType: PageRouteType.material,
         description: "This is test ' page B.",
-        exts: <String, dynamic>{'group': 'Simple', 'order': 1},
+        exts: <String, dynamic>{
+          'group': 'Simple',
+          'order': 1,
+        },
       );
     case '''flutterCandies://testPage' "B_Copy''':
       return FFRouteSettings(
@@ -229,7 +232,10 @@ FFRouteSettings getRouteSettings({
         routeName: 'testPageB ',
         pageRouteType: PageRouteType.material,
         description: "This is test ' page B. has the same name",
-        exts: <String, dynamic>{'group': 'Simple', 'order': 1},
+        exts: <String, dynamic>{
+          'group': 'Simple',
+          'order': 1,
+        },
       );
     case '''flutterCandies://testPage' "B_Copy_Copy''':
       return FFRouteSettings(
@@ -243,7 +249,10 @@ FFRouteSettings getRouteSettings({
         routeName: 'testPageB ',
         pageRouteType: PageRouteType.material,
         description: "This is test ' page B. has the same name",
-        exts: <String, dynamic>{'group': 'Simple', 'order': 1},
+        exts: <String, dynamic>{
+          'group': 'Simple',
+          'order': 1,
+        },
       );
     case '''flutterCandies://testPage' "B_module_a''':
       return FFRouteSettings(
@@ -257,7 +266,10 @@ FFRouteSettings getRouteSettings({
         routeName: 'testPageB ',
         pageRouteType: PageRouteType.material,
         description: "This is test ' page B. in module a",
-        exts: <String, dynamic>{'group': 'Simple', 'order': 1},
+        exts: <String, dynamic>{
+          'group': 'Simple',
+          'order': 1,
+        },
       );
     case '''flutterCandies://testPage' "D''':
       return FFRouteSettings(
@@ -322,16 +334,28 @@ FFRouteSettings getRouteSettings({
         routeName: 'testPageD ',
         pageRouteType: PageRouteType.material,
         description: "This is test ' page D.",
-        exts: <String, dynamic>{'group': 'Complex', 'order': 0},
+        exts: <String, dynamic>{
+          'group': 'Complex',
+          'order': 0,
+        },
       );
     case 'flutterCandies://testPageA':
       return FFRouteSettings(
         name: name,
         arguments: arguments,
         builder: () => TestPageA(),
+        codes: <String, dynamic>{
+          'test1': TestPageA.dd,
+          'test2': TestPageA.dd,
+          'test3': TestPageA.ddd,
+          'test4': TestPageA(),
+        },
         routeName: 'testPageA',
         description: 'This is test page A.',
-        exts: <String, dynamic>{'group': 'Simple', 'order': 0},
+        exts: <String, dynamic>{
+          'group': 'Simple',
+          'order': 0,
+        },
       );
     case 'flutterCandies://testPageC':
       return FFRouteSettings(
@@ -340,7 +364,10 @@ FFRouteSettings getRouteSettings({
         builder: () => testpagec23b284ff92265eaaa6c065105cf47f2a.TestPageC(),
         routeName: 'testPageC',
         description: 'This is test page c in other module.',
-        exts: <String, dynamic>{'group': 'Simple', 'order': 2},
+        exts: <String, dynamic>{
+          'group': 'Simple',
+          'order': 2,
+        },
       );
     case 'flutterCandies://testPageCC':
       return FFRouteSettings(
@@ -395,7 +422,10 @@ FFRouteSettings getRouteSettings({
         routeName: 'testPageC',
         description:
             'This is test page c has the same name with moudle_a TestPageC.',
-        exts: <String, dynamic>{'group': 'Simple', 'order': 2},
+        exts: <String, dynamic>{
+          'group': 'Simple',
+          'order': 2,
+        },
       );
     case 'flutterCandies://testPageC_Copy_Copy':
       return FFRouteSettings(
@@ -405,7 +435,10 @@ FFRouteSettings getRouteSettings({
         routeName: 'testPageC',
         description:
             'This is test page c has the same name with moudle_a TestPageC.',
-        exts: <String, dynamic>{'group': 'Simple', 'order': 2},
+        exts: <String, dynamic>{
+          'group': 'Simple',
+          'order': 2,
+        },
       );
     case 'flutterCandies://testPageD_moduleA':
       return FFRouteSettings(
@@ -414,7 +447,10 @@ FFRouteSettings getRouteSettings({
         builder: () => testpaged05a916dda13cd9d2b973ee75b8e74f9d.TestPageD(),
         routeName: 'testPageA',
         description: 'This is test page D. in module a',
-        exts: <String, dynamic>{'group': 'Simple', 'order': 0},
+        exts: <String, dynamic>{
+          'group': 'Simple',
+          'order': 0,
+        },
       );
     case 'flutterCandies://testPageE':
       return FFRouteSettings(
@@ -447,7 +483,10 @@ FFRouteSettings getRouteSettings({
         },
         routeName: 'testPageE',
         description: 'Show how to push new page with arguments(class)',
-        exts: <String, dynamic>{'group': 'Complex', 'order': 1},
+        exts: <String, dynamic>{
+          'group': 'Complex',
+          'order': 1,
+        },
       );
     case 'flutterCandies://testPageF_moduleA':
       return FFRouteSettings(
@@ -456,7 +495,10 @@ FFRouteSettings getRouteSettings({
         builder: () => TestPageF(),
         routeName: 'testPageA',
         description: 'This is test page F. in module a',
-        exts: <String, dynamic>{'group': 'Simple', 'order': 0},
+        exts: <String, dynamic>{
+          'group': 'Simple',
+          'order': 0,
+        },
       );
     case 'fluttercandies://demogrouppage':
       return FFRouteSettings(

@@ -1,12 +1,7 @@
-import 'dart:convert';
-
-// ignore_for_file: implementation_imports
 import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/ast/syntactic_entity.dart';
 import 'package:ff_annotation_route/src/arg/args.dart';
 import 'package:ff_annotation_route_core/ff_annotation_route_core.dart';
-
-//import 'package:io/ansi.dart'
 import 'route_generator.dart';
 import 'utils/camel_under_score_converter.dart';
 import 'utils/convert.dart';
@@ -102,9 +97,19 @@ return ${getConstructorString(rawConstructor)};
       codes += 'codes: <String,dynamic>{';
 
       for (final String key in ffRoute.codes!.keys) {
-        codes += '\'$key\':${ffRoute.codes![key]},';
+        codes += '$key:${ffRoute.codes![key]},';
       }
       codes += '},';
+    }
+
+    String exts = '';
+    if (ffRoute.exts != null && ffRoute.exts!.isNotEmpty) {
+      exts += 'exts: <String,dynamic>{';
+
+      for (final String key in ffRoute.exts!.keys) {
+        exts += '$key:${ffRoute.exts![key]},';
+      }
+      exts += '},';
     }
 
     return '''case ${safeToString(ffRoute.name)}:
@@ -118,7 +123,9 @@ return ${getConstructorString(rawConstructor)};
       ${ffRoute.routeName != '' ? 'routeName: ${safeToString(ffRoute.routeName)},' : ''}
       ${ffRoute.pageRouteType != null ? 'pageRouteType: ${ffRoute.pageRouteType},' : ''}
       ${ffRoute.description != '' ? 'description: ${safeToString(ffRoute.description)},' : ''}
-      ${ffRoute.exts != null ? 'exts:<String,dynamic>${json.encode(ffRoute.exts)},'.replaceAll('"', '\'') : ''});\n''';
+      $exts
+      );\n''';
+    //       ${ffRoute.exts != null ? 'exts:<String,dynamic>${json.encode(ffRoute.exts)},'.replaceAll('"', '\'') : ''}
   }
 
   @override
