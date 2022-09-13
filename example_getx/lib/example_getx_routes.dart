@@ -30,9 +30,9 @@ class Routes {
   ///
   /// [constructors] :
   ///
-  /// BindingsPage : [Key? key, String? argument]
+  /// BindingsPage({Key? key, String? argument})
   ///
-  /// [exts] : {group: demo, order: 1}
+  /// [exts] : {'group': 'demo', 'order': 1}
   static const _BindingsPage bindingsPage = _BindingsPage();
 
   /// 'This is getX demo.'
@@ -45,9 +45,9 @@ class Routes {
   ///
   /// [constructors] :
   ///
-  /// ControllerPage : [Key? key]
+  /// ControllerPage({Key? key})
   ///
-  /// [exts] : {group: demo, order: 0}
+  /// [exts] : {'group': 'demo', 'order': 0}
   static const _ControllerPage controllerPage = _ControllerPage();
 
   /// 'This is getX counter demo.'
@@ -58,7 +58,7 @@ class Routes {
   ///
   /// [constructors] :
   ///
-  /// CounterPage : [Key? key]
+  /// CounterPage({Key? key})
   static const _CounterPage counterPage = _CounterPage();
 
   /// '/ItemPage'
@@ -67,7 +67,7 @@ class Routes {
   ///
   /// [constructors] :
   ///
-  /// ItemPage : [int(required) index, Key? key]
+  /// ItemPage({required int index, Key? key})
   static const _ItemPage itemPage = _ItemPage();
 
   /// 'DemoGroupPage'
@@ -78,7 +78,7 @@ class Routes {
   ///
   /// [constructors] :
   ///
-  /// DemoGroupPage : [Key? key, MapEntry<String, List<DemoRouteResult>>(required) keyValue]
+  /// DemoGroupPage({Key? key, required MapEntry<String, List<DemoRouteResult>> keyValue})
   static const _FluttercandiesDemogrouppage fluttercandiesDemogrouppage =
       _FluttercandiesDemogrouppage();
 
@@ -90,7 +90,7 @@ class Routes {
   ///
   /// [constructors] :
   ///
-  /// MainPage : [Key? key]
+  /// MainPage({Key? key})
   static const _FluttercandiesMainpage fluttercandiesMainpage =
       _FluttercandiesMainpage();
 }
@@ -107,6 +107,7 @@ class _BindingsPage {
       <String, dynamic>{
         'key': key,
         'argument': argument,
+        'constructorName': '',
       };
 
   @override
@@ -123,6 +124,7 @@ class _ControllerPage {
   }) =>
       <String, dynamic>{
         'key': key,
+        'constructorName': '',
       };
 
   @override
@@ -139,6 +141,7 @@ class _CounterPage {
   }) =>
       <String, dynamic>{
         'key': key,
+        'constructorName': '',
       };
 
   @override
@@ -157,6 +160,7 @@ class _ItemPage {
       <String, dynamic>{
         'index': index,
         'key': key,
+        'constructorName': '',
       };
 
   @override
@@ -175,6 +179,7 @@ class _FluttercandiesDemogrouppage {
       <String, dynamic>{
         'key': key,
         'keyValue': keyValue,
+        'constructorName': '',
       };
 
   @override
@@ -191,6 +196,7 @@ class _FluttercandiesMainpage {
   }) =>
       <String, dynamic>{
         'key': key,
+        'constructorName': '',
       };
 
   @override

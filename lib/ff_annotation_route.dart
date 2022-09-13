@@ -5,10 +5,11 @@ import 'package:build_runner_core/build_runner_core.dart';
 import 'src/arg/args.dart';
 import 'src/route_generator.dart';
 
-void generate(List<PackageNode> annotationPackages) {
+Future<void> generate(List<PackageNode> annotationPackages) async {
   RouteGenerator? root;
   final List<RouteGenerator> nodes = <RouteGenerator>[];
-  for (final PackageNode annotationPackage in annotationPackages) {
+  for (int i = 0; i < annotationPackages.length; i++) {
+    final PackageNode annotationPackage = annotationPackages[i];
     final RouteGenerator routeGenerator = RouteGenerator(
       annotationPackage,
       annotationPackage.isRoot && !Args().isPackage,
@@ -17,7 +18,7 @@ void generate(List<PackageNode> annotationPackages) {
       root = routeGenerator;
     } else {
       routeGenerator.getLib();
-      routeGenerator.scanLib();
+      await routeGenerator.scanLib();
       if (routeGenerator.hasAnnotationRoute) {
         //final io.File file =
         routeGenerator.generateFile();
@@ -26,13 +27,14 @@ void generate(List<PackageNode> annotationPackages) {
       }
     }
   }
+
   nodes.sort(
     (RouteGenerator a, RouteGenerator b) =>
         a.packageNode.name.compareTo(b.packageNode.name),
   );
   root?.getLib();
 
-  root?.scanLib(Args().outputPath);
+  await root?.scanLib(Args().outputPath);
 
   root?.generateFile(
     nodes: nodes,

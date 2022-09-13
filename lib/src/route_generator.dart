@@ -1,10 +1,13 @@
 import 'dart:io';
 
+import 'package:analyzer/dart/analysis/analysis_context.dart';
+import 'package:analyzer/dart/analysis/analysis_context_collection.dart';
 import 'package:analyzer/dart/analysis/features.dart';
 import 'package:analyzer/dart/analysis/results.dart';
 import 'package:analyzer/dart/analysis/utilities.dart';
 import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/ast/syntactic_entity.dart';
+import 'package:analyzer/dart/element/element.dart';
 // ignore: implementation_imports
 import 'package:analyzer/src/dart/ast/ast.dart';
 import 'package:build_runner_core/build_runner_core.dart';
@@ -106,173 +109,210 @@ class RouteGenerator {
     return '';
   }
 
-  void scanLib([String? output]) {
+  Future<void> scanLib([String? output]) async {
     if (_lib != null) {
       print('');
       print('Scanning package : ${packageNode.name}');
       final List<FileSystemEntity> files = _lib!.listSync(recursive: true);
+      final List<FileSystemEntity> dartFiles = <FileSystemEntity>[];
+
       for (final FileSystemEntity item in files) {
         final FileStat file = item.statSync();
         if (file.type == FileSystemEntityType.file &&
             item.path.endsWith('.dart')) {
-          final ParseStringResult result = parseFile(
-            path: item.path,
-            featureSet: FeatureSet.latestLanguageVersion(),
-          );
-          final CompilationUnit astRoot = result.unit;
-          final List<String> argumentImports = <String>[];
-          for (final SyntacticEntity child in astRoot.childEntities) {
-            if (child is ImportDirective) {
-              final SyntacticEntity? syntacticEntity = child.childEntities
-                  .firstWhereOrNull(
-                      (SyntacticEntity element) => element is Annotation);
+          dartFiles.add(item);
+        }
+      }
+      final AnalysisContextCollection collection = AnalysisContextCollection(
+          includedPaths:
+              dartFiles.map((FileSystemEntity e) => e.path).toList());
+      for (final FileSystemEntity item in dartFiles) {
+        final ParseStringResult result = parseFile(
+          path: item.path,
+          featureSet: FeatureSet.latestLanguageVersion(),
+        );
+        final CompilationUnit astRoot = result.unit;
+        final List<String> argumentImports = <String>[];
+        for (final SyntacticEntity child in astRoot.childEntities) {
+          if (child is ImportDirective) {
+            final SyntacticEntity? syntacticEntity = child.childEntities
+                .firstWhereOrNull(
+                    (SyntacticEntity element) => element is Annotation);
 
-              if (syntacticEntity != null) {
-                final Annotation annotation = syntacticEntity as AnnotationImpl;
-                if (annotation.name.name ==
-                    typeOf<FFArgumentImport>().toString()) {
-                  final NodeList<Expression>? parameters =
-                      annotation.arguments?.arguments;
-                  String import =
-                      child.toString().replaceAll(annotation.toString(), '');
-                  import = import.replaceAll(';', '');
-                  if (parameters != null && parameters.isNotEmpty) {
-                    import = import +
-                        ' ' +
-                        parameters.first.toString().replaceAll('\'', '');
-                  }
-                  import += ';\n';
-                  argumentImports.add(import);
+            if (syntacticEntity != null) {
+              final Annotation annotation = syntacticEntity as AnnotationImpl;
+              if (annotation.name.name ==
+                  typeOf<FFArgumentImport>().toString()) {
+                final NodeList<Expression>? parameters =
+                    annotation.arguments?.arguments;
+                String import =
+                    child.toString().replaceAll(annotation.toString(), '');
+                import = import.replaceAll(';', '');
+                if (parameters != null && parameters.isNotEmpty) {
+                  import = import +
+                      ' ' +
+                      parameters.first.toString().replaceAll('\'', '');
                 }
+                import += ';\n';
+                argumentImports.add(import);
               }
             }
           }
+        }
 
-          FileInfo? fileInfo;
-          for (final CompilationUnitMember declaration
-              in astRoot.declarations) {
-            for (final Annotation metadata in declaration.metadata) {
-              final ClassDeclaration? ffRefClassDef =
-                  getFFRouteRefClassDeclaration(metadata, item);
-              if (ffRefClassDef != null) {
-                final String className = ffRefClassDef.name2.toString();
-                final String routePath =
-                    '${p.relative(item.path, from: packageNode.path)} ------ class : $className';
-                print('Found annotation route : $routePath');
+        final AnalysisContext context = collection.contextFor(item.path);
+        final UnitElementResult result1 = await context.currentSession
+            .getUnitElement(item.path) as UnitElementResult;
+        final CompilationUnitElement element = result1.element;
 
-                final List<String> relativeParts = <String>[
-                  packageNode.path,
-                  'lib'
-                ];
-                if (output != null) {
-                  relativeParts.add(output);
+        FileInfo? fileInfo;
+        for (final CompilationUnitMember declaration in astRoot.declarations) {
+          for (final Annotation metadata in declaration.metadata) {
+            final ClassDeclaration? ffRefClassDef =
+                getFFRouteRefClassDeclaration(metadata, item);
+            if (ffRefClassDef != null) {
+              final String className = ffRefClassDef.name2.toString();
+              final String routePath =
+                  '${p.relative(item.path, from: packageNode.path)} ------ class : $className';
+              print('Found annotation route : $routePath');
+
+              ClassElement? class1 = element.classes.firstWhereOrNull(
+                  (ClassElement element) => element.name == className);
+              if (class1 == null) {
+                String? path;
+                for (final String key in _partClassDeclarations.keys) {
+                  if (_partClassDeclarations[key]!.firstWhereOrNull(
+                          (ClassDeclaration element) =>
+                              element == ffRefClassDef) !=
+                      null) {
+                    path = key;
+                    break;
+                  }
                 }
-
-                fileInfo ??= FileInfo(
-                    export: p
-                        .relative(item.path, from: p.joinAll(relativeParts))
-                        .replaceAll('\\', '/'),
-                    packageName: packageNode.name);
-
-                final NodeList<Expression>? parameters =
-                    metadata.arguments?.arguments;
-                if (parameters == null) {
-                  continue;
+                if (path != null) {
+                  final AnalysisContext context = collection.contextFor(path);
+                  final UnitElementResult result1 = await context.currentSession
+                      .getUnitElement(path) as UnitElementResult;
+                  final CompilationUnitElement element = result1.element;
+                  class1 = element.classes.firstWhereOrNull(
+                      (ClassElement element) => element.name == className);
                 }
-                String? name;
-                bool? showStatusBar;
-                String? routeName;
-                PageRouteType? pageRouteType;
-                String? description;
-                Map<String, dynamic>? exts;
-                Map<String, String>? codes;
+              }
 
-                for (final Expression item in parameters) {
-                  if (item is NamedExpressionImpl) {
-                    String source;
-                    source = item.expression.toSource();
-                    if (source == 'null') {
-                      continue;
-                    }
-                    final String key = item.name.toSource();
+              final List<String> relativeParts = <String>[
+                packageNode.path,
+                'lib'
+              ];
+              if (output != null) {
+                relativeParts.add(output);
+              }
 
-                    switch (key) {
-                      case 'name:':
-                        name = toT<String>(item.expression);
-                        break;
-                      case 'routeName:':
-                        routeName = toT<String>(item.expression);
-                        break;
-                      case 'showStatusBar:':
-                        showStatusBar = toT<bool>(item.expression);
-                        break;
-                      case 'pageRouteType:':
-                        pageRouteType = PageRouteType.values.firstWhereOrNull(
-                          (PageRouteType type) => type.toString() == source,
-                        );
-                        break;
-                      case 'description:':
-                        description = toT<String>(item.expression);
-                        break;
-                      case 'argumentImports:':
-                        argumentImports
-                            .addAll(toT<List<String>>(item.expression)!);
-                        break;
-                      case 'exts:':
-                      case 'codes:':
-                        if (item.expression is SetOrMapLiteralImpl) {
-                          final SetOrMapLiteralImpl setOrMapLiteralImpl =
-                              item.expression as SetOrMapLiteralImpl;
-                          final bool isCodes = key == 'codes:';
-                          if (setOrMapLiteralImpl.elements.isNotEmpty) {
-                            final Map<String, dynamic> map = isCodes
-                                ? codes ??= <String, String>{}
-                                : exts ??= <String, dynamic>{};
-                            for (final CollectionElement element
-                                in setOrMapLiteralImpl.elements) {
-                              final MapLiteralEntryImpl entry =
-                                  element as MapLiteralEntryImpl;
-                              String value = entry.value.toString();
-                              if (isCodes) {
-                                value = value.replaceAll('\'', '');
-                              }
-                              map[entry.key.toString()] = value;
+              fileInfo ??= FileInfo(
+                  export: p
+                      .relative(item.path, from: p.joinAll(relativeParts))
+                      .replaceAll('\\', '/'),
+                  packageName: packageNode.name);
+
+              final NodeList<Expression>? parameters =
+                  metadata.arguments?.arguments;
+              if (parameters == null) {
+                continue;
+              }
+              String? name;
+              bool? showStatusBar;
+              String? routeName;
+              PageRouteType? pageRouteType;
+              String? description;
+              Map<String, dynamic>? exts;
+              Map<String, String>? codes;
+
+              for (final Expression item in parameters) {
+                if (item is NamedExpressionImpl) {
+                  String source;
+                  source = item.expression.toSource();
+                  if (source == 'null') {
+                    continue;
+                  }
+                  final String key = item.name.toSource();
+
+                  switch (key) {
+                    case 'name:':
+                      name = toT<String>(item.expression);
+                      break;
+                    case 'routeName:':
+                      routeName = toT<String>(item.expression);
+                      break;
+                    case 'showStatusBar:':
+                      showStatusBar = toT<bool>(item.expression);
+                      break;
+                    case 'pageRouteType:':
+                      pageRouteType = PageRouteType.values.firstWhereOrNull(
+                        (PageRouteType type) => type.toString() == source,
+                      );
+                      break;
+                    case 'description:':
+                      description = toT<String>(item.expression);
+                      break;
+                    case 'argumentImports:':
+                      argumentImports
+                          .addAll(toT<List<String>>(item.expression)!);
+                      break;
+                    case 'exts:':
+                    case 'codes:':
+                      if (item.expression is SetOrMapLiteralImpl) {
+                        final SetOrMapLiteralImpl setOrMapLiteralImpl =
+                            item.expression as SetOrMapLiteralImpl;
+                        final bool isCodes = key == 'codes:';
+                        if (setOrMapLiteralImpl.elements.isNotEmpty) {
+                          final Map<String, dynamic> map = isCodes
+                              ? codes ??= <String, String>{}
+                              : exts ??= <String, dynamic>{};
+                          for (final CollectionElement element
+                              in setOrMapLiteralImpl.elements) {
+                            final MapLiteralEntryImpl entry =
+                                element as MapLiteralEntryImpl;
+
+                            String value = entry.value.toString();
+                            if (isCodes) {
+                              value = value.replaceAll('\'', '');
                             }
+                            map[entry.key.toString()] = value;
                           }
                         }
-                    }
+                      }
                   }
                 }
-
-                final RouteInfo routeInfo = RouteInfo(
-                  className: className,
-                  ffRoute: FFRoute(
-                    name: name!,
-                    showStatusBar: showStatusBar ?? true,
-                    routeName: routeName ?? '',
-                    pageRouteType: pageRouteType,
-                    description: description ?? '',
-                    exts: exts,
-                    argumentImports: argumentImports,
-                    codes: codes,
-                  ),
-                  constructors: ffRefClassDef.members
-                      .whereType<ConstructorDeclaration>()
-                      .toList(),
-                  fields: ffRefClassDef.members
-                      .whereType<FieldDeclaration>()
-                      .toList(),
-                  routePath: routePath,
-                  classDeclaration: ffRefClassDef,
-                  node: this,
-                );
-                fileInfo.routes.add(routeInfo);
               }
+
+              final RouteInfo routeInfo = RouteInfo(
+                className: className,
+                ffRoute: FFRoute(
+                  name: name!,
+                  showStatusBar: showStatusBar ?? true,
+                  routeName: routeName ?? '',
+                  pageRouteType: pageRouteType,
+                  description: description ?? '',
+                  exts: exts,
+                  argumentImports: argumentImports,
+                  codes: codes,
+                ),
+                // constructors: ffRefClassDef.members
+                //     .whereType<ConstructorDeclaration>()
+                //     .toList(),
+                // fields: ffRefClassDef.members
+                //     .whereType<FieldDeclaration>()
+                //     .toList(),
+                routePath: routePath,
+                classDeclaration: ffRefClassDef,
+                node: this,
+                constructors: class1?.constructors,
+              );
+              fileInfo.routes.add(routeInfo);
             }
           }
-          if (fileInfo != null) {
-            _fileInfoList.add(fileInfo);
-          }
+        }
+        if (fileInfo != null) {
+          _fileInfoList.add(fileInfo);
         }
       }
     }

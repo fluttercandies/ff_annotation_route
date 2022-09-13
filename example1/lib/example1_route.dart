@@ -51,7 +51,10 @@ FFRouteSettings getRouteSettings({
         builder: () => TestPageA(),
         routeName: 'testPageA',
         description: 'This is test page A.',
-        exts: <String, dynamic>{'group': 'Simple', 'order': 0},
+        exts: <String, dynamic>{
+          'group': 'Simple',
+          'order': 0,
+        },
       );
     case '/testPageB':
       return FFRouteSettings(
@@ -65,7 +68,10 @@ FFRouteSettings getRouteSettings({
         routeName: 'testPageB ',
         pageRouteType: PageRouteType.material,
         description: "This is test ' page B.",
-        exts: <String, dynamic>{'group': 'Simple', 'order': 1},
+        exts: <String, dynamic>{
+          'group': 'Simple',
+          'order': 1,
+        },
       );
     case '/testPageC':
       return FFRouteSettings(
@@ -74,7 +80,10 @@ FFRouteSettings getRouteSettings({
         builder: () => TestPageC(),
         routeName: 'testPageC',
         description: 'Push/Pop test page.',
-        exts: <String, dynamic>{'group': 'Simple', 'order': 2},
+        exts: <String, dynamic>{
+          'group': 'Simple',
+          'order': 2,
+        },
       );
     case '/testPageD':
       return FFRouteSettings(
@@ -135,7 +144,10 @@ FFRouteSettings getRouteSettings({
         routeName: 'testPageD ',
         pageRouteType: PageRouteType.material,
         description: "This is test ' page D.",
-        exts: <String, dynamic>{'group': 'Complex', 'order': 0},
+        exts: <String, dynamic>{
+          'group': 'Complex',
+          'order': 0,
+        },
       );
     case '/testPageE':
       return FFRouteSettings(
@@ -168,7 +180,10 @@ FFRouteSettings getRouteSettings({
         },
         routeName: 'testPageE',
         description: 'Show how to push new page with arguments(class)',
-        exts: <String, dynamic>{'group': 'Complex', 'order': 1},
+        exts: <String, dynamic>{
+          'group': 'Complex',
+          'order': 1,
+        },
       );
     case '/testPageF':
       return FFRouteSettings(
@@ -188,7 +203,10 @@ FFRouteSettings getRouteSettings({
         routeName: 'testPageF',
         pageRouteType: PageRouteType.material,
         description: 'This is test page F.',
-        exts: <String, dynamic>{'group': 'Complex', 'order': 2},
+        exts: <String, dynamic>{
+          'group': 'Complex',
+          'order': 2,
+        },
       );
     case '/testPageG':
       return FFRouteSettings(
@@ -197,7 +215,10 @@ FFRouteSettings getRouteSettings({
         builder: () => TestPageG(),
         routeName: 'testPageG',
         description: 'Pop with result test page(push from TestPageC)',
-        exts: <String, dynamic>{'group': 'Simple', 'order': 3},
+        exts: <String, dynamic>{
+          'group': 'Simple',
+          'order': 3,
+        },
       );
     case 'ChildRouterPage':
       return FFRouteSettings(

@@ -95,9 +95,7 @@ Future<void> main(List<String> arguments) async {
     annotationPackages.add(packageGraph.root);
   }
 
-  generate(
-    annotationPackages,
-  );
+  await generate(annotationPackages);
 
   if (Args().save.value! && !runFromLocal) {
     final File file = File(join('./', argumentsFile));

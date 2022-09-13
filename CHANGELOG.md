@@ -1,3 +1,7 @@
+## 9.4.0
+
+* support super parameters
+
 ## 9.3.3
 
 * improve the analysis of codes and exts

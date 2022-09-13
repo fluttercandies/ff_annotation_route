@@ -31,10 +31,6 @@ class Routes {
   /// [name] : '/'
   ///
   /// [routeName] : 'MainPage'
-  ///
-  /// [constructors] :
-  ///
-  /// MainPage : []
   static const String root = '/';
 
   /// 'DemoGroupPage'
@@ -45,7 +41,7 @@ class Routes {
   ///
   /// [constructors] :
   ///
-  /// DemoGroupPage : [MapEntry<String, List<DemoRouteResult>>(required) keyValue]
+  /// DemoGroupPage({required MapEntry<String, List<DemoRouteResult>> keyValue})
   static const _Demogrouppage demogrouppage = _Demogrouppage();
 
   /// 'This is test page A.'
@@ -56,7 +52,7 @@ class Routes {
   ///
   /// [description] : 'This is test page A.'
   ///
-  /// [exts] : {group: Simple, order: 0}
+  /// [exts] : {'group': 'Simple', 'order': 0}
   static const String testPageA = '/testPageA';
 
   /// "This is test ' page B."
@@ -69,11 +65,11 @@ class Routes {
   ///
   /// [constructors] :
   ///
-  /// TestPageB : [String? argument]
+  /// TestPageB({String? argument})
   ///
   /// [pageRouteType] : PageRouteType.material
   ///
-  /// [exts] : {group: Simple, order: 1}
+  /// [exts] : {'group': 'Simple', 'order': 1}
   static const _TestPageB testPageB = _TestPageB();
 
   /// 'Push/Pop test page.'
@@ -84,7 +80,7 @@ class Routes {
   ///
   /// [description] : 'Push/Pop test page.'
   ///
-  /// [exts] : {group: Simple, order: 2}
+  /// [exts] : {'group': 'Simple', 'order': 2}
   static const String testPageC = '/testPageC';
 
   /// "This is test ' page D."
@@ -97,19 +93,19 @@ class Routes {
   ///
   /// [constructors] :
   ///
-  /// TestPageD : [String?(required) argument, bool? optional, String? id]
+  /// TestPageD(String? argument, {bool? optional = false, String? id = 'flutterCandies'})
   ///
-  /// TestPageD.another0 : [String?(required) argument]
+  /// TestPageD.another0({required String? argument})
   ///
-  /// TestPageD.another1 : [String?(required) argument, bool? optional]
+  /// TestPageD.another1(String? argument, [bool? optional = false])
   ///
-  /// TestPageD.another2 : [String?(required) argument]
+  /// TestPageD.another2(String? argument)
   ///
-  /// TestPageD.another3 : [String?(required) argument, bool? optional]
+  /// TestPageD.another3(String? argument, {bool? optional})
   ///
   /// [pageRouteType] : PageRouteType.material
   ///
-  /// [exts] : {group: Complex, order: 0}
+  /// [exts] : {'group': 'Complex', 'order': 0}
   static const _TestPageD testPageD = _TestPageD();
 
   /// 'Show how to push new page with arguments(class)'
@@ -122,13 +118,13 @@ class Routes {
   ///
   /// [constructors] :
   ///
-  /// TestPageE : [TestMode? testMode, TestMode1? testMode1]
+  /// TestPageE({TestMode? testMode = const TestMode(id: 2, isTest: false), TestMode1? testMode1})
   ///
-  /// TestPageE.test : []
+  /// TestPageE.test()
   ///
-  /// TestPageE.requiredC : [TestMode?(required) testMode]
+  /// TestPageE.requiredC({required TestMode? testMode})
   ///
-  /// [exts] : {group: Complex, order: 1}
+  /// [exts] : {'group': 'Complex', 'order': 1}
   static const _TestPageE testPageE = _TestPageE();
 
   /// 'This is test page F.'
@@ -141,11 +137,11 @@ class Routes {
   ///
   /// [constructors] :
   ///
-  /// TestPageF : [List<int>?(required) list, Map<String, String>? map, TestMode? testMode]
+  /// TestPageF(List<int>? list, {Map<String, String>? map, TestMode? testMode})
   ///
   /// [pageRouteType] : PageRouteType.material
   ///
-  /// [exts] : {group: Complex, order: 2}
+  /// [exts] : {'group': 'Complex', 'order': 2}
   static const _TestPageF testPageF = _TestPageF();
 
   /// 'Pop with result test page(push from TestPageC)'
@@ -156,7 +152,7 @@ class Routes {
   ///
   /// [description] : 'Pop with result test page(push from TestPageC)'
   ///
-  /// [exts] : {group: Simple, order: 3}
+  /// [exts] : {'group': 'Simple', 'order': 3}
   static const String testPageG = '/testPageG';
 
   /// 'ChildRouterPage'
@@ -197,6 +193,7 @@ class _Demogrouppage {
   }) =>
       <String, dynamic>{
         'keyValue': keyValue,
+        'constructorName': '',
       };
 
   @override
@@ -213,6 +210,7 @@ class _TestPageB {
   }) =>
       <String, dynamic>{
         'argument': argument,
+        'constructorName': '',
       };
 
   @override
@@ -233,6 +231,7 @@ class _TestPageD {
         'argument': argument,
         'optional': optional,
         'id': id,
+        'constructorName': '',
       };
 
   Map<String, dynamic> another0({
@@ -287,6 +286,7 @@ class _TestPageE {
       <String, dynamic>{
         'testMode': testMode,
         'testMode1': testMode1,
+        'constructorName': '',
       };
 
   Map<String, dynamic> test() => const <String, dynamic>{
@@ -319,6 +319,7 @@ class _TestPageF {
         'list': list,
         'map': map,
         'testMode': testMode,
+        'constructorName': '',
       };
 
   @override

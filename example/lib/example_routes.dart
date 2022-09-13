@@ -10,6 +10,7 @@ import 'package:flutter/foundation.dart';
 import 'src/pages/main_page.dart';
 
 const List<String> routeNames = <String>[
+  'flutterCandies://TestPageSuperParameters',
   'flutterCandies://func',
   'flutterCandies://func1',
   'flutterCandies://func2',
@@ -37,6 +38,25 @@ const List<String> routeNames = <String>[
 class Routes {
   const Routes._();
 
+  /// 'This is super parameter test page.'
+  ///
+  /// [name] : 'flutterCandies://TestPageSuperParameters'
+  ///
+  /// [routeName] : 'TestPageSuperParameters '
+  ///
+  /// [description] : 'This is super parameter test page.'
+  ///
+  /// [constructors] :
+  ///
+  /// TestPageSuperParameters({String? argument})
+  ///
+  /// [pageRouteType] : PageRouteType.material
+  ///
+  /// [exts] : {'group': 'Complex', 'order': 2}
+  static const _FlutterCandiesTestPageSuperParameters
+      flutterCandiesTestPageSuperParameters =
+      _FlutterCandiesTestPageSuperParameters();
+
   /// 'test-func'
   ///
   /// [name] : 'flutterCandies://func'
@@ -45,7 +65,7 @@ class Routes {
   ///
   /// [constructors] :
   ///
-  /// Func : [int(required) a, String?(required) b, Key? key, bool? c, double(required) d]
+  /// Func(int a, String? b, {Key? key, bool? c, required double d})
   static const _FlutterCandiesFunc flutterCandiesFunc = _FlutterCandiesFunc();
 
   /// 'test-func-1'
@@ -56,7 +76,7 @@ class Routes {
   ///
   /// [constructors] :
   ///
-  /// Func1 : [int(required) a, String?(required) b, Key? key, bool? c, double(required) d]
+  /// Func1(int a, String? b, {Key? key, bool? c, required double d})
   static const _FlutterCandiesFunc1 flutterCandiesFunc1 =
       _FlutterCandiesFunc1();
 
@@ -68,7 +88,7 @@ class Routes {
   ///
   /// [constructors] :
   ///
-  /// Func2 : [int(required) a, String?(required) b, Key? key, bool? c, double(required) d]
+  /// Func2(int a, String? b, {Key? key, bool? c, required double d})
   static const _FlutterCandiesFunc2 flutterCandiesFunc2 =
       _FlutterCandiesFunc2();
 
@@ -80,7 +100,7 @@ class Routes {
   ///
   /// [constructors] :
   ///
-  /// Func3 : [int(required) a, String?(required) b, Key? key, bool? c, double(required) d]
+  /// Func3(int a, String? b, {Key? key, bool? c, required double d})
   static const _FlutterCandiesFunc3 flutterCandiesFunc3 =
       _FlutterCandiesFunc3();
 
@@ -92,7 +112,7 @@ class Routes {
   ///
   /// [constructors] :
   ///
-  /// Func4 : [int(required) a, String?(required) b, Key? key, bool? c, double(required) d]
+  /// Func4(int a, String? b, {Key? key, bool? c, required double d})
   static const _FlutterCandiesFunc4 flutterCandiesFunc4 =
       _FlutterCandiesFunc4();
 
@@ -104,7 +124,7 @@ class Routes {
   ///
   /// [constructors] :
   ///
-  /// Func5 : [int(required) a, String?(required) b, Key? key, bool? c, double(required) d]
+  /// Func5(int a, String? b, {Key? key, bool? c, required double d})
   static const _FlutterCandiesFunc5 flutterCandiesFunc5 =
       _FlutterCandiesFunc5();
 
@@ -116,7 +136,7 @@ class Routes {
   ///
   /// [constructors] :
   ///
-  /// $7Func : [int(required) a, String?(required) b, Key? key, bool? c, double(required) d]
+  /// $7Func(int a, String? b, {Key? key, bool? c, required double d})
   static const _FlutterCandiesFunc7 flutterCandiesFunc7 =
       _FlutterCandiesFunc7();
 
@@ -130,7 +150,7 @@ class Routes {
   ///
   /// [constructors] :
   ///
-  /// testpagebf579848b341a854d92dd7bfb0a9adf6c.TestPageB : [String? argument]
+  /// TestPageB({String? argument})
   ///
   /// [pageRouteType] : PageRouteType.material
   ///
@@ -148,7 +168,7 @@ class Routes {
   ///
   /// [constructors] :
   ///
-  /// testpageba7e2423296cea41a98c971570832499c.TestPageB : [String? argument]
+  /// TestPageB({String? argument})
   ///
   /// [pageRouteType] : PageRouteType.material
   ///
@@ -166,7 +186,7 @@ class Routes {
   ///
   /// [constructors] :
   ///
-  /// testpagebe750dc97cdd9ac79db01471ef9768749.TestPageB : [String? argument]
+  /// TestPageB({String? argument})
   ///
   /// [pageRouteType] : PageRouteType.material
   ///
@@ -184,7 +204,7 @@ class Routes {
   ///
   /// [constructors] :
   ///
-  /// testpageb1afeb9c992bb2f1098d1acc6becb2a6c.TestPageB : [String? argument]
+  /// TestPageB({String? argument})
   ///
   /// [pageRouteType] : PageRouteType.material
   ///
@@ -202,15 +222,15 @@ class Routes {
   ///
   /// [constructors] :
   ///
-  /// testpaged6c4b232f91f77ae9eb7103223363b84e.TestPageD : [String?(required) argument, bool? optional, String? id]
+  /// TestPageD(String? argument, {bool? optional = false, String? id = 'flutterCandies'})
   ///
-  /// testpaged6c4b232f91f77ae9eb7103223363b84e.TestPageD.another0 : [String?(required) argument]
+  /// TestPageD.another0({required String? argument})
   ///
-  /// testpaged6c4b232f91f77ae9eb7103223363b84e.TestPageD.another1 : [String?(required) argument, bool? optional]
+  /// TestPageD.another1(String? argument, [bool? optional = false])
   ///
-  /// testpaged6c4b232f91f77ae9eb7103223363b84e.TestPageD.another2 : [String?(required) argument]
+  /// TestPageD.another2(String? argument)
   ///
-  /// testpaged6c4b232f91f77ae9eb7103223363b84e.TestPageD.another3 : [String?(required) argument, bool? optional]
+  /// TestPageD.another3(String? argument, {bool? optional})
   ///
   /// [pageRouteType] : PageRouteType.material
   ///
@@ -250,9 +270,9 @@ class Routes {
   ///
   /// [constructors] :
   ///
-  /// TestPageCC : [int(required) testArg, Key? key, String(required) testRequiredArg, bool? testBoolean]
+  /// TestPageCC(int testArg, {Key? key, required String testRequiredArg, bool? testBoolean})
   ///
-  /// TestPageCC.positioned : [int(required) testArg, bool? testBoolean, String testRequiredArg, Key? key]
+  /// TestPageCC.positioned(int testArg, [bool? testBoolean, String testRequiredArg = '', Key? key])
   static const _FlutterCandiesTestPageCC flutterCandiesTestPageCC =
       _FlutterCandiesTestPageCC();
 
@@ -302,11 +322,11 @@ class Routes {
   ///
   /// [constructors] :
   ///
-  /// TestPageE : [TestMode? testMode, TestMode1? testMode1]
+  /// TestPageE({TestMode? testMode = const TestMode(id: 2, isTest: false), TestMode1? testMode1})
   ///
-  /// TestPageE.test : []
+  /// TestPageE.test()
   ///
-  /// TestPageE.requiredC : [TestMode?(required) testMode]
+  /// TestPageE.requiredC({required TestMode? testMode})
   ///
   /// [exts] : {'group': 'Complex', 'order': 1}
   static const _FlutterCandiesTestPageE flutterCandiesTestPageE =
@@ -332,7 +352,7 @@ class Routes {
   ///
   /// [constructors] :
   ///
-  /// DemoGroupPage : [MapEntry<String, List<DemoRouteResult>>(required) keyValue]
+  /// DemoGroupPage({required MapEntry<String, List<DemoRouteResult>> keyValue})
   static const _FluttercandiesDemogrouppage fluttercandiesDemogrouppage =
       _FluttercandiesDemogrouppage();
 
@@ -341,8 +361,29 @@ class Routes {
   /// [name] : 'fluttercandies://mainpage'
   ///
   /// [routeName] : 'MainPage'
+  ///
+  /// [constructors] :
+  ///
+  /// MainPage({Key? key})
   static const _FluttercandiesMainpage fluttercandiesMainpage =
       _FluttercandiesMainpage();
+}
+
+class _FlutterCandiesTestPageSuperParameters {
+  const _FlutterCandiesTestPageSuperParameters();
+
+  String get name => 'flutterCandies://TestPageSuperParameters';
+
+  Map<String, dynamic> d({
+    String? argument,
+  }) =>
+      <String, dynamic>{
+        'argument': argument,
+        'constructorName': '',
+      };
+
+  @override
+  String toString() => name;
 }
 
 class _FlutterCandiesFunc {
@@ -363,6 +404,7 @@ class _FlutterCandiesFunc {
         'key': key,
         'c': c,
         'd': d,
+        'constructorName': '',
       };
 
   @override
@@ -387,6 +429,7 @@ class _FlutterCandiesFunc1 {
         'key': key,
         'c': c,
         'd': d,
+        'constructorName': '',
       };
 
   @override
@@ -411,6 +454,7 @@ class _FlutterCandiesFunc2 {
         'key': key,
         'c': c,
         'd': d,
+        'constructorName': '',
       };
 
   @override
@@ -435,6 +479,7 @@ class _FlutterCandiesFunc3 {
         'key': key,
         'c': c,
         'd': d,
+        'constructorName': '',
       };
 
   @override
@@ -459,6 +504,7 @@ class _FlutterCandiesFunc4 {
         'key': key,
         'c': c,
         'd': d,
+        'constructorName': '',
       };
 
   @override
@@ -483,6 +529,7 @@ class _FlutterCandiesFunc5 {
         'key': key,
         'c': c,
         'd': d,
+        'constructorName': '',
       };
 
   @override
@@ -507,6 +554,7 @@ class _FlutterCandiesFunc7 {
         'key': key,
         'c': c,
         'd': d,
+        'constructorName': '',
       };
 
   @override
@@ -523,6 +571,7 @@ class _FlutterCandiesTestPageB {
   }) =>
       <String, dynamic>{
         'argument': argument,
+        'constructorName': '',
       };
 
   @override
@@ -539,6 +588,7 @@ class _FlutterCandiesTestPageBCopy {
   }) =>
       <String, dynamic>{
         'argument': argument,
+        'constructorName': '',
       };
 
   @override
@@ -555,6 +605,7 @@ class _FlutterCandiesTestPageBCopyCopy {
   }) =>
       <String, dynamic>{
         'argument': argument,
+        'constructorName': '',
       };
 
   @override
@@ -571,6 +622,7 @@ class _FlutterCandiesTestPageBModuleA {
   }) =>
       <String, dynamic>{
         'argument': argument,
+        'constructorName': '',
       };
 
   @override
@@ -591,6 +643,7 @@ class _FlutterCandiesTestPageD {
         'argument': argument,
         'optional': optional,
         'id': id,
+        'constructorName': '',
       };
 
   Map<String, dynamic> another0({
@@ -649,6 +702,7 @@ class _FlutterCandiesTestPageCC {
         'key': key,
         'testRequiredArg': testRequiredArg,
         'testBoolean': testBoolean,
+        'constructorName': '',
       };
 
   Map<String, dynamic> positioned(
@@ -681,6 +735,7 @@ class _FlutterCandiesTestPageE {
       <String, dynamic>{
         'testMode': testMode,
         'testMode1': testMode1,
+        'constructorName': '',
       };
 
   Map<String, dynamic> test() => const <String, dynamic>{
@@ -709,6 +764,7 @@ class _FluttercandiesDemogrouppage {
   }) =>
       <String, dynamic>{
         'keyValue': keyValue,
+        'constructorName': '',
       };
 
   @override
@@ -725,6 +781,7 @@ class _FluttercandiesMainpage {
   }) =>
       <String, dynamic>{
         'key': key,
+        'constructorName': '',
       };
 
   @override

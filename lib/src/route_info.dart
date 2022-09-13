@@ -1,5 +1,6 @@
 import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/ast/syntactic_entity.dart';
+import 'package:analyzer/dart/element/element.dart';
 import 'package:ff_annotation_route/src/arg/args.dart';
 import 'package:ff_annotation_route_core/ff_annotation_route_core.dart';
 import 'route_generator.dart';
@@ -10,21 +11,18 @@ class RouteInfo {
   RouteInfo({
     required this.ffRoute,
     required this.className,
-    this.constructors,
-    this.fields,
     this.routePath,
     this.classDeclaration,
     required this.node,
+    this.constructors,
   });
 
   final String className;
   final FFRoute ffRoute;
-  final List<ConstructorDeclaration>? constructors;
-  final List<FieldDeclaration>? fields;
   final String? routePath;
-  final Map<String?, List<String>> constructorsMap = <String?, List<String>>{};
   final ClassDeclaration? classDeclaration;
   final RouteGenerator node;
+  final List<ConstructorElement>? constructors;
 
   String? classNameConflictPrefix;
 
@@ -32,11 +30,20 @@ class RouteInfo {
       classNameConflictPrefix != null ? '$classNameConflictPrefix.' : '';
 
   String? get constructorsString {
-    if (constructorsMap.isNotEmpty) {
+    if (constructors != null && constructors!.isNotEmpty) {
       String temp = '';
-      constructorsMap.forEach((String? key, List<String> value) {
-        temp += '\n /// \n /// $key : $value';
-      });
+      for (final ConstructorElement rawConstructor in constructors!) {
+        if (constructors!.length == 1 &&
+            rawConstructor.parameters.isEmpty &&
+            rawConstructor.name.isEmpty) {
+          return null;
+        }
+        final String args = rawConstructor
+            .toString()
+            .replaceFirst(rawConstructor.returnType.toString(), '')
+            .trim();
+        temp += '\n /// \n /// $args';
+      }
       return temp;
     }
 
@@ -44,15 +51,15 @@ class RouteInfo {
   }
 
   String get constructor {
-    //remove private constructor
     constructors?.removeWhere(
-        (ConstructorDeclaration element) => element.name2?.toString() == '_');
+        (ConstructorElement element) => element.name.toString() == '_');
+
     if (constructors != null && constructors!.isNotEmpty) {
       if (constructors!.length > 1) {
         String switchCase = '';
         String defaultCtor = '';
-        for (final ConstructorDeclaration rawConstructor in constructors!) {
-          final String ctorName = rawConstructor.name2?.toString() ?? '';
+        for (final ConstructorElement rawConstructor in constructors!) {
+          final String ctorName = rawConstructor.name;
           if (ctorName.isEmpty) {
             defaultCtor = '''
 case '':
@@ -65,12 +72,7 @@ return ${getConstructorString(rawConstructor)};
               return ${getConstructorString(rawConstructor)};
            ''';
           }
-
-          // keyValues +=
-          //     '\'${rawConstructor.name ?? ''}\': ${getConstructorString(rawConstructor)}';
-          // keyValues += ',';
         }
-
         switchCase += defaultCtor;
 
         switchCase = '''
@@ -125,7 +127,6 @@ return ${getConstructorString(rawConstructor)};
       ${ffRoute.description != '' ? 'description: ${safeToString(ffRoute.description)},' : ''}
       $exts
       );\n''';
-    //       ${ffRoute.exts != null ? 'exts:<String,dynamic>${json.encode(ffRoute.exts)},'.replaceAll('"', '\'') : ''}
   }
 
   @override
@@ -133,17 +134,17 @@ return ${getConstructorString(rawConstructor)};
     return 'RouteInfo {className: $className, ffRoute: $ffRoute}';
   }
 
-  String getIsOptional(String name, FormalParameter parameter,
-      ConstructorDeclaration rawConstructor) {
+  String getIsOptional(String name, ParameterElement parameter,
+      ConstructorElement rawConstructor) {
     String value =
         'safeArguments[\'${Args().argumentsIsCaseSensitive ? name : name.toLowerCase()}\']';
 
-    final String type = getParameterType(name, parameter, rawConstructor);
+    final String type = getParameterType(parameter);
 
     value = 'asT<$type>($value';
 
-    if (parameter is DefaultFormalParameter && parameter.defaultValue != null) {
-      value += ',${parameter.defaultValue}';
+    if (parameter.defaultValueCode != null) {
+      value += ',${parameter.defaultValueCode}';
     }
 
     value += ',)';
@@ -157,7 +158,7 @@ return ${getConstructorString(rawConstructor)};
     return value;
   }
 
-  String getConstructorString(ConstructorDeclaration rawConstructor) {
+  String getConstructorString(ConstructorElement rawConstructor) {
     String constructorString = '';
 
     constructorString = getConstructor(rawConstructor);
@@ -167,73 +168,37 @@ return ${getConstructorString(rawConstructor)};
 
     //final List<FormalParameter> optionals = <FormalParameter>[];
 
-    for (final FormalParameter item in rawConstructor.parameters.parameters) {
-      final String? name = item.name?.toString();
-      if (name != null) {
-        hasParameters = true;
-        if (item.isOptional || item.isRequiredNamed) {
-          constructorString += getIsOptional(name, item, rawConstructor);
-          // if (!item.isRequired) {
-          //   optionals.add(item);
-          // }
-        } else {
-          final String type = getParameterType(name, item, rawConstructor);
+    for (final ParameterElement item in rawConstructor.parameters) {
+      final String name = item.name;
+      hasParameters = true;
+      if (item.isOptional || item.isRequiredNamed) {
+        constructorString += getIsOptional(name, item, rawConstructor);
+        // if (!item.isRequired) {
+        //   optionals.add(item);
+        // }
+      } else {
+        final String type = getParameterType(item);
 
-          constructorString +=
-              'asT<$type>(safeArguments[\'${Args().argumentsIsCaseSensitive ? name : name.toLowerCase()}\'],)';
-          if (Args().enableNullSafety && !type.endsWith('?')) {
-            constructorString += '!';
-          }
+        constructorString +=
+            'asT<$type>(safeArguments[\'${Args().argumentsIsCaseSensitive ? name : name.toLowerCase()}\'],)';
+        if (Args().enableNullSafety && !type.endsWith('?')) {
+          constructorString += '!';
         }
-
-        constructorString += ',';
       }
+
+      constructorString += ',';
     }
 
     constructorString += ')';
-    if (!hasParameters) {
-      constructorsMap[getConstructor(rawConstructor)] ??= <String>[];
-    }
 
-    if (rawConstructor.constKeyword != null && !hasParameters) {
+    if (rawConstructor.isConst && !hasParameters) {
       constructorString = 'const ' + constructorString;
     }
     return constructorString;
   }
 
-  String getParameterType(String name, FormalParameter parameter,
-      ConstructorDeclaration rawConstructor) {
-    String? typeString;
-    if (parameter.toString().contains('this.')) {
-      for (final FieldDeclaration item in fields!) {
-        if (item.fields.endToken.toString() == name) {
-          final TypeAnnotation? type = item.fields.type;
-          typeString = type.toString();
-          //getTypeImport();
-          break;
-        }
-      }
-    } else if (parameter.toString() == 'super.key') {
-      return 'Key?';
-    } else if (parameter is DefaultFormalParameter &&
-        parameter.parameter is SimpleFormalParameter) {
-      final TypeAnnotation? type =
-          (parameter.parameter as SimpleFormalParameter).type;
-      typeString = type.toString();
-      //getTypeImport();
-    }
-    typeString ??= parameter.childEntities.first.toString();
-    // if (ffRoute.argumentImports == null) {
-    //   alertType(typeString);
-    // }
-
-    String display = typeString;
-    if (!parameter.isOptional || parameter.toString().contains('required')) {
-      display = '$display(required)';
-    }
-
-    constructorsMap[getConstructor(rawConstructor)] ??= <String>[];
-    constructorsMap[getConstructor(rawConstructor)]!.add('$display $name');
+  String getParameterType(ParameterElement parameter) {
+    final String typeString = parameter.type.toString();
     return typeString;
   }
 
@@ -273,11 +238,12 @@ return ${getConstructorString(rawConstructor)};
     //CompilationUnitImpl
   }
 
-  String getConstructor(ConstructorDeclaration rawConstructor) {
+  String getConstructor(ConstructorElement rawConstructor) {
     String ctor = className;
-    if (rawConstructor.name2 != null) {
-      ctor += '.${rawConstructor.name2.toString()}';
+    if (rawConstructor.name.isNotEmpty) {
+      ctor += '.${rawConstructor.name}';
     }
+
     return classNameConflictPrefixText + ctor;
   }
 
@@ -370,52 +336,37 @@ return ${getConstructorString(rawConstructor)};
   String? argumentsClass;
 
   String? _getArgumentsClass() {
-    constructors?.removeWhere(
-        (ConstructorDeclaration element) => element.name2?.toString() == '_');
+    constructors
+        ?.removeWhere((ConstructorElement element) => element.name == '_');
     if (constructors != null && constructors!.isNotEmpty) {
       final StringBuffer sb = StringBuffer();
-      for (final ConstructorDeclaration rawConstructor in constructors!) {
-        final String? name = rawConstructor.name2?.toString();
-        final FormalParameterList parameters = rawConstructor.parameters;
-        if (name == null && parameters.parameters.isEmpty) {
-          continue;
+
+      for (final ConstructorElement rawConstructor in constructors!) {
+        final String name = rawConstructor.name;
+        if (constructors!.length == 1 &&
+            name.isEmpty &&
+            rawConstructor.parameters.isEmpty) {
+          // only one ctor and no parameters
+          // no need arguments class
+          return null;
         }
-        String args = parameters.toString();
+        String args = rawConstructor
+            .toString()
+            .substring(rawConstructor.toString().indexOf('('))
+            .trim();
+
         String nameMap = '';
-        for (final FormalParameter parameter in parameters.parameters) {
-          final String parameterS = parameter.toString();
-          final String? name = parameter.name?.toString();
-          if (parameterS.contains('this.')) {
-            for (final FieldDeclaration item in fields!) {
-              if (item.fields.endToken.toString() == name) {
-                args = args.replaceFirst(
-                  parameterS,
-                  parameterS.replaceAll(
-                    'this.',
-                    '${item.fields.type.toString()} ',
-                  ),
-                );
-                break;
-              }
-            }
-          } else if (parameter.toString() == 'super.key') {
-            args = args.replaceFirst(
-              parameterS,
-              parameterS.replaceAll(
-                'super.',
-                'Key? ',
-              ),
-            );
-          }
+        for (final ParameterElement parameter in rawConstructor.parameters) {
+          final String name = parameter.name;
           if (!Args().enableNullSafety) {
             args = args.replaceAll('?', '');
           }
           nameMap += ''''$name':$name,''';
         }
-        if (name != null) {
-          nameMap += ''''$constructorName':'$name',''';
-        }
-        if (args.isNotEmpty && parameters.parameters.isNotEmpty) {
+        //if (name != null) {
+        nameMap += ''''$constructorName':'$name',''';
+        //}
+        if (args.isNotEmpty && rawConstructor.parameters.isNotEmpty) {
           if (args.endsWith('})')) {
             args = args.replaceAll('})', ',})');
           } else if (args.endsWith('])')) {
@@ -426,10 +377,11 @@ return ${getConstructorString(rawConstructor)};
         }
 
         sb.write(routeConstClassMethodTemplate
-            .replaceAll('{0}', (name ?? 'd') + args)
+            .replaceAll(
+                '{0}', (name.isEmpty ? 'd' : rawConstructor.name) + args)
             .replaceAll('{1}', nameMap)
-            .replaceAll('{2}',
-                rawConstructor.parameters.parameters.isEmpty ? 'const' : ''));
+            .replaceAll(
+                '{2}', rawConstructor.parameters.isEmpty ? 'const' : ''));
       }
 
       if (sb.isNotEmpty) {

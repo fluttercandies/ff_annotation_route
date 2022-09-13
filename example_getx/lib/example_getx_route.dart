@@ -38,7 +38,10 @@ FFRouteSettings getRouteSettings({
         },
         routeName: 'BindingsPage',
         description: 'how to use Bindings with Annotation.',
-        exts: <String, dynamic>{'group': 'demo', 'order': 1},
+        exts: <String, dynamic>{
+          'group': 'demo',
+          'order': 1,
+        },
       );
     case '/ControllerPage':
       return FFRouteSettings(
@@ -51,7 +54,10 @@ FFRouteSettings getRouteSettings({
         ),
         routeName: 'ControllerPage',
         description: 'This is getX demo.',
-        exts: <String, dynamic>{'group': 'demo', 'order': 0},
+        exts: <String, dynamic>{
+          'group': 'demo',
+          'order': 0,
+        },
       );
     case '/CounterPage':
       return FFRouteSettings(
