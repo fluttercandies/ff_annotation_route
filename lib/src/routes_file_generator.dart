@@ -8,9 +8,9 @@
 import 'dart:io';
 import 'package:build_runner_core/build_runner_core.dart';
 import 'package:ff_annotation_route/src/arg/args.dart';
+import 'package:ff_annotation_route/src/route_info/route_info_base.dart';
 import 'package:ff_annotation_route/src/utils/camel_under_score_converter.dart';
 import 'package:path/path.dart' as p;
-import 'route_info.dart';
 import 'template.dart';
 import 'utils/convert.dart';
 import 'utils/format.dart';
@@ -22,7 +22,7 @@ class RoutesFileGenerator {
     this.packageNode,
   });
 
-  final List<RouteInfo>? routes;
+  final List<RouteInfoBase>? routes;
   final Directory? lib;
   final PackageNode? packageNode;
 
@@ -47,7 +47,7 @@ class RoutesFileGenerator {
     //constantsSb.write(fileHeader);
 
     final StringBuffer routeNamesString = StringBuffer();
-    for (final RouteInfo item in routes!) {
+    for (final RouteInfoBase item in routes!) {
       if (constIgnore != null && constIgnore.hasMatch(item.ffRoute.name)) {
         continue;
       }
@@ -72,7 +72,7 @@ class RoutesFileGenerator {
     constantsSb.write('const $className._();\n');
 
     final bool enableSuperArguments = Args().enableSuperArguments;
-    for (final RouteInfo it in routes!) {
+    for (final RouteInfoBase it in routes!) {
       if (constIgnore != null && constIgnore.hasMatch(it.ffRoute.name)) {
         continue;
       }
@@ -81,7 +81,7 @@ class RoutesFileGenerator {
     constantsSb.write('}');
 
     if (enableSuperArguments) {
-      for (final RouteInfo it in routes!) {
+      for (final RouteInfoBase it in routes!) {
         if (it.argumentsClass != null) {
           if (constIgnore != null && constIgnore.hasMatch(it.ffRoute.name)) {
             continue;

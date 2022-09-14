@@ -1,6 +1,7 @@
-## 9.4.0
+## 10.0.0
 
-* support super parameters
+* add '--[no-]fast-mode', fast mode is fast but it doesn't support super parameters. 
+* support super parameters on '--no-fast-mode'.
 
 ## 9.3.3
 

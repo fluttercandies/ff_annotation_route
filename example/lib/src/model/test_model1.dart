@@ -9,7 +9,8 @@ class TestMode1 {
   }
 }
 
-class TestMode3
-{
+class TestMode3 {}
 
-}
+class TestMode2 {}
+
+class TestMode4 {}

@@ -3,6 +3,7 @@ import 'package:ff_annotation_route/src/arg/null_safety.dart';
 
 import 'const_ignore.dart';
 import 'exclude_packages.dart';
+import 'fast_mode.dart';
 import 'git.dart';
 import 'help.dart';
 import 'name.dart';
@@ -29,7 +30,8 @@ class Args {
         superArguments = SuperArguments(),
         save = Save(),
         nullSafety = NullSafety(),
-        argumentsCaseSensitive = ArgumentsCaseSensitive();
+        argumentsCaseSensitive = ArgumentsCaseSensitive(),
+        fastMode = FastMode();
   static Args? _args;
   final Help help;
   final Path path;
@@ -44,6 +46,7 @@ class Args {
   final Save save;
   final NullSafety nullSafety;
   final ArgumentsCaseSensitive argumentsCaseSensitive;
+  final FastMode fastMode;
 
   String get className => name.value!;
 
@@ -65,4 +68,6 @@ class Args {
   bool get enableNullSafety => nullSafety.value!;
 
   bool get argumentsIsCaseSensitive => argumentsCaseSensitive.value!;
+
+  bool get isFastMode => fastMode.value ?? false;
 }

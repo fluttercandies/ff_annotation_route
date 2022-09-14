@@ -8,12 +8,17 @@ import 'package:flutter/material.dart';
     exts: <String, dynamic>{
       'group': 'Simple',
       'order': 0,
+      'test6': TestPageA.dd,
     },
     codes: <String, String>{
-      'test1': TestPageA.dd,
+      // only support as code, it should not be a real String, you can use exts instead
+      //'test1': TestPageA.dd,
       'test2': 'TestPageA.dd',
       'test3': 'TestPageA.ddd',
       'test4': 'TestPageA()',
+      'test5': 'TestPageA.ddd',
+      // only support as code, it should not be a real String, you can use exts instead
+      //'test6': 'dddd',
     })
 class TestPageA extends StatelessWidget {
   static const String dd = 'dddd';

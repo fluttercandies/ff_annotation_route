@@ -10,11 +10,12 @@ import 'package:io/ansi.dart';
 import 'package:path/path.dart';
 
 const String argumentsFile = 'ff_annotation_route_commands';
-const String debugCommands = '--path example/ --super-arguments --null-safety';
+const String debugCommands =
+    '--path example/ --super-arguments --null-safety --no-arguments-case-sensitive --no-fast-mode';
 
 Future<void> main(List<String> arguments) async {
   //debug
-  //arguments = debugCommands.split(' ');
+  //rguments = debugCommands.split(' ');
   bool runFromLocal = false;
   if (arguments.isEmpty) {
     final io.File file = io.File(join('./', argumentsFile));
