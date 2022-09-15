@@ -1,7 +1,6 @@
 import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/ast/syntactic_entity.dart';
 import 'package:ff_annotation_route/src/arg/args.dart';
-import 'package:ff_annotation_route/src/route_generator/fast_route_generator.dart';
 import 'package:ff_annotation_route_core/ff_annotation_route_core.dart';
 import 'route_info_base.dart';
 
@@ -9,22 +8,24 @@ class FastRouteInfo extends RouteInfoBase {
   FastRouteInfo({
     required FFRoute ffRoute,
     required String className,
-    required FastRouteGenerator routeGenerator,
-    this.constructors,
-    this.fields,
     this.routePath,
-    this.classDeclaration,
-  }) : super(
+    required this.classDeclaration,
+  })  : constructors = classDeclaration.members
+            .whereType<ConstructorDeclaration>()
+            .toList(),
+        fields =
+            classDeclaration.members.whereType<FieldDeclaration>().toList(),
+        super(
           className: className,
           ffRoute: ffRoute,
-          node: routeGenerator,
         );
 
-  final List<ConstructorDeclaration>? constructors;
-  final List<FieldDeclaration>? fields;
+  final List<ConstructorDeclaration> constructors;
+  final List<FieldDeclaration> fields;
+
   final String? routePath;
   final Map<String?, List<String>> constructorsMap = <String?, List<String>>{};
-  final ClassDeclaration? classDeclaration;
+  final ClassDeclaration classDeclaration;
 
   @override
   String? get constructorsString {
@@ -42,13 +43,13 @@ class FastRouteInfo extends RouteInfoBase {
   @override
   String get constructor {
     //remove private constructor
-    constructors?.removeWhere(
+    constructors.removeWhere(
         (ConstructorDeclaration element) => element.name2?.toString() == '_');
-    if (constructors != null && constructors!.isNotEmpty) {
-      if (constructors!.length > 1) {
+    if (constructors.isNotEmpty) {
+      if (constructors.length > 1) {
         String switchCase = '';
         String defaultCtor = '';
-        for (final ConstructorDeclaration rawConstructor in constructors!) {
+        for (final ConstructorDeclaration rawConstructor in constructors) {
           final String ctorName = rawConstructor.name2?.toString() ?? '';
           if (ctorName.isEmpty) {
             defaultCtor = '''
@@ -82,7 +83,7 @@ return ${getConstructorString(rawConstructor)};
 
         return switchCase;
       } else {
-        return ' () =>  ${getConstructorString(constructors!.first)}';
+        return ' () =>  ${getConstructorString(constructors.first)}';
       }
     }
     return '() =>' + classNameConflictPrefixText + '$className()';
@@ -160,7 +161,7 @@ return ${getConstructorString(rawConstructor)};
       ConstructorDeclaration rawConstructor) {
     String? typeString;
     if (parameter.toString().contains('this.')) {
-      for (final FieldDeclaration item in fields!) {
+      for (final FieldDeclaration item in fields) {
         if (item.fields.endToken.toString() == name) {
           final TypeAnnotation? type = item.fields.type;
           typeString = type.toString();
@@ -207,7 +208,7 @@ return ${getConstructorString(rawConstructor)};
 
   void getTypeImport() {
     final CompilationUnit compilationUnit =
-        classDeclaration!.parent as CompilationUnit;
+        classDeclaration.parent as CompilationUnit;
     for (final SyntacticEntity item in compilationUnit.childEntities) {
       if (item is ImportDirective) {
         if (item.toString().contains('package:flutter') ||
@@ -238,11 +239,11 @@ return ${getConstructorString(rawConstructor)};
 
   @override
   String? getArgumentsClass() {
-    constructors?.removeWhere(
+    constructors.removeWhere(
         (ConstructorDeclaration element) => element.name2?.toString() == '_');
-    if (constructors != null && constructors!.isNotEmpty) {
+    if (constructors.isNotEmpty) {
       final StringBuffer sb = StringBuffer();
-      for (final ConstructorDeclaration rawConstructor in constructors!) {
+      for (final ConstructorDeclaration rawConstructor in constructors) {
         final String? name = rawConstructor.name2?.toString();
         final FormalParameterList parameters = rawConstructor.parameters;
         if (name == null && parameters.parameters.isEmpty) {
@@ -254,7 +255,7 @@ return ${getConstructorString(rawConstructor)};
           final String parameterS = parameter.toString();
           final String? name = parameter.name?.toString();
           if (parameterS.contains('this.')) {
-            for (final FieldDeclaration item in fields!) {
+            for (final FieldDeclaration item in fields) {
               if (item.fields.endToken.toString() == name) {
                 args = args.replaceFirst(
                   parameterS,

@@ -173,15 +173,8 @@ class FastRouteGenerator extends RouteGeneratorBase {
                     argumentImports: argumentImports,
                     codes: codes,
                   ),
-                  constructors: ffRefClassDef.members
-                      .whereType<ConstructorDeclaration>()
-                      .toList(),
-                  fields: ffRefClassDef.members
-                      .whereType<FieldDeclaration>()
-                      .toList(),
                   routePath: routePath,
                   classDeclaration: ffRefClassDef,
-                  routeGenerator: this,
                 );
                 fileInfo.routes.add(routeInfo);
               }

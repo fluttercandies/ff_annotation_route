@@ -1,9 +1,10 @@
 // ignore_for_file: implementation_imports
-
+import 'package:analyzer/src/dart/ast/ast.dart';
 import 'package:analyzer/dart/analysis/analysis_context.dart';
 import 'package:analyzer/dart/analysis/analysis_context_collection.dart';
 import 'package:analyzer/dart/analysis/results.dart';
 import 'package:analyzer/dart/analysis/session.dart';
+import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/constant/value.dart';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/file_system/physical_file_system.dart';
@@ -11,12 +12,13 @@ import 'package:build_runner_core/build_runner_core.dart';
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:ff_annotation_route/src/file_info.dart';
 import 'package:ff_annotation_route/src/route_info/route_info.dart';
+import 'package:ff_annotation_route/src/template.dart';
 import 'package:ff_annotation_route_core/ff_annotation_route_core.dart';
 import 'package:path/path.dart' as p;
 import 'package:source_gen/source_gen.dart';
 
 import 'package:analyzer/src/dart/element/element.dart';
-
+import 'package:analyzer/src/dart/constant/value.dart';
 import 'route_generator_base.dart';
 
 TypeChecker fFRouteTypeChecker = const TypeChecker.fromRuntime(FFRoute);
@@ -71,7 +73,6 @@ class RouteGenerator extends RouteGeneratorBase {
               fileElement, typeChecker, context, fileInfo);
 
           if (fileInfo.routes.isNotEmpty) {
-            final FFRoute route = fileInfo.routes.first.ffRoute;
             for (final LibraryImportElement importElement
                 in fileElement.library.libraryImports) {
               final DartObject? fFArgumentImportAnnotation =
@@ -80,25 +81,7 @@ class RouteGenerator extends RouteGeneratorBase {
               if (fFArgumentImportAnnotation != null) {
                 final ConstantReader reader =
                     ConstantReader(fFArgumentImportAnnotation);
-                if (route.argumentImports != null) {
-                  final DirectiveUriWithLibraryImpl url =
-                      importElement.uri as DirectiveUriWithLibraryImpl;
-                  print(importElement.toString());
-                  String importString = '\'${url.relativeUriString}\'';
-                  String suffix = reader.peek('suffix')?.stringValue ?? '';
-                  for (final NamespaceCombinator combinator
-                      in importElement.combinators) {
-                    String combinatorString = combinator.toString();
-                    if (combinator is HideElementCombinatorImpl) {
-                      // bug
-                      combinatorString =
-                          combinatorString.replaceFirst('show', 'hide');
-                    }
-                    suffix += ' $combinatorString';
-                  }
-                  importString = 'import $importString $suffix ;';
-                  route.argumentImports!.add(importString);
-                }
+                fileInfo.routes.first.addImport(importElement, reader: reader);
               }
             }
 
@@ -166,48 +149,48 @@ class RouteGenerator extends RouteGeneratorBase {
 
       print(
           'Found annotation route in ${classElement.source.uri} ------ class : ${classElement.displayName}');
-      // final ConstantReader? codes = reader.peek('codes');
-      // Map<String, String>? codesMap;
-      // if (codes != null) {
-      //   final ElementAnnotationImpl? elementAnnotation = classElement.metadata
-      //       .firstWhereOrNull((ElementAnnotation element) =>
-      //           (element as ElementAnnotationImpl).annotationAst.name.name ==
-      //           typeOf<FFRoute>().toString()) as ElementAnnotationImpl?;
-      //   final NodeList<Expression>? parameters =
-      //       elementAnnotation?.annotationAst.arguments?.arguments;
 
-      //   if (parameters != null) {
-      //     for (final Expression item in parameters) {
-      //       if (item is NamedExpressionImpl) {
-      //         String source;
-      //         source = item.expression.toSource();
-      //         if (source == 'null') {
-      //           continue;
-      //         }
-      //         final String key = item.name.toSource();
-      //         if (key == 'codes:') {
-      //           if (item.expression is SetOrMapLiteralImpl) {
-      //             final SetOrMapLiteralImpl setOrMapLiteralImpl =
-      //                 item.expression as SetOrMapLiteralImpl;
-      //             if (setOrMapLiteralImpl.elements.isNotEmpty) {
-      //               codesMap = <String, String>{};
-      //               for (final CollectionElement element
-      //                   in setOrMapLiteralImpl.elements) {
-      //                 final MapLiteralEntryImpl entry =
-      //                     element as MapLiteralEntryImpl;
-      //                 String value = entry.value.toString();
+      final ConstantReader? exts = reader.peek('exts');
+      Map<String, String>? extsMap;
+      if (exts != null) {
+        final ElementAnnotationImpl? elementAnnotation = classElement.metadata
+            .firstWhereOrNull((ElementAnnotation element) =>
+                (element as ElementAnnotationImpl).annotationAst.name.name ==
+                typeOf<FFRoute>().toString()) as ElementAnnotationImpl?;
+        final NodeList<Expression>? parameters =
+            elementAnnotation?.annotationAst.arguments?.arguments;
 
-      //                 value = value.replaceAll('\'', '');
-      //                 codesMap[entry.key.toString()] = value;
-      //               }
-      //             }
-      //           }
-      //           break;
-      //         }
-      //       }
-      //     }
-      //   }
-      // }
+        if (parameters != null) {
+          for (final Expression item in parameters) {
+            if (item is NamedExpressionImpl) {
+              String source;
+              source = item.expression.toSource();
+              if (source == 'null') {
+                continue;
+              }
+              final String key = item.name.toSource();
+              if (key == 'exts:') {
+                if (item.expression is SetOrMapLiteralImpl) {
+                  final SetOrMapLiteralImpl setOrMapLiteralImpl =
+                      item.expression as SetOrMapLiteralImpl;
+                  if (setOrMapLiteralImpl.elements.isNotEmpty) {
+                    extsMap = <String, String>{};
+                    for (final CollectionElement element
+                        in setOrMapLiteralImpl.elements) {
+                      final MapLiteralEntryImpl entry =
+                          element as MapLiteralEntryImpl;
+                      final String value = entry.value.toString();
+
+                      extsMap[entry.key.toString()] = value;
+                    }
+                  }
+                }
+                break;
+              }
+            }
+          }
+        }
+      }
       final RouteInfo routeInfo = RouteInfo(
         className: classElement.displayName,
         ffRoute: FFRoute(
@@ -220,11 +203,12 @@ class RouteGenerator extends RouteGeneratorBase {
                 reader.peek('pageRouteType')?.objectValue.variable?.displayName,
           ),
           description: reader.peek('description')?.stringValue ?? '',
-          exts: reader.peek('exts')?.mapValue.map<String, dynamic>(
-              (DartObject? key, DartObject? value) => MapEntry<String, dynamic>(
-                    _getValue(key),
-                    _getValue(value),
-                  )),
+          exts: extsMap,
+          // exts: reader.peek('exts')?.mapValue.map<String, dynamic>(
+          //     (DartObject? key, DartObject? value) => MapEntry<String, dynamic>(
+          //           _getStringValue(key as DartObjectImpl?),
+          //           _getStringValue(value as DartObjectImpl?),
+          //         )),
           argumentImports: reader
                   .peek('argumentImports')
                   ?.listValue
@@ -234,22 +218,23 @@ class RouteGenerator extends RouteGeneratorBase {
           //codes: codesMap,
           codes: reader.peek('codes')?.mapValue.map<String, String>(
               (DartObject? key, DartObject? value) => MapEntry<String, String>(
-                  _getValue(key), value!.toStringValue()!)),
+                  _getStringValue(key as DartObjectImpl?),
+                  value!.toStringValue()!)),
         ),
         classElement: classElement,
-        routeGenerator: this,
       );
+
       fileInfo.routes.add(routeInfo);
     }
   }
 
-  String _getValue(DartObject? object) {
+  String _getStringValue(DartObjectImpl? object) {
     if (object == null) {
       return '';
     }
     final String valueString = object
         .toString()
-        .replaceFirst(object.type!.getDisplayString(withNullability: false), '')
+        .replaceFirst(object.type.getDisplayString(withNullability: true), '')
         .trim();
     // toString() = "${type.getDisplayString(withNullability: false)} ($_state)";
 

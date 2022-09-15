@@ -1,18 +1,20 @@
-import 'package:ff_annotation_route/src/route_generator/route_generator_base.dart';
+// ignore_for_file: implementation_imports
+
+import 'package:analyzer/dart/element/element.dart';
 import 'package:ff_annotation_route/src/utils/camel_under_score_converter.dart';
 import 'package:ff_annotation_route/src/utils/convert.dart';
 import 'package:ff_annotation_route_core/ff_annotation_route_core.dart';
+import 'package:analyzer/src/dart/element/element.dart';
+import 'package:source_gen/source_gen.dart';
 
 abstract class RouteInfoBase {
   RouteInfoBase({
     required this.ffRoute,
     required this.className,
-    required this.node,
   });
 
   final String className;
   final FFRoute ffRoute;
-  final RouteGeneratorBase node;
 
   String? classNameConflictPrefix;
 
@@ -151,6 +153,32 @@ abstract class RouteInfoBase {
 
   String? argumentsClass;
   String? getArgumentsClass();
+
+  void addImport(
+    LibraryImportElement importElement, {
+    ConstantReader? reader,
+    bool showCombinator = true,
+  }) {
+    final DirectiveUriWithLibraryImpl url =
+        importElement.uri as DirectiveUriWithLibraryImpl;
+    String importString = '\'${url.relativeUriString}\'';
+    String suffix = reader?.peek('suffix')?.stringValue ?? '';
+    if (showCombinator) {
+      for (final NamespaceCombinator combinator in importElement.combinators) {
+        String combinatorString = combinator.toString();
+        if (combinator is HideElementCombinatorImpl) {
+          // bug
+          combinatorString = combinatorString.replaceFirst('show', 'hide');
+        }
+        suffix += ' $combinatorString';
+      }
+    }
+
+    importString = 'import $importString $suffix ;';
+    if (!ffRoute.argumentImports!.contains(importString)) {
+      ffRoute.argumentImports!.add(importString);
+    }
+  }
 }
 
 const String routeConstClassMethodTemplate =

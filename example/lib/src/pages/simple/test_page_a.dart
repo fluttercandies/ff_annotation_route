@@ -1,3 +1,4 @@
+//import 'dart:ui' as ui;
 import 'package:ff_annotation_route_library/ff_annotation_route_library.dart';
 import 'package:flutter/material.dart';
 
@@ -9,6 +10,7 @@ import 'package:flutter/material.dart';
       'group': 'Simple',
       'order': 0,
       'test6': TestPageA.dd,
+      //'test7': ui.BoxWidthStyle.max,
     },
     codes: <String, String>{
       // only support as code, it should not be a real String, you can use exts instead

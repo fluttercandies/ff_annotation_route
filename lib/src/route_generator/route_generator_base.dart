@@ -196,11 +196,11 @@ abstract class RouteGeneratorBase {
       imports.addAll(this.imports.split('\n'));
 
       for (final RouteInfoBase it in routes) {
+        caseSb.write(it.caseString);
         if (it.ffRoute.argumentImports != null &&
             it.ffRoute.argumentImports!.isNotEmpty) {
           imports.addAll(it.ffRoute.argumentImports!);
         }
-        caseSb.write(it.caseString);
       }
       writeImports(imports, sb);
 

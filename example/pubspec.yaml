@@ -29,6 +29,7 @@ dependencies:
 
   flutter_hooks: ^0.18.5+1
   hooks_riverpod: ^1.0.4
+  extended_image: any
 
 dev_dependencies:
   build_runner: ^2.2.0
