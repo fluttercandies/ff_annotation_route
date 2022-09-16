@@ -1,0 +1,20 @@
+import 'package:ff_annotation_route_library/ff_annotation_route_library.dart';
+import 'package:flutter/material.dart';
+
+@FFRoute(
+  name: 'flutterCandies://testPageD_moduleA',
+  routeName: 'testPageA',
+  description: 'This is test page D. in module a',
+  exts: <String, dynamic>{
+    'group': 'Simple',
+    'order': 0,
+  },
+)
+class TestPageD extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return const Center(
+      child: Text('TestPageA'),
+    );
+  }
+}
