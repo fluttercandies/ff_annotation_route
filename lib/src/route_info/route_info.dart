@@ -2,9 +2,11 @@
 
 import 'package:analyzer/dart/element/element.dart';
 import 'package:ff_annotation_route/src/arg/args.dart';
+import 'package:ff_annotation_route/src/file_info.dart';
 import 'package:ff_annotation_route_core/ff_annotation_route_core.dart';
 import 'package:analyzer/src/dart/constant/value.dart';
 import 'package:analyzer/src/dart/element/element.dart';
+import 'package:analyzer/src/dart/element/type.dart';
 import 'route_info_base.dart';
 
 class RouteInfo extends RouteInfoBase {
@@ -12,9 +14,11 @@ class RouteInfo extends RouteInfoBase {
     required FFRoute ffRoute,
     required String className,
     required this.classElement,
+    required FileInfo fileInfo,
   }) : super(
           className: className,
           ffRoute: ffRoute,
+          fileInfo: fileInfo,
         );
 
   final ClassElement classElement;
@@ -97,7 +101,7 @@ return ${getConstructorString(rawConstructor)};
     value = 'asT<$type>($value';
 
     if (parameter.defaultValueCode != null) {
-      final String defaultValueCode = _getDefaultValueCode(parameter);
+      //final String defaultValueCode = _getDefaultValueCode(parameter);
       // int index = defaultValueCode
       //     .indexOf(parameter.type.getDisplayString(withNullability: false));
 
@@ -105,7 +109,7 @@ return ${getConstructorString(rawConstructor)};
       //   defaultValueCode = defaultValueCode.substring(index);
       // }
 
-      value += ',$defaultValueCode';
+      value += ',${parameter.defaultValueCode}';
     }
 
     value += ',)';
@@ -119,27 +123,27 @@ return ${getConstructorString(rawConstructor)};
     return value;
   }
 
-  String _getDefaultValueCode(ParameterElement parameter) {
-    String defaultValueCode = parameter.defaultValueCode!;
+  // String _getDefaultValueCode(ParameterElement parameter) {
+  //   String defaultValueCode = parameter.defaultValueCode!;
 
-    // remove import as
-    if (defaultValueCode.contains('.')) {
-      final int index = defaultValueCode
-          .indexOf(parameter.type.getDisplayString(withNullability: true));
-      if (index - 1 > 0 && defaultValueCode[index - 1] == '.') {
-        final int end = index;
-        int start = end - 1;
-        for (; start > 0; start--) {
-          if (defaultValueCode[start] == ' ') {
-            start++;
-            break;
-          }
-        }
-        defaultValueCode = defaultValueCode.replaceRange(start, end, '');
-      }
-    }
-    return defaultValueCode;
-  }
+  //   // remove import as
+  //   if (defaultValueCode.contains('.')) {
+  //     final int index = defaultValueCode
+  //         .indexOf(parameter.type.getDisplayString(withNullability: true));
+  //     if (index - 1 > 0 && defaultValueCode[index - 1] == '.') {
+  //       final int end = index;
+  //       int start = end - 1;
+  //       for (; start > 0; start--) {
+  //         if (defaultValueCode[start] == ' ') {
+  //           start++;
+  //           break;
+  //         }
+  //       }
+  //       defaultValueCode = defaultValueCode.replaceRange(start, end, '');
+  //     }
+  //   }
+  //   return defaultValueCode;
+  // }
 
   String getConstructorString(ConstructorElement rawConstructor) {
     String constructorString = '';
@@ -181,40 +185,66 @@ return ${getConstructorString(rawConstructor)};
   }
 
   String getParameterType(ParameterElement parameter) {
-    final DartObjectImpl? dartOject =
-        parameter.computeConstantValue() as DartObjectImpl?;
-    final Uri? uri = dartOject?.variable?.source?.uri;
-    final Uri? librarySourceUri = dartOject?.variable?.librarySource?.uri;
-    if (uri != null) {
-      final Uri? importUri = uri != librarySourceUri ? librarySourceUri : uri;
-      final String import = 'import \'$importUri\';';
-      if (!ffRoute.argumentImports!.contains(import)) {
-        print('automatically import for type(${parameter.type}): $import ');
-        ffRoute.argumentImports!.add(import);
-      }
+    // already add import and has prefix
+    if (fileInfo.typeImportPrefixMap.containsKey(parameter.type)) {
+      return fileInfo.getTypeString(parameter.type);
     }
-    /* else {
-      final LibraryElement? libraryElement = dartOject?.variable?.library;
 
+    // find import by import prefix with defaultValueCode/field
+    final String? prefix =
+        fileInfo.parameterHasPrefixImport(parameter, classElement);
+    if (prefix != null) {
+      addImport(
+        fileInfo.importPrefixMap[prefix]!,
+        type: parameter.type,
+      );
+      fileInfo.typeImportPrefixMap[parameter.type] = prefix;
+      return fileInfo.getTypeString(parameter.type);
+    }
+
+    LibraryElement? typeLibrary;
+    // refer
+    if (parameter.type is InterfaceTypeImpl) {
+      typeLibrary = (parameter.type as InterfaceTypeImpl).element2.library;
+    } else {
+      // find import by Library
+      final DartObjectImpl? dartOject =
+          parameter.computeConstantValue() as DartObjectImpl?;
+      typeLibrary = dartOject?.variable?.library;
+    }
+
+    if (typeLibrary != null) {
       final List<LibraryImportElement>? libraryImports =
           parameter.library?.libraryImports;
-      if (libraryElement != null && libraryImports != null) {
+      if (libraryImports != null) {
         for (final LibraryImportElement importElement in libraryImports) {
           if (importElement.importedLibrary != null) {
-            if (findddd(importElement.importedLibrary!, libraryElement)) {
-              addImport(importElement, showCombinator: false);
-              break;
+            if (_containsImportLibrary(
+                importElement.importedLibrary!, typeLibrary)) {
+              addImport(
+                importElement,
+                containsCombinator: true,
+                type: parameter.type,
+              );
+              if (importElement.prefix != null) {
+                fileInfo.typeImportPrefixMap[parameter.type] =
+                    importElement.prefix!.element.name;
+              }
+              return fileInfo.getTypeString(parameter.type);
             }
           }
         }
       }
-    } */
 
-    final String typeString = parameter.type.toString();
-    return typeString;
+      final String import = 'import \'${typeLibrary.source.uri}\';';
+
+      FileInfo.imports.add(import);
+    }
+
+    return parameter.type.toString();
   }
 
-  bool findddd(LibraryElement parent, LibraryElement child) {
+  bool _containsImportLibrary(LibraryElement parent, LibraryElement child) {
     if (parent.source.uri == child.source.uri) {
       return true;
     }
@@ -223,13 +253,12 @@ return ${getConstructorString(rawConstructor)};
       final DirectiveUriWithLibraryImpl uri =
           (exported as LibraryExportElementImpl).uri
               as DirectiveUriWithLibraryImpl;
-      if (uri.relativeUri == child.source.uri) {
+      if (uri.source.uri == child.source.uri) {
         return true;
-      } else {
-        return findddd(uri.library, child);
+      } else if (_containsImportLibrary(uri.library, child)) {
+        return true;
       }
     }
-
     return false;
   }
 
@@ -262,13 +291,12 @@ return ${getConstructorString(rawConstructor)};
             .toString()
             .substring(rawConstructor.toString().indexOf('('))
             .trim();
+
         for (final ParameterElement parameter in rawConstructor.parameters) {
-          if (parameter.defaultValueCode != null) {
-            final String code = _getDefaultValueCode(parameter);
-            if (code != parameter.defaultValueCode) {
-              args = args.replaceAll(parameter.defaultValueCode!, code);
-            }
-          }
+          final String type = '${parameter.type} ${parameter.displayName}';
+          // add prefix if has
+          args = args.replaceAll(type,
+              '${fileInfo.getTypeString(parameter.type)} ${parameter.displayName}');
         }
 
         String nameMap = '';

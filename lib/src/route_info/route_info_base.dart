@@ -1,6 +1,8 @@
 // ignore_for_file: implementation_imports
 
 import 'package:analyzer/dart/element/element.dart';
+import 'package:analyzer/dart/element/type.dart';
+import 'package:ff_annotation_route/src/file_info.dart';
 import 'package:ff_annotation_route/src/utils/camel_under_score_converter.dart';
 import 'package:ff_annotation_route/src/utils/convert.dart';
 import 'package:ff_annotation_route_core/ff_annotation_route_core.dart';
@@ -11,11 +13,12 @@ abstract class RouteInfoBase {
   RouteInfoBase({
     required this.ffRoute,
     required this.className,
+    required this.fileInfo,
   });
 
   final String className;
   final FFRoute ffRoute;
-
+  final FileInfo fileInfo;
   String? classNameConflictPrefix;
 
   String get classNameConflictPrefixText =>
@@ -157,13 +160,20 @@ abstract class RouteInfoBase {
   void addImport(
     LibraryImportElement importElement, {
     ConstantReader? reader,
-    bool showCombinator = true,
+    bool containsCombinator = true,
+    DartType? type,
   }) {
     final DirectiveUriWithLibraryImpl url =
         importElement.uri as DirectiveUriWithLibraryImpl;
+    // ignore
+    if (url.relativeUriString == 'dart:core') {
+      return;
+    }
+
     String importString = '\'${url.relativeUriString}\'';
+
     String suffix = reader?.peek('suffix')?.stringValue ?? '';
-    if (showCombinator) {
+    if (containsCombinator) {
       for (final NamespaceCombinator combinator in importElement.combinators) {
         String combinatorString = combinator.toString();
         if (combinator is HideElementCombinatorImpl) {
@@ -173,10 +183,20 @@ abstract class RouteInfoBase {
         suffix += ' $combinatorString';
       }
     }
+    String prefix = '';
+    if (importElement.prefix != null) {
+      prefix = importElement.prefix!.element.toString();
+    }
 
-    importString = 'import $importString $suffix ;';
-    if (!ffRoute.argumentImports!.contains(importString)) {
-      ffRoute.argumentImports!.add(importString);
+    importString = 'import $importString $suffix $prefix;';
+
+    if (!FileInfo.imports.contains(importString)) {
+      if (type != null) {
+        print(
+            'automatically import for type($type) in file ${fileInfo.export}: $importString ');
+      }
+
+      FileInfo.imports.add(importString);
     }
   }
 }

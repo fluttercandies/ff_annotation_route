@@ -78,6 +78,11 @@ class RouteGenerator extends RouteGeneratorBase {
               final DartObject? fFArgumentImportAnnotation =
                   fFArgumentImportTypeChecker.firstAnnotationOf(importElement);
 
+              if (importElement.prefix != null) {
+                fileInfo.importPrefixMap[importElement.prefix!.element.name] =
+                    importElement;
+              }
+
               if (fFArgumentImportAnnotation != null) {
                 final ConstantReader reader =
                     ConstantReader(fFArgumentImportAnnotation);
@@ -191,6 +196,16 @@ class RouteGenerator extends RouteGeneratorBase {
           }
         }
       }
+
+      final List<String>? argumentImports = reader
+          .peek('argumentImports')
+          ?.listValue
+          .map((DartObject e) => e.toStringValue()!)
+          .toList();
+      if (argumentImports != null) {
+        FileInfo.imports.addAll(argumentImports);
+      }
+
       final RouteInfo routeInfo = RouteInfo(
         className: classElement.displayName,
         ffRoute: FFRoute(
@@ -209,12 +224,12 @@ class RouteGenerator extends RouteGeneratorBase {
           //           _getStringValue(key as DartObjectImpl?),
           //           _getStringValue(value as DartObjectImpl?),
           //         )),
-          argumentImports: reader
-                  .peek('argumentImports')
-                  ?.listValue
-                  .map((DartObject e) => e.toStringValue()!)
-                  .toList() ??
-              <String>[],
+          // argumentImports: reader
+          //         .peek('argumentImports')
+          //         ?.listValue
+          //         .map((DartObject e) => e.toStringValue()!)
+          //         .toList() ??
+          //     <String>[],
           //codes: codesMap,
           codes: reader.peek('codes')?.mapValue.map<String, String>(
               (DartObject? key, DartObject? value) => MapEntry<String, String>(
@@ -222,6 +237,7 @@ class RouteGenerator extends RouteGeneratorBase {
                   value!.toStringValue()!)),
         ),
         classElement: classElement,
+        fileInfo: fileInfo,
       );
 
       fileInfo.routes.add(routeInfo);

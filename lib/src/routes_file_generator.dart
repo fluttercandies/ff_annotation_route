@@ -8,6 +8,7 @@
 import 'dart:io';
 import 'package:build_runner_core/build_runner_core.dart';
 import 'package:ff_annotation_route/src/arg/args.dart';
+import 'package:ff_annotation_route/src/file_info.dart';
 import 'package:ff_annotation_route/src/route_info/route_info_base.dart';
 import 'package:ff_annotation_route/src/utils/camel_under_score_converter.dart';
 import 'package:path/path.dart' as p;
@@ -98,6 +99,8 @@ class RoutesFileGenerator {
               it.ffRoute.argumentImports!.isNotEmpty) {
             imports.addAll(it.ffRoute.argumentImports!);
           }
+
+          imports.addAll(FileInfo.imports);
         }
       }
     }

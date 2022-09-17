@@ -1,6 +1,7 @@
 import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/ast/syntactic_entity.dart';
 import 'package:ff_annotation_route/src/arg/args.dart';
+import 'package:ff_annotation_route/src/file_info.dart';
 import 'package:ff_annotation_route_core/ff_annotation_route_core.dart';
 import 'route_info_base.dart';
 
@@ -10,6 +11,7 @@ class FastRouteInfo extends RouteInfoBase {
     required String className,
     this.routePath,
     required this.classDeclaration,
+    required FileInfo fileInfo,
   })  : constructors = classDeclaration.members
             .whereType<ConstructorDeclaration>()
             .toList(),
@@ -18,6 +20,7 @@ class FastRouteInfo extends RouteInfoBase {
         super(
           className: className,
           ffRoute: ffRoute,
+          fileInfo: fileInfo,
         );
 
   final List<ConstructorDeclaration> constructors;

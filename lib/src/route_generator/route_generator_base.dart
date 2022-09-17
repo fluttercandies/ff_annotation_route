@@ -36,7 +36,7 @@ abstract class RouteGeneratorBase {
       final StringBuffer sb = StringBuffer();
 
       _fileInfoList
-          .sort((FileInfo a, FileInfo b) => a.export!.compareTo(b.export!));
+          .sort((FileInfo a, FileInfo b) => a.export.compareTo(b.export));
       List<String> classNames = <String>[];
       int pageCount = 0;
       for (final FileInfo info in _fileInfoList) {
@@ -89,7 +89,7 @@ abstract class RouteGeneratorBase {
       sb.write('library ${packageNode.name}_route;\n');
 
       _fileInfoList
-          .sort((FileInfo a, FileInfo b) => a.export!.compareTo(b.export!));
+          .sort((FileInfo a, FileInfo b) => a.export.compareTo(b.export));
 
       for (final FileInfo info in _fileInfoList) {
         sb.write("export '${info.export}';\n");
@@ -201,6 +201,8 @@ abstract class RouteGeneratorBase {
             it.ffRoute.argumentImports!.isNotEmpty) {
           imports.addAll(it.ffRoute.argumentImports!);
         }
+
+        imports.addAll(FileInfo.imports);
       }
       writeImports(imports, sb);
 

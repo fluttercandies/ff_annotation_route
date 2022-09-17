@@ -175,6 +175,7 @@ class FastRouteGenerator extends RouteGeneratorBase {
                   ),
                   routePath: routePath,
                   classDeclaration: ffRefClassDef,
+                  fileInfo: fileInfo,
                 );
                 fileInfo.routes.add(routeInfo);
               }

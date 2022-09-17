@@ -18,7 +18,10 @@ class TestPageF extends StatelessWidget {
     this.boxWidthStyle = ui.BoxWidthStyle.max,
     this.extendedImageMode = ExtendedImageMode.gesture,
     //required this.details,
-  });
+    required ui.BlendMode blendMode,
+  }) : _blendMode = blendMode;
+
+  final ui.BlendMode _blendMode;
 
   final ui.BoxWidthStyle boxWidthStyle;
   final ExtendedImageMode extendedImageMode;
@@ -28,7 +31,7 @@ class TestPageF extends StatelessWidget {
     return Column(
       children: <Widget>[
         Center(
-          child: Text('TestPageE $boxWidthStyle'),
+          child: Text('TestPageE $boxWidthStyle $_blendMode'),
         ),
         TextButton(
           onPressed: () {
