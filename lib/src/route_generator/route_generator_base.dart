@@ -9,6 +9,7 @@ import 'package:ff_annotation_route/src/route_info/route_info_base.dart';
 import 'package:ff_annotation_route/src/routes_file_generator.dart';
 import 'package:ff_annotation_route/src/template.dart';
 import 'package:ff_annotation_route/src/utils/convert.dart';
+import 'package:ff_annotation_route/src/utils/dart_type_auto_import.dart';
 import 'package:ff_annotation_route/src/utils/format.dart';
 import 'package:path/path.dart' as p;
 
@@ -201,9 +202,9 @@ abstract class RouteGeneratorBase {
             it.ffRoute.argumentImports!.isNotEmpty) {
           imports.addAll(it.ffRoute.argumentImports!);
         }
-
-        imports.addAll(FileInfo.imports);
       }
+      imports.addAll(DartTypeAutoImportHelper().imports);
+      imports.addAll(FileInfo.imports);
       writeImports(imports, sb);
 
       sb.write(rootFile

@@ -170,7 +170,7 @@ abstract class RouteInfoBase {
       return;
     }
 
-    String importString = '\'${url.relativeUriString}\'';
+    String importString = '\'${url.source.uri}\'';
 
     String suffix = reader?.peek('suffix')?.stringValue ?? '';
     if (containsCombinator) {
@@ -188,7 +188,7 @@ abstract class RouteInfoBase {
       prefix = importElement.prefix!.element.toString();
     }
 
-    importString = 'import $importString $suffix $prefix;';
+    importString = 'import $importString $suffix $prefix'.trim() + ';';
 
     if (!FileInfo.imports.contains(importString)) {
       if (type != null) {

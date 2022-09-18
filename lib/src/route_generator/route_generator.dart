@@ -13,10 +13,10 @@ import 'package:collection/collection.dart' show IterableExtension;
 import 'package:ff_annotation_route/src/file_info.dart';
 import 'package:ff_annotation_route/src/route_info/route_info.dart';
 import 'package:ff_annotation_route/src/template.dart';
+import 'package:ff_annotation_route/src/utils/dart_type_auto_import.dart';
 import 'package:ff_annotation_route_core/ff_annotation_route_core.dart';
 import 'package:path/path.dart' as p;
 import 'package:source_gen/source_gen.dart';
-
 import 'package:analyzer/src/dart/element/element.dart';
 import 'package:analyzer/src/dart/constant/value.dart';
 import 'route_generator_base.dart';
@@ -78,10 +78,10 @@ class RouteGenerator extends RouteGeneratorBase {
               final DartObject? fFArgumentImportAnnotation =
                   fFArgumentImportTypeChecker.firstAnnotationOf(importElement);
 
-              if (importElement.prefix != null) {
-                fileInfo.importPrefixMap[importElement.prefix!.element.name] =
-                    importElement;
-              }
+              // if (importElement.prefix != null) {
+              //   fileInfo.importPrefixMap[importElement.prefix!.element.name] =
+              //       importElement;
+              // }
 
               if (fFArgumentImportAnnotation != null) {
                 final ConstantReader reader =
@@ -205,6 +205,8 @@ class RouteGenerator extends RouteGeneratorBase {
       if (argumentImports != null) {
         FileInfo.imports.addAll(argumentImports);
       }
+
+      DartTypeAutoImportHelper().findParametersImport(classElement);
 
       final RouteInfo routeInfo = RouteInfo(
         className: classElement.displayName,

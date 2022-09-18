@@ -1,9 +1,7 @@
 // ignore_for_file: unused_shown_name
 
 import 'package:example/example_routes.dart';
-@FFArgumentImport('hide TestMode2')
 import 'package:example/src/model/test_model.dart' show TestMode;
-@FFArgumentImport()
 import 'package:example/src/model/test_model1.dart'
     show TestMode4, TestMode1, TestMode2
     hide TestMode3;
@@ -14,11 +12,6 @@ import 'package:flutter/material.dart';
   name: 'flutterCandies://testPageE',
   routeName: 'testPageE',
   description: 'Show how to push new page with arguments(class)',
-  // argumentImports are still work for some cases which you can't use @FFArgumentImport()
-  argumentImports: <String>[
-    'import \'package:example/src/model/test_model.dart\';',
-    'import \'package:example/src/model/test_model1.dart\';',
-  ],
   exts: <String, dynamic>{
     'group': 'Complex',
     'order': 1,
