@@ -7,7 +7,6 @@ import 'package:analyzer/dart/analysis/session.dart';
 import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/constant/value.dart';
 import 'package:analyzer/dart/element/element.dart';
-import 'package:analyzer/file_system/physical_file_system.dart';
 import 'package:build_runner_core/build_runner_core.dart';
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:ff_annotation_route/src/file_info.dart';
@@ -32,64 +31,58 @@ class RouteGenerator extends RouteGeneratorBase {
       : super(packageNode, isRoot);
 
   @override
-  Future<void> scanLib([String? output]) async {
-    if (lib != null) {
+  Future<void> scanLib({
+    String? output,
+    AnalysisContextCollection? collection,
+  }) async {
+    if (lib != null && collection != null) {
       print('');
       print('Scanning package : ${packageNode.name}');
 
       final String libPath = lib!.path;
 
-      final AnalysisContextCollection collection = AnalysisContextCollection(
-          includedPaths: <String>[libPath],
-          resourceProvider: PhysicalResourceProvider.INSTANCE);
+      final AnalysisContext context = collection.contextFor(libPath);
 
-      for (final AnalysisContext context in collection.contexts) {
-        print('Analyzing ${context.contextRoot.root.path} ...');
-        for (final String filePath in context.contextRoot.analyzedFiles()) {
-          if (!filePath.endsWith('.dart')) {
-            continue;
-          }
+      print('Analyzing ${context.contextRoot.root.path} ...');
+      for (final String filePath in context.contextRoot.analyzedFiles()) {
+        if (!filePath.endsWith('.dart')) {
+          continue;
+        }
 
-          final List<String> relativeParts = <String>[packageNode.path, 'lib'];
-          if (output != null) {
-            relativeParts.add(output);
-          }
-          final FileInfo fileInfo = FileInfo(
-            export: p
-                .relative(filePath, from: p.joinAll(relativeParts))
-                .replaceAll('\\', '/'),
-            packageName: packageNode.name,
-          );
+        final List<String> relativeParts = <String>[packageNode.path, 'lib'];
+        if (output != null) {
+          relativeParts.add(output);
+        }
+        final FileInfo fileInfo = FileInfo(
+          export: p
+              .relative(filePath, from: p.joinAll(relativeParts))
+              .replaceAll('\\', '/'),
+          packageName: packageNode.name,
+        );
 
-          final CompilationUnitElement fileElement =
-              await getElement(context.currentSession, filePath);
+        final CompilationUnitElement fileElement =
+            await getElement(context.currentSession, filePath);
 
-          for (final ClassElement classElement in fileElement.classes) {
-            findFFRoute(fileInfo, classElement);
-          }
+        for (final ClassElement classElement in fileElement.classes) {
+          findFFRoute(fileInfo, classElement);
+        }
 
-          await _handleFunctionWidget(fileElement, context, fileInfo);
+        await _handleFunctionWidget(fileElement, context, fileInfo);
 
-          if (fileInfo.routes.isNotEmpty) {
-            for (final LibraryImportElement importElement
-                in fileElement.library.libraryImports) {
-              final DartObject? fFArgumentImportAnnotation =
-                  fFArgumentImportTypeChecker.firstAnnotationOf(importElement);
+        if (fileInfo.routes.isNotEmpty) {
+          for (final LibraryImportElement importElement
+              in fileElement.library.libraryImports) {
+            final DartObject? fFArgumentImportAnnotation =
+                fFArgumentImportTypeChecker.firstAnnotationOf(importElement);
 
-              // if (importElement.prefix != null) {
-              //   fileInfo.importPrefixMap[importElement.prefix!.element.name] =
-              //       importElement;
-              // }
-
-              if (fFArgumentImportAnnotation != null) {
-                final ConstantReader reader =
-                    ConstantReader(fFArgumentImportAnnotation);
-                fileInfo.routes.first.addImport(importElement, reader: reader);
-              }
+            if (fFArgumentImportAnnotation != null) {
+              final ConstantReader reader =
+                  ConstantReader(fFArgumentImportAnnotation);
+              fileInfo.routes.first.addImport(importElement, reader: reader);
             }
-
-            fileInfoList.add(fileInfo);
           }
+
+          fileInfoList.add(fileInfo);
         }
       }
     }

@@ -1,4 +1,4 @@
-import 'package:ff_annotation_route_library/ff_annotation_route_library.dart';
+import 'package:ff_annotation_route_core/ff_annotation_route_core.dart';
 import 'package:flutter/material.dart';
 
 import 'mode/mode.dart';

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:analyzer/dart/analysis/analysis_context_collection.dart';
 import 'package:analyzer/dart/analysis/features.dart';
 import 'package:analyzer/dart/analysis/results.dart';
 import 'package:analyzer/dart/analysis/utilities.dart';
@@ -23,7 +24,10 @@ class FastRouteGenerator extends RouteGeneratorBase {
       : super(packageNode, isRoot);
 
   @override
-  Future<void> scanLib([String? output]) async {
+  Future<void> scanLib({
+    String? output,
+    AnalysisContextCollection? collection,
+  }) async {
     if (lib != null) {
       print('');
       print('Scanning package : ${packageNode.name}');

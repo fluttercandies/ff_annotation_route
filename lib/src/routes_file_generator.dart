@@ -30,21 +30,9 @@ class RoutesFileGenerator {
 
   void generateRoutesFile() {
     final RegExp? constIgnore = Args().constIgnoreRegExp;
-    final String? routesFileOutputPath = Args().routesFileOutputPath;
     final StringBuffer constantsSb = StringBuffer();
-    final String name = '${packageNode!.name}_routes.dart';
-    String routePath;
-
-    if (routesFileOutputPath != null) {
-      routePath = p.join(lib!.path, routesFileOutputPath, name);
-    } else {
-      routePath = p.join(lib!.path, name);
-    }
-
-    final File file = File(routePath);
-    if (file.existsSync()) {
-      file.deleteSync();
-    }
+    final File file =
+        RoutesFileGenerator.deleteFile(packageNode: packageNode!, lib: lib!);
 
     //constantsSb.write(fileHeader);
 
@@ -124,6 +112,26 @@ class RoutesFileGenerator {
       file.writeAsStringSync(formatDart(constants));
       print('Generate : ${p.relative(file.path, from: packageNode!.path)}');
     }
+  }
+
+  static File deleteFile(
+      {required PackageNode packageNode, required Directory lib}) {
+    final String? routesFileOutputPath = Args().routesFileOutputPath;
+
+    final String name = '${packageNode.name}_routes.dart';
+    String routePath;
+
+    if (routesFileOutputPath != null) {
+      routePath = p.join(lib.path, routesFileOutputPath, name);
+    } else {
+      routePath = p.join(lib.path, name);
+    }
+
+    final File file = File(routePath);
+    if (file.existsSync()) {
+      file.deleteSync();
+    }
+    return file;
   }
 }
 

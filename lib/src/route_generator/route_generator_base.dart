@@ -1,6 +1,7 @@
 import 'dart:io';
 
 // ignore: implementation_imports
+import 'package:analyzer/dart/analysis/analysis_context_collection.dart';
 import 'package:build_runner_core/build_runner_core.dart';
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:ff_annotation_route/src/arg/args.dart';
@@ -100,7 +101,7 @@ abstract class RouteGeneratorBase {
     return '';
   }
 
-  Future<void> scanLib([String? output]);
+  Future<void> scanLib({String? output, AnalysisContextCollection? collection});
 
   String funcName2ClassName(String funcName) {
     if (funcName.isNotEmpty && funcName[0] == '_') {
@@ -111,28 +112,19 @@ abstract class RouteGeneratorBase {
     });
   }
 
-  void getLib() {
+  String? getLib() {
     final Directory lib = Directory(p.join(packageNode.path, 'lib'));
     if (lib.existsSync()) {
       _lib = lib;
+      return lib.path;
     }
+    return null;
   }
 
   void generateFile({
     List<RouteGeneratorBase>? nodes,
   }) {
-    final String name = '${packageNode.name}_route.dart';
-    String routePath;
-    if (isRoot && Args().outputPath != null) {
-      routePath = p.join(_lib!.path, Args().outputPath, name);
-    } else {
-      routePath = p.join(_lib!.path, name);
-    }
-
-    final File file = File(routePath);
-    if (file.existsSync()) {
-      file.deleteSync();
-    }
+    final File file = deleteFile();
     if (isRoot && _fileInfoList.isEmpty && (nodes?.isEmpty ?? true)) {
       return;
     }
@@ -243,5 +235,21 @@ abstract class RouteGeneratorBase {
       file.writeAsStringSync(formatDart(fileHeader + sb.toString()));
       print('Generate : ${p.relative(file.path, from: packageNode.path)}');
     }
+  }
+
+  File deleteFile() {
+    final String name = '${packageNode.name}_route.dart';
+    String routePath;
+    if (isRoot && Args().outputPath != null) {
+      routePath = p.join(_lib!.path, Args().outputPath, name);
+    } else {
+      routePath = p.join(_lib!.path, name);
+    }
+
+    final File file = File(routePath);
+    if (file.existsSync()) {
+      file.deleteSync();
+    }
+    return file;
   }
 }

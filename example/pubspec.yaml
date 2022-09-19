@@ -25,6 +25,8 @@ dependencies:
   functional_widget_annotation: ^0.10.0  
   module_a:
     path: module_a
+  module_b:
+    path: module_b    
   url_launcher: ^6.0.2
 
   flutter_hooks: ^0.18.5+1
