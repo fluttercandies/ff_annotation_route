@@ -1,7 +1,8 @@
 ## 10.0.0
 
-* add '--[no-]fast-mode', fast mode is fast but it doesn't support super parameters. 
+* add '--[no-]fast-mode', fast mode is fast but it doesn't support super parameters and add parameters refer import automatically. 
 * support super parameters on '--no-fast-mode'.
+* support add parameters refer import automatically on '--no-fast-mode'
 
 ## 9.3.3
 

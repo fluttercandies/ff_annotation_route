@@ -37,14 +37,13 @@ class RouteGenerator extends RouteGeneratorBase {
       print('');
       print('Scanning package : ${packageNode.name}');
 
-      const TypeChecker typeChecker = TypeChecker.fromRuntime(FFRoute);
       final String libPath = lib!.path;
 
-      final AnalysisContextCollection collection1 = AnalysisContextCollection(
+      final AnalysisContextCollection collection = AnalysisContextCollection(
           includedPaths: <String>[libPath],
           resourceProvider: PhysicalResourceProvider.INSTANCE);
 
-      for (final AnalysisContext context in collection1.contexts) {
+      for (final AnalysisContext context in collection.contexts) {
         print('Analyzing ${context.contextRoot.root.path} ...');
         for (final String filePath in context.contextRoot.analyzedFiles()) {
           if (!filePath.endsWith('.dart')) {
@@ -69,8 +68,7 @@ class RouteGenerator extends RouteGeneratorBase {
             findFFRoute(fileInfo, classElement);
           }
 
-          await _handleFunctionWidget(
-              fileElement, typeChecker, context, fileInfo);
+          await _handleFunctionWidget(fileElement, context, fileInfo);
 
           if (fileInfo.routes.isNotEmpty) {
             for (final LibraryImportElement importElement
@@ -97,16 +95,13 @@ class RouteGenerator extends RouteGeneratorBase {
     }
   }
 
-  Future<void> _handleFunctionWidget(
-      CompilationUnitElement fileElement,
-      TypeChecker typeChecker,
-      AnalysisContext context,
-      FileInfo fileInfo) async {
+  Future<void> _handleFunctionWidget(CompilationUnitElement fileElement,
+      AnalysisContext context, FileInfo fileInfo) async {
     final Map<String, DartObject> _widgetFunctionMap = <String, DartObject>{};
 
     for (final FunctionElement functionElement in fileElement.functions) {
       final DartObject? annotation =
-          typeChecker.firstAnnotationOf(functionElement);
+          fFRouteTypeChecker.firstAnnotationOf(functionElement);
       final DartObject? functionalWidget =
           functionalWidgetTypeChecker.firstAnnotationOf(functionElement);
       if (annotation != null && functionalWidget != null) {

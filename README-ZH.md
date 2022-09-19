@@ -39,7 +39,7 @@ Languages: [English](README.md) | 中文简体
       - [How to use](#how-to-use)
       - [设置 GetPageRoute 的参数](#设置-getpageroute-的参数)
     - [Functional Widget](#functional-widget)
-      - [How to use](#%E5%A6%82%E4%BD%95%E4%B8%8E-functional_widget-%E4%B8%80%E8%B5%B7%E4%BD%BF%E7%94%A8)
+      - [如何与 functional_widget 一起使用？](#如何与-functional_widget-一起使用)
     - [Code Hints](#code-hints)
   - [来杯可乐](#来杯可乐)
 
@@ -80,6 +80,9 @@ class MainPage extends StatelessWidget
 #### 带参数构造
 
 工具会自动处理带参数的构造，不需要做特殊处理。唯一需要注意的是，你需要使用 `argumentImports` 为class/enum的参数提供 import 地址。现在你可以使用 `@FFArgumentImport()` 来替代.
+
+当然你现在可以选使用 `--non-fast-mode` 非快速模式进行解析，它会自动添加参数对应的引用。
+
 
 ```dart
 @FFArgumentImport('hide TestMode2')
@@ -176,10 +179,13 @@ class TestPageE extends StatelessWidget {
     --const-ignore                使用正则表达式忽略一些const(不是全部const都希望生成)
     --[no-]route-constants        是否在根项目中的 `xxx_route.dart` 生成全部路由的静态常量
     --[no-]package                这个是否是一个 package
-    --[no-]super-arguments       是否生成路由参数帮助类
+    --[no-]super-arguments        是否生成路由参数帮助类
 
 -s, --[no-]save                   是否保存命令到本地。如果保存了，下一次就只需要执行 `ff_route` 就可以了。
     --[no-]null-safety            是否支持空安全，默认 `true`
+    --[no-]fast-mode              快速模式: 只会对单独一个文件进行解析, 它更快.
+                                  非快速模式: 会对 packages 和 sdk 进行解析, 支持构造超级参数解析以及自动根据参数添加引用.
+                                  默认是快速模式    
 ```
 
 ### Navigator 1.0

@@ -35,9 +35,9 @@ Provide a route generator to create route map quickly by annotations.
         - [Push name with arguments](#push-name-with-arguments-1)
     - [GetX](#getx)
       - [How to use](#how-to-use)
-      - [How to set the parameter of GetPageRoute](#how-to-set-the-parameter-of-getpageroute)  
+      - [How to set the parameter of GetPageRoute](#how-to-set-the-parameter-of-getpageroute)
     - [Functional Widget](#functional-widget)
-      - [How to use](#how-to-use-with-functional_widget)
+      - [How to use with functional_widget?](#how-to-use-with-functional_widget)
     - [Code Hints](#code-hints)
 
 ## Usage
@@ -80,6 +80,8 @@ class MainPage extends StatelessWidget
 
 The tool will handle it. What you should take care is that provide import url by setting `argumentImports` if it has
 class/enum argument.you can use `@FFArgumentImport()` instead now. 
+
+or you can use `--non-fast-mode` for now, it will add parameters refer import automatically.
 
 ```dart
 @FFArgumentImport('hide TestMode2')
@@ -136,6 +138,7 @@ class TestPageE extends StatelessWidget {
 | argumentImports | The imports of arguments. For example, class/enum argument should provide import url. you can use @FFArgumentImport() instead now. | -        |
 | codes | to support something can't write in annotation, it will be hadnled as a code when generate route. [see](https://github.com/fluttercandies/ff_annotation_route/tree/master/example_getx) | -        |
 
+
 ### Generate Route File
 
 #### Environment
@@ -161,22 +164,27 @@ Go to your project's root and execute command.
 Available commands:
 
 ```markdown
--h, --[no-]help               Help usage
--p, --path                    Flutter project root path
-                              (defaults to ".")
--n, --name                    Routes constant class name.
-                              (defaults to "Routes")
--o, --output                  The path of main project route file and helper file.It is relative to the lib directory
--g, --git                     scan git lib(you should specify package names and split multiple by ,)
-    --exclude-packages        Exclude given packages from scanning
-    --routes-file-output      The path of routes file. It is relative to the lib directory
-    --const-ignore            The regular to ignore some route consts
-    --[no-]package            Is this a package
-    --[no-]super-arguments    Whether generate page arguments helper class
--s, --[no-]save               Whether save the arguments into the local
-                              It will execute the local arguments if run "ff_route" without any arguments
-    --[no-]null-safety        enable null-safety
-                              (defaults to on)
+-h, --[no-]help                        Help usage
+-p, --path                             Flutter project root path
+                                       (defaults to ".")
+-n, --name                             Routes constant class name.
+                                       (defaults to "Routes")
+-o, --output                           The path of main project route file and helper file.It is relative to the lib directory
+-g, --git                              scan git lib(you should specify package names and split multiple by ,)
+    --exclude-packages                 Exclude given packages from scanning
+    --routes-file-output               The path of routes file. It is relative to the lib directory
+    --const-ignore                     The regular to ignore some route consts
+    --[no-]package                     Is this a package
+    --[no-]super-arguments             Whether generate page arguments helper class
+-s, --[no-]save                        Whether save the arguments into the local
+                                       It will execute the local arguments if run "ff_route" without any arguments
+    --[no-]null-safety                 enable null-safety
+                                       (defaults to on)
+    --[no-]arguments-case-sensitive    arguments is case sensitive or not
+                                       (defaults to on)
+    --[no-]fast-mode                   fast mode: only analyze base on single dart file, it's fast.
+                                       non-fast mode: analyze base on whole packages and sdk, support super parameters and add parameters refer import automatically.
+                                       (defaults to on)
 ```
 ### Navigator 1.0
 
