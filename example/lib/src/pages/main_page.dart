@@ -107,7 +107,6 @@ class MainPage extends StatelessWidget {
 @FFRoute(
   name: 'fluttercandies://demogrouppage',
   routeName: 'DemoGroupPage',
-  argumentImports: <String>['import \'src/pages/main_page.dart\';'],
 )
 class DemoGroupPage extends StatelessWidget {
   DemoGroupPage({required MapEntry<String, List<DemoRouteResult>> keyValue})

@@ -11,10 +11,11 @@ class DartTypeAutoImport {
   DartTypeAutoImport(
     this.uri,
     this.dartType,
+    this.prefix,
   );
   final String uri;
   final DartType dartType;
-  String prefix = '';
+  final String prefix;
 
   String get import =>
       'import \'$uri\'${prefix.isNotEmpty ? ' as $prefix' : ''};';
@@ -28,77 +29,84 @@ class DartTypeAutoImportHelper {
   final Map<DartType, DartTypeAutoImport> _imports =
       <DartType, DartTypeAutoImport>{};
 
-  void add(DartType type, String uri, String prefix) {
+  void add(DartType type, String uri) {
+    if (uri == 'dart:core') {
+      return;
+    }
     if (!_imports.containsKey(type)) {
-      if (prefix.isEmpty &&
-          !uri.startsWith('package:flutter') &&
-          !uri.startsWith('dart:')) {
-        prefix = 'autoimport' + '$uri$type'.md5;
-      }
+      _imports[type] = DartTypeAutoImport(uri, type, 'autoimport' + uri.md5);
 
-      final List<DartType> sameTypeList = _imports.keys
-          .where((DartType element) =>
-              element != type && element.toString() == type.toString())
-          .toList();
-      final DartTypeAutoImport dartTypeAutoImport =
-          DartTypeAutoImport(uri, type)..prefix = prefix;
-      _imports[type] = dartTypeAutoImport;
-      if (sameTypeList.isNotEmpty) {
-        sameTypeList.add(type);
-        for (final DartType type in sameTypeList) {
-          final DartTypeAutoImport dartTypeAutoImport = _imports[type]!;
-          dartTypeAutoImport.prefix =
-              'autoimport' + '${dartTypeAutoImport.uri}$type'.md5;
-        }
-      }
-
-      print('automatically import for type($type): ${dartTypeAutoImport.uri} ');
+      print('automatically import for type($type): $uri');
     }
   }
 
-  String getTypeString(InterfaceTypeImpl type, {bool withNullability = true}) {
-    final DartTypeAutoImport? dartTypeAutoImport = getDartTypeAutoImport(type);
-
-    if (dartTypeAutoImport != null && dartTypeAutoImport.prefix.isNotEmpty) {
-      final String typeString =
-          type.getDisplayString(withNullability: withNullability);
-      final String typeImportString = dartTypeAutoImport.dartType
-          .getDisplayString(withNullability: withNullability);
-      return typeString.replaceAll(
-          typeImportString, '${dartTypeAutoImport.prefix}.$typeImportString');
-    }
-
-    return '$type';
-  }
-
-  DartTypeAutoImport? getDartTypeAutoImport(InterfaceTypeImpl type) {
-    DartTypeAutoImport? dartTypeAutoImport = _imports[type];
-    if (dartTypeAutoImport != null) {
-      return dartTypeAutoImport;
-    }
-
-    for (final DartType element in type.typeArguments) {
-      dartTypeAutoImport = getDartTypeAutoImport(element as InterfaceTypeImpl);
-      if (dartTypeAutoImport != null) {
-        return dartTypeAutoImport;
-      }
-    }
-    return null;
-  }
-
-  String getTypePrefix(InterfaceTypeImpl type) {
+  List<DartTypeAutoImport> getDartTypeAutoImports(InterfaceTypeImpl type) {
+    final List<DartTypeAutoImport> imports = <DartTypeAutoImport>[];
     final DartTypeAutoImport? dartTypeAutoImport = _imports[type];
-    if (dartTypeAutoImport != null && dartTypeAutoImport.prefix.isNotEmpty) {
-      return dartTypeAutoImport.prefix;
+    if (dartTypeAutoImport != null) {
+      imports.add(dartTypeAutoImport);
+    }
+    for (final DartType element in type.typeArguments) {
+      imports.addAll(getDartTypeAutoImports(element as InterfaceTypeImpl));
     }
 
-    for (final DartType element in type.typeArguments) {
-      final String prefix = getTypePrefix(element as InterfaceTypeImpl);
-      if (prefix.isNotEmpty) {
-        return prefix;
+    return imports;
+  }
+
+  String fixDartTypeString(InterfaceTypeImpl type) {
+    String input = type.getDisplayString(withNullability: true);
+    final List<DartTypeAutoImport> imports = getDartTypeAutoImports(type);
+
+    for (final DartTypeAutoImport import in imports) {
+      final String dartTypeString =
+          import.dartType.getDisplayString(withNullability: true);
+      input =
+          input.replaceAll(dartTypeString, '${import.prefix}.$dartTypeString');
+    }
+    return input;
+  }
+
+  String fixDefaultValueCodeString(
+    String defaultValueCode,
+    DartType dartType,
+  ) {
+    final List<DartTypeAutoImport> imports =
+        getDartTypeAutoImports(dartType as InterfaceTypeImpl);
+
+    for (final DartTypeAutoImport import in imports) {
+      defaultValueCode = _getDefaultValueCodeString(defaultValueCode, import);
+    }
+    return defaultValueCode;
+  }
+
+  String _getDefaultValueCodeString(
+    String defaultValueCode,
+    DartTypeAutoImport dartTypeAutoImport,
+  ) {
+    final String prefix = dartTypeAutoImport.prefix;
+    final String typeString =
+        dartTypeAutoImport.dartType.getDisplayString(withNullability: false);
+    // replace prefix
+    if (defaultValueCode.contains('.')) {
+      final int index = defaultValueCode.indexOf(typeString);
+      if (index - 1 > 0 && defaultValueCode[index - 1] == '.') {
+        final int end = index;
+        int start = end - 1;
+        for (; start > 0; start--) {
+          if (defaultValueCode[start] == ' ') {
+            start++;
+            break;
+          }
+        }
+        return defaultValueCode.replaceRange(
+          start,
+          end,
+          '$prefix.',
+        );
       }
     }
-    return '';
+
+    return defaultValueCode.replaceAll(typeString, '$prefix.$typeString');
   }
 
   String getFormalParameters(List<ParameterElement> parameters) {
@@ -163,7 +171,7 @@ class DartTypeAutoImportHelper {
       sb.write('required ');
     }
 
-    sb.write(getTypeString(element.type as InterfaceTypeImpl) +
+    sb.write(fixDartTypeString(element.type as InterfaceTypeImpl) +
         ' ' +
         element.displayName);
 
@@ -172,50 +180,10 @@ class DartTypeAutoImportHelper {
       sb.write(' = ');
 
       defaultValueCode =
-          getDefaultValueCodeString(defaultValueCode, element.type);
+          fixDefaultValueCodeString(defaultValueCode, element.type);
 
       sb.write(defaultValueCode);
     }
-  }
-
-  String getDefaultValueCodeString(
-    String defaultValueCode,
-    DartType dartType,
-  ) {
-    if (defaultValueCode.contains('ExtendedImageMode')) {
-      print('ddd');
-    }
-    final DartTypeAutoImport? dartTypeAutoImport =
-        getDartTypeAutoImport(dartType as InterfaceTypeImpl);
-    final String? prefix = dartTypeAutoImport?.prefix;
-    // replace prefix
-    if (defaultValueCode.contains('.')) {
-      final int index = defaultValueCode.indexOf(
-          (dartTypeAutoImport?.dartType ?? dartType)
-              .getDisplayString(withNullability: false));
-      if (index - 1 > 0 && defaultValueCode[index - 1] == '.') {
-        final int end = index;
-        int start = end - 1;
-        for (; start > 0; start--) {
-          if (defaultValueCode[start] == ' ') {
-            start++;
-            break;
-          }
-        }
-        return defaultValueCode.replaceRange(
-          start,
-          end,
-          prefix != null && prefix.isNotEmpty ? '$prefix.' : '',
-        );
-      }
-    }
-
-    if (prefix != null && prefix.isNotEmpty) {
-      final String type = (dartTypeAutoImport?.dartType ?? dartType)
-          .getDisplayString(withNullability: false);
-      return defaultValueCode.replaceAll(type, '$prefix.$type');
-    }
-    return defaultValueCode;
   }
 
   Set<String> get imports =>
@@ -230,19 +198,19 @@ class DartTypeAutoImportHelper {
     }
   }
 
-  void _findDartTypeImport1(InterfaceTypeImpl type) {
+  void _findDartTypeImport(InterfaceTypeImpl type) {
     if (type.typeArguments.isEmpty) {
       final Uri uri = type.element2.source.uri;
-      final Uri sss = type.element2.library.source.uri;
-      if (sss != uri) {
-        add(type, '$sss', '');
+      final Uri partParent = type.element2.library.source.uri;
+      if (partParent != uri) {
+        add(type, '$partParent');
       } else {
-        add(type, '$uri', '');
+        add(type, '$uri');
       }
     } else {
       for (final DartType element in type.typeArguments) {
         if (element is InterfaceTypeImpl) {
-          _findDartTypeImport1(element);
+          _findDartTypeImport(element);
         }
       }
     }
@@ -250,9 +218,9 @@ class DartTypeAutoImportHelper {
 
   void findParameterImport(ParameterElement parameter) {
     if (parameter.type is InterfaceTypeImpl) {
-      _findDartTypeImport1(parameter.type as InterfaceTypeImpl);
+      _findDartTypeImport(parameter.type as InterfaceTypeImpl);
     }
-    return;
+    //return;
     // refer
     // if (parameter.type is InterfaceTypeImpl) {
     //   _findDartTypeImport(parameter.type as InterfaceTypeImpl, parameter);

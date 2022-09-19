@@ -100,7 +100,7 @@ return ${getConstructorString(rawConstructor)};
     value = 'asT<$type>($value';
 
     if (parameter.defaultValueCode != null) {
-      value += ',${DartTypeAutoImportHelper().getDefaultValueCodeString(
+      value += ',${DartTypeAutoImportHelper().fixDefaultValueCodeString(
         parameter.defaultValueCode!,
         parameter.type,
       )}';
@@ -157,63 +157,8 @@ return ${getConstructorString(rawConstructor)};
   }
 
   String getParameterType(ParameterElement parameter) {
-    // // already add import and has prefix
-    // if (fileInfo.typeImportPrefixMap.containsKey(parameter.type)) {
-    //   return fileInfo.getTypeString(parameter.type);
-    // }
-
-    // // find import by import prefix with defaultValueCode
-    // final String? prefix =
-    //     fileInfo.parameterHasPrefixImport(parameter, classElement);
-    // if (prefix != null) {
-    //   addImport(
-    //     fileInfo.importPrefixMap[prefix]!,
-    //     type: parameter.type,
-    //   );
-    //   fileInfo.typeImportPrefixMap[parameter.type] = prefix;
-    //   return fileInfo.getTypeString(parameter.type);
-    // }
-
-    // LibraryElement? typeLibrary;
-    // // refer
-    // if (parameter.type is InterfaceTypeImpl) {
-    //   typeLibrary = (parameter.type as InterfaceTypeImpl).element2.library;
-    // } else {
-    //   // find import by Library
-    //   final DartObjectImpl? dartOject =
-    //       parameter.computeConstantValue() as DartObjectImpl?;
-    //   typeLibrary = dartOject?.variable?.library;
-    // }
-
-    // if (typeLibrary != null) {
-    //   final List<LibraryImportElement>? libraryImports =
-    //       parameter.library?.libraryImports;
-    //   if (libraryImports != null) {
-    //     for (final LibraryImportElement importElement in libraryImports) {
-    //       if (importElement.importedLibrary != null) {
-    //         if (_containsImportLibrary(
-    //             importElement.importedLibrary!, typeLibrary)) {
-    //           addImport(
-    //             importElement,
-    //             containsCombinator: true,
-    //             type: parameter.type,
-    //           );
-    //           if (importElement.prefix != null) {
-    //             fileInfo.typeImportPrefixMap[parameter.type] =
-    //                 importElement.prefix!.element.name;
-    //           }
-    //           return fileInfo.getTypeString(parameter.type);
-    //         }
-    //       }
-    //     }
-    //   }
-
-    //   final String import = 'import \'${typeLibrary.source.uri}\';';
-
-    //   FileInfo.imports.add(import);
-    // }
     return DartTypeAutoImportHelper()
-        .getTypeString(parameter.type as InterfaceTypeImpl);
+        .fixDartTypeString(parameter.type as InterfaceTypeImpl);
   }
 
   String getConstructor(ConstructorElement rawConstructor) {
@@ -243,29 +188,6 @@ return ${getConstructorString(rawConstructor)};
         }
         String args = DartTypeAutoImportHelper()
             .getFormalParameters(rawConstructor.parameters);
-        // rawConstructor
-        //     .toString()
-        //     .substring(rawConstructor.toString().indexOf('('))
-        //     .trim();
-
-        // for (final ParameterElement parameter in rawConstructor.parameters) {
-        //   if (parameter.defaultValueCode != null) {
-        //     // remove prefix
-        //     final String defaultValueCode = _getDefaultValueCode(parameter);
-        //     if (defaultValueCode != parameter.defaultValueCode) {
-        //       args = args.replaceAll(
-        //           parameter.defaultValueCode!, defaultValueCode);
-        //     }
-        //   }
-
-        //   args =
-        //       DartTypeAutoImportHelper().fixConstructorString(args, parameter);
-
-        //   // if (parameter.defaultValueCode != null) {
-        //   //   args = DartTypeAutoImportHelper()
-        //   //       .fixDefaultValueCodeString(parameter, args);
-        //   // }
-        // }
 
         String nameMap = '';
         for (final ParameterElement parameter in rawConstructor.parameters) {
@@ -275,18 +197,8 @@ return ${getConstructorString(rawConstructor)};
           }
           nameMap += ''''$name':$name,''';
         }
-        //if (name != null) {
+
         nameMap += ''''$constructorName':'$name',''';
-        //}
-        // if (args.isNotEmpty && rawConstructor.parameters.isNotEmpty) {
-        //   if (args.endsWith('})')) {
-        //     args = args.replaceAll('})', ',})');
-        //   } else if (args.endsWith('])')) {
-        //     args = args.replaceAll('])', ',])');
-        //   } else {
-        //     args = args.replaceAll(')', ',)');
-        //   }
-        // }
 
         sb.write(routeConstClassMethodTemplate
             .replaceAll(

@@ -117,7 +117,6 @@ class RouteGenerator extends RouteGeneratorBase {
 
     if (_widgetFunctionMap.isNotEmpty) {
       for (final PartElement partElement in fileElement.library.parts2) {
-        print(partElement.toString());
         final DirectiveUri uri = partElement.uri;
         String? path;
         if (uri is DirectiveUriWithUnit) {
