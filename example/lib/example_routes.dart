@@ -21,6 +21,8 @@ import 'package:flutter/src/foundation/key.dart'
     as autoimport61a64860a48a0a727515bc4ec00b2fff;
 import 'package:flutter/src/gestures/drag_details.dart'
     as autoimport1e2f7b96e6c9c283a2a35bf82237bf16;
+import 'package:flutter/src/widgets/framework.dart'
+    as autoimport2ac85d6b777135304f548b8ca2707514;
 import 'package:module_a/src/mode/mode.dart'
     as autoimportac41f6e44f4086b72b4f7dbc1ab40cc1;
 
@@ -64,7 +66,7 @@ class Routes {
   ///
   /// [constructors] :
   ///
-  /// TestPageF({BoxWidthStyle boxWidthStyle = ui.BoxWidthStyle.max, ExtendedImageMode extendedImageMode = ExtendedImageMode.gesture, required DragDownDetails details, required BlendMode blendMode, required File file, required List<TestMode3> modes})
+  /// TestPageF({BoxWidthStyle boxWidthStyle = ui.BoxWidthStyle.max, ExtendedImageMode extendedImageMode = ExtendedImageMode.gesture, required DragDownDetails details, required BlendMode blendMode, required File file, required List<TestMode3> modes, required Widget Function(String) function, required TestMode3 Function(DragDownDetails) function1, required TestMode3 Function(Map<TestMode1, TestMode2>) function2, required bool Function(String) Function(int, TestMode2 Function(DragDownDetails)) function3})
   ///
   /// [exts] : {'group': 'Complex', 'order': 2}
   static const _FlutterCandiesTestPageF flutterCandiesTestPageF =
@@ -414,7 +416,21 @@ class _FlutterCandiesTestPageF {
     required autoimport1e2f7b96e6c9c283a2a35bf82237bf16.DragDownDetails details,
     required autoimportde7367a4dccc7f836046967508c09a6c.BlendMode blendMode,
     required autoimportd66e09f4babbdbbe015b32cc3816761d.File file,
-    required List<autoimport14790b17a5a1427ada8188fbf75b352c.TestMode3> modes,
+    required List<autoimportfd790b2c4cbc8e7d99977cab283b94ab.TestMode3> modes,
+    required autoimport2ac85d6b777135304f548b8ca2707514.Widget Function(String)
+        function,
+    required autoimportfd790b2c4cbc8e7d99977cab283b94ab.TestMode3 Function(
+            autoimport1e2f7b96e6c9c283a2a35bf82237bf16.DragDownDetails)
+        function1,
+    required autoimport14790b17a5a1427ada8188fbf75b352c.TestMode3 Function(
+            Map<autoimportfd790b2c4cbc8e7d99977cab283b94ab.TestMode1,
+                autoimportfd790b2c4cbc8e7d99977cab283b94ab.TestMode2>)
+        function2,
+    required bool Function(String) Function(
+            int,
+            autoimportfd790b2c4cbc8e7d99977cab283b94ab.TestMode2 Function(
+                autoimport1e2f7b96e6c9c283a2a35bf82237bf16.DragDownDetails))
+        function3,
   }) =>
       <String, dynamic>{
         'boxWidthStyle': boxWidthStyle,
@@ -423,6 +439,10 @@ class _FlutterCandiesTestPageF {
         'blendMode': blendMode,
         'file': file,
         'modes': modes,
+        'function': function,
+        'function1': function1,
+        'function2': function2,
+        'function3': function3,
         'constructorName': '',
       };
 

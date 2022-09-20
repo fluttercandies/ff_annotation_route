@@ -6,6 +6,7 @@ import 'package:analyzer/dart/element/type.dart';
 //import 'package:analyzer/src/dart/element/element.dart';
 import 'package:analyzer/src/dart/element/type.dart';
 import 'package:ff_annotation_route/src/utils/convert.dart';
+import 'package:io/ansi.dart';
 
 class DartTypeAutoImport {
   DartTypeAutoImport(
@@ -40,20 +41,28 @@ class DartTypeAutoImportHelper {
     }
   }
 
-  List<DartTypeAutoImport> getDartTypeAutoImports(InterfaceTypeImpl type) {
+  List<DartTypeAutoImport> getDartTypeAutoImports(DartType dartType) {
     final List<DartTypeAutoImport> imports = <DartTypeAutoImport>[];
-    final DartTypeAutoImport? dartTypeAutoImport = _imports[type];
+    final DartTypeAutoImport? dartTypeAutoImport = _imports[dartType];
     if (dartTypeAutoImport != null) {
       imports.add(dartTypeAutoImport);
     }
-    for (final DartType element in type.typeArguments) {
-      imports.addAll(getDartTypeAutoImports(element as InterfaceTypeImpl));
+
+    if (dartType is InterfaceTypeImpl) {
+      for (final DartType element in dartType.typeArguments) {
+        imports.addAll(getDartTypeAutoImports(element));
+      }
+    } else if (dartType is FunctionTypeImpl) {
+      for (final ParameterElement element in dartType.parameters) {
+        imports.addAll(getDartTypeAutoImports(element.type));
+      }
+      imports.addAll(getDartTypeAutoImports(dartType.returnType));
     }
 
     return imports;
   }
 
-  String fixDartTypeString(InterfaceTypeImpl type) {
+  String fixDartTypeString(DartType type) {
     String input = type.getDisplayString(withNullability: true);
     final List<DartTypeAutoImport> imports = getDartTypeAutoImports(type);
 
@@ -70,10 +79,7 @@ class DartTypeAutoImportHelper {
     String defaultValueCode,
     DartType dartType,
   ) {
-    final List<DartTypeAutoImport> imports =
-        getDartTypeAutoImports(dartType as InterfaceTypeImpl);
-
-    for (final DartTypeAutoImport import in imports) {
+    for (final DartTypeAutoImport import in getDartTypeAutoImports(dartType)) {
       defaultValueCode = _getDefaultValueCodeString(defaultValueCode, import);
     }
     return defaultValueCode;
@@ -171,9 +177,7 @@ class DartTypeAutoImportHelper {
       sb.write('required ');
     }
 
-    sb.write(fixDartTypeString(element.type as InterfaceTypeImpl) +
-        ' ' +
-        element.displayName);
+    sb.write(fixDartTypeString(element.type) + ' ' + element.displayName);
 
     String? defaultValueCode = element.defaultValueCode;
     if (defaultValueCode != null) {
@@ -193,7 +197,7 @@ class DartTypeAutoImportHelper {
     for (final ConstructorElement rawConstructor in classElement.constructors) {
       // ignore: prefer_foreach
       for (final ParameterElement parameter in rawConstructor.parameters) {
-        DartTypeAutoImportHelper().findParameterImport(parameter);
+        DartTypeAutoImportHelper().findParameterImport(parameter.type);
       }
     }
   }
@@ -208,111 +212,29 @@ class DartTypeAutoImportHelper {
         add(type, '$uri');
       }
     } else {
+      // ignore: prefer_foreach
       for (final DartType element in type.typeArguments) {
-        if (element is InterfaceTypeImpl) {
-          _findDartTypeImport(element);
-        }
+        findParameterImport(element);
       }
     }
   }
 
-  void findParameterImport(ParameterElement parameter) {
-    if (parameter.type is InterfaceTypeImpl) {
-      _findDartTypeImport(parameter.type as InterfaceTypeImpl);
+  void findParameterImport(DartType dartType) {
+    if (dartType is InterfaceTypeImpl) {
+      _findDartTypeImport(dartType);
+    } else if (dartType is FunctionTypeImpl) {
+      // ignore: prefer_foreach
+      for (final ParameterElement element in dartType.parameters) {
+        findParameterImport(element.type);
+      }
+
+      findParameterImport(dartType.returnType);
+    } else {
+      // TODO(zmtzawqlp): not support now
+      print(red.wrap(
+          'This parameter type is not support now: ${dartType.runtimeType}'));
     }
-    //return;
-    // refer
-    // if (parameter.type is InterfaceTypeImpl) {
-    //   _findDartTypeImport(parameter.type as InterfaceTypeImpl, parameter);
-    // } else {
-    //   // find import by Library
-    //   final DartObjectImpl? dartOject =
-    //       parameter.computeConstantValue() as DartObjectImpl?;
-    //   _findParameterImport(
-    //       dartOject?.variable?.library, parameter, parameter.type);
-    // }
   }
-
-  // void _findDartTypeImport(InterfaceTypeImpl type, ParameterElement parameter) {
-  //   if (type.typeArguments.isEmpty) {
-  //     _findParameterImport(type.element2.library, parameter, parameter.type);
-  //   } else {
-  //     for (final DartType element in type.typeArguments) {
-  //       if (element is InterfaceTypeImpl) {
-  //         _findParameterImport(element.element2.library, parameter, element);
-  //       }
-  //     }
-  //   }
-  // }
-
-  // void _findParameterImport(
-  //     LibraryElement? typeLibrary, ParameterElement parameter, DartType type) {
-  //   if (typeLibrary != null) {
-  //     final List<LibraryImportElement>? libraryImports =
-  //         parameter.library?.libraryImports;
-  //     bool find = false;
-  //     if (libraryImports != null) {
-  //       for (final LibraryImportElement importElement in libraryImports) {
-  //         if (importElement.importedLibrary != null) {
-  //           if (_containsImportLibrary(
-  //               importElement.importedLibrary!, typeLibrary, type)) {
-  //             final DirectiveUriWithLibraryImpl url =
-  //                 importElement.uri as DirectiveUriWithLibraryImpl;
-
-  //             if (url.relativeUriString == 'dart:core') {
-  //               find = true;
-  //               break;
-  //             }
-  //             add(type, '${url.source.uri}',
-  //                 importElement.prefix?.element.name ?? '');
-  //             find = true;
-  //             break;
-  //           }
-  //         }
-  //       }
-  //     }
-
-  //     if (!find) {
-  //       add(type, '${typeLibrary.source.uri}', '');
-  //     }
-  //   }
-  // }
-
-  // bool _containsImportLibrary(
-  //     LibraryElement parent, LibraryElement child, DartType type) {
-  //   if (parent.source.uri == child.source.uri) {
-  //     return true;
-  //   }
-
-  //   for (final LibraryExportElement exported in parent.libraryExports) {
-  //     final DirectiveUriWithLibraryImpl uri =
-  //         (exported as LibraryExportElementImpl).uri
-  //             as DirectiveUriWithLibraryImpl;
-
-  //     if (uri.source.uri == child.source.uri) {
-  //       final String typeName = type.getDisplayString(withNullability: false);
-  //       for (final NamespaceCombinator combinator in exported.combinators) {
-  //         if (combinator is HideElementCombinator) {
-  //           for (final String hideName in combinator.hiddenNames) {
-  //             if (hideName == typeName) {
-  //               return false;
-  //             }
-  //           }
-  //         }
-
-  //         if (combinator is ShowElementCombinator) {
-  //           if (!combinator.shownNames.contains(typeName)) {
-  //             return false;
-  //           }
-  //         }
-  //       }
-  //       return true;
-  //     } else if (_containsImportLibrary(uri.library, child, type)) {
-  //       return true;
-  //     }
-  //   }
-  //   return false;
-  // }
 }
 
 enum _WriteFormalParameterKind { requiredPositional, optionalPositional, named }

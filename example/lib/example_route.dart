@@ -21,6 +21,8 @@ import 'package:flutter/src/foundation/key.dart'
     as autoimport61a64860a48a0a727515bc4ec00b2fff;
 import 'package:flutter/src/gestures/drag_details.dart'
     as autoimport1e2f7b96e6c9c283a2a35bf82237bf16;
+import 'package:flutter/src/widgets/framework.dart'
+    as autoimport2ac85d6b777135304f548b8ca2707514;
 import 'package:flutter/widgets.dart';
 import 'package:module_a/module_a_route.dart'
     as testpageb1afeb9c992bb2f1098d1acc6becb2a6c;
@@ -95,8 +97,32 @@ FFRouteSettings getRouteSettings({
             safeArguments['file'],
           )!,
           modes:
-              asT<List<autoimport14790b17a5a1427ada8188fbf75b352c.TestMode3>>(
+              asT<List<autoimportfd790b2c4cbc8e7d99977cab283b94ab.TestMode3>>(
             safeArguments['modes'],
+          )!,
+          function: asT<
+              autoimport2ac85d6b777135304f548b8ca2707514.Widget Function(
+                  String)>(
+            safeArguments['function'],
+          )!,
+          function1: asT<
+              autoimportfd790b2c4cbc8e7d99977cab283b94ab.TestMode3 Function(
+                  autoimport1e2f7b96e6c9c283a2a35bf82237bf16.DragDownDetails)>(
+            safeArguments['function1'],
+          )!,
+          function2: asT<
+              autoimport14790b17a5a1427ada8188fbf75b352c.TestMode3 Function(
+                  Map<autoimportfd790b2c4cbc8e7d99977cab283b94ab.TestMode1,
+                      autoimportfd790b2c4cbc8e7d99977cab283b94ab.TestMode2>)>(
+            safeArguments['function2'],
+          )!,
+          function3: asT<
+              bool Function(String) Function(
+                  int,
+                  autoimportfd790b2c4cbc8e7d99977cab283b94ab.TestMode2 Function(
+                      autoimport1e2f7b96e6c9c283a2a35bf82237bf16
+                          .DragDownDetails))>(
+            safeArguments['function3'],
           )!,
         ),
         routeName: 'TestPageF',

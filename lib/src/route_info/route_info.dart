@@ -6,7 +6,6 @@ import 'package:ff_annotation_route/src/file_info.dart';
 import 'package:ff_annotation_route/src/utils/dart_type_auto_import.dart';
 import 'package:ff_annotation_route_core/ff_annotation_route_core.dart';
 import 'route_info_base.dart';
-import 'package:analyzer/src/dart/element/type.dart';
 
 class RouteInfo extends RouteInfoBase {
   RouteInfo({
@@ -157,8 +156,7 @@ return ${getConstructorString(rawConstructor)};
   }
 
   String getParameterType(ParameterElement parameter) {
-    return DartTypeAutoImportHelper()
-        .fixDartTypeString(parameter.type as InterfaceTypeImpl);
+    return DartTypeAutoImportHelper().fixDartTypeString(parameter.type);
   }
 
   String getConstructor(ConstructorElement rawConstructor) {
