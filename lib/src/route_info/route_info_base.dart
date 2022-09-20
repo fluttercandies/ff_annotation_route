@@ -172,7 +172,7 @@ abstract class RouteInfoBase {
 
     String importString = '\'${url.source.uri}\'';
 
-    String suffix = reader?.peek('suffix')?.stringValue ?? '';
+    String suffix = reader?.peek('suffix')?.stringValue.trim() ?? '';
     if (containsCombinator) {
       for (final NamespaceCombinator combinator in importElement.combinators) {
         String combinatorString = combinator.toString();
@@ -185,10 +185,10 @@ abstract class RouteInfoBase {
     }
     String prefix = '';
     if (importElement.prefix != null) {
-      prefix = importElement.prefix!.element.toString();
+      prefix = ' ${importElement.prefix!.element.toString()}';
     }
 
-    importString = 'import $importString $suffix $prefix'.trim() + ';';
+    importString = 'import $importString$suffix$prefix'.trim() + ';';
 
     if (!FileInfo.imports.contains(importString)) {
       if (type != null) {

@@ -6,7 +6,6 @@
  */
 
 import 'dart:io';
-import 'package:build_runner_core/build_runner_core.dart';
 import 'package:ff_annotation_route/src/arg/args.dart';
 import 'package:ff_annotation_route/src/route_info/route_info_base.dart';
 import 'package:ff_annotation_route/src/utils/camel_under_score_converter.dart';
@@ -20,19 +19,19 @@ import 'utils/format.dart';
 class RoutesFileGenerator {
   RoutesFileGenerator({
     this.routes,
-    this.lib,
-    this.packageNode,
+    required this.lib,
+    required this.packageName,
   });
 
   final List<RouteInfoBase>? routes;
-  final Directory? lib;
-  final PackageNode? packageNode;
+  final Directory lib;
+  final String packageName;
 
   void generateRoutesFile() {
     final RegExp? constIgnore = Args().constIgnoreRegExp;
     final StringBuffer constantsSb = StringBuffer();
     final File file =
-        RoutesFileGenerator.deleteFile(packageNode: packageNode!, lib: lib!);
+        RoutesFileGenerator.deleteFile(packageName: packageName, lib: lib);
 
     //constantsSb.write(fileHeader);
 
@@ -46,7 +45,7 @@ class RoutesFileGenerator {
     }
     String routeNames = 'routeNames';
     if (Args().isPackage) {
-      routeNames = '${camelName(packageNode!.name)}RouteNames';
+      routeNames = '${camelName(packageName)}RouteNames';
     }
     constantsSb.write(
         'const List<String> $routeNames = <String>[${routeNamesString.toString()}];');
@@ -110,15 +109,15 @@ class RoutesFileGenerator {
     if (constants != null) {
       file.createSync(recursive: true);
       file.writeAsStringSync(formatDart(constants));
-      print('Generate : ${p.relative(file.path, from: packageNode!.path)}');
+      print('Generate : ${p.relative(file.path, from: lib.parent.path)}');
     }
   }
 
   static File deleteFile(
-      {required PackageNode packageNode, required Directory lib}) {
+      {required String packageName, required Directory lib}) {
     final String? routesFileOutputPath = Args().routesFileOutputPath;
 
-    final String name = '${packageNode.name}_routes.dart';
+    final String name = '${packageName}_routes.dart';
     String routePath;
 
     if (routesFileOutputPath != null) {

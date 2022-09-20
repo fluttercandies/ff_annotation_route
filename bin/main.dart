@@ -12,47 +12,33 @@ import 'package:path/path.dart';
 const String argumentsFile = 'ff_annotation_route_commands';
 const String debugCommands =
     '--path example/ --super-arguments --null-safety --no-arguments-case-sensitive --no-fast-mode';
-
 Future<void> main(List<String> arguments) async {
-  //debug
-  //arguments = debugCommands.split(' ');
   bool runFromLocal = false;
+
+  // if (true) {
+  //   //debug
+  //   arguments = debugCommands.split(' ');
+  //   parseArgs(arguments);
+  //   if (Args().path.value != null) {
+  //     final io.File file = io.File(join(Args().path.value!, argumentsFile));
+  //     if (file.existsSync()) {
+  //       final String content = file.readAsStringSync();
+  //       arguments.addAll(content.split(' '));
+  //       runFromLocal = true;
+  //     }
+  //   }
+  // }
+
   if (arguments.isEmpty) {
     final io.File file = io.File(join('./', argumentsFile));
     if (file.existsSync()) {
       final String content = file.readAsStringSync();
-      // if (content.contains(',')) {
-      //   //old style
-      //   arguments = content.split(',');
-      // } else {
+
       arguments = content.split(' ');
-      //}
+
       runFromLocal = true;
     }
   }
-
-  //keep old work
-  // for (int i = 0; i < arguments.length; i++) {
-  //   if (arguments[i] == '-rc') {
-  //     arguments[i] = '--route-constants';
-  //   } else if (arguments[i] == '-rh') {
-  //     arguments[i] = '--route-helper';
-  //   } else if (arguments[i] == '-rn') {
-  //     arguments[i] = '--route-names';
-  //   } else if (arguments[i] == '-rfo') {
-  //     arguments[i] = '--routes-file-output';
-  //   } else if (arguments[i] == '-na') {
-  //     arguments[i] = '--no-arguments';
-  //   }
-  // }
-
-  // arguments = arguments.toList();
-
-  // arguments.remove('--route-helper');
-  // arguments.remove('--no-is-initial-route');
-  // arguments.remove('--no-arguments');
-  // arguments.remove('--route-constants');
-  // arguments.remove('--route-names');
 
   parseArgs(arguments);
 
@@ -64,7 +50,12 @@ Future<void> main(List<String> arguments) async {
   final DateTime before = DateTime.now();
 
   print(green.wrap('\nff_annotation_route ------ Start'));
-
+  // processRun(
+  //   executable: 'flutter',
+  //   arguments: 'packages get',
+  //   runInShell: true,
+  //   workingDirectory: Args().path.value!,
+  // );
   final PackageGraph packageGraph =
       await PackageGraph.forPath(Args().path.value!);
 

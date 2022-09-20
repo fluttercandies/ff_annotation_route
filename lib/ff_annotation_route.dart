@@ -17,19 +17,23 @@ Future<void> generate(List<PackageNode> annotationPackages) async {
   for (final PackageNode annotationPackage in annotationPackages) {
     final RouteGeneratorBase routeGenerator = Args().isFastMode
         ? FastRouteGenerator(
-            annotationPackage,
-            annotationPackage.isRoot && !Args().isPackage,
+            packageName: annotationPackage.name,
+            packagePath: annotationPackage.path,
+            isRoot: annotationPackage.isRoot && !Args().isPackage,
           )
         : RouteGenerator(
-            annotationPackage,
-            annotationPackage.isRoot && !Args().isPackage,
+            packageName: annotationPackage.name,
+            packagePath: annotationPackage.path,
+            isRoot: annotationPackage.isRoot && !Args().isPackage,
           );
 
-    final String? libPath = routeGenerator.getLib();
+    final String? libPath = routeGenerator.lib?.path;
     if (libPath == null) {
       return;
     }
+
     libPaths.add(libPath);
+
     if (routeGenerator.isRoot) {
       root = routeGenerator;
     } else {
@@ -37,7 +41,7 @@ Future<void> generate(List<PackageNode> annotationPackages) async {
     }
     // remove first
     RoutesFileGenerator.deleteFile(
-      packageNode: routeGenerator.packageNode,
+      packageName: routeGenerator.packageName,
       lib: routeGenerator.lib!,
     );
     // remove first
@@ -63,7 +67,7 @@ Future<void> generate(List<PackageNode> annotationPackages) async {
 
   nodes.sort(
     (RouteGeneratorBase a, RouteGeneratorBase b) =>
-        a.packageNode.name.compareTo(b.packageNode.name),
+        a.packageName.compareTo(b.packageName),
   );
 
   await root?.scanLib(output: Args().outputPath, collection: collection);

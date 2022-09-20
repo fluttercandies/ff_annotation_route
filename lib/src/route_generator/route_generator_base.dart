@@ -2,20 +2,47 @@ import 'dart:io';
 
 // ignore: implementation_imports
 import 'package:analyzer/dart/analysis/analysis_context_collection.dart';
-import 'package:build_runner_core/build_runner_core.dart';
+
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:ff_annotation_route/src/arg/args.dart';
 import 'package:ff_annotation_route/src/file_info.dart';
+import 'package:ff_annotation_route/src/route_generator/route_generator.dart';
 import 'package:ff_annotation_route/src/route_info/route_info_base.dart';
 import 'package:ff_annotation_route/src/routes_file_generator.dart';
 import 'package:ff_annotation_route/src/template.dart';
 import 'package:ff_annotation_route/src/utils/convert.dart';
 import 'package:ff_annotation_route/src/utils/dart_type_auto_import.dart';
 import 'package:ff_annotation_route/src/utils/format.dart';
-import 'package:path/path.dart' as p;
+import 'package:ff_annotation_route/src/utils/process.dart';
+import 'package:io/ansi.dart';
+import 'package:path/path.dart' as path;
 
 abstract class RouteGeneratorBase {
-  RouteGeneratorBase(this.packageNode, this.isRoot);
+  RouteGeneratorBase({
+    required this.packageName,
+    required String packagePath,
+    required this.isRoot,
+  }) {
+    final Directory lib = Directory(path.join(packagePath, 'lib'));
+    if (lib.existsSync()) {
+      _lib = lib;
+      final String libPath = lib.path;
+      if (this is RouteGenerator &&
+          Args().gitNames != null &&
+          Args().gitNames!.isNotEmpty) {
+        if (libPath.contains(path.join('.pub-cache', 'git'))) {
+          print(yellow.wrap(
+              'find git package($packageName) in ${lib.parent.path}.\nrun \'flutter packages get\' before analyze.'));
+          processRun(
+            executable: 'flutter',
+            arguments: 'packages get',
+            runInShell: false,
+            workingDirectory: lib.parent.path,
+          );
+        }
+      }
+    }
+  }
 
   final List<FileInfo> _fileInfoList = <FileInfo>[];
 
@@ -24,13 +51,13 @@ abstract class RouteGeneratorBase {
   Directory? _lib;
   Directory? get lib => _lib;
 
-  final PackageNode packageNode;
+  final String packageName;
   final bool isRoot;
 
   bool get hasAnnotationRoute => _lib != null && _fileInfoList.isNotEmpty;
 
   String get packageImport =>
-      "import 'package:${packageNode.name}/${packageNode.name}_route.dart';";
+      "import 'package:$packageName/${packageName}_route.dart';";
 
   // get imports in root
   String get imports {
@@ -88,7 +115,7 @@ abstract class RouteGeneratorBase {
       assert(!isRoot);
       final StringBuffer sb = StringBuffer();
 
-      sb.write('library ${packageNode.name}_route;\n');
+      sb.write('library ${packageName}_route;\n');
 
       _fileInfoList
           .sort((FileInfo a, FileInfo b) => a.export.compareTo(b.export));
@@ -110,15 +137,6 @@ abstract class RouteGeneratorBase {
     return funcName.replaceFirstMapped(RegExp('[a-zA-Z]'), (Match match) {
       return match.group(0)!.toUpperCase();
     });
-  }
-
-  String? getLib() {
-    final Directory lib = Directory(p.join(packageNode.path, 'lib'));
-    if (lib.existsSync()) {
-      _lib = lib;
-      return lib.path;
-    }
-    return null;
   }
 
   void generateFile({
@@ -225,25 +243,25 @@ abstract class RouteGeneratorBase {
     if (isRoot || Args().isPackage) {
       RoutesFileGenerator(
         routes: routes,
-        lib: _lib,
-        packageNode: packageNode,
+        lib: _lib!,
+        packageName: packageName,
       ).generateRoutesFile();
     }
 
     if (sb.isNotEmpty) {
       file.createSync(recursive: true);
       file.writeAsStringSync(formatDart(fileHeader + sb.toString()));
-      print('Generate : ${p.relative(file.path, from: packageNode.path)}');
+      print('Generate : ${path.relative(file.path, from: _lib!.parent.path)}');
     }
   }
 
   File deleteFile() {
-    final String name = '${packageNode.name}_route.dart';
+    final String name = '${packageName}_route.dart';
     String routePath;
     if (isRoot && Args().outputPath != null) {
-      routePath = p.join(_lib!.path, Args().outputPath, name);
+      routePath = path.join(_lib!.path, Args().outputPath, name);
     } else {
-      routePath = p.join(_lib!.path, name);
+      routePath = path.join(_lib!.path, name);
     }
 
     final File file = File(routePath);

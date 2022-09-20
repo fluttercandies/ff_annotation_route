@@ -8,7 +8,6 @@ import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/ast/syntactic_entity.dart';
 // ignore: implementation_imports
 import 'package:analyzer/src/dart/ast/ast.dart';
-import 'package:build_runner_core/build_runner_core.dart';
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:ff_annotation_route/src/file_info.dart';
 import 'package:ff_annotation_route/src/route_info/fast_route_info.dart';
@@ -20,8 +19,15 @@ import 'package:path/path.dart' as p;
 import 'route_generator_base.dart';
 
 class FastRouteGenerator extends RouteGeneratorBase {
-  FastRouteGenerator(PackageNode packageNode, bool isRoot)
-      : super(packageNode, isRoot);
+  FastRouteGenerator({
+    required String packageName,
+    required String packagePath,
+    required bool isRoot,
+  }) : super(
+          packageName: packageName,
+          packagePath: packagePath,
+          isRoot: isRoot,
+        );
 
   @override
   Future<void> scanLib({
@@ -30,7 +36,7 @@ class FastRouteGenerator extends RouteGeneratorBase {
   }) async {
     if (lib != null) {
       print('');
-      print('Scanning package : ${packageNode.name}');
+      print('Scanning package : $packageName');
       final List<FileSystemEntity> files = lib!.listSync(recursive: true);
       for (final FileSystemEntity item in files) {
         final FileStat file = item.statSync();
@@ -78,11 +84,11 @@ class FastRouteGenerator extends RouteGeneratorBase {
               if (ffRefClassDef != null) {
                 final String className = ffRefClassDef.name2.toString();
                 final String routePath =
-                    '${p.relative(item.path, from: packageNode.path)} ------ class : $className';
+                    '${p.relative(item.path, from: lib!.parent.path)} ------ class : $className';
                 print('Found annotation route : $routePath');
 
                 final List<String> relativeParts = <String>[
-                  packageNode.path,
+                  lib!.parent.path,
                   'lib'
                 ];
                 if (output != null) {
@@ -90,93 +96,23 @@ class FastRouteGenerator extends RouteGeneratorBase {
                 }
 
                 fileInfo ??= FileInfo(
-                    export: p
-                        .relative(item.path, from: p.joinAll(relativeParts))
-                        .replaceAll('\\', '/'),
-                    packageName: packageNode.name);
+                  export: p
+                      .relative(item.path, from: p.joinAll(relativeParts))
+                      .replaceAll('\\', '/'),
+                  packageName: packageName,
+                );
 
                 final NodeList<Expression>? parameters =
                     metadata.arguments?.arguments;
                 if (parameters == null) {
                   continue;
                 }
-                String? name;
-                bool? showStatusBar;
-                String? routeName;
-                PageRouteType? pageRouteType;
-                String? description;
-                Map<String, dynamic>? exts;
-                Map<String, String>? codes;
-
-                for (final Expression item in parameters) {
-                  if (item is NamedExpressionImpl) {
-                    String source;
-                    source = item.expression.toSource();
-                    if (source == 'null') {
-                      continue;
-                    }
-                    final String key = item.name.toSource();
-
-                    switch (key) {
-                      case 'name:':
-                        name = toT<String>(item.expression);
-                        break;
-                      case 'routeName:':
-                        routeName = toT<String>(item.expression);
-                        break;
-                      case 'showStatusBar:':
-                        showStatusBar = toT<bool>(item.expression);
-                        break;
-                      case 'pageRouteType:':
-                        pageRouteType = PageRouteType.values.firstWhereOrNull(
-                          (PageRouteType type) => type.toString() == source,
-                        );
-                        break;
-                      case 'description:':
-                        description = toT<String>(item.expression);
-                        break;
-                      case 'argumentImports:':
-                        argumentImports
-                            .addAll(toT<List<String>>(item.expression)!);
-                        break;
-                      case 'exts:':
-                      case 'codes:':
-                        if (item.expression is SetOrMapLiteralImpl) {
-                          final SetOrMapLiteralImpl setOrMapLiteralImpl =
-                              item.expression as SetOrMapLiteralImpl;
-                          final bool isCodes = key == 'codes:';
-                          if (setOrMapLiteralImpl.elements.isNotEmpty) {
-                            final Map<String, dynamic> map = isCodes
-                                ? codes ??= <String, String>{}
-                                : exts ??= <String, dynamic>{};
-                            for (final CollectionElement element
-                                in setOrMapLiteralImpl.elements) {
-                              final MapLiteralEntryImpl entry =
-                                  element as MapLiteralEntryImpl;
-                              String value = entry.value.toString();
-                              if (isCodes) {
-                                value = value.replaceAll('\'', '');
-                              }
-                              map[entry.key.toString()] = value;
-                            }
-                          }
-                        }
-                    }
-                  }
-                }
+                final FFRoute ffRoute =
+                    getFFRouteFromAnnotation(parameters, argumentImports);
 
                 final FastRouteInfo routeInfo = FastRouteInfo(
                   className: className,
-                  ffRoute: FFRoute(
-                    name: name!,
-                    showStatusBar: showStatusBar ?? true,
-                    routeName: routeName ?? '',
-                    pageRouteType: pageRouteType,
-                    description: description ?? '',
-                    exts: exts,
-                    argumentImports: argumentImports,
-                    codes: codes,
-                  ),
+                  ffRoute: ffRoute,
                   routePath: routePath,
                   classDeclaration: ffRefClassDef,
                   fileInfo: fileInfo,
@@ -191,6 +127,87 @@ class FastRouteGenerator extends RouteGeneratorBase {
         }
       }
     }
+  }
+
+  static FFRoute getFFRouteFromAnnotation(
+    NodeList<Expression> parameters,
+    List<String> argumentImports,
+  ) {
+    String? name;
+    bool? showStatusBar;
+    String? routeName;
+    PageRouteType? pageRouteType;
+    String? description;
+    Map<String, dynamic>? exts;
+    Map<String, String>? codes;
+
+    for (final Expression item in parameters) {
+      if (item is NamedExpressionImpl) {
+        String source;
+        source = item.expression.toSource();
+        if (source == 'null') {
+          continue;
+        }
+        final String key = item.name.toSource();
+
+        switch (key) {
+          case 'name:':
+            name = toT<String>(item.expression);
+            break;
+          case 'routeName:':
+            routeName = toT<String>(item.expression);
+            break;
+          case 'showStatusBar:':
+            showStatusBar = toT<bool>(item.expression);
+            break;
+          case 'pageRouteType:':
+            pageRouteType = PageRouteType.values.firstWhereOrNull(
+              (PageRouteType type) => type.toString() == source,
+            );
+            break;
+          case 'description:':
+            description = toT<String>(item.expression);
+            break;
+          case 'argumentImports:':
+            argumentImports.addAll(toT<List<String>>(item.expression)!);
+            break;
+          case 'exts:':
+          case 'codes:':
+            if (item.expression is SetOrMapLiteralImpl) {
+              final SetOrMapLiteralImpl setOrMapLiteralImpl =
+                  item.expression as SetOrMapLiteralImpl;
+              final bool isCodes = key == 'codes:';
+              if (setOrMapLiteralImpl.elements.isNotEmpty) {
+                final Map<String, dynamic> map = isCodes
+                    ? codes ??= <String, String>{}
+                    : exts ??= <String, dynamic>{};
+                for (final CollectionElement element
+                    in setOrMapLiteralImpl.elements) {
+                  final MapLiteralEntryImpl entry =
+                      element as MapLiteralEntryImpl;
+                  String value = entry.value.toString();
+                  if (isCodes) {
+                    value = value.replaceAll('\'', '');
+                  }
+                  map[entry.key.toString()] = value;
+                }
+              }
+            }
+        }
+      }
+    }
+
+    final FFRoute ffRoute = FFRoute(
+      name: name!,
+      showStatusBar: showStatusBar ?? true,
+      routeName: routeName ?? '',
+      pageRouteType: pageRouteType,
+      description: description ?? '',
+      exts: exts,
+      argumentImports: argumentImports,
+      codes: codes,
+    );
+    return ffRoute;
   }
 
   final Set<String> _functionalWidgetAnnotations = <String>{

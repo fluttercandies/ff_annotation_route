@@ -3,6 +3,8 @@ import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/ast/syntactic_entity.dart';
 import 'package:crypto/crypto.dart' as crypto;
 
+import 'format.dart';
+
 T? toT<T>(Expression expression) {
   if ('' is T && expression is SimpleStringLiteral) {
     return expression.value as T;
@@ -41,7 +43,7 @@ void writeImports(Set<String> imports, StringBuffer sb) {
   final List<String> packageImports = <String>[];
   final List<String> otherImports = <String>[];
   final Set<String> distinctImports =
-      imports.map((String e) => e.trim()).toSet();
+      imports.map((String e) => formatDart(e.trim())).toSet();
   for (final String import in distinctImports) {
     if (import.isDartImport) {
       dartImports.add(import);

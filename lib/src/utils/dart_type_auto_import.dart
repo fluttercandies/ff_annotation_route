@@ -57,6 +57,8 @@ class DartTypeAutoImportHelper {
         imports.addAll(getDartTypeAutoImports(element.type));
       }
       imports.addAll(getDartTypeAutoImports(dartType.returnType));
+    } else if (dartType is VoidTypeImpl) {
+      // do nothing
     }
 
     return imports;
@@ -227,12 +229,13 @@ class DartTypeAutoImportHelper {
       for (final ParameterElement element in dartType.parameters) {
         findParameterImport(element.type);
       }
-
       findParameterImport(dartType.returnType);
+    } else if (dartType is VoidTypeImpl) {
+      // do nothing
     } else {
       // TODO(zmtzawqlp): not support now
       print(red.wrap(
-          'This parameter type is not support now: ${dartType.runtimeType}'));
+          'This parameter type is not support now: ${dartType.runtimeType}.'));
     }
   }
 }
