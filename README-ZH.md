@@ -81,7 +81,7 @@ class MainPage extends StatelessWidget
 
 工具会自动处理带参数的构造，不需要做特殊处理。唯一需要注意的是，你需要使用 `argumentImports` 为class/enum的参数提供 import 地址。现在你可以使用 `@FFArgumentImport()` 来替代.
 
-当然你现在可以选使用 `--non-fast-mode` 非快速模式进行解析，它会自动添加参数对应的引用。
+当然你现在可以选使用 `--no-fast-mode` 非快速模式进行解析，它会自动添加参数对应的引用。
 
 
 ```dart

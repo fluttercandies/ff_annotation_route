@@ -81,7 +81,7 @@ class MainPage extends StatelessWidget
 The tool will handle it. What you should take care is that provide import url by setting `argumentImports` if it has
 class/enum argument.you can use `@FFArgumentImport()` instead now. 
 
-or you can use `--non-fast-mode` for now, it will add parameters refer import automatically.
+or you can use `--no-fast-mode` for now, it will add parameters refer import automatically.
 
 ```dart
 @FFArgumentImport('hide TestMode2')
@@ -183,7 +183,7 @@ Available commands:
     --[no-]arguments-case-sensitive    arguments is case sensitive or not
                                        (defaults to on)
     --[no-]fast-mode                   fast mode: only analyze base on single dart file, it's fast.
-                                       non-fast mode: analyze base on whole packages and sdk, support super parameters and add parameters refer import automatically.
+                                       no-fast mode: analyze base on whole packages and sdk, support super parameters and add parameters refer import automatically.
                                        (defaults to on)
 ```
 ### Navigator 1.0
