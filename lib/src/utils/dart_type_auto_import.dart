@@ -6,6 +6,7 @@ import 'package:analyzer/dart/element/type.dart';
 //import 'package:analyzer/src/dart/element/element.dart';
 import 'package:analyzer/src/dart/element/type.dart';
 import 'package:ff_annotation_route/src/utils/convert.dart';
+import 'package:ff_annotation_route/src/utils/git_package_handler.dart';
 import 'package:io/ansi.dart';
 
 class DartTypeAutoImport {
@@ -34,6 +35,7 @@ class DartTypeAutoImportHelper {
     if (uri == 'dart:core') {
       return;
     }
+
     if (!_imports.containsKey(type)) {
       _imports[type] = DartTypeAutoImport(uri, type, 'autoimport' + uri.md5);
 
@@ -57,7 +59,7 @@ class DartTypeAutoImportHelper {
         imports.addAll(getDartTypeAutoImports(element.type));
       }
       imports.addAll(getDartTypeAutoImports(dartType.returnType));
-    } else if (dartType is VoidTypeImpl) {
+    } else if (dartType is VoidTypeImpl || dartType is DynamicTypeImpl) {
       // do nothing
     }
 
@@ -206,13 +208,13 @@ class DartTypeAutoImportHelper {
 
   void _findDartTypeImport(InterfaceTypeImpl type) {
     if (type.typeArguments.isEmpty) {
-      final Uri uri = type.element2.source.uri;
+      Uri uri = type.element2.source.uri;
       final Uri partParent = type.element2.library.source.uri;
+
       if (partParent != uri) {
-        add(type, '$partParent');
-      } else {
-        add(type, '$uri');
+        uri = partParent;
       }
+      add(type, GitPackageHandler().replaceUri('$uri'));
     } else {
       // ignore: prefer_foreach
       for (final DartType element in type.typeArguments) {
@@ -230,7 +232,7 @@ class DartTypeAutoImportHelper {
         findParameterImport(element.type);
       }
       findParameterImport(dartType.returnType);
-    } else if (dartType is VoidTypeImpl) {
+    } else if (dartType is VoidTypeImpl || dartType is DynamicTypeImpl) {
       // do nothing
     } else {
       // TODO(zmtzawqlp): not support now

@@ -13,13 +13,14 @@ import 'path.dart';
 import 'routes_file_output.dart';
 import 'save.dart';
 import 'super_arguments.dart';
+import 'package:path/path.dart' as path;
 
 class Args {
   factory Args() => _args ??= Args._();
 
   Args._()
       : help = Help(),
-        path = Path(),
+        _path = Path(),
         name = Name(),
         output = Output(),
         git = Git(),
@@ -34,7 +35,7 @@ class Args {
         fastMode = FastMode();
   static Args? _args;
   final Help help;
-  final Path path;
+  final Path _path;
   final Name name;
   final Output output;
   final Git git;
@@ -70,4 +71,7 @@ class Args {
   bool get argumentsIsCaseSensitive => argumentsCaseSensitive.value!;
 
   bool get isFastMode => fastMode.value ?? false;
+
+  String get pathUri =>
+      _path.value == '.' ? path.current : _path.value ?? path.current;
 }

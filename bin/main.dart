@@ -7,20 +7,20 @@ import 'package:ff_annotation_route/ff_annotation_route.dart';
 import 'package:ff_annotation_route/src/arg/arg_parser.dart';
 import 'package:ff_annotation_route/src/arg/args.dart';
 import 'package:io/ansi.dart';
-import 'package:path/path.dart';
+import 'package:path/path.dart' as path;
 
 const String argumentsFile = 'ff_annotation_route_commands';
 const String debugCommands =
     '--path example/ --super-arguments --null-safety --no-arguments-case-sensitive --no-fast-mode';
 Future<void> main(List<String> arguments) async {
   bool runFromLocal = false;
-
+  //debug
   // if (true) {
-  //   //debug
   //   arguments = debugCommands.split(' ');
   //   parseArgs(arguments);
   //   if (Args().path.value != null) {
-  //     final io.File file = io.File(join(Args().path.value!, argumentsFile));
+  //     final io.File file =
+  //         io.File(path.join(Args().path.value!, argumentsFile));
   //     if (file.existsSync()) {
   //       final String content = file.readAsStringSync();
   //       arguments.addAll(content.split(' '));
@@ -30,7 +30,7 @@ Future<void> main(List<String> arguments) async {
   // }
 
   if (arguments.isEmpty) {
-    final io.File file = io.File(join('./', argumentsFile));
+    final io.File file = io.File(path.join(path.current, argumentsFile));
     if (file.existsSync()) {
       final String content = file.readAsStringSync();
 
@@ -56,8 +56,7 @@ Future<void> main(List<String> arguments) async {
   //   runInShell: true,
   //   workingDirectory: Args().path.value!,
   // );
-  final PackageGraph packageGraph =
-      await PackageGraph.forPath(Args().path.value!);
+  final PackageGraph packageGraph = await PackageGraph.forPath(Args().pathUri);
 
   // Only check path which imports ff_annotation_route_core or ff_annotation_route_library
   final List<PackageNode> annotationPackages =
@@ -90,7 +89,7 @@ Future<void> main(List<String> arguments) async {
   await generate(annotationPackages);
 
   if (Args().save.value! && !runFromLocal) {
-    final File file = File(join('./', argumentsFile));
+    final File file = File(path.join(Args().pathUri, argumentsFile));
     if (!file.existsSync()) {
       file.createSync();
     }

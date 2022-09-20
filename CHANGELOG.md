@@ -1,6 +1,8 @@
 ## 10.0.0
 
-* add '--[no-]fast-mode', fast mode is fast but it doesn't support super parameters and add parameters refer import automatically. 
+* add '--[no-]fast-mode'.
+fast mode: only analyze base on single dart file, it's fast.
+non-fast mode: analyze base on whole packages and sdk, support super parameters and add parameters refer import automatically.
 * support super parameters on '--no-fast-mode'.
 * support add parameters refer import automatically on '--no-fast-mode'
 

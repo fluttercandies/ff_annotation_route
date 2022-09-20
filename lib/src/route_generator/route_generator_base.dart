@@ -6,15 +6,13 @@ import 'package:analyzer/dart/analysis/analysis_context_collection.dart';
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:ff_annotation_route/src/arg/args.dart';
 import 'package:ff_annotation_route/src/file_info.dart';
-import 'package:ff_annotation_route/src/route_generator/route_generator.dart';
 import 'package:ff_annotation_route/src/route_info/route_info_base.dart';
 import 'package:ff_annotation_route/src/routes_file_generator.dart';
 import 'package:ff_annotation_route/src/template.dart';
 import 'package:ff_annotation_route/src/utils/convert.dart';
 import 'package:ff_annotation_route/src/utils/dart_type_auto_import.dart';
 import 'package:ff_annotation_route/src/utils/format.dart';
-import 'package:ff_annotation_route/src/utils/process.dart';
-import 'package:io/ansi.dart';
+import 'package:ff_annotation_route/src/utils/git_package_handler.dart';
 import 'package:path/path.dart' as path;
 
 abstract class RouteGeneratorBase {
@@ -25,22 +23,7 @@ abstract class RouteGeneratorBase {
   }) {
     final Directory lib = Directory(path.join(packagePath, 'lib'));
     if (lib.existsSync()) {
-      _lib = lib;
-      final String libPath = lib.path;
-      if (this is RouteGenerator &&
-          Args().gitNames != null &&
-          Args().gitNames!.isNotEmpty) {
-        if (libPath.contains(path.join('.pub-cache', 'git'))) {
-          print(yellow.wrap(
-              'find git package($packageName) in ${lib.parent.path}.\nrun \'flutter packages get\' before analyze.'));
-          processRun(
-            executable: 'flutter',
-            arguments: 'packages get',
-            runInShell: false,
-            workingDirectory: lib.parent.path,
-          );
-        }
-      }
+      _lib = GitPackageHandler().copyGitPackageToDartTool(lib, packageName);
     }
   }
 

@@ -7,7 +7,7 @@ import 'package:ff_annotation_route/src/route_generator/fast_route_generator.dar
 import 'package:ff_annotation_route/src/route_generator/route_generator.dart';
 import 'package:ff_annotation_route/src/route_generator/route_generator_base.dart';
 import 'package:ff_annotation_route/src/routes_file_generator.dart';
-
+import 'package:ff_annotation_route/src/utils/git_package_handler.dart';
 import 'src/arg/args.dart';
 
 Future<void> generate(List<PackageNode> annotationPackages) async {
@@ -39,13 +39,6 @@ Future<void> generate(List<PackageNode> annotationPackages) async {
     } else {
       nodes.add(routeGenerator);
     }
-    // remove first
-    RoutesFileGenerator.deleteFile(
-      packageName: routeGenerator.packageName,
-      lib: routeGenerator.lib!,
-    );
-    // remove first
-    routeGenerator.deleteFile();
   }
 
   AnalysisContextCollection? collection;
@@ -57,6 +50,13 @@ Future<void> generate(List<PackageNode> annotationPackages) async {
   }
 
   for (final RouteGeneratorBase routeGenerator in nodes.toList()) {
+    // remove first
+    RoutesFileGenerator.deleteFile(
+      packageName: routeGenerator.packageName,
+      lib: routeGenerator.lib!,
+    );
+    // remove first
+    routeGenerator.deleteFile();
     await routeGenerator.scanLib(collection: collection);
     if (routeGenerator.hasAnnotationRoute) {
       routeGenerator.generateFile();
@@ -70,7 +70,18 @@ Future<void> generate(List<PackageNode> annotationPackages) async {
         a.packageName.compareTo(b.packageName),
   );
 
-  await root?.scanLib(output: Args().outputPath, collection: collection);
+  if (root != null) {
+    // remove first
+    RoutesFileGenerator.deleteFile(
+      packageName: root.packageName,
+      lib: root.lib!,
+    );
+    // remove first
+    root.deleteFile();
+    await root.scanLib(output: Args().outputPath, collection: collection);
 
-  root?.generateFile(nodes: nodes);
+    root.generateFile(nodes: nodes);
+  }
+
+  GitPackageHandler().deleteGitPackageFromDartTool();
 }

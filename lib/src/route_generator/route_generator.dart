@@ -1,4 +1,5 @@
 // ignore_for_file: implementation_imports
+import 'package:analyzer/file_system/physical_file_system.dart';
 import 'package:analyzer/src/dart/ast/ast.dart';
 import 'package:analyzer/dart/analysis/analysis_context.dart';
 import 'package:analyzer/dart/analysis/analysis_context_collection.dart';
@@ -41,11 +42,14 @@ class RouteGenerator extends RouteGeneratorBase {
     String? output,
     AnalysisContextCollection? collection,
   }) async {
-    if (lib != null && collection != null) {
+    if (lib != null) {
       print('');
       print('Scanning package : $packageName');
       final String libPath = lib!.path;
-
+      collection = AnalysisContextCollection(
+        includedPaths: <String>[libPath],
+        resourceProvider: PhysicalResourceProvider.INSTANCE,
+      );
       final AnalysisContext context = collection.contextFor(libPath);
 
       print('Analyzing ${context.contextRoot.root.path} ...');
