@@ -4,7 +4,7 @@ version: 10.0.0
 homepage: https://github.com/fluttercandies/ff_annotation_route
 
 environment:
-  sdk: ">=2.15.0 <3.0.0"
+  sdk: ">=2.17.0 <3.0.0"
 
 dependencies:
   analyzer: ^5.0.0
@@ -19,7 +19,7 @@ dependencies:
   path: ^1.8.1
   yaml: ^3.1.1
   build_runner_core: ^7.2.3
-  source_gen: any
+  source_gen: ^1.2.5
 executables:
   ff_route: main
 
