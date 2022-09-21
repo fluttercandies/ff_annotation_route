@@ -1,3 +1,7 @@
+## 10.0.1
+
+* add ff_annotation_route fast-mode and version into file template header
+
 ## 10.0.0
 
 * add '--[no-]fast-mode'.

@@ -182,7 +182,7 @@ Available commands:
                                        (defaults to on)
     --[no-]arguments-case-sensitive    arguments is case sensitive or not
                                        (defaults to on)
-    --[no-]fast-mode                   fast mode: only analyze base on single dart file, it's fast.
+    --[no-]fast-mode                   fast-mode: only analyze base on single dart file, it's fast.
                                        no-fast mode: analyze base on whole packages and sdk, support super parameters and add parameters refer import automatically.
                                        (defaults to on)
 ```

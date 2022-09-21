@@ -9,7 +9,7 @@ class FastMode extends Argument<bool> {
 
   @override
   String get help =>
-      'fast mode: only analyze base on single dart file, it\'s fast.\nnon-fast mode: analyze base on whole packages and sdk, support super parameters and add parameters refer import automatically.';
+      'fast-mode: only analyze base on single dart file, it\'s fast.\nno-fast-mode: analyze base on whole packages and sdk, support super parameters and add parameters refer import automatically.';
 
   @override
   String get name => 'fast-mode';

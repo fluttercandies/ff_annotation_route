@@ -10,7 +10,4 @@ class TestMode {
   }
 }
 
-class TestMode2
-{
-
-}
+class TestMode2 {}

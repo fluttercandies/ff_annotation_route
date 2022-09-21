@@ -183,7 +183,7 @@ class TestPageE extends StatelessWidget {
 
 -s, --[no-]save                   是否保存命令到本地。如果保存了，下一次就只需要执行 `ff_route` 就可以了。
     --[no-]null-safety            是否支持空安全，默认 `true`
-    --[no-]fast-mode              快速模式: 只会对单独一个文件进行解析, 它更快.
+    --[no-]fast-mode              快速模式: 只会对单独文件进行解析, 它更快.
                                   非快速模式: 会对 packages 和 sdk 进行解析, 支持构造超级参数解析以及自动根据参数添加引用.
                                   默认是快速模式    
 ```
