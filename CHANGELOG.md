@@ -1,3 +1,7 @@
+## 10.0.2
+
+* support analyse typedef(alias) on '--no-fast-mode'.
+
 ## 10.0.1
 
 * add ff_annotation_route fast-mode and version into file template header

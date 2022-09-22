@@ -8,6 +8,9 @@ import 'package:analyzer/src/dart/element/type.dart';
 import 'package:ff_annotation_route/src/utils/convert.dart';
 import 'package:ff_annotation_route/src/utils/git_package_handler.dart';
 import 'package:io/ansi.dart';
+import 'package:meta/meta.dart';
+
+import 'display_string_builder.dart';
 
 class DartTypeAutoImport {
   DartTypeAutoImport(
@@ -16,7 +19,7 @@ class DartTypeAutoImport {
     this.prefix,
   );
   final String uri;
-  final DartType dartType;
+  final _DartType dartType;
   final String prefix;
 
   String get import =>
@@ -28,24 +31,39 @@ class DartTypeAutoImportHelper {
   DartTypeAutoImportHelper._();
   static final DartTypeAutoImportHelper _dartTypeAutoImportHelper =
       DartTypeAutoImportHelper._();
-  final Map<DartType, DartTypeAutoImport> _imports =
-      <DartType, DartTypeAutoImport>{};
+  final Map<_DartType, DartTypeAutoImport> _imports =
+      <_DartType, DartTypeAutoImport>{};
 
   void add(DartType type, String uri) {
     if (uri == 'dart:core') {
       return;
     }
 
-    if (!_imports.containsKey(type)) {
-      _imports[type] = DartTypeAutoImport(uri, type, 'autoimport' + uri.md5);
+    final _DartType dartType = _DartType(type, type.alias);
+
+    if (!_imports.containsKey(dartType)) {
+      _imports[dartType] =
+          DartTypeAutoImport(uri, dartType, 'autoimport' + uri.md5);
 
       print('automatically import for type($type): $uri');
     }
   }
 
+  DartTypeAutoImport? getImport(DartType type) {
+    final DartTypeAutoImport? dartTypeAutoImport = _imports[_DartType(
+      type,
+      type.alias,
+    )];
+    if (dartTypeAutoImport != null &&
+        type.alias == dartTypeAutoImport.dartType.alias) {
+      return dartTypeAutoImport;
+    }
+    return null;
+  }
+
   List<DartTypeAutoImport> getDartTypeAutoImports(DartType dartType) {
     final List<DartTypeAutoImport> imports = <DartTypeAutoImport>[];
-    final DartTypeAutoImport? dartTypeAutoImport = _imports[dartType];
+    final DartTypeAutoImport? dartTypeAutoImport = getImport(dartType);
     if (dartTypeAutoImport != null) {
       imports.add(dartTypeAutoImport);
     }
@@ -55,10 +73,10 @@ class DartTypeAutoImportHelper {
         imports.addAll(getDartTypeAutoImports(element));
       }
     } else if (dartType is FunctionTypeImpl) {
+      imports.addAll(getDartTypeAutoImports(dartType.returnType));
       for (final ParameterElement element in dartType.parameters) {
         imports.addAll(getDartTypeAutoImports(element.type));
       }
-      imports.addAll(getDartTypeAutoImports(dartType.returnType));
     } else if (dartType is VoidTypeImpl || dartType is DynamicTypeImpl) {
       // do nothing
     }
@@ -67,14 +85,37 @@ class DartTypeAutoImportHelper {
   }
 
   String fixDartTypeString(DartType type) {
+    if (type is InterfaceTypeImpl) {
+      final MyElementDisplayStringBuilder builder =
+          MyElementDisplayStringBuilder(
+        skipAllDynamicArguments: false,
+        withNullability: true,
+      );
+      builder.writeInterfaceType(type);
+      return builder.toString();
+    } else if (type is FunctionTypeImpl) {
+      final MyElementDisplayStringBuilder builder =
+          MyElementDisplayStringBuilder(
+        skipAllDynamicArguments: false,
+        withNullability: true,
+      );
+      builder.writeFunctionType(type);
+      return builder.toString();
+    }
+
     String input = type.getDisplayString(withNullability: true);
     final List<DartTypeAutoImport> imports = getDartTypeAutoImports(type);
 
     for (final DartTypeAutoImport import in imports) {
       final String dartTypeString =
-          import.dartType.getDisplayString(withNullability: true);
-      input =
-          input.replaceAll(dartTypeString, '${import.prefix}.$dartTypeString');
+          import.dartType.dartType.getDisplayString(withNullability: true);
+
+      String prefixType = '${import.prefix}.$dartTypeString';
+      if (import.dartType.alias != null) {
+        prefixType =
+            '${import.prefix}.${import.dartType.alias!.element.displayName}';
+      }
+      input = input.replaceFirst(dartTypeString, prefixType);
     }
     return input;
   }
@@ -94,8 +135,8 @@ class DartTypeAutoImportHelper {
     DartTypeAutoImport dartTypeAutoImport,
   ) {
     final String prefix = dartTypeAutoImport.prefix;
-    final String typeString =
-        dartTypeAutoImport.dartType.getDisplayString(withNullability: false);
+    final String typeString = dartTypeAutoImport.dartType.dartType
+        .getDisplayString(withNullability: false);
     // replace prefix
     if (defaultValueCode.contains('.')) {
       final int index = defaultValueCode.indexOf(typeString);
@@ -210,7 +251,6 @@ class DartTypeAutoImportHelper {
     if (type.typeArguments.isEmpty) {
       Uri uri = type.element2.source.uri;
       final Uri partParent = type.element2.library.source.uri;
-
       if (partParent != uri) {
         uri = partParent;
       }
@@ -224,14 +264,22 @@ class DartTypeAutoImportHelper {
   }
 
   void findParameterImport(DartType dartType) {
-    if (dartType is InterfaceTypeImpl) {
+    if (dartType.alias != null) {
+      final InstantiatedTypeAliasElement aliasElement = dartType.alias!;
+      Uri uri = aliasElement.element.source.uri;
+      final Uri partParent = aliasElement.element.library.source.uri;
+      if (partParent != uri) {
+        uri = partParent;
+      }
+      add(dartType, GitPackageHandler().replaceUri('$uri'));
+    } else if (dartType is InterfaceTypeImpl) {
       _findDartTypeImport(dartType);
     } else if (dartType is FunctionTypeImpl) {
+      findParameterImport(dartType.returnType);
       // ignore: prefer_foreach
       for (final ParameterElement element in dartType.parameters) {
         findParameterImport(element.type);
       }
-      findParameterImport(dartType.returnType);
     } else if (dartType is VoidTypeImpl || dartType is DynamicTypeImpl) {
       // do nothing
     } else {
@@ -243,3 +291,21 @@ class DartTypeAutoImportHelper {
 }
 
 enum _WriteFormalParameterKind { requiredPositional, optionalPositional, named }
+
+@immutable
+class _DartType {
+  const _DartType(this.dartType, this.alias);
+  final DartType dartType;
+  final InstantiatedTypeAliasElement? alias;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is _DartType &&
+          runtimeType == other.runtimeType &&
+          dartType == other.dartType &&
+          alias == other.alias;
+
+  @override
+  int get hashCode => Object.hash(dartType, alias);
+}
