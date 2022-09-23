@@ -1,3 +1,7 @@
+## 10.0.3
+
+* use the same AnalysisContextCollection
+
 ## 10.0.2
 
 * support analyse typedef(alias) on '--no-fast-mode'.

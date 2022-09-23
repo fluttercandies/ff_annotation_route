@@ -46,7 +46,7 @@ class RouteGenerator extends RouteGeneratorBase {
       print('');
       print('Scanning package : $packageName');
       final String libPath = lib!.path;
-      collection = AnalysisContextCollection(
+      collection ??= AnalysisContextCollection(
         includedPaths: <String>[libPath],
         resourceProvider: PhysicalResourceProvider.INSTANCE,
       );
