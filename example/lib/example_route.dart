@@ -160,8 +160,8 @@ FFRouteSettings getRouteSettings({
           aFunction: asT<autoimport012d709d6940bda4da65ad673a93e8a3.AFunction>(
             safeArguments['afunction'],
           )!,
-          bigInt: asT<autoimport012d709d6940bda4da65ad673a93e8a3.MyInt>(
-            safeArguments['bigint'],
+          myInt: asT<autoimport012d709d6940bda4da65ad673a93e8a3.MyInt>(
+            safeArguments['myint'],
           )!,
           function4: asT<
               autoimport012d709d6940bda4da65ad673a93e8a3.AFunction Function(
@@ -169,10 +169,10 @@ FFRouteSettings getRouteSettings({
                   Function(int, autoimport012d709d6940bda4da65ad673a93e8a3.MyInt Function(int))>(
             safeArguments['function4'],
           )!,
-          typedefClass:
-              asT<autoimport012d709d6940bda4da65ad673a93e8a3.TypedefClass>(
-            safeArguments['typedefclass'],
-            const autoimport012d709d6940bda4da65ad673a93e8a3.TypedefClass(1),
+          typedefClass1:
+              asT<autoimport012d709d6940bda4da65ad673a93e8a3.TypedefClass1>(
+            safeArguments['typedefclass1'],
+            const autoimport012d709d6940bda4da65ad673a93e8a3.TypedefClass1(1),
           )!,
         ),
         routeName: 'TestPageF',

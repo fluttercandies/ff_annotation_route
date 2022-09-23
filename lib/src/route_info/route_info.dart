@@ -22,6 +22,9 @@ class RouteInfo extends RouteInfoBase {
 
   final ClassElement classElement;
   List<ConstructorElement> get constructors => classElement.constructors;
+  List<String> get prefixes => classElement.library.prefixes
+      .map((PrefixElement e) => e.displayName)
+      .toList();
 
   @override
   String? get constructorsString {
@@ -100,7 +103,7 @@ return ${getConstructorString(rawConstructor)};
     value = 'asT<$type>($value';
 
     final String? defaultValueCode =
-        DartTypeAutoImportHelper().getDefaultValueString(parameter);
+        DartTypeAutoImportHelper().getDefaultValueString(parameter, prefixes);
 
     if (defaultValueCode != null) {
       value += ',$defaultValueCode';
@@ -186,7 +189,7 @@ return ${getConstructorString(rawConstructor)};
           return null;
         }
         String args = DartTypeAutoImportHelper()
-            .getFormalParameters(rawConstructor.parameters);
+            .getFormalParameters(rawConstructor.parameters, prefixes);
 
         String nameMap = '';
         for (final ParameterElement parameter in rawConstructor.parameters) {

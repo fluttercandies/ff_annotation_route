@@ -31,10 +31,13 @@ class TestPageF extends StatelessWidget {
     required this.function2,
     required this.function3,
     required this.aFunction,
-    required this.bigInt,
+    required this.myInt,
     required this.function4,
+    this.typedefClass1 = const type.TypedefClass1(1),
+    // not support
+    //this.typedefClass = const type.TypedefClass(ui.BoxWidthStyle.max),
+    // not support
     //this.myTypedefClass = myTypedefClassConst,
-    this.typedefClass = const type.TypedefClass(1),
   }) : _blendMode = blendMode;
 
   final ui.BlendMode _blendMode;
@@ -50,10 +53,13 @@ class TestPageF extends StatelessWidget {
   final bool Function(String s) Function(
       int i, TestMode2 Function(DragDownDetails value) input) function3;
   final AFunction aFunction;
-  final MyInt bigInt;
+  final MyInt myInt;
   final AFunction Function(int Function(String s) s) Function(
       int i, MyInt Function(int value) input) function4;
-  final type.TypedefClass typedefClass;
+  final type.TypedefClass1 typedefClass1;
+  // not support
+  //final type.TypedefClass typedefClass;
+  // not support
   //final MyTypedefClass myTypedefClass;
   @override
   Widget build(BuildContext context) {

@@ -123,14 +123,20 @@ class DartTypeAutoImportHelper {
     return input;
   }
 
-  String? getDefaultValueString(ParameterElement parameter) {
+  String? getDefaultValueString(
+    ParameterElement parameter,
+    List<String> prefixs,
+  ) {
     String? defaultValueCode;
     // remove default prefix if has
     if (parameter.hasDefaultValue &&
         parameter is DefaultFieldFormalParameterElementImpl &&
         parameter.constantInitializer != null) {
       final StringBuffer sb = StringBuffer();
-      parameter.constantInitializer!.accept<void>(MyToSourceVisitor(sink: sb));
+      parameter.constantInitializer!.accept<void>(MyToSourceVisitor(
+        sink: sb,
+        prefixs: prefixs,
+      ));
       defaultValueCode = sb.toString();
     }
     // add auto import prefix
@@ -175,7 +181,10 @@ class DartTypeAutoImportHelper {
     return defaultValueCode.replaceAll(typeString, '$prefix.$typeString');
   }
 
-  String getFormalParameters(List<ParameterElement> parameters) {
+  String getFormalParameters(
+    List<ParameterElement> parameters,
+    List<String> prefixs,
+  ) {
     // Assume the display string looks better wrapped when there are at least
     // three parameters. This avoids having to pre-compute the single-line
     // version and know the length of the function name/return type.
@@ -222,7 +231,11 @@ class DartTypeAutoImportHelper {
         openGroup(_WriteFormalParameterKind.named, '{', '}');
       }
       sb.write(parameterPrefix);
-      _writeWithoutDelimiters(parameter, sb);
+      _writeWithoutDelimiters(
+        parameter,
+        sb,
+        prefixs,
+      );
     }
 
     sb.write(trailingComma);
@@ -235,6 +248,7 @@ class DartTypeAutoImportHelper {
   void _writeWithoutDelimiters(
     ParameterElement element,
     StringBuffer sb,
+    List<String> prefixs,
   ) {
     if (element.isRequiredNamed) {
       sb.write('required ');
@@ -243,7 +257,10 @@ class DartTypeAutoImportHelper {
     sb.write(fixDartTypeString(element.type) + ' ' + element.displayName);
 
     final String? defaultValueCode =
-        DartTypeAutoImportHelper().getDefaultValueString(element);
+        DartTypeAutoImportHelper().getDefaultValueString(
+      element,
+      prefixs,
+    );
     if (defaultValueCode != null) {
       sb.write(' = ');
 
@@ -329,13 +346,17 @@ class _DartType {
 class MyToSourceVisitor extends ToSourceVisitor {
   MyToSourceVisitor({
     required StringSink sink,
+    required this.prefixs,
   }) : super(sink);
 
+  final List<String> prefixs;
   @override
   void visitPrefixedIdentifier(PrefixedIdentifier node) {
     // remove default prefix
-    // _visitNode(node.prefix);
-    // sink.write('.');
+    if (!prefixs.contains(node.prefix.name)) {
+      _visitNode(node.prefix);
+      sink.write('.');
+    }
 
     _visitNode(node.identifier);
   }
