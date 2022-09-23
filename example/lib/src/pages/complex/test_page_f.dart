@@ -4,6 +4,7 @@ import 'package:example/example_routes.dart';
 import 'package:example/src/model/test_model1.dart';
 import 'package:example/src/model/test_model2.dart' as model2;
 import 'package:example/src/typedef.dart';
+import 'package:example/src/typedef.dart' as type;
 import 'package:extended_image/extended_image.dart';
 import 'package:ff_annotation_route_library/ff_annotation_route_library.dart';
 import 'package:flutter/material.dart';
@@ -33,6 +34,7 @@ class TestPageF extends StatelessWidget {
     required this.bigInt,
     required this.function4,
     //this.myTypedefClass = myTypedefClassConst,
+    this.typedefClass = const type.TypedefClass(1),
   }) : _blendMode = blendMode;
 
   final ui.BlendMode _blendMode;
@@ -51,6 +53,7 @@ class TestPageF extends StatelessWidget {
   final MyInt bigInt;
   final AFunction Function(int Function(String s) s) Function(
       int i, MyInt Function(int value) input) function4;
+  final type.TypedefClass typedefClass;
   //final MyTypedefClass myTypedefClass;
   @override
   Widget build(BuildContext context) {

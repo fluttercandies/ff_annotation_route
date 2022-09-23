@@ -169,6 +169,11 @@ FFRouteSettings getRouteSettings({
                   Function(int, autoimport012d709d6940bda4da65ad673a93e8a3.MyInt Function(int))>(
             safeArguments['function4'],
           )!,
+          typedefClass:
+              asT<autoimport012d709d6940bda4da65ad673a93e8a3.TypedefClass>(
+            safeArguments['typedefclass'],
+            const autoimport012d709d6940bda4da65ad673a93e8a3.TypedefClass(1),
+          )!,
         ),
         routeName: 'TestPageF',
         description: 'Show how to push new page with arguments(class)',
@@ -446,7 +451,6 @@ FFRouteSettings getRouteSettings({
                 ),
                 asT<bool?>(
                   safeArguments['optional'],
-                  false,
                 ),
               );
             case 'another2':

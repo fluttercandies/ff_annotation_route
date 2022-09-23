@@ -5,6 +5,7 @@ import 'package:ff_annotation_route/src/arg/args.dart';
 import 'package:ff_annotation_route/src/file_info.dart';
 import 'package:ff_annotation_route/src/utils/dart_type_auto_import.dart';
 import 'package:ff_annotation_route_core/ff_annotation_route_core.dart';
+
 import 'route_info_base.dart';
 
 class RouteInfo extends RouteInfoBase {
@@ -98,11 +99,11 @@ return ${getConstructorString(rawConstructor)};
 
     value = 'asT<$type>($value';
 
-    if (parameter.defaultValueCode != null) {
-      value += ',${DartTypeAutoImportHelper().fixDefaultValueCodeString(
-        parameter.defaultValueCode!,
-        parameter.type,
-      )}';
+    final String? defaultValueCode =
+        DartTypeAutoImportHelper().getDefaultValueString(parameter);
+
+    if (defaultValueCode != null) {
+      value += ',$defaultValueCode';
     }
 
     value += ',)';

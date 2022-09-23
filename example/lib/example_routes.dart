@@ -82,7 +82,7 @@ class Routes {
   ///
   /// [constructors] :
   ///
-  /// TestPageF({BoxWidthStyle boxWidthStyle = ui.BoxWidthStyle.max, ExtendedImageMode extendedImageMode = ExtendedImageMode.gesture, required DragDownDetails details, required BlendMode blendMode, required File file, required List<TestMode3> modes, required Widget Function(String) function, required TestMode3 Function(DragDownDetails) function1, required TestMode3 Function(Map<TestMode1, TestMode2>) function2, required bool Function(String) Function(int, TestMode2 Function(DragDownDetails)) function3, required int Function(String) aFunction, required int bigInt, required int Function(String) Function(int Function(String)) Function(int, int Function(int)) function4})
+  /// TestPageF({BoxWidthStyle boxWidthStyle = ui.BoxWidthStyle.max, ExtendedImageMode extendedImageMode = ExtendedImageMode.gesture, required DragDownDetails details, required BlendMode blendMode, required File file, required List<TestMode3> modes, required Widget Function(String) function, required TestMode3 Function(DragDownDetails) function1, required TestMode3 Function(Map<TestMode1, TestMode2>) function2, required bool Function(String) Function(int, TestMode2 Function(DragDownDetails)) function3, required int Function(String) aFunction, required int bigInt, required int Function(String) Function(int Function(String)) Function(int, int Function(int)) function4, TypedefClass typedefClass = const type.TypedefClass(1)})
   ///
   /// [exts] : {'group': 'Complex', 'order': 2}
   static const _FlutterCandiesTestPageF flutterCandiesTestPageF =
@@ -453,6 +453,8 @@ class _FlutterCandiesTestPageF {
                 int Function(String))
             Function(int, autoimport012d709d6940bda4da65ad673a93e8a3.MyInt Function(int))
         function4,
+    autoimport012d709d6940bda4da65ad673a93e8a3.TypedefClass typedefClass =
+        const autoimport012d709d6940bda4da65ad673a93e8a3.TypedefClass(1),
   }) =>
       <String, dynamic>{
         'boxWidthStyle': boxWidthStyle,
@@ -468,6 +470,7 @@ class _FlutterCandiesTestPageF {
         'aFunction': aFunction,
         'bigInt': bigInt,
         'function4': function4,
+        'typedefClass': typedefClass,
         'constructorName': '',
       };
 
@@ -747,7 +750,7 @@ class _FlutterCandiesTestPageD {
         'constructorName': 'another0',
       };
 
-  Map<String, dynamic> another1(String? argument, [bool? optional = false]) =>
+  Map<String, dynamic> another1(String? argument, [bool? optional]) =>
       <String, dynamic>{
         'argument': argument,
         'optional': optional,

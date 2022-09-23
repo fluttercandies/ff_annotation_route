@@ -1,10 +1,13 @@
 // ignore_for_file: implementation_imports
 
+import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
 //import 'package:analyzer/src/dart/constant/value.dart';
-//import 'package:analyzer/src/dart/element/element.dart';
+import 'package:analyzer/src/dart/element/element.dart';
+import 'package:analyzer/src/dart/ast/to_source_visitor.dart';
 import 'package:analyzer/src/dart/element/type.dart';
+
 import 'package:ff_annotation_route/src/utils/convert.dart';
 import 'package:ff_annotation_route/src/utils/git_package_handler.dart';
 import 'package:io/ansi.dart';
@@ -120,13 +123,25 @@ class DartTypeAutoImportHelper {
     return input;
   }
 
-  String fixDefaultValueCodeString(
-    String defaultValueCode,
-    DartType dartType,
-  ) {
-    for (final DartTypeAutoImport import in getDartTypeAutoImports(dartType)) {
-      defaultValueCode = _getDefaultValueCodeString(defaultValueCode, import);
+  String? getDefaultValueString(ParameterElement parameter) {
+    String? defaultValueCode;
+    // remove default prefix if has
+    if (parameter.hasDefaultValue &&
+        parameter is DefaultFieldFormalParameterElementImpl &&
+        parameter.constantInitializer != null) {
+      final StringBuffer sb = StringBuffer();
+      parameter.constantInitializer!.accept<void>(MyToSourceVisitor(sink: sb));
+      defaultValueCode = sb.toString();
     }
+    // add auto import prefix
+    if (defaultValueCode != null) {
+      for (final DartTypeAutoImport import
+          in getDartTypeAutoImports(parameter.type)) {
+        defaultValueCode =
+            _getDefaultValueCodeString(defaultValueCode!, import);
+      }
+    }
+
     return defaultValueCode;
   }
 
@@ -138,24 +153,24 @@ class DartTypeAutoImportHelper {
     final String typeString = dartTypeAutoImport.dartType.dartType
         .getDisplayString(withNullability: false);
     // replace prefix
-    if (defaultValueCode.contains('.')) {
-      final int index = defaultValueCode.indexOf(typeString);
-      if (index - 1 > 0 && defaultValueCode[index - 1] == '.') {
-        final int end = index;
-        int start = end - 1;
-        for (; start > 0; start--) {
-          if (defaultValueCode[start] == ' ') {
-            start++;
-            break;
-          }
-        }
-        return defaultValueCode.replaceRange(
-          start,
-          end,
-          '$prefix.',
-        );
-      }
-    }
+    // if (defaultValueCode.contains('.')) {
+    //   final int index = defaultValueCode.indexOf(typeString);
+    //   if (index - 1 > 0 && defaultValueCode[index - 1] == '.') {
+    //     final int end = index;
+    //     int start = end - 1;
+    //     for (; start > 0; start--) {
+    //       if (defaultValueCode[start] == ' ') {
+    //         start++;
+    //         break;
+    //       }
+    //     }
+    //     return defaultValueCode.replaceRange(
+    //       start,
+    //       end,
+    //       '$prefix.',
+    //     );
+    //   }
+    // }
 
     return defaultValueCode.replaceAll(typeString, '$prefix.$typeString');
   }
@@ -217,19 +232,20 @@ class DartTypeAutoImportHelper {
     return sb.toString();
   }
 
-  void _writeWithoutDelimiters(ParameterElement element, StringBuffer sb) {
+  void _writeWithoutDelimiters(
+    ParameterElement element,
+    StringBuffer sb,
+  ) {
     if (element.isRequiredNamed) {
       sb.write('required ');
     }
 
     sb.write(fixDartTypeString(element.type) + ' ' + element.displayName);
 
-    String? defaultValueCode = element.defaultValueCode;
+    final String? defaultValueCode =
+        DartTypeAutoImportHelper().getDefaultValueString(element);
     if (defaultValueCode != null) {
       sb.write(' = ');
-
-      defaultValueCode =
-          fixDefaultValueCodeString(defaultValueCode, element.type);
 
       sb.write(defaultValueCode);
     }
@@ -308,4 +324,29 @@ class _DartType {
 
   @override
   int get hashCode => Object.hash(dartType, alias);
+}
+
+class MyToSourceVisitor extends ToSourceVisitor {
+  MyToSourceVisitor({
+    required StringSink sink,
+  }) : super(sink);
+
+  @override
+  void visitPrefixedIdentifier(PrefixedIdentifier node) {
+    // remove default prefix
+    // _visitNode(node.prefix);
+    // sink.write('.');
+
+    _visitNode(node.identifier);
+  }
+
+  /// Print the given [node], printing the [prefix] before the node,
+  /// and [suffix] after the node, if it is non-`null`.
+  void _visitNode(AstNode? node, {String prefix = '', String suffix = ''}) {
+    if (node != null) {
+      sink.write(prefix);
+      node.accept(this);
+      sink.write(suffix);
+    }
+  }
 }
