@@ -7,29 +7,18 @@
 // **************************************************************************
 // ignore_for_file: prefer_const_literals_to_create_immutables,unused_local_variable,unused_import,unnecessary_import,unused_shown_name,implementation_imports,duplicate_import
 import 'package:example1/src/model/test_model.dart' hide TestMode2;
-
 import 'package:example1/src/model/test_model1.dart' hide TestMode3;
-
 import 'package:ff_annotation_route_library/ff_annotation_route_library.dart';
-
 import 'package:flutter/widgets.dart';
 
 import 'nested_router_demo.dart';
-
 import 'src/pages/complex/test_page_d.dart';
-
 import 'src/pages/complex/test_page_e.dart';
-
 import 'src/pages/complex/test_page_f.dart';
-
 import 'src/pages/main_page.dart';
-
 import 'src/pages/simple/test_page_a.dart';
-
 import 'src/pages/simple/test_page_b.dart';
-
 import 'src/pages/simple/test_page_c.dart';
-
 import 'src/pages/simple/test_page_g.dart';
 
 FFRouteSettings getRouteSettings({

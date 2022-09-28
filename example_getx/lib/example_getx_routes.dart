@@ -7,7 +7,6 @@
 // **************************************************************************
 // ignore_for_file: prefer_const_literals_to_create_immutables,unused_local_variable,unused_import,unnecessary_import,unused_shown_name,implementation_imports,duplicate_import
 import 'package:example_getx/src/bindings/bindings1.dart';
-
 import 'package:flutter/foundation.dart';
 
 import 'src/pages/main_page.dart';

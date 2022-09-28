@@ -1,3 +1,7 @@
+## 10.0.4
+
+* import trim
+
 ## 10.0.3
 
 * use the same AnalysisContextCollection

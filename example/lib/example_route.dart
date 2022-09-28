@@ -7,86 +7,58 @@
 // **************************************************************************
 // ignore_for_file: prefer_const_literals_to_create_immutables,unused_local_variable,unused_import,unnecessary_import,unused_shown_name,implementation_imports,duplicate_import
 import 'dart:io' as autoimportd66e09f4babbdbbe015b32cc3816761d;
-
 import 'dart:ui' as autoimportde7367a4dccc7f836046967508c09a6c;
 
 import 'package:example/src/model/test_model.dart'
     as autoimport7b0d8961824b1df42839aaf6ee621592;
-
 import 'package:example/src/model/test_model1.dart'
     as autoimportfd790b2c4cbc8e7d99977cab283b94ab;
-
 import 'package:example/src/model/test_model2.dart'
     as autoimport14790b17a5a1427ada8188fbf75b352c;
-
 import 'package:example/src/pages/main_page.dart'
     as autoimport19a8136766d530a60dc5d464509fd9eb;
-
 import 'package:example/src/typedef.dart'
     as autoimport012d709d6940bda4da65ad673a93e8a3;
-
 import 'package:extended_image/src/utils.dart'
     as autoimporte9848a6dfb6bcdd3203dea5d89c0972f;
-
 import 'package:ff_annotation_route_library/ff_annotation_route_library.dart';
-
 import 'package:flutter/src/foundation/key.dart'
     as autoimport61a64860a48a0a727515bc4ec00b2fff;
-
 import 'package:flutter/src/gestures/drag_details.dart'
     as autoimport1e2f7b96e6c9c283a2a35bf82237bf16;
-
 import 'package:flutter/src/widgets/framework.dart'
     as autoimport2ac85d6b777135304f548b8ca2707514;
-
 import 'package:flutter/widgets.dart';
-
 import 'package:module_a/module_a_route.dart'
     as testpageb1afeb9c992bb2f1098d1acc6becb2a6c;
-
 import 'package:module_a/module_a_route.dart'
     as testpagec23b284ff92265eaaa6c065105cf47f2a;
-
 import 'package:module_a/module_a_route.dart'
     as testpaged05a916dda13cd9d2b973ee75b8e74f9d;
-
 import 'package:module_a/module_a_route.dart'
     as testpagef659cb97d54edf7d4349710e906c4d437;
-
 import 'package:module_a/src/mode/mode.dart'
     as autoimportac41f6e44f4086b72b4f7dbc1ab40cc1;
 
 import 'src/pages/complex/test_page_d.dart'
     as testpaged6c4b232f91f77ae9eb7103223363b84e;
-
 import 'src/pages/complex/test_page_e.dart';
-
 import 'src/pages/complex/test_page_f.dart'
     as testpagef9823c51efb96c2d241b9668f95da35ed;
-
 import 'src/pages/func/func.dart';
-
 import 'src/pages/main_page.dart';
-
 import 'src/pages/simple/test_page_a.dart';
-
 import 'src/pages/simple/test_page_b.dart'
     as testpagebf579848b341a854d92dd7bfb0a9adf6c;
-
 import 'src/pages/simple/test_page_c.dart'
     as testpagebe750dc97cdd9ac79db01471ef9768749;
-
 import 'src/pages/simple/test_page_c.dart' hide TestPageB;
-
 import 'src/pages/simple/test_page_c_copy.dart'
     as testpageba7e2423296cea41a98c971570832499c;
-
 import 'src/pages/simple/test_page_c_copy.dart'
     as testpagec24a74dc0abd3133051a047c62e4d4227;
-
 import 'src/pages/simple/test_page_c_copy_copy.dart'
     as testpagecf10ae9a1919e70b4efb736483bc2992d;
-
 import 'src/pages/super_parameters/test_page_super_parameters.dart';
 
 FFRouteSettings getRouteSettings({

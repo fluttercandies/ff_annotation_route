@@ -9,15 +9,11 @@
 import 'package:example_fast_mode/src/model/test_model.dart'
     show TestMode
     hide TestMode2;
-
 import 'package:example_fast_mode/src/model/test_model.dart';
-
 import 'package:example_fast_mode/src/model/test_model1.dart'
     show TestMode4, TestMode1, TestMode2
     hide TestMode3;
-
 import 'package:example_fast_mode/src/model/test_model1.dart';
-
 import 'package:flutter/foundation.dart';
 
 import 'src/pages/main_page.dart';

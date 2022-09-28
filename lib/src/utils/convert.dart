@@ -43,7 +43,7 @@ void writeImports(Set<String> imports, StringBuffer sb) {
   final List<String> packageImports = <String>[];
   final List<String> otherImports = <String>[];
   final Set<String> distinctImports =
-      imports.map((String e) => formatDart(e.trim())).toSet();
+      imports.map((String e) => formatDart(e.trim()).trim()).toSet();
   for (final String import in distinctImports) {
     if (import.isDartImport) {
       dartImports.add(import);
