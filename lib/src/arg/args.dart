@@ -1,6 +1,7 @@
 import 'package:ff_annotation_route/src/arg/arguments_case_sensitive.dart';
 import 'package:ff_annotation_route/src/arg/null_safety.dart';
 
+import 'argument_names.dart';
 import 'const_ignore.dart';
 import 'exclude_packages.dart';
 import 'fast_mode.dart';
@@ -32,7 +33,8 @@ class Args {
         save = Save(),
         nullSafety = NullSafety(),
         argumentsCaseSensitive = ArgumentsCaseSensitive(),
-        fastMode = FastMode();
+        fastMode = FastMode(),
+        argumentNames = ArgumentNames();
   static Args? _args;
   final Help help;
   final Path _path;
@@ -48,6 +50,7 @@ class Args {
   final NullSafety nullSafety;
   final ArgumentsCaseSensitive argumentsCaseSensitive;
   final FastMode fastMode;
+  final ArgumentNames argumentNames;
 
   String get className => name.value!;
 
@@ -74,4 +77,6 @@ class Args {
 
   String get pathUri =>
       _path.value == '.' ? path.current : _path.value ?? path.current;
+
+  bool get enableArgumentNames => argumentNames.value!;
 }

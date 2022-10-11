@@ -194,15 +194,20 @@ return ${getConstructorString(rawConstructor)};
             .getFormalParameters(rawConstructor.parameters, prefixes);
 
         String nameMap = '';
+        final List<String> parameterNames = <String>[];
         for (final ParameterElement parameter in rawConstructor.parameters) {
           final String name = parameter.name;
           if (!Args().enableNullSafety) {
             args = args.replaceAll('?', '');
           }
           nameMap += ''''$name':$name,''';
+          parameterNames.add('\'$name\'');
         }
 
         nameMap += ''''$constructorName':'$name',''';
+        if (Args().enableSuperArguments && Args().enableArgumentNames) {
+          nameMap += ''''$argumentNames':<String>$parameterNames,''';
+        }
 
         sb.write(routeConstClassMethodTemplate
             .replaceAll(

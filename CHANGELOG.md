@@ -1,3 +1,7 @@
+## 10.0.6
+
+* add '--argument-names' on '--super-arguments'.
+
 ## 10.0.5
 
 * fix miss super default value on '--no-fast-mode'.

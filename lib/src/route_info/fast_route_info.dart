@@ -254,6 +254,7 @@ return ${getConstructorString(rawConstructor)};
         }
         String args = parameters.toString();
         String nameMap = '';
+        final List<String> parameterNames = <String>[];
         for (final FormalParameter parameter in parameters.parameters) {
           final String parameterS = parameter.toString();
           final String? name = parameter.name?.toString();
@@ -283,10 +284,15 @@ return ${getConstructorString(rawConstructor)};
             args = args.replaceAll('?', '');
           }
           nameMap += ''''$name':$name,''';
+          parameterNames.add('\'$name\'');
         }
         if (name != null) {
           nameMap += ''''$constructorName':'$name',''';
         }
+        if (Args().enableSuperArguments && Args().enableArgumentNames) {
+          nameMap += ''''$argumentNames':<String>$parameterNames,''';
+        }
+
         if (args.isNotEmpty && parameters.parameters.isNotEmpty) {
           if (args.endsWith('})')) {
             args = args.replaceAll('})', ',})');
