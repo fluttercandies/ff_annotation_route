@@ -13,5 +13,8 @@ import 'package:module_a/module_a_route.dart';
   pageRouteType: PageRouteType.material,
 )
 class TestPageSuperParameters extends TestPageB {
-  const TestPageSuperParameters({super.argument});
+  const TestPageSuperParameters({
+    super.argument,
+    super.title = 'abc',
+  });
 }

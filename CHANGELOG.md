@@ -1,3 +1,7 @@
+## 10.0.5
+
+* fix miss super default value on '--no-fast-mode'.
+
 ## 10.0.4
 
 * import trim

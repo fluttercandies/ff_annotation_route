@@ -130,13 +130,15 @@ class DartTypeAutoImportHelper {
     String? defaultValueCode;
     // remove default prefix if has
     if (parameter.hasDefaultValue &&
-        parameter is DefaultFieldFormalParameterElementImpl &&
-        parameter.constantInitializer != null) {
+        parameter is ConstVariableElement &&
+        (parameter as ConstVariableElement).constantInitializer != null) {
       final StringBuffer sb = StringBuffer();
-      parameter.constantInitializer!.accept<void>(MyToSourceVisitor(
-        sink: sb,
-        prefixs: prefixs,
-      ));
+      (parameter as ConstVariableElement)
+          .constantInitializer!
+          .accept<void>(MyToSourceVisitor(
+            sink: sb,
+            prefixs: prefixs,
+          ));
       defaultValueCode = sb.toString();
     }
     // add auto import prefix
@@ -148,7 +150,7 @@ class DartTypeAutoImportHelper {
       }
     }
 
-    return defaultValueCode;
+    return defaultValueCode ?? parameter.defaultValueCode;
   }
 
   String _getDefaultValueCodeString(

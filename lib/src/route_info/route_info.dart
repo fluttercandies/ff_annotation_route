@@ -36,6 +36,7 @@ class RouteInfo extends RouteInfoBase {
             rawConstructor.name.isEmpty) {
           return null;
         }
+
         final String args = rawConstructor
             .toString()
             .replaceFirst(rawConstructor.returnType.toString(), '')
@@ -188,6 +189,7 @@ return ${getConstructorString(rawConstructor)};
           // no need arguments class
           return null;
         }
+
         String args = DartTypeAutoImportHelper()
             .getFormalParameters(rawConstructor.parameters, prefixes);
 

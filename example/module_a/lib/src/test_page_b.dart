@@ -17,9 +17,11 @@ import 'mode/mode.dart';
 class TestPageB extends StatelessWidget {
   const TestPageB({
     this.argument,
+    this.title = 'dddd',
   });
   //const TestPageB._(this.argument);
   final TestMode? argument;
+  final String title;
   @override
   Widget build(BuildContext context) {
     return Center(
