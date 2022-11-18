@@ -1,3 +1,7 @@
+## 10.0.7
+
+* document all public members.
+
 ## 10.0.6
 
 * add '--argument-names' on '--super-arguments'.
