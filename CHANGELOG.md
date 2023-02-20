@@ -1,3 +1,7 @@
+## 10.0.8
+
+* add '--generate-file-import' and '--generate-file-import-packages'.
+
 ## 10.0.7
 
 * document all public members.

@@ -5,6 +5,9 @@ import 'argument_names.dart';
 import 'const_ignore.dart';
 import 'exclude_packages.dart';
 import 'fast_mode.dart';
+import 'generate_file_import.dart';
+
+import 'generate_file_import_packages.dart';
 import 'git.dart';
 import 'help.dart';
 import 'name.dart';
@@ -34,7 +37,9 @@ class Args {
         nullSafety = NullSafety(),
         argumentsCaseSensitive = ArgumentsCaseSensitive(),
         fastMode = FastMode(),
-        argumentNames = ArgumentNames();
+        argumentNames = ArgumentNames(),
+        _generateFileImport = GenerateFileImport(),
+        generateFileImportPackages = GenerateFileImportPackages();
   static Args? _args;
   final Help help;
   final Path _path;
@@ -51,6 +56,8 @@ class Args {
   final ArgumentsCaseSensitive argumentsCaseSensitive;
   final FastMode fastMode;
   final ArgumentNames argumentNames;
+  final GenerateFileImport _generateFileImport;
+  final GenerateFileImportPackages generateFileImportPackages;
 
   String get className => name.value!;
 
@@ -79,4 +86,6 @@ class Args {
       _path.value == '.' ? path.current : _path.value ?? path.current;
 
   bool get enableArgumentNames => argumentNames.value!;
+
+  bool get generateFileImport => _generateFileImport.value ?? false;
 }

@@ -9,6 +9,7 @@ import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/constant/value.dart';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:collection/collection.dart' show IterableExtension;
+import 'package:ff_annotation_route/src/arg/args.dart';
 import 'package:ff_annotation_route/src/file_info.dart';
 import 'package:ff_annotation_route/src/route_info/route_info.dart';
 import 'package:ff_annotation_route/src/template.dart';
@@ -68,15 +69,28 @@ class RouteGenerator extends RouteGeneratorBase {
               .replaceAll('\\', '/'),
           packageName: packageName,
         );
-
+        final String ffRouteFileImportPath = 'package:' +
+            <String>[
+              packageName,
+              ...filePath
+                  .replaceFirst(lib!.path, '')
+                  .split(p.context.separator)
+                  .where((String element) => element.isNotEmpty),
+            ].join('/');
         final CompilationUnitElement fileElement =
             await getElement(context.currentSession, filePath);
 
         for (final ClassElement classElement in fileElement.classes) {
-          findFFRoute(fileInfo, classElement);
+          findFFRoute(
+            fileInfo,
+            classElement,
+            ffRouteFileImportPath,
+            packageName,
+          );
         }
 
-        await _handleFunctionWidget(fileElement, context, fileInfo);
+        await _handleFunctionWidget(
+            fileElement, context, fileInfo, ffRouteFileImportPath);
 
         if (fileInfo.routes.isNotEmpty) {
           for (final LibraryImportElement importElement
@@ -100,8 +114,12 @@ class RouteGenerator extends RouteGeneratorBase {
     }
   }
 
-  Future<void> _handleFunctionWidget(CompilationUnitElement fileElement,
-      AnalysisContext context, FileInfo fileInfo) async {
+  Future<void> _handleFunctionWidget(
+    CompilationUnitElement fileElement,
+    AnalysisContext context,
+    FileInfo fileInfo,
+    String ffRouteFileImportPath,
+  ) async {
     final Map<String, DartObject> _widgetFunctionMap = <String, DartObject>{};
 
     for (final FunctionElement functionElement in fileElement.functions) {
@@ -136,7 +154,13 @@ class RouteGenerator extends RouteGeneratorBase {
             if (_widgetFunctionMap.containsKey(classElement.name)) {
               final DartObject? annotation =
                   _widgetFunctionMap[classElement.name];
-              findFFRoute(fileInfo, classElement, annotation: annotation);
+              findFFRoute(
+                fileInfo,
+                classElement,
+                ffRouteFileImportPath,
+                packageName,
+                annotation: annotation,
+              );
             }
           }
         }
@@ -151,6 +175,7 @@ class RouteGenerator extends RouteGeneratorBase {
   }
 
   void findFFRoute(FileInfo fileInfo, ClassElement classElement,
+      String ffRouteFileImportPath, String packageName,
       {DartObject? annotation}) {
     annotation ??= fFRouteTypeChecker.firstAnnotationOf(
       classElement,
@@ -206,6 +231,15 @@ class RouteGenerator extends RouteGeneratorBase {
           ?.listValue
           .map((DartObject e) => e.toStringValue()!)
           .toList();
+      final bool generateFilePath = Args().generateFileImport;
+      final List<String>? generateFileImportPackages =
+          Args().generateFileImportPackages.value;
+      if (generateFilePath &&
+          (generateFileImportPackages == null ||
+              generateFileImportPackages.contains(packageName))) {
+        extsMap ??= <String, String>{};
+        extsMap['\'$ffRouteFileImport\''] = '\'$ffRouteFileImportPath\'';
+      }
 
       ffRoute = FFRoute(
         name: reader.read('name').stringValue,

@@ -9,6 +9,7 @@ import 'package:analyzer/dart/ast/syntactic_entity.dart';
 // ignore: implementation_imports
 import 'package:analyzer/src/dart/ast/ast.dart';
 import 'package:collection/collection.dart' show IterableExtension;
+import 'package:ff_annotation_route/src/arg/args.dart';
 import 'package:ff_annotation_route/src/file_info.dart';
 import 'package:ff_annotation_route/src/route_info/fast_route_info.dart';
 import 'package:ff_annotation_route/src/template.dart';
@@ -47,6 +48,14 @@ class FastRouteGenerator extends RouteGeneratorBase {
             featureSet: FeatureSet.latestLanguageVersion(),
           );
           final CompilationUnit astRoot = result.unit;
+          final String ffRouteFileImportPath = 'package:' +
+              <String>[
+                packageName,
+                ...item.path
+                    .replaceFirst(lib!.path, '')
+                    .split(p.context.separator)
+                    .where((String element) => element.isNotEmpty),
+              ].join('/');
           final List<String> argumentImports = <String>[];
           for (final SyntacticEntity child in astRoot.childEntities) {
             if (child is ImportDirective) {
@@ -107,8 +116,12 @@ class FastRouteGenerator extends RouteGeneratorBase {
                 if (parameters == null) {
                   continue;
                 }
-                final FFRoute ffRoute =
-                    getFFRouteFromAnnotation(parameters, argumentImports);
+                final FFRoute ffRoute = getFFRouteFromAnnotation(
+                  parameters,
+                  argumentImports,
+                  ffRouteFileImportPath,
+                  packageName,
+                );
 
                 final FastRouteInfo routeInfo = FastRouteInfo(
                   className: className,
@@ -129,9 +142,11 @@ class FastRouteGenerator extends RouteGeneratorBase {
     }
   }
 
-  static FFRoute getFFRouteFromAnnotation(
+  FFRoute getFFRouteFromAnnotation(
     NodeList<Expression> parameters,
     List<String> argumentImports,
+    String ffRouteFileImportPath,
+    String packageName,
   ) {
     String? name;
     bool? showStatusBar;
@@ -195,6 +210,17 @@ class FastRouteGenerator extends RouteGeneratorBase {
             }
         }
       }
+    }
+
+    final bool generateFilePath = Args().generateFileImport;
+    final List<String>? generateFileImportPackages =
+        Args().generateFileImportPackages.value;
+    if (generateFilePath &&
+        (generateFileImportPackages == null ||
+            generateFileImportPackages.contains(packageName))) {
+      exts ??= <String, dynamic>{};
+
+      exts['\'$ffRouteFileImport\''] = '\'$ffRouteFileImportPath\'';
     }
 
     final FFRoute ffRoute = FFRoute(
