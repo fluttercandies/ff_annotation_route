@@ -5,7 +5,7 @@ class GenerateFileImport extends Argument<bool> {
   String? get abbr => null;
 
   @override
-  bool get defaultsTo => true;
+  bool get defaultsTo => false;
 
   @override
   String get help => 'auto generate file import path into exts.';

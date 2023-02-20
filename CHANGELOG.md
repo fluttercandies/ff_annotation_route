@@ -1,3 +1,7 @@
+## 10.0.9
+
+* change '--generate-file-import' default is false.
+  
 ## 10.0.8
 
 * add '--generate-file-import' and '--generate-file-import-packages'.
