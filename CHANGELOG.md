@@ -1,3 +1,7 @@
+## 10.0.10
+
+* fix issue that Unsupported operation: Cannot remove from a fixed-length list on --no-fast-mode #40
+
 ## 10.0.9
 
 * change '--generate-file-import' default is false.

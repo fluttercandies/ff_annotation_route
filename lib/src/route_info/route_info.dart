@@ -14,14 +14,18 @@ class RouteInfo extends RouteInfoBase {
     required String className,
     required this.classElement,
     required FileInfo fileInfo,
-  }) : super(
+  })  : constructors = classElement.constructors
+            .where(
+                (ConstructorElement element) => element.name.toString() != '_')
+            .toList(),
+        super(
           className: className,
           ffRoute: ffRoute,
           fileInfo: fileInfo,
         );
 
   final ClassElement classElement;
-  List<ConstructorElement> get constructors => classElement.constructors;
+  final List<ConstructorElement> constructors;
   List<String> get prefixes => classElement.library.prefixes
       .map((PrefixElement e) => e.displayName)
       .toList();
@@ -52,9 +56,6 @@ class RouteInfo extends RouteInfoBase {
 
   @override
   String get constructor {
-    constructors.removeWhere(
-        (ConstructorElement element) => element.name.toString() == '_');
-
     if (constructors.isNotEmpty) {
       if (constructors.length > 1) {
         String switchCase = '';
