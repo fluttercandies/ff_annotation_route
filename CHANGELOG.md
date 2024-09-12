@@ -1,3 +1,9 @@
+## 10.1.0
+
+* Support route interceptor
+* Add `RouteLifecycleState` provides lifecycle management for routes
+* Add `GlobalNavigator` manages global navigation actions
+
 ## 10.0.10
 
 * fix issue that Unsupported operation: Cannot remove from a fixed-length list on --no-fast-mode #40

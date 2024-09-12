@@ -5,7 +5,7 @@ import 'package:example1/example1_routes.dart';
 import 'package:ff_annotation_route_library/ff_annotation_route_library.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 @FFRoute(
   name: '/',
@@ -51,7 +51,8 @@ class MainPage extends StatelessWidget {
                 ),
               ),
               onPressed: () {
-                launch('https://github.com/fluttercandies/ff_annotation_route');
+                launchUrlString(
+                    'https://github.com/fluttercandies/ff_annotation_route');
               },
             ),
           ),
@@ -63,7 +64,7 @@ class MainPage extends StatelessWidget {
                 child: Image.network(
                     'https://pub.idqqimg.com/wpa/images/group.png'),
                 onPressed: () {
-                  launch('https://jq.qq.com/?_wv=1027&k=5bcc0gy');
+                  launchUrlString('https://jq.qq.com/?_wv=1027&k=5bcc0gy');
                 },
               ),
             )

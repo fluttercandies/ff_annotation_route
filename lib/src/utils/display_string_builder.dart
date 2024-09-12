@@ -177,10 +177,10 @@ class MyElementDisplayStringBuilder extends ElementDisplayStringBuilder {
         _write(
             '${dartTypeAutoImport.prefix}.${type.alias!.element.displayName}');
       } else {
-        _write('${dartTypeAutoImport.prefix}.${type.element2.name}');
+        _write('${dartTypeAutoImport.prefix}.${type.element.name}');
       }
     } else {
-      _write(type.element2.name);
+      _write(type.element.name);
     }
 
     _writeTypeArguments(type.typeArguments);
@@ -288,14 +288,14 @@ class MyElementDisplayStringBuilder extends ElementDisplayStringBuilder {
       if (hasSuffix) {
         _write('(');
       }
-      _write(type.element2.displayName);
+      _write(type.element.displayName);
       _write(' & ');
       _writeType(promotedBound);
       if (hasSuffix) {
         _write(')');
       }
     } else {
-      _write(type.element2.displayName);
+      _write(type.element.displayName);
     }
     _writeNullability(type.nullabilitySuffix);
   }
@@ -499,7 +499,7 @@ class MyElementDisplayStringBuilder extends ElementDisplayStringBuilder {
 
     void collectTypeParameters(DartType? type) {
       if (type is TypeParameterType) {
-        referencedTypeParameters.add(type.element2);
+        referencedTypeParameters.add(type.element);
       } else if (type is FunctionType) {
         for (var typeParameter in type.typeFormals) {
           collectTypeParameters(typeParameter.bound);

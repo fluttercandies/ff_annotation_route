@@ -284,8 +284,8 @@ class DartTypeAutoImportHelper {
 
   void _findDartTypeImport(InterfaceTypeImpl type) {
     if (type.typeArguments.isEmpty) {
-      Uri uri = type.element2.source.uri;
-      final Uri partParent = type.element2.library.source.uri;
+      Uri uri = type.element.source.uri;
+      final Uri partParent = type.element.library.source.uri;
       if (partParent != uri) {
         uri = partParent;
       }

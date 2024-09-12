@@ -11,23 +11,31 @@ import 'package:path/path.dart' as path;
 
 const String argumentsFile = 'ff_annotation_route_commands';
 const String debugCommands =
-    '--path example/ --super-arguments --null-safety --no-arguments-case-sensitive --no-fast-mode';
+    '--path example/ --super-arguments --null-safety --no-arguments-case-sensitive';
 Future<void> main(List<String> arguments) async {
   bool runFromLocal = false;
-  //debug
-  // if (true) {
-  //   arguments = debugCommands.split(' ');
-  //   parseArgs(arguments);
-  //   if (Args().path.value != null) {
-  //     final io.File file =
-  //         io.File(path.join(Args().path.value!, argumentsFile));
-  //     if (file.existsSync()) {
-  //       final String content = file.readAsStringSync();
-  //       arguments.addAll(content.split(' '));
-  //       runFromLocal = true;
-  //     }
-  //   }
-  // }
+  // debug
+  // ignore: dead_code
+  if (false) {
+    arguments = debugCommands.split(' ');
+    // ignore: dead_code
+    if (true) {
+      arguments.add('--fast-mode');
+      // ignore: dead_code
+    } else {
+      arguments.add('--no-fast-mode');
+    }
+    // parseArgs(arguments);
+    // if (Args().path.value != null) {
+    //   final io.File file =
+    //       io.File(path.join(Args().path.value!, argumentsFile));
+    //   if (file.existsSync()) {
+    //     final String content = file.readAsStringSync();
+    //     arguments.addAll(content.split(' '));
+    //     runFromLocal = true;
+    //   }
+    // }
+  }
 
   if (arguments.isEmpty) {
     final io.File file = io.File(path.join(path.current, argumentsFile));
@@ -62,6 +70,11 @@ Future<void> main(List<String> arguments) async {
   final List<PackageNode> annotationPackages =
       packageGraph.allPackages.values.where(
     (PackageNode x) {
+      if (x.name == 'ff_annotation_route_library' ||
+          x.name == 'ff_annotation_route_core' ||
+          x.name == 'ff_annotation_route') {
+        return false;
+      }
       final bool matchPackage = x.dependencyType == DependencyType.path ||
           (x.dependencyType == DependencyType.github &&
               Args()
@@ -76,6 +89,7 @@ Future<void> main(List<String> arguments) async {
           null;
       final bool isNotExcluded =
           x.name.isNotEmpty && !Args().excludedPackagesName.contains(x.name);
+
       return matchPackage && matchFFRoute && isNotExcluded;
     },
   ).toList();
@@ -96,6 +110,6 @@ Future<void> main(List<String> arguments) async {
     file.writeAsStringSync(arguments.join(' '));
   }
 
-  final Duration diff = DateTime.now().difference(before);
-  print(green.wrap('\nff_annotation_route ------ End [$diff]'));
+  print(green.wrap(
+      '\nff_annotation_route ------ End [${DateTime.now().difference(before)}]'));
 }

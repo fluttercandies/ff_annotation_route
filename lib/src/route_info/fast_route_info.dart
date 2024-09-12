@@ -47,13 +47,13 @@ class FastRouteInfo extends RouteInfoBase {
   String get constructor {
     //remove private constructor
     constructors.removeWhere(
-        (ConstructorDeclaration element) => element.name2?.toString() == '_');
+        (ConstructorDeclaration element) => element.name?.toString() == '_');
     if (constructors.isNotEmpty) {
       if (constructors.length > 1) {
         String switchCase = '';
         String defaultCtor = '';
         for (final ConstructorDeclaration rawConstructor in constructors) {
-          final String ctorName = rawConstructor.name2?.toString() ?? '';
+          final String ctorName = rawConstructor.name?.toString() ?? '';
           if (ctorName.isEmpty) {
             defaultCtor = '''
 case '':
@@ -234,8 +234,8 @@ return ${getConstructorString(rawConstructor)};
 
   String getConstructor(ConstructorDeclaration rawConstructor) {
     String ctor = className;
-    if (rawConstructor.name2 != null) {
-      ctor += '.${rawConstructor.name2.toString()}';
+    if (rawConstructor.name != null) {
+      ctor += '.${rawConstructor.name.toString()}';
     }
     return classNameConflictPrefixText + ctor;
   }
@@ -243,11 +243,11 @@ return ${getConstructorString(rawConstructor)};
   @override
   String? getArgumentsClass() {
     constructors.removeWhere(
-        (ConstructorDeclaration element) => element.name2?.toString() == '_');
+        (ConstructorDeclaration element) => element.name?.toString() == '_');
     if (constructors.isNotEmpty) {
       final StringBuffer sb = StringBuffer();
       for (final ConstructorDeclaration rawConstructor in constructors) {
-        final String? name = rawConstructor.name2?.toString();
+        final String? name = rawConstructor.name?.toString();
         final FormalParameterList parameters = rawConstructor.parameters;
         if (name == null && parameters.parameters.isEmpty) {
           continue;

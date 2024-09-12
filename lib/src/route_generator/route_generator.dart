@@ -1,4 +1,5 @@
 // ignore_for_file: implementation_imports
+import 'package:analyzer/dart/element/type.dart';
 import 'package:analyzer/file_system/physical_file_system.dart';
 import 'package:analyzer/src/dart/ast/ast.dart';
 import 'package:analyzer/dart/analysis/analysis_context.dart';
@@ -14,6 +15,7 @@ import 'package:ff_annotation_route/src/file_info.dart';
 import 'package:ff_annotation_route/src/route_info/route_info.dart';
 import 'package:ff_annotation_route/src/template.dart';
 import 'package:ff_annotation_route/src/utils/dart_type_auto_import.dart';
+import 'package:ff_annotation_route/src/utils/route_interceptor.dart';
 import 'package:ff_annotation_route_core/ff_annotation_route_core.dart';
 import 'package:path/path.dart' as p;
 import 'package:source_gen/source_gen.dart';
@@ -26,6 +28,8 @@ TypeChecker functionalWidgetTypeChecker = const TypeChecker.fromUrl(
     'package:functional_widget_annotation/functional_widget_annotation.dart#FunctionalWidget');
 TypeChecker fFArgumentImportTypeChecker =
     const TypeChecker.fromRuntime(FFArgumentImport);
+TypeChecker fFAutoImportTypeChecker =
+    const TypeChecker.fromRuntime(FFAutoImport);
 
 class RouteGenerator extends RouteGeneratorBase {
   RouteGenerator({
@@ -95,22 +99,35 @@ class RouteGenerator extends RouteGeneratorBase {
         if (fileInfo.routes.isNotEmpty) {
           for (final LibraryImportElement importElement
               in fileElement.library.libraryImports) {
-            final DartObject? fFArgumentImportAnnotation =
-                fFArgumentImportTypeChecker.firstAnnotationOf(
+            _findAutoImport(
               importElement,
-              throwOnUnresolved: true,
+              fileInfo,
+              fFArgumentImportTypeChecker,
             );
-
-            if (fFArgumentImportAnnotation != null) {
-              final ConstantReader reader =
-                  ConstantReader(fFArgumentImportAnnotation);
-              fileInfo.routes.first.addImport(importElement, reader: reader);
-            }
+            _findAutoImport(
+              importElement,
+              fileInfo,
+              fFAutoImportTypeChecker,
+            );
           }
 
           fileInfoList.add(fileInfo);
         }
       }
+    }
+  }
+
+  void _findAutoImport(LibraryImportElement importElement, FileInfo fileInfo,
+      TypeChecker typeChecker) {
+    final DartObject? fFArgumentImportAnnotation =
+        typeChecker.firstAnnotationOf(
+      importElement,
+      throwOnUnresolved: true,
+    );
+
+    if (fFArgumentImportAnnotation != null) {
+      final ConstantReader reader = ConstantReader(fFArgumentImportAnnotation);
+      fileInfo.routes.first.addImport(importElement, reader: reader);
     }
   }
 
@@ -139,7 +156,7 @@ class RouteGenerator extends RouteGeneratorBase {
     }
 
     if (_widgetFunctionMap.isNotEmpty) {
-      for (final PartElement partElement in fileElement.library.parts2) {
+      for (final PartElement partElement in fileElement.library.parts) {
         final DirectiveUri uri = partElement.uri;
         String? path;
         if (uri is DirectiveUriWithUnit) {
@@ -268,6 +285,14 @@ class RouteGenerator extends RouteGeneratorBase {
             (DartObject? key, DartObject? value) => MapEntry<String, String>(
                 _getStringValue(key as DartObjectImpl?),
                 value!.toStringValue()!)),
+        interceptors: reader.peek('interceptors')?.listValue.map(
+          (DartObject e) {
+            final DartObjectImpl object = e as DartObjectImpl;
+            final DartType dartType = object.type;
+            DartTypeAutoImportHelper().findParameterImport(dartType);
+            return FFRouteInterceptor(dartType: dartType);
+          },
+        ).toList(),
       );
     }
 

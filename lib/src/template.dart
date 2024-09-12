@@ -20,7 +20,7 @@ String get fileHeader {
 // **************************************************************************
 // fast mode: ${Args().isFastMode}${version != null ? '\n// version: $version' : ''}
 // **************************************************************************
-// ignore_for_file: prefer_const_literals_to_create_immutables,unused_local_variable,unused_import,unnecessary_import,unused_shown_name,implementation_imports,duplicate_import
+// ignore_for_file: prefer_const_literals_to_create_immutables,unused_local_variable,unused_import,unnecessary_import,unused_shown_name,implementation_imports,duplicate_import,library_private_types_in_public_api
 ''';
 }
 
