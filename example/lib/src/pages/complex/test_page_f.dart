@@ -20,6 +20,7 @@ import 'package:flutter/material.dart';
 )
 class TestPageF extends StatelessWidget {
   const TestPageF({
+    super.key,
     this.boxWidthStyle = ui.BoxWidthStyle.max,
     this.extendedImageMode = ExtendedImageMode.gesture,
     required this.details,
@@ -57,6 +58,7 @@ class TestPageF extends StatelessWidget {
   final AFunction Function(int Function(String s) s) Function(
       int i, MyInt Function(int value) input) function4;
   final type.TypedefClass1 typedefClass1;
+
   // not support
   //final type.TypedefClass typedefClass;
   // not support

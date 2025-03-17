@@ -42,11 +42,6 @@ class _PageAState extends RouteLifecycleState<PageA> {
   }
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(

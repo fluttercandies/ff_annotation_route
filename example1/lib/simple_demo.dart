@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 void main() => runApp(NavigatorDemo());
 
 class NavigatorDemo extends StatefulWidget {
+  const NavigatorDemo({super.key});
+
   @override
-  _NavigatorDemoState createState() => _NavigatorDemoState();
+  State<NavigatorDemo> createState() => _NavigatorDemoState();
 }
 
 class _NavigatorDemoState extends State<NavigatorDemo> {
@@ -13,6 +15,7 @@ class _NavigatorDemoState extends State<NavigatorDemo> {
         name: 'MainPage', widget: const TestPage('MainPage'), key: UniqueKey()),
   ];
   final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -97,8 +100,10 @@ class _NavigatorDemoState extends State<NavigatorDemo> {
 }
 
 class TestPage extends StatelessWidget {
-  const TestPage(this.title);
+  const TestPage(this.title, {super.key});
+
   final String title;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -117,14 +122,11 @@ class MyPage extends Page<void> {
     required LocalKey key,
     required String name,
     required this.widget,
-    Object? arguments,
-  }) : super(
-          key: key,
-          name: name,
-          arguments: arguments,
-        );
+    super.arguments,
+  }) : super(key: key, name: name);
 
   final Widget widget;
+
   @override
   Route<void> createRoute(BuildContext context) {
     return MaterialPageRoute<void>(

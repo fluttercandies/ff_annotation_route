@@ -12,7 +12,9 @@ import 'package:url_launcher/url_launcher_string.dart';
   routeName: 'MainPage',
 )
 class MainPage extends StatelessWidget {
-  MainPage() {
+  MainPage({
+    super.key,
+  }) {
     final List<String> routeNames = <String>[];
     routeNames.addAll(example_routes.routeNames);
     routeNames.remove(Routes.root);
@@ -27,6 +29,7 @@ class MainPage extends StatelessWidget {
               b.group.compareTo(a.group)),
         (DemoRouteResult x) => x.group));
   }
+
   final Map<String, List<DemoRouteResult>> routesGroup =
       <String, List<DemoRouteResult>>{};
 
@@ -82,7 +85,7 @@ class MainPage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      (index + 1).toString() + '.' + type,
+                      '${index + 1}.$type',
                       //style: TextStyle(inherit: false),
                     ),
                     Text(
@@ -112,13 +115,17 @@ class MainPage extends StatelessWidget {
   argumentImports: <String>['import \'src/pages/main_page.dart\';'],
 )
 class DemoGroupPage extends StatelessWidget {
-  DemoGroupPage({required MapEntry<String, List<DemoRouteResult>> keyValue})
-      : routes = keyValue.value
+  DemoGroupPage({
+    super.key,
+    required MapEntry<String, List<DemoRouteResult>> keyValue,
+  })  : routes = keyValue.value
           ..sort((DemoRouteResult a, DemoRouteResult b) =>
               a.order.compareTo(b.order)),
         group = keyValue.key;
+
   final List<DemoRouteResult> routes;
   final String group;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -136,7 +143,7 @@ class DemoGroupPage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
-                    (index + 1).toString() + '.' + page.routeResult.routeName!,
+                    '${index + 1}.${page.routeResult.routeName!}',
                     //style: TextStyle(inherit: false),
                   ),
                   Text(
@@ -146,12 +153,14 @@ class DemoGroupPage extends StatelessWidget {
                 ],
               ),
               onTap: () {
-                FFRouterDelegate.of(context).pushNamed(page.routeResult.name!,
-                    arguments: <String, dynamic>{
-                      'argument': 'I\m argument',
-                      'optional': true,
-                      'id': 'test id',
-                    });
+                FFRouterDelegate.of(context).pushNamed(
+                  page.routeResult.name!,
+                  arguments: <String, dynamic>{
+                    'argument': "I'm argument",
+                    'optional': true,
+                    'id': 'test id',
+                  },
+                );
               },
             ),
           );

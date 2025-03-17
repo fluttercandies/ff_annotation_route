@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'mode/mode.dart';
 
 @FFRoute(
-  name: "flutterCandies://testPage\' \"B_module_a",
+  name: "flutterCandies://testPage' \"B_module_a",
   routeName: 'testPageB ' '',
   description: 'This is test \' page B. in module a',
   exts: <String, dynamic>{
@@ -16,12 +16,16 @@ import 'mode/mode.dart';
 )
 class TestPageB extends StatelessWidget {
   const TestPageB({
+    Key? key,
     this.argument,
     this.title = 'dddd',
-  });
+  }) : super(key: key);
+
   //const TestPageB._(this.argument);
+
   final TestMode? argument;
   final String title;
+
   @override
   Widget build(BuildContext context) {
     return Center(

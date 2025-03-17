@@ -7,6 +7,8 @@ import 'example_fast_mode_routes.dart';
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -36,8 +38,8 @@ class MyApp extends StatelessWidget {
 
             return ffRouteSettings.copyWith(builder: () {
               return CommonWidget(
-                child: ffRouteSettings.builder(),
                 title: ffRouteSettings.routeName,
+                child: ffRouteSettings.builder(),
               );
             });
           },
@@ -49,9 +51,11 @@ class MyApp extends StatelessWidget {
 
 class CommonWidget extends StatelessWidget {
   const CommonWidget({
+    super.key,
     this.child,
     this.title,
   });
+
   final Widget? child;
   final String? title;
 

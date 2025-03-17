@@ -32,6 +32,8 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
+  MyApp({super.key});
+
   final FFRouteInformationParser _ffRouteInformationParser =
       FFRouteInformationParser();
 
@@ -47,14 +49,16 @@ class MyApp extends StatelessWidget {
       if (ffPage.name == Routes.root ||
           ffPage.name == Routes.demogrouppage.name) {
         return ffPage.copyWith(
-            builder: () => CommonWidget(
-                  child: ffPage.builder(),
-                  routeName: ffPage.routeName,
-                ));
+          builder: () => CommonWidget(
+            routeName: ffPage.routeName,
+            child: ffPage.builder(),
+          ),
+        );
       }
       return ffPage;
     },
   );
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -81,20 +85,18 @@ class MyApp extends StatelessWidget {
 
 class CommonWidget extends StatelessWidget {
   const CommonWidget({
+    super.key,
     this.child,
     this.routeName,
   });
+
   final Widget? child;
   final String? routeName;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          routeName!,
-        ),
-      ),
+      appBar: AppBar(title: Text(routeName!)),
       body: child,
     );
   }

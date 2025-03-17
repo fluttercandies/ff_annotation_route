@@ -11,6 +11,8 @@ import 'package:flutter/material.dart';
   },
 )
 class TestPageF extends StatelessWidget {
+  const TestPageF({super.key});
+
   @override
   Widget build(BuildContext context) {
     return const Center(

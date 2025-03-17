@@ -22,12 +22,14 @@ import 'package:flutter/material.dart';
 )
 class TestPageE extends StatelessWidget {
   const TestPageE({
+    super.key,
     this.testMode = const TestMode(
       id: 2,
       isTest: false,
     ),
     this.testMode1,
   });
+
   factory TestPageE.test() => TestPageE(
         testMode: TestMode.test(),
       );
@@ -38,6 +40,7 @@ class TestPageE extends StatelessWidget {
 
   final TestMode? testMode;
   final TestMode1? testMode1;
+
   @override
   Widget build(BuildContext context) {
     return Column(

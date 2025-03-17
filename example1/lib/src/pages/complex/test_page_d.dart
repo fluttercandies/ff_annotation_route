@@ -15,28 +15,26 @@ import 'package:flutter/material.dart';
 class TestPageD extends StatelessWidget {
   const TestPageD(
     this.argument, {
+    super.key,
     this.optional = false,
     this.id = 'flutterCandies',
   });
 
-  factory TestPageD.another0({required String? argument}) => TestPageD(
-        argument,
-      );
+  factory TestPageD.another0({required String? argument}) =>
+      TestPageD(argument);
+
   factory TestPageD.another1(String? argument, [bool? optional = false]) =>
-      TestPageD(
-        argument,
-        optional: optional,
-      );
-  factory TestPageD.another2(String? argument) => TestPageD(
-        argument,
-      );
-  factory TestPageD.another3(String? argument, {bool? optional}) => TestPageD(
-        argument,
-        optional: optional,
-      );
+      TestPageD(argument, optional: optional);
+
+  factory TestPageD.another2(String? argument) => TestPageD(argument);
+
+  factory TestPageD.another3(String? argument, {bool? optional}) =>
+      TestPageD(argument, optional: optional);
+
   final String? argument;
   final bool? optional;
   final String? id;
+
   @override
   Widget build(BuildContext context) {
     return Center(

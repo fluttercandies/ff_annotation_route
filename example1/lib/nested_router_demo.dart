@@ -25,6 +25,8 @@ void main() {
 /// you can override [FFRouterDelegate.popRoute] to define your logic.
 ///
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
@@ -48,6 +50,8 @@ class MyApp extends StatelessWidget {
   description: 'NestedMainPage',
 )
 class NestedMainPage extends StatelessWidget {
+  const NestedMainPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -69,6 +73,8 @@ class NestedMainPage extends StatelessWidget {
   description: 'NestedTestPage',
 )
 class NestedTestPage extends StatelessWidget {
+  const NestedTestPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -88,6 +94,8 @@ class NestedTestPage extends StatelessWidget {
   description: 'ChildRouterPage',
 )
 class ChildRouterPage extends StatelessWidget {
+  const ChildRouterPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     final ChildBackButtonDispatcher childBackButtonDispatcher =
@@ -101,8 +109,8 @@ class ChildRouterPage extends StatelessWidget {
         pageWrapper: <T>(FFPage<T> ffPage) {
           return ffPage.copyWith(
             builder: () => CommonWidget(
-              child: ffPage.builder(),
               routeName: ffPage.routeName,
+              child: ffPage.builder(),
             ),
           );
         },

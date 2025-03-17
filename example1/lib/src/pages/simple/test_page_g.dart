@@ -11,6 +11,8 @@ import 'package:flutter/material.dart';
   },
 )
 class TestPageG extends StatelessWidget {
+  const TestPageG({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Column(

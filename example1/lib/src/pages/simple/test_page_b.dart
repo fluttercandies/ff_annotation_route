@@ -14,10 +14,13 @@ import 'package:flutter/material.dart';
 )
 class TestPageB extends StatelessWidget {
   const TestPageB({
+    super.key,
     this.argument,
   });
+
   //const TestPageB._(this.argument);
   final String? argument;
+
   @override
   Widget build(BuildContext context) {
     return Center(

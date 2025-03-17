@@ -17,6 +17,8 @@ import 'test_page_a.dart';
   },
 )
 class TestPageC extends StatelessWidget {
+  const TestPageC({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -40,12 +42,13 @@ class TestPageC extends StatelessWidget {
             final FFRouteSettings routeSettings =
                 getRouteSettings(name: Routes.testPageA);
             final FFPage<void> page = routeSettings.toFFPage<void>(
-                // make sure it has unique key
-                key: delegate.getUniqueKey(),
-                builder: () => CommonWidget(
-                      child: TestPageA(),
-                      routeName: routeSettings.routeName,
-                    ));
+              // make sure it has unique key
+              key: delegate.getUniqueKey(),
+              builder: () => CommonWidget(
+                routeName: routeSettings.routeName,
+                child: TestPageA(),
+              ),
+            );
 
             delegate.push<void>(page);
           },

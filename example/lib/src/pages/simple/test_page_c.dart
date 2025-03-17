@@ -9,10 +9,10 @@ import 'package:flutter/material.dart';
 class TestPageCC extends StatelessWidget {
   const TestPageCC(
     this.testArg, {
-    Key? key,
+    super.key,
     required this.testRequiredArg,
     this.testBoolean,
-  }) : super(key: key);
+  });
 
   const TestPageCC.positioned(
     this.testArg, [
@@ -32,7 +32,7 @@ class TestPageCC extends StatelessWidget {
 }
 
 @FFRoute(
-  name: "flutterCandies://testPage\' \"B_Copy_Copy",
+  name: "flutterCandies://testPage' \"B_Copy_Copy",
   routeName: 'testPageB ' '',
   description: 'This is test \' page B. has the same name',
   exts: <String, dynamic>{
@@ -44,10 +44,13 @@ class TestPageCC extends StatelessWidget {
 )
 class TestPageB extends StatelessWidget {
   const TestPageB({
+    super.key,
     this.argument,
   });
+
   //const TestPageB._(this.argument);
   final String? argument;
+
   @override
   Widget build(BuildContext context) {
     return Center(
