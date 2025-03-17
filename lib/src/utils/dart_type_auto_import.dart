@@ -94,7 +94,6 @@ class DartTypeAutoImportHelper {
     if (type is InterfaceTypeImpl) {
       final MyElementDisplayStringBuilder builder =
           MyElementDisplayStringBuilder(
-        skipAllDynamicArguments: false,
         withNullability: true,
       );
       builder.writeInterfaceType(type);
@@ -102,7 +101,6 @@ class DartTypeAutoImportHelper {
     } else if (type is FunctionTypeImpl) {
       final MyElementDisplayStringBuilder builder =
           MyElementDisplayStringBuilder(
-        skipAllDynamicArguments: false,
         withNullability: true,
       );
       builder.writeFunctionType(type);

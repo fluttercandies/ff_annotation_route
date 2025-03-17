@@ -2,16 +2,17 @@ import 'package:ff_annotation_route/src/arg/args.dart';
 import 'package:pub_cache/pub_cache.dart';
 
 Type typeOf<T>() => T;
-PubCache _cache = PubCache();
-String? _version;
+
 String? get version {
   try {
     return _version ??=
-        _cache.getLatestVersion('ff_annotation_route')?.version.toString();
+        PubCache().getLatestVersion('ff_annotation_route')?.version.toString();
   } catch (e) {
     return null;
   }
 }
+
+String? _version;
 
 String get fileHeader {
   return '''// GENERATED CODE - DO NOT MODIFY MANUALLY

@@ -1,4 +1,5 @@
-library;
+// ignore: unnecessary_library_name
+library ff_annotation_route;
 
 import 'package:analyzer/dart/analysis/analysis_context_collection.dart';
 import 'package:analyzer/file_system/physical_file_system.dart';

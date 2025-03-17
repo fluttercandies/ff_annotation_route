@@ -1,5 +1,7 @@
 include: package:lints/recommended.yaml
 
-analyzer:
-  errors:
+linter:
+  rules:
     deprecated_member_use: ignore
+    implementation_imports: false
+    library_private_types_in_public_api: false

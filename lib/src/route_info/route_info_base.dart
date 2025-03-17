@@ -75,7 +75,7 @@ abstract class RouteInfoBase {
     final String name = safeToString(route.name)!;
     final String routeName = safeToString(route.routeName)!;
     final String description = safeToString(route.description)!;
-    final String? constructors = constructorsString;
+    final String? constructor = constructorsString;
     final bool showStatusBar = route.showStatusBar;
     final PageRouteType? pageRouteType = route.pageRouteType;
     final Map<String, dynamic>? exts = route.exts;
@@ -84,10 +84,9 @@ abstract class RouteInfoBase {
         ? (routeName == "''" ? name : routeName)
         : description;
 
-    String constant;
-    constant = camelName(name)
+    String constant = camelName(name)
         .replaceAll('"', '')
-        .replaceAll('\'', '')
+        .replaceAll("'", '')
         .replaceAll('://', '_')
         .replaceAll('/', '_')
         .replaceAll('.', '_')
@@ -111,9 +110,9 @@ abstract class RouteInfoBase {
       sb.write('\n///');
       sb.write('\n/// [description] : $description');
     }
-    if (constructors != null) {
+    if (constructor != null) {
       sb.write('\n///');
-      sb.write('\n/// [constructors] : $constructors');
+      sb.write('\n/// [constructors] : $constructor');
     }
     if (showStatusBar != true) {
       sb.write('\n///');

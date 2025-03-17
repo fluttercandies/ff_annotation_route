@@ -1,9 +1,10 @@
 // ignore_for_file: implementation_imports
 
 import 'package:analyzer/dart/element/element.dart';
-import 'package:ff_annotation_route/src/arg/args.dart';
-import 'package:ff_annotation_route/src/utils/dart_type_auto_import.dart';
 import 'package:ff_annotation_route_core/ff_annotation_route_core.dart';
+
+import '../arg/args.dart';
+import '../utils/dart_type_auto_import.dart';
 
 import 'route_info_base.dart';
 

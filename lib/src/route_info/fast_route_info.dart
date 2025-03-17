@@ -1,7 +1,8 @@
 import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/ast/syntactic_entity.dart';
-import 'package:ff_annotation_route/src/arg/args.dart';
 import 'package:ff_annotation_route_core/ff_annotation_route_core.dart';
+
+import '../arg/args.dart';
 import 'route_info_base.dart';
 
 class FastRouteInfo extends RouteInfoBase {

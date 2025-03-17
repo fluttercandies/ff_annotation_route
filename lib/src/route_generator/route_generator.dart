@@ -5,7 +5,6 @@ import 'package:analyzer/dart/analysis/analysis_context.dart';
 import 'package:analyzer/dart/analysis/analysis_context_collection.dart';
 import 'package:analyzer/dart/analysis/results.dart';
 import 'package:analyzer/dart/analysis/session.dart';
-import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/constant/value.dart';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:collection/collection.dart' show IterableExtension;
@@ -22,13 +21,14 @@ import 'package:analyzer/src/dart/element/element.dart';
 import 'package:analyzer/src/dart/constant/value.dart';
 import 'route_generator_base.dart';
 
-TypeChecker fFRouteTypeChecker = const TypeChecker.fromRuntime(FFRoute);
-TypeChecker functionalWidgetTypeChecker = const TypeChecker.fromUrl(
-    'package:functional_widget_annotation/functional_widget_annotation.dart#FunctionalWidget');
-TypeChecker fFArgumentImportTypeChecker =
-    const TypeChecker.fromRuntime(FFArgumentImport);
-TypeChecker fFAutoImportTypeChecker =
-    const TypeChecker.fromRuntime(FFAutoImport);
+const fFRouteTypeChecker = TypeChecker.fromRuntime(FFRoute);
+const fFArgumentImportTypeChecker = TypeChecker.fromRuntime(FFArgumentImport);
+const fFAutoImportTypeChecker = TypeChecker.fromRuntime(FFAutoImport);
+const functionalWidgetTypeChecker = TypeChecker.fromUrl(
+  'package:functional_widget_annotation'
+  '/functional_widget_annotation.dart'
+  '#FunctionalWidget',
+);
 
 class RouteGenerator extends RouteGeneratorBase {
   RouteGenerator({

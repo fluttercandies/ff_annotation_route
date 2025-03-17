@@ -4,10 +4,7 @@ import 'package:analyzer/dart/analysis/analysis_context_collection.dart';
 import 'package:analyzer/dart/analysis/features.dart';
 import 'package:analyzer/dart/analysis/results.dart';
 import 'package:analyzer/dart/analysis/utilities.dart';
-import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/ast/syntactic_entity.dart';
-
-// ignore: implementation_imports
 import 'package:analyzer/src/dart/ast/ast.dart';
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:ff_annotation_route/src/arg/args.dart';
@@ -71,8 +68,8 @@ class FastRouteGenerator extends RouteGeneratorBase {
                       child.toString().replaceAll(annotation.toString(), '');
                   import = import.replaceAll(';', '');
                   if (parameters != null && parameters.isNotEmpty) {
-                    import = '$import '
-                        '${parameters.first.toString().replaceAll('\'', '')}';
+                    import =
+                        '$import ${parameters.first.toString().replaceAll('\'', '')}';
                   }
                   import += ';\n';
                   argumentImports.add(import);

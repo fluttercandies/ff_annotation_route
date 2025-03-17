@@ -13,8 +13,10 @@ environment:
   sdk: ^3.0.0
 
 dependencies:
-  analyzer: ^5.0.0
+  _fe_analyzer_shared: ">=62.0.0 <81.0.0"
+  analyzer: ">=6.0.0 <8.0.0"
   args: ^2.3.1
+  build_runner_core: ">=7.2.3 <9.0.0"
   collection: ^1.16.0
   crypto: ^3.0.2
   dart_style: ^2.2.3
@@ -22,10 +24,9 @@ dependencies:
   io: ^1.0.3
   meta: ^1.7.0
   path: ^1.8.1
-  yaml: ^3.1.1
-  build_runner_core: ^7.2.3
-  source_gen: ^1.2.5
   pub_cache: ^0.3.1
+  source_gen: ">=1.2.5 <3.0.0"
+  yaml: ^3.1.1
 
 dev_dependencies:
   melos: ^6.0.0
