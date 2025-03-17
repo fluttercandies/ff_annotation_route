@@ -1,4 +1,5 @@
 // ignore_for_file: implementation_imports
+
 import 'package:analyzer/dart/element/type.dart';
 import 'package:analyzer/file_system/physical_file_system.dart';
 import 'package:analyzer/src/dart/ast/ast.dart';
@@ -6,7 +7,6 @@ import 'package:analyzer/dart/analysis/analysis_context.dart';
 import 'package:analyzer/dart/analysis/analysis_context_collection.dart';
 import 'package:analyzer/dart/analysis/results.dart';
 import 'package:analyzer/dart/analysis/session.dart';
-import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/constant/value.dart';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:collection/collection.dart' show IterableExtension;
@@ -23,24 +23,21 @@ import 'package:analyzer/src/dart/element/element.dart';
 import 'package:analyzer/src/dart/constant/value.dart';
 import 'route_generator_base.dart';
 
-TypeChecker fFRouteTypeChecker = const TypeChecker.fromRuntime(FFRoute);
-TypeChecker functionalWidgetTypeChecker = const TypeChecker.fromUrl(
-    'package:functional_widget_annotation/functional_widget_annotation.dart#FunctionalWidget');
-TypeChecker fFArgumentImportTypeChecker =
-    const TypeChecker.fromRuntime(FFArgumentImport);
-TypeChecker fFAutoImportTypeChecker =
-    const TypeChecker.fromRuntime(FFAutoImport);
+const fFRouteTypeChecker = TypeChecker.fromRuntime(FFRoute);
+const fFArgumentImportTypeChecker = TypeChecker.fromRuntime(FFArgumentImport);
+const fFAutoImportTypeChecker = TypeChecker.fromRuntime(FFAutoImport);
+const functionalWidgetTypeChecker = TypeChecker.fromUrl(
+  'package:functional_widget_annotation'
+  '/functional_widget_annotation.dart'
+  '#FunctionalWidget',
+);
 
 class RouteGenerator extends RouteGeneratorBase {
   RouteGenerator({
-    required String packageName,
-    required String packagePath,
-    required bool isRoot,
-  }) : super(
-          packageName: packageName,
-          packagePath: packagePath,
-          isRoot: isRoot,
-        );
+    required super.packageName,
+    required super.packagePath,
+    required super.isRoot,
+  });
 
   @override
   Future<void> scanLib({
@@ -73,14 +70,13 @@ class RouteGenerator extends RouteGeneratorBase {
               .replaceAll('\\', '/'),
           packageName: packageName,
         );
-        final String ffRouteFileImportPath = 'package:' +
-            <String>[
-              packageName,
-              ...filePath
-                  .replaceFirst(lib!.path, '')
-                  .split(p.context.separator)
-                  .where((String element) => element.isNotEmpty),
-            ].join('/');
+        final String ffRouteFileImportPath = 'package:${<String>[
+          packageName,
+          ...filePath
+              .replaceFirst(lib!.path, '')
+              .split(p.context.separator)
+              .where((String element) => element.isNotEmpty),
+        ].join('/')}';
         final CompilationUnitElement fileElement =
             await getElement(context.currentSession, filePath);
 
@@ -137,7 +133,7 @@ class RouteGenerator extends RouteGeneratorBase {
     FileInfo fileInfo,
     String ffRouteFileImportPath,
   ) async {
-    final Map<String, DartObject> _widgetFunctionMap = <String, DartObject>{};
+    final widgetFunctionMap = <String, DartObject>{};
 
     for (final FunctionElement functionElement in fileElement.functions) {
       final DartObject? annotation = fFRouteTypeChecker.firstAnnotationOf(
@@ -150,27 +146,27 @@ class RouteGenerator extends RouteGeneratorBase {
         throwOnUnresolved: true,
       );
       if (annotation != null && functionalWidget != null) {
-        _widgetFunctionMap[funcName2ClassName(functionElement.name)] =
+        widgetFunctionMap[funcName2ClassName(functionElement.name)] =
             annotation;
       }
     }
 
-    if (_widgetFunctionMap.isNotEmpty) {
+    if (widgetFunctionMap.isNotEmpty) {
       for (final PartElement partElement in fileElement.library.parts) {
         final DirectiveUri uri = partElement.uri;
         String? path;
         if (uri is DirectiveUriWithUnit) {
-          path = '${uri.unit.source.fullName}';
+          path = uri.unit.source.fullName;
         } else if (uri is DirectiveUriWithSource) {
-          path = '${uri.source.fullName}';
+          path = uri.source.fullName;
         }
         if (path != null) {
           final CompilationUnitElement element =
               await getElement(context.currentSession, path);
           for (final ClassElement classElement in element.classes) {
-            if (_widgetFunctionMap.containsKey(classElement.name)) {
+            if (widgetFunctionMap.containsKey(classElement.name)) {
               final DartObject? annotation =
-                  _widgetFunctionMap[classElement.name];
+                  widgetFunctionMap[classElement.name];
               findFFRoute(
                 fileInfo,
                 classElement,

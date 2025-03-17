@@ -25,6 +25,7 @@ abstract class RouteInfoBase {
       classNameConflictPrefix != null ? '$classNameConflictPrefix.' : '';
 
   String? get constructorsString;
+
   String get constructor;
 
   String get caseString {
@@ -69,92 +70,92 @@ abstract class RouteInfoBase {
   }
 
   void getRouteConst(bool enableSuperArguments, StringBuffer sb) {
-    final FFRoute _route = ffRoute;
+    final FFRoute route = ffRoute;
 
-    final String _name = safeToString(_route.name)!;
-    final String _routeName = safeToString(_route.routeName)!;
-    final String _description = safeToString(_route.description)!;
-    final String? _constructors = constructorsString;
-    final bool _showStatusBar = _route.showStatusBar;
-    final PageRouteType? _pageRouteType = _route.pageRouteType;
-    final Map<String, dynamic>? _exts = _route.exts;
+    final String name = safeToString(route.name)!;
+    final String routeName = safeToString(route.routeName)!;
+    final String description = safeToString(route.description)!;
+    final String? constructor = constructorsString;
+    final bool showStatusBar = route.showStatusBar;
+    final PageRouteType? pageRouteType = route.pageRouteType;
+    final Map<String, dynamic>? exts = route.exts;
 
-    final String _firstLine = _description == "''"
-        ? (_routeName == "''" ? _name : _routeName)
-        : _description;
+    final String firstLine = description == "''"
+        ? (routeName == "''" ? name : routeName)
+        : description;
 
-    String _constant;
-    _constant = camelName(_name)
-        .replaceAll('\"', '')
-        .replaceAll('\'', '')
+    String constant = camelName(name)
+        .replaceAll('"', '')
+        .replaceAll("'", '')
         .replaceAll('://', '_')
         .replaceAll('/', '_')
         .replaceAll('.', '_')
         .replaceAll(' ', '_')
         .replaceAll('-', '_');
-    while (_constant.startsWith('_')) {
-      _constant = _constant.replaceFirst('_', '');
+    while (constant.startsWith('_')) {
+      constant = constant.replaceFirst('_', '');
     }
-    if (_name.replaceAll('\'', '') == '/') {
-      _constant = 'root';
+    if (name.replaceAll('\'', '') == '/') {
+      constant = 'root';
     }
 
-    sb.write('/// $_firstLine\n');
+    sb.write('/// $firstLine\n');
     sb.write('///');
-    sb.write('\n/// [name] : $_name');
-    if (_routeName != "''") {
+    sb.write('\n/// [name] : $name');
+    if (routeName != "''") {
       sb.write('\n///');
-      sb.write('\n/// [routeName] : $_routeName');
+      sb.write('\n/// [routeName] : $routeName');
     }
-    if (_description != "''") {
+    if (description != "''") {
       sb.write('\n///');
-      sb.write('\n/// [description] : $_description');
+      sb.write('\n/// [description] : $description');
     }
-    if (_constructors != null) {
+    if (constructor != null) {
       sb.write('\n///');
-      sb.write('\n/// [constructors] : $_constructors');
+      sb.write('\n/// [constructors] : $constructor');
     }
-    if (_showStatusBar != true) {
+    if (showStatusBar != true) {
       sb.write('\n///');
-      sb.write('\n/// [showStatusBar] : $_showStatusBar');
+      sb.write('\n/// [showStatusBar] : $showStatusBar');
     }
-    if (_pageRouteType != null) {
+    if (pageRouteType != null) {
       sb.write('\n///');
-      sb.write('\n/// [pageRouteType] : $_pageRouteType');
+      sb.write('\n/// [pageRouteType] : $pageRouteType');
     }
 
-    if (_exts != null) {
+    if (exts != null) {
       sb.write('\n///');
-      sb.write('\n/// [exts] : $_exts');
+      sb.write('\n/// [exts] : $exts');
     }
 
     if (enableSuperArguments && getArgumentsClass() != null) {
-      String argumentsClassName = camelName(_constant);
+      String argumentsClassName = camelName(constant);
       if (argumentsClassName.length == 1) {
         argumentsClassName = argumentsClassName.toUpperCase();
       } else {
         argumentsClassName = argumentsClassName[0].toUpperCase() +
             argumentsClassName.substring(1, argumentsClassName.length);
       }
-      argumentsClassName = '_' + argumentsClassName;
+      argumentsClassName = '_$argumentsClassName';
       sb.write(
         '\nstatic const $argumentsClassName '
-        '${camelName(_constant)} = $argumentsClassName();\n\n',
+        '${camelName(constant)} = $argumentsClassName();\n\n',
       );
 
       argumentsClass = routeConstClassTemplate
           .replaceAll('{0}', argumentsClassName)
-          .replaceAll('{1}', _name)
+          .replaceAll('{1}', name)
           .replaceAll('{2}', argumentsClass!);
     } else {
       sb.write(
         '\nstatic const String '
-        '${camelName(_constant)} = $_name;\n\n',
+        '${camelName(constant)} = $name;\n\n',
       );
     }
   }
 
   String? argumentsClass;
+
   String? getArgumentsClass();
 
   void addImport(
@@ -188,7 +189,7 @@ abstract class RouteInfoBase {
       prefix = ' ${importElement.prefix!.element.toString()}';
     }
 
-    importString = 'import $importString$suffix$prefix'.trim() + ';';
+    importString = '${'import $importString$suffix$prefix'.trim()};';
 
     if (!FileInfo.imports.contains(importString)) {
       if (type != null) {

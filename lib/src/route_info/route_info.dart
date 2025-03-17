@@ -1,31 +1,26 @@
 // ignore_for_file: implementation_imports
 
 import 'package:analyzer/dart/element/element.dart';
-import 'package:ff_annotation_route/src/arg/args.dart';
-import 'package:ff_annotation_route/src/file_info.dart';
-import 'package:ff_annotation_route/src/utils/dart_type_auto_import.dart';
 import 'package:ff_annotation_route_core/ff_annotation_route_core.dart';
+
+import '../arg/args.dart';
+import '../utils/dart_type_auto_import.dart';
 
 import 'route_info_base.dart';
 
 class RouteInfo extends RouteInfoBase {
   RouteInfo({
-    required FFRoute ffRoute,
-    required String className,
+    required super.ffRoute,
+    required super.className,
     required this.classElement,
-    required FileInfo fileInfo,
-  })  : constructors = classElement.constructors
-            .where(
-                (ConstructorElement element) => element.name.toString() != '_')
-            .toList(),
-        super(
-          className: className,
-          ffRoute: ffRoute,
-          fileInfo: fileInfo,
-        );
+    required super.fileInfo,
+  }) : constructors = classElement.constructors
+            .where((element) => element.name.toString() != '_')
+            .toList();
 
   final ClassElement classElement;
   final List<ConstructorElement> constructors;
+
   List<String> get prefixes => classElement.library.prefixes
       .map((PrefixElement e) => e.displayName)
       .toList();
@@ -70,7 +65,7 @@ return ${getConstructorString(rawConstructor)};
 ''';
           } else {
             switchCase += '''
-              case \'$ctorName\':
+              case '$ctorName':
               return ${getConstructorString(rawConstructor)};
            ''';
           }
@@ -80,7 +75,7 @@ return ${getConstructorString(rawConstructor)};
         switchCase = '''
          (){
       final String ctorName =
-              safeArguments[constructorName${Args().argumentsIsCaseSensitive ? '' : '.toLowerCase()'}]?.toString() ?? \'\';
+              safeArguments[constructorName${Args().argumentsIsCaseSensitive ? '' : '.toLowerCase()'}]?.toString() ?? '';
          switch (ctorName) {
             $switchCase
           }
@@ -92,7 +87,7 @@ return ${getConstructorString(rawConstructor)};
         return ' () =>  ${getConstructorString(constructors.first)}';
       }
     }
-    return '() =>' + classNameConflictPrefixText + '$className()';
+    return '() =>$classNameConflictPrefixText$className()';
   }
 
   String getIsOptional(String name, ParameterElement parameter,
@@ -117,7 +112,7 @@ return ${getConstructorString(rawConstructor)};
     }
 
     if (!parameter.isPositional) {
-      value = '$name:' + value;
+      value = '$name:$value';
     }
     return value;
   }
@@ -156,7 +151,7 @@ return ${getConstructorString(rawConstructor)};
     constructorString += ')';
 
     if (rawConstructor.isConst && !hasParameters) {
-      constructorString = 'const ' + constructorString;
+      constructorString = 'const $constructorString';
     }
     return constructorString;
   }

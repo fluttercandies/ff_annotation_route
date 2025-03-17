@@ -1,3 +1,4 @@
+// ignore: unnecessary_library_name
 library ff_annotation_route;
 
 import 'package:analyzer/dart/analysis/analysis_context_collection.dart';

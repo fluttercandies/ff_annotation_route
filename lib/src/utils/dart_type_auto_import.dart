@@ -3,6 +3,7 @@
 import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
+
 //import 'package:analyzer/src/dart/constant/value.dart';
 import 'package:analyzer/src/dart/element/element.dart';
 import 'package:analyzer/src/dart/ast/to_source_visitor.dart';
@@ -21,6 +22,7 @@ class DartTypeAutoImport {
     this.dartType,
     this.prefix,
   );
+
   final String uri;
   final _DartType dartType;
   final String prefix;
@@ -31,7 +33,9 @@ class DartTypeAutoImport {
 
 class DartTypeAutoImportHelper {
   factory DartTypeAutoImportHelper() => _dartTypeAutoImportHelper;
+
   DartTypeAutoImportHelper._();
+
   static final DartTypeAutoImportHelper _dartTypeAutoImportHelper =
       DartTypeAutoImportHelper._();
   final Map<_DartType, DartTypeAutoImport> _imports =
@@ -45,8 +49,11 @@ class DartTypeAutoImportHelper {
     final _DartType dartType = _DartType(type, type.alias);
 
     if (!_imports.containsKey(dartType)) {
-      _imports[dartType] =
-          DartTypeAutoImport(uri, dartType, 'autoimport' + uri.md5);
+      _imports[dartType] = DartTypeAutoImport(
+        uri,
+        dartType,
+        'autoimport${uri.md5}',
+      );
 
       print('automatically import for type($type): $uri');
     }
@@ -91,7 +98,6 @@ class DartTypeAutoImportHelper {
     if (type is InterfaceTypeImpl) {
       final MyElementDisplayStringBuilder builder =
           MyElementDisplayStringBuilder(
-        skipAllDynamicArguments: false,
         withNullability: true,
       );
       builder.writeInterfaceType(type);
@@ -99,7 +105,6 @@ class DartTypeAutoImportHelper {
     } else if (type is FunctionTypeImpl) {
       final MyElementDisplayStringBuilder builder =
           MyElementDisplayStringBuilder(
-        skipAllDynamicArguments: false,
         withNullability: true,
       );
       builder.writeFunctionType(type);
@@ -256,7 +261,7 @@ class DartTypeAutoImportHelper {
       sb.write('required ');
     }
 
-    sb.write(fixDartTypeString(element.type) + ' ' + element.displayName);
+    sb.write('${fixDartTypeString(element.type)} ${element.displayName}');
 
     final String? defaultValueCode =
         DartTypeAutoImportHelper().getDefaultValueString(
@@ -330,6 +335,7 @@ enum _WriteFormalParameterKind { requiredPositional, optionalPositional, named }
 @immutable
 class _DartType {
   const _DartType(this.dartType, this.alias);
+
   final DartType dartType;
   final InstantiatedTypeAliasElement? alias;
 
@@ -352,6 +358,7 @@ class MyToSourceVisitor extends ToSourceVisitor {
   }) : super(sink);
 
   final List<String> prefixs;
+
   @override
   void visitPrefixedIdentifier(PrefixedIdentifier node) {
     // remove default prefix

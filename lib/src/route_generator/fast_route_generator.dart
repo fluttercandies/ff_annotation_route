@@ -4,9 +4,7 @@ import 'package:analyzer/dart/analysis/analysis_context_collection.dart';
 import 'package:analyzer/dart/analysis/features.dart';
 import 'package:analyzer/dart/analysis/results.dart';
 import 'package:analyzer/dart/analysis/utilities.dart';
-import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/ast/syntactic_entity.dart';
-// ignore: implementation_imports
 import 'package:analyzer/src/dart/ast/ast.dart';
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:ff_annotation_route/src/arg/args.dart';
@@ -22,14 +20,10 @@ import 'route_generator_base.dart';
 
 class FastRouteGenerator extends RouteGeneratorBase {
   FastRouteGenerator({
-    required String packageName,
-    required String packagePath,
-    required bool isRoot,
-  }) : super(
-          packageName: packageName,
-          packagePath: packagePath,
-          isRoot: isRoot,
-        );
+    required super.packageName,
+    required super.packagePath,
+    required super.isRoot,
+  });
 
   @override
   Future<void> scanLib({
@@ -49,14 +43,13 @@ class FastRouteGenerator extends RouteGeneratorBase {
             featureSet: FeatureSet.latestLanguageVersion(),
           );
           final CompilationUnit astRoot = result.unit;
-          final String ffRouteFileImportPath = 'package:' +
-              <String>[
-                packageName,
-                ...item.path
-                    .replaceFirst(lib!.path, '')
-                    .split(p.context.separator)
-                    .where((String element) => element.isNotEmpty),
-              ].join('/');
+          final String ffRouteFileImportPath = 'package:${<String>[
+            packageName,
+            ...item.path
+                .replaceFirst(lib!.path, '')
+                .split(p.context.separator)
+                .where((String element) => element.isNotEmpty),
+          ].join('/')}';
           final List<String> argumentImports = <String>[];
           for (final SyntacticEntity child in astRoot.childEntities) {
             if (child is ImportDirective) {
@@ -75,9 +68,8 @@ class FastRouteGenerator extends RouteGeneratorBase {
                       child.toString().replaceAll(annotation.toString(), '');
                   import = import.replaceAll(';', '');
                   if (parameters != null && parameters.isNotEmpty) {
-                    import = import +
-                        ' ' +
-                        parameters.first.toString().replaceAll('\'', '');
+                    import =
+                        '$import ${parameters.first.toString().replaceAll('\'', '')}';
                   }
                   import += ';\n';
                   argumentImports.add(import);
