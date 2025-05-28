@@ -1,8 +1,3 @@
-/// <summary>
-/// abcAbcaBc->abc_abca_bc
-/// </summary>
-/// <param name='name'></param>
-/// <returns></returns>
 String underScoreName(String? name) {
   if (isNullOrWhiteSpace(name)) {
     return '';
@@ -24,12 +19,6 @@ String underScoreName(String? name) {
 
   return result.toString();
 }
-
-/// <summary>
-/// abc_abca_bc->abcAbcaBc
-/// </summary>
-/// <param name='name'></param>
-/// <returns></returns>
 
 String camelName(String? name) {
   final StringBuffer result = StringBuffer();
@@ -61,11 +50,6 @@ String camelName(String? name) {
   return result.toString();
 }
 
-/// <summary>
-/// abc_abca_bc->AbcAbcaBc
-/// </summary>
-/// <param name='name'></param>
-/// <returns></returns>
 String upcaseCamelName(String? name) {
   final StringBuffer result = StringBuffer();
   if (isNullOrWhiteSpace(name)) {

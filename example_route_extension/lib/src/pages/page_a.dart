@@ -14,7 +14,7 @@ import 'package:flutter/material.dart';
   ],
 )
 class PageA extends StatefulWidget {
-  const PageA({Key? key}) : super(key: key);
+  const PageA({super.key});
 
   @override
   State<PageA> createState() => _PageAState();
@@ -39,11 +39,6 @@ class _PageAState extends RouteLifecycleState<PageA> {
   @override
   void onPageHide() {
     print('PageA onPageHide');
-  }
-
-  @override
-  void initState() {
-    super.initState();
   }
 
   @override
@@ -75,7 +70,7 @@ class _PageAState extends RouteLifecycleState<PageA> {
 }
 
 class MyDialog extends StatefulWidget {
-  const MyDialog({Key? key}) : super(key: key);
+  const MyDialog({super.key});
 
   @override
   State<MyDialog> createState() => _MyDialogState();

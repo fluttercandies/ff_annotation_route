@@ -2,7 +2,7 @@ import 'package:ff_annotation_route/src/arg/args.dart';
 import 'package:pub_cache/pub_cache.dart';
 
 Type typeOf<T>() => T;
-late PubCache _cache = PubCache();
+PubCache _cache = PubCache();
 String? _version;
 String? get version {
   try {
@@ -20,7 +20,7 @@ String get fileHeader {
 // **************************************************************************
 // fast mode: ${Args().isFastMode}${version != null ? '\n// version: $version' : ''}
 // **************************************************************************
-// ignore_for_file: prefer_const_literals_to_create_immutables,unused_local_variable,unused_import,unnecessary_import,unused_shown_name,implementation_imports,duplicate_import,library_private_types_in_public_api
+// ignore_for_file: duplicate_import,implementation_imports,library_private_types_in_public_api,multiple_combinators,prefer_const_literals_to_create_immutables,unintended_html_in_doc_comment,unnecessary_import,unused_import,unused_local_variable,unused_shown_name
 ''';
 }
 

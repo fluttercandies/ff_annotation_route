@@ -1,0 +1,7 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="generate example_fast_mode" type="DartCommandLineRunConfigurationType" factoryName="Dart Command Line Application">
+    <option name="filePath" value="$PROJECT_DIR$/bin/main.dart" />
+    <option name="workingDirectory" value="$PROJECT_DIR$/example_fast_mode" />
+    <method v="2" />
+  </configuration>
+</component>

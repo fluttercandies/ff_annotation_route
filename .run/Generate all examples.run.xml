@@ -1,0 +1,10 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Generate all examples" type="CompoundRunConfigurationType">
+    <toRun name="generate example" type="DartCommandLineRunConfigurationType" />
+    <toRun name="generate example1" type="DartCommandLineRunConfigurationType" />
+    <toRun name="generate example_fast_mode" type="DartCommandLineRunConfigurationType" />
+    <toRun name="generate example_getx" type="DartCommandLineRunConfigurationType" />
+    <toRun name="generate example_route_extension" type="DartCommandLineRunConfigurationType" />
+    <method v="2" />
+  </configuration>
+</component>

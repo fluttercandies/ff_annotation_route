@@ -3,6 +3,7 @@ import 'package:example1/example1_routes.dart';
 import 'package:example1/main.dart';
 import 'package:example1/src/model/test_model.dart';
 import 'package:ff_annotation_route_library/ff_annotation_route_library.dart';
+import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
 
 import 'test_page_a.dart';
@@ -17,6 +18,8 @@ import 'test_page_a.dart';
   },
 )
 class TestPageC extends StatelessWidget {
+  const TestPageC({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -37,15 +40,17 @@ class TestPageC extends StatelessWidget {
         TextButton(
           onPressed: () {
             final FFRouterDelegate delegate = FFRouterDelegate.of(context);
-            final FFRouteSettings routeSettings =
-                getRouteSettings(name: Routes.testPageA);
+            final FFRouteSettings routeSettings = getRouteSettings(
+              name: Routes.testPageA.name,
+            );
             final FFPage<void> page = routeSettings.toFFPage<void>(
-                // make sure it has unique key
-                key: delegate.getUniqueKey(),
-                builder: () => CommonWidget(
-                      child: TestPageA(),
-                      routeName: routeSettings.routeName,
-                    ));
+              // make sure it has unique key
+              key: delegate.getUniqueKey(),
+              builder: () => CommonWidget(
+                routeName: routeSettings.routeName,
+                child: TestPageA(),
+              ),
+            );
 
             delegate.push<void>(page);
           },
@@ -54,9 +59,9 @@ class TestPageC extends StatelessWidget {
         TextButton(
           onPressed: () {
             FFRouterDelegate.of(context).pushNamedAndRemoveUntil(
-                Routes.testPageA, (FFPage<dynamic> page) {
-              return page.name == Routes.root;
-            });
+              Routes.testPageA.name,
+              (r) => r.name == Routes.root.name,
+            );
           },
           child: const Text('pushNamedAndRemoveUntil'),
         ),
@@ -71,7 +76,7 @@ class TestPageC extends StatelessWidget {
             final FFRouterDelegate delegate = FFRouterDelegate.of(context);
 
             final FFPage<void> page =
-                delegate.getRoutePage(name: Routes.testPageA);
+                delegate.getRoutePage(name: Routes.testPageA.name);
 
             delegate.pages.add(page);
             delegate.updatePages();
@@ -81,11 +86,11 @@ class TestPageC extends StatelessWidget {
         TextButton(
           onPressed: () {
             FFRouterDelegate.of(context)
-                .pushNamed<String>(
-              Routes.testPageG,
-            )
+                .pushNamed<String>(Routes.testPageG.name)
                 .then((String? value) {
-              print(value!);
+              if (kDebugMode) {
+                print(value!);
+              }
             });
           },
           child: const Text('pushNamed and pop with result'),

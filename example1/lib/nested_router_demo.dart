@@ -25,6 +25,8 @@ void main() {
 /// you can override [FFRouterDelegate.popRoute] to define your logic.
 ///
 class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
@@ -33,8 +35,8 @@ class MyApp extends StatelessWidget {
         getRouteSettings: getRouteSettings,
       ),
       routeInformationProvider: PlatformRouteInformationProvider(
-        initialRouteInformation: const RouteInformation(
-          location: Routes.nestedMainPage,
+        initialRouteInformation: RouteInformation(
+          location: Routes.nestedMainPage.name,
         ),
       ),
       backButtonDispatcher: RootBackButtonDispatcher(),
@@ -48,6 +50,8 @@ class MyApp extends StatelessWidget {
   description: 'NestedMainPage',
 )
 class NestedMainPage extends StatelessWidget {
+  const NestedMainPage({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -55,7 +59,7 @@ class NestedMainPage extends StatelessWidget {
         child: TextButton(
           child: const Text('Push to ChildRouterPage'),
           onPressed: () {
-            FFRouterDelegate.of(context).pushNamed(Routes.childRouterPage);
+            FFRouterDelegate.of(context).pushNamed(Routes.childRouterPage.name);
           },
         ),
       ),
@@ -69,13 +73,15 @@ class NestedMainPage extends StatelessWidget {
   description: 'NestedTestPage',
 )
 class NestedTestPage extends StatelessWidget {
+  const NestedTestPage({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Center(
       child: TextButton(
         child: const Text('Push to TestPageA'),
         onPressed: () {
-          FFRouterDelegate.of(context).pushNamed(Routes.testPageA);
+          FFRouterDelegate.of(context).pushNamed(Routes.testPageA.name);
         },
       ),
     );
@@ -88,6 +94,8 @@ class NestedTestPage extends StatelessWidget {
   description: 'ChildRouterPage',
 )
 class ChildRouterPage extends StatelessWidget {
+  const ChildRouterPage({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final ChildBackButtonDispatcher childBackButtonDispatcher =
@@ -101,15 +109,15 @@ class ChildRouterPage extends StatelessWidget {
         pageWrapper: <T>(FFPage<T> ffPage) {
           return ffPage.copyWith(
             builder: () => CommonWidget(
-              child: ffPage.builder(),
               routeName: ffPage.routeName,
+              child: ffPage.builder(),
             ),
           );
         },
       ),
       routeInformationProvider: PlatformRouteInformationProvider(
-        initialRouteInformation: const RouteInformation(
-          location: Routes.nestedTestPage,
+        initialRouteInformation: RouteInformation(
+          location: Routes.nestedTestPage.name,
         ),
       ),
       backButtonDispatcher: childBackButtonDispatcher,

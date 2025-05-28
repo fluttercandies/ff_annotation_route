@@ -25,6 +25,9 @@ import 'package:flutter/material.dart';
 class TestPageA extends StatelessWidget {
   static const String dd = 'dddd';
   static bool ddd = false;
+
+  const TestPageA({super.key});
+
   @override
   Widget build(BuildContext context) {
     return const Center(

@@ -2,7 +2,7 @@ import 'package:ff_annotation_route_library/ff_annotation_route_library.dart';
 import 'package:flutter/material.dart';
 
 @FFRoute(
-  name: "flutterCandies://testPage\' \"B",
+  name: "flutterCandies://testPage' \"B",
   routeName: 'testPageB ' '',
   description: 'This is test \' page B.',
   exts: <String, dynamic>{
@@ -14,10 +14,13 @@ import 'package:flutter/material.dart';
 )
 class TestPageB extends StatelessWidget {
   const TestPageB({
+    super.key,
     this.argument,
   });
+
   //const TestPageB._(this.argument);
   final String? argument;
+
   @override
   Widget build(BuildContext context) {
     return Center(

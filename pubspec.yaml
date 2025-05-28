@@ -10,7 +10,7 @@ topics:
   - route-guard
 
 environment:
-  sdk: ">=2.17.0 <3.0.0"
+  sdk: ^3.0.0
 
 dependencies:
   analyzer: ^5.0.0
@@ -26,9 +26,15 @@ dependencies:
   build_runner_core: ^7.2.3
   source_gen: ^1.2.5
   pub_cache: ^0.3.1
+
+dev_dependencies:
+  melos: ^6.0.0
+  lints: any
+
+# Run `dart pub global activate --source path ./` for local development.
 executables:
   ff_route: main
+
 # dependency_overrides:
 #   ff_annotation_route_core:
 #     path: ../ff_annotation_route_core
-# Run `dart pub global activate --source path ./` for local development.

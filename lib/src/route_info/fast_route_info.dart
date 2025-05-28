@@ -1,27 +1,21 @@
 import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/ast/syntactic_entity.dart';
 import 'package:ff_annotation_route/src/arg/args.dart';
-import 'package:ff_annotation_route/src/file_info.dart';
 import 'package:ff_annotation_route_core/ff_annotation_route_core.dart';
 import 'route_info_base.dart';
 
 class FastRouteInfo extends RouteInfoBase {
   FastRouteInfo({
-    required FFRoute ffRoute,
-    required String className,
+    required super.ffRoute,
+    required super.className,
     this.routePath,
     required this.classDeclaration,
-    required FileInfo fileInfo,
+    required super.fileInfo,
   })  : constructors = classDeclaration.members
             .whereType<ConstructorDeclaration>()
             .toList(),
         fields =
-            classDeclaration.members.whereType<FieldDeclaration>().toList(),
-        super(
-          className: className,
-          ffRoute: ffRoute,
-          fileInfo: fileInfo,
-        );
+            classDeclaration.members.whereType<FieldDeclaration>().toList();
 
   final List<ConstructorDeclaration> constructors;
   final List<FieldDeclaration> fields;
@@ -62,7 +56,7 @@ return ${getConstructorString(rawConstructor)};
 ''';
           } else {
             switchCase += '''
-              case \'$ctorName\':
+              case '$ctorName':
               return ${getConstructorString(rawConstructor)};
            ''';
           }
@@ -77,7 +71,7 @@ return ${getConstructorString(rawConstructor)};
         switchCase = '''
          (){
       final String ctorName =
-              safeArguments[constructorName${Args().argumentsIsCaseSensitive ? '' : '.toLowerCase()'}]?.toString() ?? \'\';
+              safeArguments[constructorName${Args().argumentsIsCaseSensitive ? '' : '.toLowerCase()'}]?.toString() ?? '';
          switch (ctorName) {
             $switchCase
           }
@@ -89,7 +83,7 @@ return ${getConstructorString(rawConstructor)};
         return ' () =>  ${getConstructorString(constructors.first)}';
       }
     }
-    return '() =>' + classNameConflictPrefixText + '$className()';
+    return '() =>$classNameConflictPrefixText$className()';
   }
 
   String getIsOptional(String name, FormalParameter parameter,
@@ -111,7 +105,7 @@ return ${getConstructorString(rawConstructor)};
     }
 
     if (!parameter.isPositional) {
-      value = '$name:' + value;
+      value = '$name:$value';
     }
     return value;
   }
@@ -155,7 +149,7 @@ return ${getConstructorString(rawConstructor)};
     }
 
     if (rawConstructor.constKeyword != null && !hasParameters) {
-      constructorString = 'const ' + constructorString;
+      constructorString = 'const $constructorString';
     }
     return constructorString;
   }

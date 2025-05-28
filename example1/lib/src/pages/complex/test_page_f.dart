@@ -16,13 +16,15 @@ import 'package:flutter/material.dart';
 class TestPageF extends StatelessWidget {
   const TestPageF(
     this.list, {
+    Key? key,
     this.map,
     this.testMode,
-  });
+  }) : super(key: key);
 
   final List<int>? list;
   final Map<String, String>? map;
   final TestMode? testMode;
+
   @override
   Widget build(BuildContext context) {
     return Center(

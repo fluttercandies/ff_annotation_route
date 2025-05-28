@@ -1,0 +1,11 @@
+name: ff_annotation_route_workspace
+repository: https://github.com/fluttercandies/ff_annotation_route
+
+packages:
+  - 'example*'
+  - 'example/module_**'
+
+ide:
+  intellij:
+    enabled: true
+    moduleNamePrefix: ''

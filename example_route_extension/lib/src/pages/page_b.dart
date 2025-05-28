@@ -17,7 +17,7 @@ import 'package:flutter/material.dart';
   ],
 )
 class PageB extends StatefulWidget {
-  const PageB({Key? key}) : super(key: key);
+  const PageB({super.key});
 
   @override
   State<PageB> createState() => _PageBState();

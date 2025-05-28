@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:example1/src/model/test_model.dart';
 import 'package:ff_annotation_route_library/ff_annotation_route_library.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'example1_route.dart';
 import 'example1_routes.dart';
@@ -14,7 +15,9 @@ void main() {
     if (value == null) {
       return null;
     }
-    print(T);
+    if (kDebugMode) {
+      print(T);
+    }
     final dynamic output = json.decode(value.toString());
     if (<int>[] is T && output is List<dynamic>) {
       return output.map<int?>((dynamic e) => asT<int>(e)).toList() as T;
@@ -28,10 +31,17 @@ void main() {
     return json.decode(value.toString()) as T?;
   };
 
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  const MyApp({Key? key}) : super(key: key);
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
   final FFRouteInformationParser _ffRouteInformationParser =
       FFRouteInformationParser();
 
@@ -44,17 +54,19 @@ class MyApp extends StatelessWidget {
       ),
     ),
     pageWrapper: <T>(FFPage<T> ffPage) {
-      if (ffPage.name == Routes.root ||
+      if (ffPage.name == Routes.root.name ||
           ffPage.name == Routes.demogrouppage.name) {
         return ffPage.copyWith(
-            builder: () => CommonWidget(
-                  child: ffPage.builder(),
-                  routeName: ffPage.routeName,
-                ));
+          builder: () => CommonWidget(
+            routeName: ffPage.routeName,
+            child: ffPage.builder(),
+          ),
+        );
       }
       return ffPage;
     },
   );
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -81,9 +93,11 @@ class MyApp extends StatelessWidget {
 
 class CommonWidget extends StatelessWidget {
   const CommonWidget({
+    Key? key,
     this.child,
     this.routeName,
-  });
+  }) : super(key: key);
+
   final Widget? child;
   final String? routeName;
 

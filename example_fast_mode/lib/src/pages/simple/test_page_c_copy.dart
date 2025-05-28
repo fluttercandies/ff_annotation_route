@@ -11,6 +11,8 @@ import 'package:flutter/material.dart';
   },
 )
 class TestPageC extends StatelessWidget {
+  const TestPageC({super.key});
+
   @override
   Widget build(BuildContext context) {
     return const Center(
@@ -20,7 +22,7 @@ class TestPageC extends StatelessWidget {
 }
 
 @FFRoute(
-  name: "flutterCandies://testPage\' \"B_Copy",
+  name: "flutterCandies://testPage' \"B_Copy",
   routeName: 'testPageB ' '',
   description: 'This is test \' page B. has the same name',
   exts: <String, dynamic>{
@@ -32,10 +34,13 @@ class TestPageC extends StatelessWidget {
 )
 class TestPageB extends StatelessWidget {
   const TestPageB({
+    super.key,
     this.argument,
   });
+
   //const TestPageB._(this.argument);
   final String? argument;
+
   @override
   Widget build(BuildContext context) {
     return Center(

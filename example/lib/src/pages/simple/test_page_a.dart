@@ -23,8 +23,11 @@ import 'package:flutter/material.dart';
       //'test6': 'dddd',
     })
 class TestPageA extends StatelessWidget {
+  const TestPageA({super.key});
+
   static const String dd = 'dddd';
   static bool ddd = false;
+
   @override
   Widget build(BuildContext context) {
     return const Center(

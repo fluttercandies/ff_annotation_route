@@ -3,8 +3,7 @@
 import 'package:example/example_routes.dart';
 import 'package:example/src/model/test_model.dart' show TestMode;
 import 'package:example/src/model/test_model1.dart'
-    show TestMode4, TestMode1, TestMode2
-    hide TestMode3;
+    show TestMode4, TestMode1, TestMode2;
 import 'package:ff_annotation_route_library/ff_annotation_route_library.dart';
 import 'package:flutter/material.dart';
 
@@ -19,12 +18,14 @@ import 'package:flutter/material.dart';
 )
 class TestPageE extends StatelessWidget {
   const TestPageE({
+    super.key,
     this.testMode = const TestMode(
       id: 2,
       isTest: false,
     ),
     this.testMode1,
   });
+
   factory TestPageE.test() => TestPageE(
         testMode: TestMode.test(),
       );
@@ -35,6 +36,7 @@ class TestPageE extends StatelessWidget {
 
   final TestMode? testMode;
   final TestMode1? testMode1;
+
   @override
   Widget build(BuildContext context) {
     return Column(

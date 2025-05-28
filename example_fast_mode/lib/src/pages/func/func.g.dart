@@ -7,8 +7,7 @@ part of 'func.dart';
 // **************************************************************************
 
 class Func extends StatelessWidget {
-  const Func(this.a, this.b, {Key? key, this.c, required this.d})
-      : super(key: key);
+  const Func(this.a, this.b, {super.key, this.c, required this.d});
 
   final int a;
 
@@ -19,12 +18,11 @@ class Func extends StatelessWidget {
   final double d;
 
   @override
-  Widget build(BuildContext _context) => func(a, b, c: c, d: d);
+  Widget build(BuildContext context) => func(a, b, c: c, d: d);
 }
 
 class Func1 extends StatelessWidget {
-  const Func1(this.a, this.b, {Key? key, this.c, required this.d})
-      : super(key: key);
+  const Func1(this.a, this.b, {super.key, this.c, required this.d});
 
   final int a;
 
@@ -35,12 +33,11 @@ class Func1 extends StatelessWidget {
   final double d;
 
   @override
-  Widget build(BuildContext _context) => func1(a, b, c: c, d: d);
+  Widget build(BuildContext context) => func1(a, b, c: c, d: d);
 }
 
 class Func2 extends HookWidget {
-  const Func2(this.a, this.b, {Key? key, this.c, required this.d})
-      : super(key: key);
+  const Func2(this.a, this.b, {super.key, this.c, required this.d});
 
   final int a;
 
@@ -51,12 +48,11 @@ class Func2 extends HookWidget {
   final double d;
 
   @override
-  Widget build(BuildContext _context) => func2(a, b, c: c, d: d);
+  Widget build(BuildContext context) => func2(a, b, c: c, d: d);
 }
 
 class Func3 extends HookConsumerWidget {
-  const Func3(this.a, this.b, {Key? key, this.c, required this.d})
-      : super(key: key);
+  const Func3(this.a, this.b, {super.key, this.c, required this.d});
 
   final int a;
 
@@ -67,13 +63,11 @@ class Func3 extends HookConsumerWidget {
   final double d;
 
   @override
-  Widget build(BuildContext _context, WidgetRef _ref) =>
-      func3(a, b, c: c, d: d);
+  Widget build(BuildContext context, WidgetRef ref) => func3(a, b, c: c, d: d);
 }
 
 class Func4 extends ConsumerWidget {
-  const Func4(this.a, this.b, {Key? key, this.c, required this.d})
-      : super(key: key);
+  const Func4(this.a, this.b, {super.key, this.c, required this.d});
 
   final int a;
 
@@ -84,13 +78,11 @@ class Func4 extends ConsumerWidget {
   final double d;
 
   @override
-  Widget build(BuildContext _context, WidgetRef _ref) =>
-      func4(a, b, c: c, d: d);
+  Widget build(BuildContext context, WidgetRef ref) => func4(a, b, c: c, d: d);
 }
 
 class Func5 extends ConsumerWidget {
-  const Func5(this.a, this.b, {Key? key, this.c, required this.d})
-      : super(key: key);
+  const Func5(this.a, this.b, {super.key, this.c, required this.d});
 
   final int a;
 
@@ -101,13 +93,11 @@ class Func5 extends ConsumerWidget {
   final double d;
 
   @override
-  Widget build(BuildContext _context, WidgetRef _ref) =>
-      _func5(a, b, c: c, d: d);
+  Widget build(BuildContext context, WidgetRef ref) => _func5(a, b, c: c, d: d);
 }
 
 class $7Func extends ConsumerWidget {
-  const $7Func(this.a, this.b, {Key? key, this.c, required this.d})
-      : super(key: key);
+  const $7Func(this.a, this.b, {super.key, this.c, required this.d});
 
   final int a;
 
@@ -118,6 +108,6 @@ class $7Func extends ConsumerWidget {
   final double d;
 
   @override
-  Widget build(BuildContext _context, WidgetRef _ref) =>
+  Widget build(BuildContext context, WidgetRef ref) =>
       _$7func(a, b, c: c, d: d);
 }

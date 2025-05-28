@@ -1,26 +1,24 @@
 name: module_a
 description: A new Flutter package project.
 version: 0.0.1
-homepage:
+publish_to: none
 
 environment:
-  sdk: '>=2.12.0 <3.0.0'
+  sdk: '>=2.12.0 <4.0.0'
 
 dependencies:
   ff_annotation_route_core: any
   flutter:
     sdk: flutter
 
-
-
 dev_dependencies:
   flutter_test:
     sdk: flutter
-# For information on the generic Dart part of this file, see the
-# following page: https://dart.dev/tools/pub/pubspec
+  flutter_lints: any
 
 # The following section is specific to Flutter.
 flutter:
+  uses-material-design: true
 
   # To add assets to your package, add an assets section, like this:
   # assets:

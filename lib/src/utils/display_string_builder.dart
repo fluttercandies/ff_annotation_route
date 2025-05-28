@@ -2,7 +2,7 @@
 
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/nullability_suffix.dart';
-import 'package:analyzer/dart/element/type.dart';
+import 'package:analyzer/dart/element/type.dart' as at;
 import 'package:analyzer/src/dart/element/element.dart';
 import 'package:analyzer/src/dart/element/type.dart';
 import 'package:analyzer/src/dart/element/display_string_builder.dart';
@@ -14,14 +14,10 @@ import 'dart_type_auto_import.dart';
 
 class MyElementDisplayStringBuilder extends ElementDisplayStringBuilder {
   MyElementDisplayStringBuilder({
-    required bool skipAllDynamicArguments,
-    required bool withNullability,
-    bool multiline = false,
-  }) : super(
-          skipAllDynamicArguments: skipAllDynamicArguments,
-          withNullability: withNullability,
-          multiline: multiline,
-        );
+    required super.skipAllDynamicArguments,
+    required super.withNullability,
+    super.multiline,
+  });
   final StringBuffer _buffer = StringBuffer();
 
   @override
@@ -132,7 +128,7 @@ class MyElementDisplayStringBuilder extends ElementDisplayStringBuilder {
   }
 
   @override
-  void writeFunctionType(FunctionType type) {
+  void writeFunctionType(at.FunctionType type) {
     // zmtzawqlp
     if (type.alias != null) {
       final DartTypeAutoImport? dartTypeAutoImport =
@@ -168,7 +164,7 @@ class MyElementDisplayStringBuilder extends ElementDisplayStringBuilder {
   }
 
   @override
-  void writeInterfaceType(InterfaceType type) {
+  void writeInterfaceType(at.InterfaceType type) {
     // zmtzawqlp
     final DartTypeAutoImport? dartTypeAutoImport =
         DartTypeAutoImportHelper().getImport(type);
@@ -405,11 +401,11 @@ class MyElementDisplayStringBuilder extends ElementDisplayStringBuilder {
     }
   }
 
-  void _writeType(DartType type) {
+  void _writeType(at.DartType type) {
     (type as TypeImpl).appendTo(this);
   }
 
-  void _writeTypeArguments(List<DartType> typeArguments) {
+  void _writeTypeArguments(List<at.DartType> typeArguments) {
     if (typeArguments.isEmpty) {
       return;
     }
@@ -430,7 +426,7 @@ class MyElementDisplayStringBuilder extends ElementDisplayStringBuilder {
     _write('>');
   }
 
-  void _writeTypeIfNotObject(String prefix, DartType? type) {
+  void _writeTypeIfNotObject(String prefix, at.DartType? type) {
     if (type != null && !type.isDartCoreObject) {
       _write(prefix);
       _writeType(type);
@@ -450,7 +446,7 @@ class MyElementDisplayStringBuilder extends ElementDisplayStringBuilder {
     _write('>');
   }
 
-  void _writeTypes(List<DartType> types) {
+  void _writeTypes(List<at.DartType> types) {
     for (var i = 0; i < types.length; i++) {
       if (i != 0) {
         _write(', ');
@@ -459,7 +455,7 @@ class MyElementDisplayStringBuilder extends ElementDisplayStringBuilder {
     }
   }
 
-  void _writeTypesIfNotEmpty(String prefix, List<DartType> types) {
+  void _writeTypesIfNotEmpty(String prefix, List<at.DartType> types) {
     if (types.isNotEmpty) {
       _write(prefix);
       _writeTypes(types);
@@ -490,17 +486,17 @@ class MyElementDisplayStringBuilder extends ElementDisplayStringBuilder {
     }
   }
 
-  static FunctionType _uniqueTypeParameters(FunctionType type) {
+  static at.FunctionType _uniqueTypeParameters(at.FunctionType type) {
     if (type.typeFormals.isEmpty) {
       return type;
     }
 
     var referencedTypeParameters = <TypeParameterElement>{};
 
-    void collectTypeParameters(DartType? type) {
-      if (type is TypeParameterType) {
+    void collectTypeParameters(at.DartType? type) {
+      if (type is at.TypeParameterType) {
         referencedTypeParameters.add(type.element);
-      } else if (type is FunctionType) {
+      } else if (type is at.FunctionType) {
         for (var typeParameter in type.typeFormals) {
           collectTypeParameters(typeParameter.bound);
         }
@@ -508,7 +504,7 @@ class MyElementDisplayStringBuilder extends ElementDisplayStringBuilder {
           collectTypeParameters(parameter.type);
         }
         collectTypeParameters(type.returnType);
-      } else if (type is InterfaceType) {
+      } else if (type is at.InterfaceType) {
         for (var typeArgument in type.typeArguments) {
           collectTypeParameters(typeArgument);
         }
