@@ -157,8 +157,11 @@ class RoutesFileGenerator {
   static File deleteFile(
       {required String packageName, required Directory lib}) {
     final String? routesFileOutputPath = Args().routesFileOutputPath;
-
-    final String name = '${packageName}_routes.dart';
+    String g = '';
+    if (Args().gSuffix.value == true) {
+      g = '.g';
+    }
+    final String name = '${packageName}_routes$g.dart';
     String routePath;
 
     if (routesFileOutputPath != null) {

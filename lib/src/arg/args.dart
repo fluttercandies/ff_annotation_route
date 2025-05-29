@@ -1,4 +1,5 @@
 import 'package:ff_annotation_route/src/arg/arguments_case_sensitive.dart';
+import 'package:ff_annotation_route/src/arg/g_suffix.dart';
 import 'package:ff_annotation_route/src/arg/null_safety.dart';
 
 import 'argument_names.dart';
@@ -39,7 +40,8 @@ class Args {
         fastMode = FastMode(),
         argumentNames = ArgumentNames(),
         _generateFileImport = GenerateFileImport(),
-        generateFileImportPackages = GenerateFileImportPackages();
+        generateFileImportPackages = GenerateFileImportPackages(),
+        gSuffix = GSuffix();
   static Args? _args;
   final Help help;
   final Path _path;
@@ -58,7 +60,7 @@ class Args {
   final ArgumentNames argumentNames;
   final GenerateFileImport _generateFileImport;
   final GenerateFileImportPackages generateFileImportPackages;
-
+  final GSuffix gSuffix;
   String get className => name.value!;
 
   List<String>? get gitNames => git.value;

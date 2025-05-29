@@ -39,8 +39,13 @@ abstract class RouteGeneratorBase {
 
   bool get hasAnnotationRoute => _lib != null && _fileInfoList.isNotEmpty;
 
-  String get packageImport =>
-      "import 'package:$packageName/${packageName}_route.dart';";
+  String get packageImport {
+    String g = '';
+    if (Args().gSuffix.value == true) {
+      g = '.g';
+    }
+    return "import 'package:$packageName/${packageName}_route$g.dart';";
+  }
 
   // get imports in root
   String get imports {
@@ -239,7 +244,11 @@ abstract class RouteGeneratorBase {
   }
 
   File deleteFile() {
-    final String name = '${packageName}_route.dart';
+    String g = '';
+    if (Args().gSuffix.value == true) {
+      g = '.g';
+    }
+    final String name = '${packageName}_route$g.dart';
     String routePath;
     if (isRoot && Args().outputPath != null) {
       routePath = path.join(_lib!.path, Args().outputPath, name);
