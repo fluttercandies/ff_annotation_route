@@ -473,7 +473,7 @@ class _FlutterCandiesTestPageF {
             Function(int, autoimport012d709d6940bda4da65ad673a93e8a3.MyInt Function(int))
         function4,
     autoimport012d709d6940bda4da65ad673a93e8a3.TypedefClass1 typedefClass1 =
-        const type.autoimport012d709d6940bda4da65ad673a93e8a3.TypedefClass1(1),
+        const autoimport012d709d6940bda4da65ad673a93e8a3.TypedefClass1(1),
   }) =>
       <String, dynamic>{
         'key': key,

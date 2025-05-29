@@ -14,7 +14,6 @@ import 'package:example_fast_mode/src/model/test_model1.dart'
     show TestMode4, TestMode1, TestMode2;
 import 'package:example_fast_mode/src/model/test_model1.dart';
 import 'package:flutter/foundation.dart';
-import 'package:module_a/src/mode/mode.dart' as module_a;
 
 import 'src/pages/main_page.dart';
 
@@ -195,7 +194,7 @@ class Routes {
   ///
   /// [constructors] :
   ///
-  /// testpageb1afeb9c992bb2f1098d1acc6becb2a6c.TestPageB : [Key? key, TestMode? argument, String title]
+  /// testpageb1afeb9c992bb2f1098d1acc6becb2a6c.TestPageB : [Key? key, String? argument]
   ///
   /// [pageRouteType] : PageRouteType.material
   ///
@@ -599,13 +598,11 @@ class _FlutterCandiesTestPageBModuleA {
 
   Map<String, dynamic> d({
     Key? key,
-    TestMode? argument,
-    String title = 'dddd',
+    String? argument,
   }) =>
       <String, dynamic>{
         'key': key,
         'argument': argument,
-        'title': title,
       };
 
   @override

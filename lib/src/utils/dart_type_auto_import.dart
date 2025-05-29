@@ -367,6 +367,15 @@ class MyToSourceVisitor extends ToSourceVisitor {
     _visitNode(node.identifier);
   }
 
+  @override
+  void visitImportPrefixReference(ImportPrefixReference node) {
+    // remove default prefix
+    if (!prefixs.contains(node.name.lexeme)) {
+      sink.write(node.name.lexeme);
+      sink.write('.');
+    }
+  }
+
   /// Print the given [node], printing the [prefix] before the node,
   /// and [suffix] after the node, if it is non-`null`.
   void _visitNode(AstNode? node, {String prefix = '', String suffix = ''}) {

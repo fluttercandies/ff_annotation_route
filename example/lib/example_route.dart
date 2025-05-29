@@ -149,8 +149,7 @@ FFRouteSettings getRouteSettings({
           typedefClass1:
               asT<autoimport012d709d6940bda4da65ad673a93e8a3.TypedefClass1>(
             safeArguments['typedefclass1'],
-            const type.autoimport012d709d6940bda4da65ad673a93e8a3.TypedefClass1(
-                1),
+            const autoimport012d709d6940bda4da65ad673a93e8a3.TypedefClass1(1),
           )!,
         ),
         routeName: 'TestPageF',
