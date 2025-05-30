@@ -1,3 +1,8 @@
+## 11.0.0
+
+* Upgrade analyzer to latest version for Alex. (dog head)
+* Support new Syntax Sugar.
+
 ## 10.2.0
 
 * Add '--g-suffix' that Whether the generated file is end with .g

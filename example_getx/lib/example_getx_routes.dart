@@ -93,14 +93,10 @@ class _BindingsPage {
 
   String get name => '/BindingsPage';
 
-  Map<String, dynamic> d({
-    Key? key,
-    String? argument,
-  }) =>
-      <String, dynamic>{
-        'key': key,
-        'argument': argument,
-      };
+  Map<String, dynamic> d({Key? key, String? argument}) => <String, dynamic>{
+    'key': key,
+    'argument': argument,
+  };
 
   @override
   String toString() => name;
@@ -111,12 +107,7 @@ class _ControllerPage {
 
   String get name => '/ControllerPage';
 
-  Map<String, dynamic> d({
-    Key? key,
-  }) =>
-      <String, dynamic>{
-        'key': key,
-      };
+  Map<String, dynamic> d({Key? key}) => <String, dynamic>{'key': key};
 
   @override
   String toString() => name;
@@ -127,12 +118,7 @@ class _CounterPage {
 
   String get name => '/CounterPage';
 
-  Map<String, dynamic> d({
-    Key? key,
-  }) =>
-      <String, dynamic>{
-        'key': key,
-      };
+  Map<String, dynamic> d({Key? key}) => <String, dynamic>{'key': key};
 
   @override
   String toString() => name;
@@ -143,14 +129,10 @@ class _ItemPage {
 
   String get name => '/ItemPage';
 
-  Map<String, dynamic> d({
-    required int index,
-    Key? key,
-  }) =>
-      <String, dynamic>{
-        'index': index,
-        'key': key,
-      };
+  Map<String, dynamic> d({required int index, Key? key}) => <String, dynamic>{
+    'index': index,
+    'key': key,
+  };
 
   @override
   String toString() => name;
@@ -164,11 +146,7 @@ class _FluttercandiesDemogrouppage {
   Map<String, dynamic> d({
     Key? key,
     required MapEntry<String, List<DemoRouteResult>> keyValue,
-  }) =>
-      <String, dynamic>{
-        'key': key,
-        'keyValue': keyValue,
-      };
+  }) => <String, dynamic>{'key': key, 'keyValue': keyValue};
 
   @override
   String toString() => name;
@@ -179,12 +157,7 @@ class _FluttercandiesMainpage {
 
   String get name => 'fluttercandies://mainpage';
 
-  Map<String, dynamic> d({
-    Key? key,
-  }) =>
-      <String, dynamic>{
-        'key': key,
-      };
+  Map<String, dynamic> d({Key? key}) => <String, dynamic>{'key': key};
 
   @override
   String toString() => name;

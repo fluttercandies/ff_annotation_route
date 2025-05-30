@@ -13,14 +13,16 @@ class RouteInfo extends RouteInfoBase {
     required super.className,
     required this.classElement,
     required super.fileInfo,
+    required this.element,
   }) : constructors = classElement.constructors
             .where((e) => e.name.toString() != '_')
             .toList();
 
   final ClassElement classElement;
   final List<ConstructorElement> constructors;
+  final CompilationUnitElement element;
 
-  List<String> get prefixes => classElement.library.prefixes
+  List<String> get prefixes => element.libraryImportPrefixes
       .map((PrefixElement e) => e.displayName)
       .toList();
 

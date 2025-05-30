@@ -5,7 +5,6 @@ import 'package:analyzer/dart/analysis/analysis_context.dart';
 import 'package:analyzer/dart/analysis/analysis_context_collection.dart';
 import 'package:analyzer/dart/analysis/results.dart';
 import 'package:analyzer/dart/analysis/session.dart';
-import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/constant/value.dart';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:collection/collection.dart' show IterableExtension;
@@ -80,6 +79,7 @@ class RouteGenerator extends RouteGeneratorBase {
 
         for (final ClassElement classElement in fileElement.classes) {
           findFFRoute(
+            fileElement,
             fileInfo,
             classElement,
             ffRouteFileImportPath,
@@ -92,7 +92,7 @@ class RouteGenerator extends RouteGeneratorBase {
 
         if (fileInfo.routes.isNotEmpty) {
           for (final LibraryImportElement importElement
-              in fileElement.library.libraryImports) {
+              in fileElement.libraryImports) {
             _findAutoImport(
               importElement,
               fileInfo,
@@ -150,7 +150,7 @@ class RouteGenerator extends RouteGeneratorBase {
     }
 
     if (widgetFunctionMap.isNotEmpty) {
-      for (final PartElement partElement in fileElement.library.parts) {
+      for (final PartElement partElement in fileElement.parts) {
         final DirectiveUri uri = partElement.uri;
         String? path;
         if (uri is DirectiveUriWithUnit) {
@@ -165,7 +165,9 @@ class RouteGenerator extends RouteGeneratorBase {
             if (widgetFunctionMap.containsKey(classElement.name)) {
               final DartObject? annotation =
                   widgetFunctionMap[classElement.name];
+
               findFFRoute(
+                element,
                 fileInfo,
                 classElement,
                 ffRouteFileImportPath,
@@ -185,8 +187,12 @@ class RouteGenerator extends RouteGeneratorBase {
         .element;
   }
 
-  void findFFRoute(FileInfo fileInfo, ClassElement classElement,
-      String ffRouteFileImportPath, String packageName,
+  void findFFRoute(
+      CompilationUnitElement element,
+      FileInfo fileInfo,
+      ClassElement classElement,
+      String ffRouteFileImportPath,
+      String packageName,
       {DartObject? annotation}) {
     annotation ??= fFRouteTypeChecker.firstAnnotationOf(
       classElement,
@@ -311,6 +317,7 @@ class RouteGenerator extends RouteGeneratorBase {
         ffRoute: ffRoute,
         classElement: classElement,
         fileInfo: fileInfo,
+        element: element,
       );
 
       fileInfo.routes.add(routeInfo);

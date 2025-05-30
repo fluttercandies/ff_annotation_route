@@ -34,78 +34,61 @@ FFRouteSettings getRouteSettings({
       return FFRouteSettings(
         name: name,
         arguments: arguments,
-        builder: () => MainPage(
-          key: asT<Key?>(
-            safeArguments['key'],
-          ),
-        ),
+        builder: () => MainPage(key: asT<Key?>(safeArguments['key'])),
+
         routeName: 'MainPage',
       );
     case '/demogrouppage':
       return FFRouteSettings(
         name: name,
         arguments: arguments,
-        builder: () => DemoGroupPage(
-          key: asT<Key?>(
-            safeArguments['key'],
-          ),
-          keyValue: asT<MapEntry<String, List<DemoRouteResult>>>(
-            safeArguments['keyValue'],
-          )!,
-        ),
+        builder:
+            () => DemoGroupPage(
+              key: asT<Key?>(safeArguments['key']),
+              keyValue:
+                  asT<MapEntry<String, List<DemoRouteResult>>>(
+                    safeArguments['keyValue'],
+                  )!,
+            ),
+
         routeName: 'DemoGroupPage',
       );
     case '/testPageA':
       return FFRouteSettings(
         name: name,
         arguments: arguments,
-        builder: () => TestPageA(
-          key: asT<Key?>(
-            safeArguments['key'],
-          ),
-        ),
+        builder: () => TestPageA(key: asT<Key?>(safeArguments['key'])),
+
         routeName: 'testPageA',
+
         description: 'This is test page A.',
-        exts: <String, dynamic>{
-          'group': 'Simple',
-          'order': 0,
-        },
+        exts: <String, dynamic>{'group': 'Simple', 'order': 0},
       );
     case '/testPageB':
       return FFRouteSettings(
         name: name,
         arguments: arguments,
-        builder: () => TestPageB(
-          key: asT<Key?>(
-            safeArguments['key'],
-          ),
-          argument: asT<String?>(
-            safeArguments['argument'],
-          ),
-        ),
+        builder:
+            () => TestPageB(
+              key: asT<Key?>(safeArguments['key']),
+              argument: asT<String?>(safeArguments['argument']),
+            ),
+
         routeName: 'testPageB ',
         pageRouteType: PageRouteType.material,
         description: "This is test ' page B.",
-        exts: <String, dynamic>{
-          'group': 'Simple',
-          'order': 1,
-        },
+        exts: <String, dynamic>{'group': 'Simple', 'order': 1},
       );
     case '/testPageC':
       return FFRouteSettings(
         name: name,
         arguments: arguments,
-        builder: () => TestPageC(
-          key: asT<Key?>(
-            safeArguments['key'],
-          ),
-        ),
+        builder: () => TestPageC(key: asT<Key?>(safeArguments['key'])),
+
         routeName: 'testPageC',
+
         description: 'Push/Pop test page.',
-        exts: <String, dynamic>{
-          'group': 'Simple',
-          'order': 2,
-        },
+        exts: <String, dynamic>{'group': 'Simple', 'order': 2},
       );
     case '/testPageD':
       return FFRouteSettings(
@@ -117,62 +100,37 @@ FFRouteSettings getRouteSettings({
           switch (ctorName) {
             case 'another0':
               return TestPageD.another0(
-                argument: asT<String?>(
-                  safeArguments['argument'],
-                ),
+                argument: asT<String?>(safeArguments['argument']),
               );
             case 'another1':
               return TestPageD.another1(
-                asT<String?>(
-                  safeArguments['argument'],
-                ),
-                asT<bool?>(
-                  safeArguments['optional'],
-                  false,
-                ),
+                asT<String?>(safeArguments['argument']),
+                asT<bool?>(safeArguments['optional'], false),
               );
             case 'another2':
               return TestPageD.another2(
-                asT<String?>(
-                  safeArguments['argument'],
-                ),
+                asT<String?>(safeArguments['argument']),
               );
             case 'another3':
               return TestPageD.another3(
-                asT<String?>(
-                  safeArguments['argument'],
-                ),
-                optional: asT<bool?>(
-                  safeArguments['optional'],
-                ),
+                asT<String?>(safeArguments['argument']),
+                optional: asT<bool?>(safeArguments['optional']),
               );
             case '':
             default:
               return TestPageD(
-                asT<String?>(
-                  safeArguments['argument'],
-                ),
-                key: asT<Key?>(
-                  safeArguments['key'],
-                ),
-                optional: asT<bool?>(
-                  safeArguments['optional'],
-                  false,
-                ),
-                id: asT<String?>(
-                  safeArguments['id'],
-                  'flutterCandies',
-                ),
+                asT<String?>(safeArguments['argument']),
+                key: asT<Key?>(safeArguments['key']),
+                optional: asT<bool?>(safeArguments['optional'], false),
+                id: asT<String?>(safeArguments['id'], 'flutterCandies'),
               );
           }
         },
+
         routeName: 'testPageD ',
         pageRouteType: PageRouteType.material,
         description: "This is test ' page D.",
-        exts: <String, dynamic>{
-          'group': 'Complex',
-          'order': 0,
-        },
+        exts: <String, dynamic>{'group': 'Complex', 'order': 0},
       );
     case '/testPageE':
       return FFRouteSettings(
@@ -186,109 +144,82 @@ FFRouteSettings getRouteSettings({
               return TestPageE.test();
             case 'requiredC':
               return TestPageE.requiredC(
-                testMode: asT<TestMode?>(
-                  safeArguments['testMode'],
-                ),
+                testMode: asT<TestMode?>(safeArguments['testMode']),
               );
             case '':
             default:
               return TestPageE(
-                key: asT<Key?>(
-                  safeArguments['key'],
-                ),
+                key: asT<Key?>(safeArguments['key']),
                 testMode: asT<TestMode?>(
                   safeArguments['testMode'],
                   const TestMode(id: 2, isTest: false),
                 ),
-                testMode1: asT<TestMode1?>(
-                  safeArguments['testMode1'],
-                ),
+                testMode1: asT<TestMode1?>(safeArguments['testMode1']),
               );
           }
         },
+
         routeName: 'testPageE',
+
         description: 'Show how to push new page with arguments(class)',
-        exts: <String, dynamic>{
-          'group': 'Complex',
-          'order': 1,
-        },
+        exts: <String, dynamic>{'group': 'Complex', 'order': 1},
       );
     case '/testPageF':
       return FFRouteSettings(
         name: name,
         arguments: arguments,
-        builder: () => TestPageF(
-          asT<List<int>?>(
-            safeArguments['list'],
-          ),
-          key: asT<Key?>(
-            safeArguments['key'],
-          ),
-          map: asT<Map<String, String>?>(
-            safeArguments['map'],
-          ),
-          testMode: asT<TestMode?>(
-            safeArguments['testMode'],
-          ),
-        ),
+        builder:
+            () => TestPageF(
+              asT<List<int>?>(safeArguments['list']),
+              key: asT<Key?>(safeArguments['key']),
+              map: asT<Map<String, String>?>(safeArguments['map']),
+              testMode: asT<TestMode?>(safeArguments['testMode']),
+            ),
+
         routeName: 'testPageF',
         pageRouteType: PageRouteType.material,
         description: 'This is test page F.',
-        exts: <String, dynamic>{
-          'group': 'Complex',
-          'order': 2,
-        },
+        exts: <String, dynamic>{'group': 'Complex', 'order': 2},
       );
     case '/testPageG':
       return FFRouteSettings(
         name: name,
         arguments: arguments,
-        builder: () => TestPageG(
-          key: asT<Key?>(
-            safeArguments['key'],
-          ),
-        ),
+        builder: () => TestPageG(key: asT<Key?>(safeArguments['key'])),
+
         routeName: 'testPageG',
+
         description: 'Pop with result test page(push from TestPageC)',
-        exts: <String, dynamic>{
-          'group': 'Simple',
-          'order': 3,
-        },
+        exts: <String, dynamic>{'group': 'Simple', 'order': 3},
       );
     case 'ChildRouterPage':
       return FFRouteSettings(
         name: name,
         arguments: arguments,
-        builder: () => ChildRouterPage(
-          key: asT<Key?>(
-            safeArguments['key'],
-          ),
-        ),
+        builder: () => ChildRouterPage(key: asT<Key?>(safeArguments['key'])),
+
         routeName: 'ChildRouterPage',
+
         description: 'ChildRouterPage',
       );
     case 'NestedMainPage':
       return FFRouteSettings(
         name: name,
         arguments: arguments,
-        builder: () => NestedMainPage(
-          key: asT<Key?>(
-            safeArguments['key'],
-          ),
-        ),
+        builder: () => NestedMainPage(key: asT<Key?>(safeArguments['key'])),
+
         routeName: 'NestedMainPage',
+
         description: 'NestedMainPage',
       );
     case 'NestedTestPage':
       return FFRouteSettings(
         name: name,
         arguments: arguments,
-        builder: () => NestedTestPage(
-          key: asT<Key?>(
-            safeArguments['key'],
-          ),
-        ),
+        builder: () => NestedTestPage(key: asT<Key?>(safeArguments['key'])),
+
         routeName: 'NestedTestPage',
+
         description: 'NestedTestPage',
       );
     default:

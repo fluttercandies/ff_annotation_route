@@ -29,87 +29,68 @@ FFRouteSettings getRouteSettings({
       return FFRouteSettings(
         name: name,
         arguments: arguments,
-        builder: () => BindingsPage(
-          key: asT<Key?>(
-            safeArguments['key'],
-          ),
-          argument: asT<String?>(
-            safeArguments['argument'],
-          ),
-        ),
-        codes: <String, dynamic>{
-          'binding': Bindings1(),
-        },
+        builder:
+            () => BindingsPage(
+              key: asT<Key?>(safeArguments['key']),
+              argument: asT<String?>(safeArguments['argument']),
+            ),
+        codes: <String, dynamic>{'binding': Bindings1()},
+
         routeName: 'BindingsPage',
+
         description: 'how to use Bindings with Annotation.',
-        exts: <String, dynamic>{
-          'group': 'demo',
-          'order': 1,
-        },
+        exts: <String, dynamic>{'group': 'demo', 'order': 1},
       );
     case '/ControllerPage':
       return FFRouteSettings(
         name: name,
         arguments: arguments,
-        builder: () => ControllerPage(
-          key: asT<Key?>(
-            safeArguments['key'],
-          ),
-        ),
+        builder: () => ControllerPage(key: asT<Key?>(safeArguments['key'])),
+
         routeName: 'ControllerPage',
+
         description: 'This is getX demo.',
-        exts: <String, dynamic>{
-          'group': 'demo',
-          'order': 0,
-        },
+        exts: <String, dynamic>{'group': 'demo', 'order': 0},
       );
     case '/CounterPage':
       return FFRouteSettings(
         name: name,
         arguments: arguments,
-        builder: () => CounterPage(
-          key: asT<Key?>(
-            safeArguments['key'],
-          ),
-        ),
+        builder: () => CounterPage(key: asT<Key?>(safeArguments['key'])),
+
         description: 'This is getX counter demo.',
       );
     case '/ItemPage':
       return FFRouteSettings(
         name: name,
         arguments: arguments,
-        builder: () => ItemPage(
-          index: asT<int>(
-            safeArguments['index'],
-          )!,
-          key: asT<Key?>(
-            safeArguments['key'],
-          ),
-        ),
+        builder:
+            () => ItemPage(
+              index: asT<int>(safeArguments['index'])!,
+              key: asT<Key?>(safeArguments['key']),
+            ),
       );
     case 'fluttercandies://demogrouppage':
       return FFRouteSettings(
         name: name,
         arguments: arguments,
-        builder: () => DemoGroupPage(
-          key: asT<Key?>(
-            safeArguments['key'],
-          ),
-          keyValue: asT<MapEntry<String, List<DemoRouteResult>>>(
-            safeArguments['keyValue'],
-          )!,
-        ),
+        builder:
+            () => DemoGroupPage(
+              key: asT<Key?>(safeArguments['key']),
+              keyValue:
+                  asT<MapEntry<String, List<DemoRouteResult>>>(
+                    safeArguments['keyValue'],
+                  )!,
+            ),
+
         routeName: 'DemoGroupPage',
       );
     case 'fluttercandies://mainpage':
       return FFRouteSettings(
         name: name,
         arguments: arguments,
-        builder: () => MainPage(
-          key: asT<Key?>(
-            safeArguments['key'],
-          ),
-        ),
+        builder: () => MainPage(key: asT<Key?>(safeArguments['key'])),
+
         routeName: 'MainPage',
       );
     default:

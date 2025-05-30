@@ -94,16 +94,18 @@ class DartTypeAutoImportHelper {
     if (type is InterfaceTypeImpl) {
       final MyElementDisplayStringBuilder builder =
           MyElementDisplayStringBuilder(
-        skipAllDynamicArguments: false,
+        // ignore: deprecated_member_use_from_same_package
         withNullability: true,
+        preferTypeAlias: true,
       );
       builder.writeInterfaceType(type);
       return builder.toString();
     } else if (type is FunctionTypeImpl) {
       final MyElementDisplayStringBuilder builder =
           MyElementDisplayStringBuilder(
-        skipAllDynamicArguments: false,
+        // ignore: deprecated_member_use_from_same_package
         withNullability: true,
+        preferTypeAlias: true,
       );
       builder.writeFunctionType(type);
       return builder.toString();
