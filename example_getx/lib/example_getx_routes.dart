@@ -35,7 +35,7 @@ class Routes {
   ///
   /// [constructors] :
   ///
-  /// BindingsPage : [Key? key, String? argument]
+  /// BindingsPage : [String? argument]
   ///
   /// [exts] : {'group': 'demo', 'order': 1}
   static const _BindingsPage bindingsPage = _BindingsPage();
@@ -48,10 +48,6 @@ class Routes {
   ///
   /// [description] : 'This is getX demo.'
   ///
-  /// [constructors] :
-  ///
-  /// ControllerPage : [Key? key]
-  ///
   /// [exts] : {'group': 'demo', 'order': 0}
   static const _ControllerPage controllerPage = _ControllerPage();
 
@@ -60,10 +56,6 @@ class Routes {
   /// [name] : '/CounterPage'
   ///
   /// [description] : 'This is getX counter demo.'
-  ///
-  /// [constructors] :
-  ///
-  /// CounterPage : [Key? key]
   static const _CounterPage counterPage = _CounterPage();
 
   /// '/ItemPage'
@@ -72,7 +64,7 @@ class Routes {
   ///
   /// [constructors] :
   ///
-  /// ItemPage : [int(required) index, Key? key]
+  /// ItemPage : [int(required) index]
   static const _ItemPage itemPage = _ItemPage();
 
   /// 'DemoGroupPage'
@@ -83,7 +75,7 @@ class Routes {
   ///
   /// [constructors] :
   ///
-  /// DemoGroupPage : [Key? key, MapEntry<String, List<DemoRouteResult>>(required) keyValue]
+  /// DemoGroupPage : [MapEntry<String, List<DemoRouteResult>>(required) keyValue]
   static const _FluttercandiesDemogrouppage fluttercandiesDemogrouppage =
       _FluttercandiesDemogrouppage();
 
@@ -92,10 +84,6 @@ class Routes {
   /// [name] : 'fluttercandies://mainpage'
   ///
   /// [routeName] : 'MainPage'
-  ///
-  /// [constructors] :
-  ///
-  /// MainPage : [Key? key]
   static const _FluttercandiesMainpage fluttercandiesMainpage =
       _FluttercandiesMainpage();
 }

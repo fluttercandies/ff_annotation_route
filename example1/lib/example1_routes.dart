@@ -37,10 +37,6 @@ class Routes {
   /// [name] : '/'
   ///
   /// [routeName] : 'MainPage'
-  ///
-  /// [constructors] :
-  ///
-  /// MainPage : [Key? key]
   static const _Root root = _Root();
 
   /// 'DemoGroupPage'
@@ -51,7 +47,7 @@ class Routes {
   ///
   /// [constructors] :
   ///
-  /// DemoGroupPage : [Key? key, MapEntry<String, List<DemoRouteResult>>(required) keyValue]
+  /// DemoGroupPage : [MapEntry<String, List<DemoRouteResult>>(required) keyValue]
   static const _Demogrouppage demogrouppage = _Demogrouppage();
 
   /// 'This is test page A.'
@@ -61,10 +57,6 @@ class Routes {
   /// [routeName] : 'testPageA'
   ///
   /// [description] : 'This is test page A.'
-  ///
-  /// [constructors] :
-  ///
-  /// TestPageA : [Key? key]
   ///
   /// [exts] : {'group': 'Simple', 'order': 0}
   static const _TestPageA testPageA = _TestPageA();
@@ -79,7 +71,7 @@ class Routes {
   ///
   /// [constructors] :
   ///
-  /// TestPageB : [Key? key, String? argument]
+  /// TestPageB : [String? argument]
   ///
   /// [pageRouteType] : PageRouteType.material
   ///
@@ -94,10 +86,6 @@ class Routes {
   ///
   /// [description] : 'Push/Pop test page.'
   ///
-  /// [constructors] :
-  ///
-  /// TestPageC : [Key? key]
-  ///
   /// [exts] : {'group': 'Simple', 'order': 2}
   static const _TestPageC testPageC = _TestPageC();
 
@@ -111,7 +99,7 @@ class Routes {
   ///
   /// [constructors] :
   ///
-  /// TestPageD : [String?(required) argument, Key? key, bool? optional, String? id]
+  /// TestPageD : [String?(required) argument, bool? optional, String? id]
   ///
   /// TestPageD.another0 : [String?(required) argument]
   ///
@@ -136,7 +124,7 @@ class Routes {
   ///
   /// [constructors] :
   ///
-  /// TestPageE : [Key? key, TestMode? testMode, TestMode1? testMode1]
+  /// TestPageE : [TestMode? testMode, TestMode1? testMode1]
   ///
   /// TestPageE.test : []
   ///
@@ -155,7 +143,7 @@ class Routes {
   ///
   /// [constructors] :
   ///
-  /// TestPageF : [List<int>?(required) list, Key? key, Map<String, String>? map, TestMode? testMode]
+  /// TestPageF : [List<int>?(required) list, Map<String, String>? map, TestMode? testMode]
   ///
   /// [pageRouteType] : PageRouteType.material
   ///
@@ -170,10 +158,6 @@ class Routes {
   ///
   /// [description] : 'Pop with result test page(push from TestPageC)'
   ///
-  /// [constructors] :
-  ///
-  /// TestPageG : [Key? key]
-  ///
   /// [exts] : {'group': 'Simple', 'order': 3}
   static const _TestPageG testPageG = _TestPageG();
 
@@ -184,10 +168,6 @@ class Routes {
   /// [routeName] : 'ChildRouterPage'
   ///
   /// [description] : 'ChildRouterPage'
-  ///
-  /// [constructors] :
-  ///
-  /// ChildRouterPage : [Key? key]
   static const _ChildRouterPage childRouterPage = _ChildRouterPage();
 
   /// 'NestedMainPage'
@@ -197,10 +177,6 @@ class Routes {
   /// [routeName] : 'NestedMainPage'
   ///
   /// [description] : 'NestedMainPage'
-  ///
-  /// [constructors] :
-  ///
-  /// NestedMainPage : [Key? key]
   static const _NestedMainPage nestedMainPage = _NestedMainPage();
 
   /// 'NestedTestPage'
@@ -210,10 +186,6 @@ class Routes {
   /// [routeName] : 'NestedTestPage'
   ///
   /// [description] : 'NestedTestPage'
-  ///
-  /// [constructors] :
-  ///
-  /// NestedTestPage : [Key? key]
   static const _NestedTestPage nestedTestPage = _NestedTestPage();
 }
 

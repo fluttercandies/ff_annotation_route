@@ -14,6 +14,7 @@ import 'package:example_fast_mode/src/model/test_model1.dart'
     show TestMode4, TestMode1, TestMode2;
 import 'package:example_fast_mode/src/model/test_model1.dart';
 import 'package:flutter/foundation.dart';
+import 'package:module_a/src/mode/mode.dart' as module_a;
 
 import 'src/pages/main_page.dart';
 
@@ -194,7 +195,7 @@ class Routes {
   ///
   /// [constructors] :
   ///
-  /// testpageb1afeb9c992bb2f1098d1acc6becb2a6c.TestPageB : [Key? key, String? argument]
+  /// testpageb1afeb9c992bb2f1098d1acc6becb2a6c.TestPageB : [TestMode? argument, String title]
   ///
   /// [pageRouteType] : PageRouteType.material
   ///
@@ -248,10 +249,6 @@ class Routes {
   ///
   /// [description] : 'This is test page c in other module.'
   ///
-  /// [constructors] :
-  ///
-  /// testpagec23b284ff92265eaaa6c065105cf47f2a.TestPageC : [Key? key]
-  ///
   /// [exts] : {'group': 'Simple', 'order': 2}
   static const _FlutterCandiesTestPageC flutterCandiesTestPageC =
       _FlutterCandiesTestPageC();
@@ -304,10 +301,6 @@ class Routes {
   ///
   /// [description] : 'This is test page D. in module a'
   ///
-  /// [constructors] :
-  ///
-  /// testpaged05a916dda13cd9d2b973ee75b8e74f9d.TestPageD : [Key? key]
-  ///
   /// [exts] : {'group': 'Simple', 'order': 0}
   static const _FlutterCandiesTestPageDModuleA flutterCandiesTestPageDModuleA =
       _FlutterCandiesTestPageDModuleA();
@@ -339,10 +332,6 @@ class Routes {
   /// [routeName] : 'testPageA'
   ///
   /// [description] : 'This is test page F. in module a'
-  ///
-  /// [constructors] :
-  ///
-  /// TestPageF : [Key? key]
   ///
   /// [exts] : {'group': 'Simple', 'order': 0}
   static const _FlutterCandiesTestPageFModuleA flutterCandiesTestPageFModuleA =
@@ -598,11 +587,13 @@ class _FlutterCandiesTestPageBModuleA {
 
   Map<String, dynamic> d({
     Key? key,
-    String? argument,
+    TestMode? argument,
+    String title = 'dddd',
   }) =>
       <String, dynamic>{
         'key': key,
         'argument': argument,
+        'title': title,
       };
 
   @override
