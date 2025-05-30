@@ -5,7 +5,7 @@
 // fast mode: true
 // version: 10.1.0
 // **************************************************************************
-// ignore_for_file: duplicate_import,implementation_imports,library_private_types_in_public_api,multiple_combinators,prefer_const_literals_to_create_immutables,unintended_html_in_doc_comment,unnecessary_import,unused_import,unused_local_variable,unused_shown_name
+// ignore_for_file: duplicate_import,implementation_imports,library_private_types_in_public_api,multiple_combinators,prefer_const_literals_to_create_immutables,unintended_html_in_doc_comment,unnecessary_import,unused_import,unused_local_variable,unused_shown_name, unnecessary_library_name
 import 'package:example_fast_mode/src/model/test_model.dart'
     show TestMode
     hide TestMode2;
@@ -14,7 +14,6 @@ import 'package:example_fast_mode/src/model/test_model1.dart'
     show TestMode4, TestMode1, TestMode2;
 import 'package:example_fast_mode/src/model/test_model1.dart';
 import 'package:flutter/foundation.dart';
-import 'package:module_a/src/mode/mode.dart' as module_a;
 
 import 'src/pages/main_page.dart';
 
@@ -195,7 +194,7 @@ class Routes {
   ///
   /// [constructors] :
   ///
-  /// testpageb1afeb9c992bb2f1098d1acc6becb2a6c.TestPageB : [TestMode? argument, String title]
+  /// testpageb1afeb9c992bb2f1098d1acc6becb2a6c.TestPageB : [String? argument]
   ///
   /// [pageRouteType] : PageRouteType.material
   ///
@@ -587,13 +586,11 @@ class _FlutterCandiesTestPageBModuleA {
 
   Map<String, dynamic> d({
     Key? key,
-    TestMode? argument,
-    String title = 'dddd',
+    String? argument,
   }) =>
       <String, dynamic>{
         'key': key,
         'argument': argument,
-        'title': title,
       };
 
   @override

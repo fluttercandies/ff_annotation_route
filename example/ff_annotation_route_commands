@@ -1,1 +1,1 @@
---super-arguments --null-safety --no-arguments-case-sensitive -s  --no-fast-mode --argument-names --g-suffix
+--super-arguments --null-safety --no-arguments-case-sensitive -s  --no-fast-mode --argument-names --no-g-suffix

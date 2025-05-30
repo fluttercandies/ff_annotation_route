@@ -5,7 +5,7 @@
 // fast mode: true
 // version: 10.1.0
 // **************************************************************************
-// ignore_for_file: duplicate_import,implementation_imports,library_private_types_in_public_api,multiple_combinators,prefer_const_literals_to_create_immutables,unintended_html_in_doc_comment,unnecessary_import,unused_import,unused_local_variable,unused_shown_name
+// ignore_for_file: duplicate_import,implementation_imports,library_private_types_in_public_api,multiple_combinators,prefer_const_literals_to_create_immutables,unintended_html_in_doc_comment,unnecessary_import,unused_import,unused_local_variable,unused_shown_name, unnecessary_library_name
 import 'package:example_fast_mode/src/model/test_model.dart'
     show TestMode
     hide TestMode2;
@@ -23,7 +23,6 @@ import 'package:module_a/module_a_route.dart'
     as testpaged05a916dda13cd9d2b973ee75b8e74f9d;
 import 'package:module_a/module_a_route.dart'
     hide TestPageB, TestPageC, TestPageD;
-import 'package:module_a/src/mode/mode.dart' as module_a;
 
 import 'src/pages/complex/test_page_d.dart'
     as testpaged6c4b232f91f77ae9eb7103223363b84e;
@@ -287,13 +286,9 @@ FFRouteSettings getRouteSettings({
           key: asT<Key?>(
             safeArguments['key'],
           ),
-          argument: asT<TestMode?>(
+          argument: asT<String?>(
             safeArguments['argument'],
           ),
-          title: asT<String>(
-            safeArguments['title'],
-            'dddd',
-          )!,
         ),
         routeName: 'testPageB ',
         pageRouteType: PageRouteType.material,
