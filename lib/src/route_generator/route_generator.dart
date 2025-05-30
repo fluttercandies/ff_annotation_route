@@ -91,8 +91,8 @@ class RouteGenerator extends RouteGeneratorBase {
             fileElement, context, fileInfo, ffRouteFileImportPath);
 
         if (fileInfo.routes.isNotEmpty) {
-          for (final LibraryImportElement importElement
-              in fileElement.library.libraryImports) {
+          for (final LibraryElement importElement
+              in fileElement.library.importedLibraries) {
             _findAutoImport(
               importElement,
               fileInfo,
@@ -111,7 +111,7 @@ class RouteGenerator extends RouteGeneratorBase {
     }
   }
 
-  void _findAutoImport(LibraryImportElement importElement, FileInfo fileInfo,
+  void _findAutoImport(LibraryElement importElement, FileInfo fileInfo,
       TypeChecker typeChecker) {
     final DartObject? fFArgumentImportAnnotation =
         typeChecker.firstAnnotationOf(

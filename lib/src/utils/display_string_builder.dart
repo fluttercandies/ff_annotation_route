@@ -197,7 +197,7 @@ class MyElementDisplayStringBuilder extends ElementDisplayStringBuilder {
   }
 
   @override
-  void writeNeverType(NeverType type) {
+  void writeNeverType(at.NeverType type) {
     _write('Never');
     _writeNullability(type.nullabilitySuffix);
   }
@@ -215,7 +215,7 @@ class MyElementDisplayStringBuilder extends ElementDisplayStringBuilder {
   }
 
   @override
-  void writeRecordType(RecordType type) {
+  void writeRecordType(at.RecordType type) {
     final positionalFields = type.positionalFields;
     final namedFields = type.namedFields;
     final fieldCount = positionalFields.length + namedFields.length;
