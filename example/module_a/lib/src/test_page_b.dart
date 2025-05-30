@@ -17,10 +17,10 @@ import 'package:module_a/src/mode/mode.dart';
 )
 class TestPageB extends StatelessWidget {
   const TestPageB({
-    Key? key,
+    super.key,
     this.argument,
     this.title = 'dddd',
-  }) : super(key: key);
+  });
 
   //const TestPageB._(this.argument);
   final TestMode? argument;

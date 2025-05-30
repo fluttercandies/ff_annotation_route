@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 void main() => runApp(NavigatorDemo());
 
 class NavigatorDemo extends StatefulWidget {
-  const NavigatorDemo({Key? key}) : super(key: key);
+  const NavigatorDemo({super.key});
 
   @override
   State<NavigatorDemo> createState() => _NavigatorDemoState();
@@ -100,7 +100,7 @@ class _NavigatorDemoState extends State<NavigatorDemo> {
 }
 
 class TestPage extends StatelessWidget {
-  const TestPage(this.title, {Key? key}) : super(key: key);
+  const TestPage(this.title, {super.key});
 
   final String title;
 
@@ -119,15 +119,11 @@ class TestPage extends StatelessWidget {
 
 class MyPage extends Page<void> {
   const MyPage({
-    required LocalKey key,
-    required String name,
+    required LocalKey super.key,
+    required String super.name,
     required this.widget,
-    Object? arguments,
-  }) : super(
-          key: key,
-          name: name,
-          arguments: arguments,
-        );
+    super.arguments,
+  });
 
   final Widget widget;
 

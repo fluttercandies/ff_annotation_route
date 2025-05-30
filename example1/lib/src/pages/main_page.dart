@@ -12,7 +12,7 @@ import 'package:url_launcher/url_launcher_string.dart';
   routeName: 'MainPage',
 )
 class MainPage extends StatelessWidget {
-  MainPage({Key? key}) : super(key: key) {
+  MainPage({super.key}) {
     final List<String> routeNames = <String>[];
     routeNames.addAll(example_routes.routeNames);
     routeNames.remove(Routes.root.name);
@@ -114,11 +114,10 @@ class MainPage extends StatelessWidget {
 )
 class DemoGroupPage extends StatelessWidget {
   DemoGroupPage({
-    Key? key,
+    super.key,
     required MapEntry<String, List<DemoRouteResult>> keyValue,
   })  : routes = keyValue.value..sort((a, b) => a.order.compareTo(b.order)),
-        group = keyValue.key,
-        super(key: key);
+        group = keyValue.key;
 
   final List<DemoRouteResult> routes;
   final String group;

@@ -22,13 +22,13 @@ import 'package:flutter/material.dart';
 )
 class TestPageE extends StatelessWidget {
   const TestPageE({
-    Key? key,
+    super.key,
     this.testMode = const TestMode(
       id: 2,
       isTest: false,
     ),
     this.testMode1,
-  }) : super(key: key);
+  });
 
   factory TestPageE.test() => TestPageE(
         testMode: TestMode.test(),

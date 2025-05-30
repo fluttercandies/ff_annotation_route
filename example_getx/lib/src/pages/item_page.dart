@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 
 @FFRoute(name: '/ItemPage')
 class ItemPage extends StatelessWidget {
-  ItemPage({required this.index, Key? key}) : super(key: key);
+  ItemPage({required this.index, super.key});
   final GetxController1 controller = GetxController1.to;
   final int index;
   @override

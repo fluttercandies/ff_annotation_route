@@ -32,6 +32,7 @@ abstract class RouteGeneratorBase {
   List<FileInfo> get fileInfoList => _fileInfoList;
 
   Directory? _lib;
+
   Directory? get lib => _lib;
 
   final String packageName;
@@ -52,8 +53,7 @@ abstract class RouteGeneratorBase {
     if (_fileInfoList.isNotEmpty) {
       final StringBuffer sb = StringBuffer();
 
-      _fileInfoList
-          .sort((FileInfo a, FileInfo b) => a.export.compareTo(b.export));
+      _fileInfoList.sort((a, b) => a.export.compareTo(b.export));
       List<String> classNames = <String>[];
       int pageCount = 0;
       for (final FileInfo info in _fileInfoList) {

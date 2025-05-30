@@ -14,7 +14,7 @@ import 'package:get/get.dart';
   },
 )
 class ControllerPage extends StatelessWidget {
-  ControllerPage({Key? key}) : super(key: key);
+  ControllerPage({super.key});
   final GetxController2 controller = Get.put(GetxController2());
   @override
   Widget build(BuildContext context) {

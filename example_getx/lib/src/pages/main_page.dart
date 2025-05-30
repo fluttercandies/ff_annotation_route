@@ -14,20 +14,23 @@ import 'package:url_launcher/url_launcher_string.dart';
   routeName: 'MainPage',
 )
 class MainPage extends StatelessWidget {
-  MainPage({Key? key}) : super(key: key) {
+  MainPage({super.key}) {
     final List<String> routeNames = <String>[];
     routeNames.addAll(example_routes.routeNames);
     routeNames.remove(Routes.fluttercandiesMainpage.name);
     routeNames.remove(Routes.fluttercandiesDemogrouppage.name);
-    routesGroup.addAll(groupBy<DemoRouteResult, String>(
-        routeNames
-            .map<FFRouteSettings>((String name) => getRouteSettings(name: name))
-            .where((FFRouteSettings element) => element.exts != null)
-            .map<DemoRouteResult>((FFRouteSettings e) => DemoRouteResult(e))
-            .toList()
-          ..sort((DemoRouteResult a, DemoRouteResult b) =>
-              b.group.compareTo(a.group)),
-        (DemoRouteResult x) => x.group));
+    routesGroup.addAll(
+      groupBy<DemoRouteResult, String>(
+          routeNames
+              .map<FFRouteSettings>(
+                  (String name) => getRouteSettings(name: name))
+              .where((FFRouteSettings element) => element.exts != null)
+              .map<DemoRouteResult>((FFRouteSettings e) => DemoRouteResult(e))
+              .toList()
+            ..sort((DemoRouteResult a, DemoRouteResult b) =>
+                b.group.compareTo(a.group)),
+          (DemoRouteResult x) => x.group),
+    );
   }
 
   final Map<String, List<DemoRouteResult>> routesGroup =
@@ -118,13 +121,12 @@ class MainPage extends StatelessWidget {
   argumentImports: <String>['import \'src/pages/main_page.dart\';'],
 )
 class DemoGroupPage extends StatelessWidget {
-  DemoGroupPage(
-      {Key? key, required MapEntry<String, List<DemoRouteResult>> keyValue})
-      : routes = keyValue.value
-          ..sort((DemoRouteResult a, DemoRouteResult b) =>
-              a.order.compareTo(b.order)),
-        group = keyValue.key,
-        super(key: key);
+  DemoGroupPage({
+    super.key,
+    required MapEntry<String, List<DemoRouteResult>> keyValue,
+  })  : routes = keyValue.value..sort((a, b) => a.order.compareTo(b.order)),
+        group = keyValue.key;
+
   final List<DemoRouteResult> routes;
   final String group;
 

@@ -19,13 +19,12 @@ class MainPage extends StatelessWidget {
     routeNames.remove(Routes.fluttercandiesDemogrouppage.name);
     routesGroup.addAll(groupBy<DemoRouteResult, String>(
         routeNames
-            .map<FFRouteSettings>((String name) => getRouteSettings(name: name))
+            .map<FFRouteSettings>((name) => getRouteSettings(name: name))
             .where((FFRouteSettings element) => element.exts != null)
-            .map<DemoRouteResult>((FFRouteSettings e) => DemoRouteResult(e))
+            .map<DemoRouteResult>((e) => DemoRouteResult(e))
             .toList()
-          ..sort((DemoRouteResult a, DemoRouteResult b) =>
-              b.group.compareTo(a.group)),
-        (DemoRouteResult x) => x.group));
+          ..sort((a, b) => b.group.compareTo(a.group)),
+        (x) => x.group));
   }
 
   final Map<String, List<DemoRouteResult>> routesGroup =

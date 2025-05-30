@@ -16,10 +16,10 @@ import 'package:flutter/material.dart';
 class TestPageF extends StatelessWidget {
   const TestPageF(
     this.list, {
-    Key? key,
+    super.key,
     this.map,
     this.testMode,
-  }) : super(key: key);
+  });
 
   final List<int>? list;
   final Map<String, String>? map;

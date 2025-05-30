@@ -21,9 +21,9 @@ import 'package:get/get.dart';
 )
 class BindingsPage extends StatelessWidget {
   BindingsPage({
-    Key? key,
+    super.key,
     this.argument,
-  }) : super(key: key);
+  });
   final String? argument;
   final GetxController1 controller = GetxController1.to;
   @override

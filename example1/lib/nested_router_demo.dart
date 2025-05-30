@@ -25,7 +25,7 @@ void main() {
 /// you can override [FFRouterDelegate.popRoute] to define your logic.
 ///
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +50,7 @@ class MyApp extends StatelessWidget {
   description: 'NestedMainPage',
 )
 class NestedMainPage extends StatelessWidget {
-  const NestedMainPage({Key? key}) : super(key: key);
+  const NestedMainPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -73,7 +73,7 @@ class NestedMainPage extends StatelessWidget {
   description: 'NestedTestPage',
 )
 class NestedTestPage extends StatelessWidget {
-  const NestedTestPage({Key? key}) : super(key: key);
+  const NestedTestPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -94,7 +94,7 @@ class NestedTestPage extends StatelessWidget {
   description: 'ChildRouterPage',
 )
 class ChildRouterPage extends StatelessWidget {
-  const ChildRouterPage({Key? key}) : super(key: key);
+  const ChildRouterPage({super.key});
 
   @override
   Widget build(BuildContext context) {

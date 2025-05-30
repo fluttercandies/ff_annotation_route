@@ -15,10 +15,10 @@ import 'package:flutter/material.dart';
 class TestPageD extends StatelessWidget {
   const TestPageD(
     this.argument, {
-    Key? key,
+    super.key,
     this.optional = false,
     this.id = 'flutterCandies',
-  }) : super(key: key);
+  });
 
   factory TestPageD.another0({required String? argument}) => TestPageD(
         argument,

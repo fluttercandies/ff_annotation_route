@@ -35,7 +35,7 @@ void main() {
 }
 
 class MyApp extends StatefulWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({super.key});
 
   @override
   State<MyApp> createState() => _MyAppState();
@@ -93,10 +93,10 @@ class _MyAppState extends State<MyApp> {
 
 class CommonWidget extends StatelessWidget {
   const CommonWidget({
-    Key? key,
+    super.key,
     this.child,
     this.routeName,
-  }) : super(key: key);
+  });
 
   final Widget? child;
   final String? routeName;

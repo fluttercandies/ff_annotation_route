@@ -14,9 +14,9 @@ import 'package:flutter/material.dart';
 )
 class TestPageB extends StatelessWidget {
   const TestPageB({
-    Key? key,
+    super.key,
     this.argument,
-  }) : super(key: key);
+  });
 
   //const TestPageB._(this.argument);
   final String? argument;

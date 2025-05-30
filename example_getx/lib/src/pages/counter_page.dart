@@ -8,8 +8,10 @@ import 'package:get/get.dart';
   description: 'This is getX counter demo.',
 )
 class CounterPage extends StatelessWidget {
-  CounterPage({Key? key}) : super(key: key);
+  CounterPage({super.key});
+
   final GetxController2 controller = Get.find();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

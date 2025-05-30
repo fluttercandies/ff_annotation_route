@@ -11,7 +11,7 @@ import 'package:flutter/material.dart';
   },
 )
 class TestPageA extends StatelessWidget {
-  const TestPageA({Key? key}) : super(key: key);
+  const TestPageA({super.key});
 
   @override
   Widget build(BuildContext context) {
