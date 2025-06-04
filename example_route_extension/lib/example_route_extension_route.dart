@@ -35,40 +35,48 @@ FFRouteSettings getRouteSettings({
       return FFRouteSettings(
         name: name,
         arguments: arguments,
-        builder: () => HomePage(key: asT<Key?>(safeArguments['key'])),
-
+        builder: () => HomePage(
+          key: asT<Key?>(
+            safeArguments['key'],
+          ),
+        ),
         routeName: 'HomePage',
-
         description: 'HomePage',
       );
     case 'fluttercandies://LoginPage':
       return FFRouteSettings(
         name: name,
         arguments: arguments,
-        builder: () => LoginPage(key: asT<Key?>(safeArguments['key'])),
-
+        builder: () => LoginPage(
+          key: asT<Key?>(
+            safeArguments['key'],
+          ),
+        ),
         routeName: 'LoginPage',
-
         description: 'LoginPage',
       );
     case 'fluttercandies://PageA':
       return FFRouteSettings(
         name: name,
         arguments: arguments,
-        builder: () => PageA(key: asT<Key?>(safeArguments['key'])),
-
+        builder: () => PageA(
+          key: asT<Key?>(
+            safeArguments['key'],
+          ),
+        ),
         routeName: 'PageA',
-
         description: 'PageA',
       );
     case 'fluttercandies://PageB':
       return FFRouteSettings(
         name: name,
         arguments: arguments,
-        builder: () => PageB(key: asT<Key?>(safeArguments['key'])),
-
+        builder: () => PageB(
+          key: asT<Key?>(
+            safeArguments['key'],
+          ),
+        ),
         routeName: 'PageB',
-
         description: 'PageB',
       );
     default:

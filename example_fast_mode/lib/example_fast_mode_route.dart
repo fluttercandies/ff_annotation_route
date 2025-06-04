@@ -61,166 +61,242 @@ FFRouteSettings getRouteSettings({
       return FFRouteSettings(
         name: name,
         arguments: arguments,
-        builder:
-            () => Func(
-              asT<int>(safeArguments['a'])!,
-              asT<String?>(safeArguments['b']),
-              key: asT<Key?>(safeArguments['key']),
-              c: asT<bool?>(safeArguments['c']),
-              d: asT<double>(safeArguments['d'])!,
-            ),
-
+        builder: () => Func(
+          asT<int>(
+            safeArguments['a'],
+          )!,
+          asT<String?>(
+            safeArguments['b'],
+          ),
+          key: asT<Key?>(
+            safeArguments['key'],
+          ),
+          c: asT<bool?>(
+            safeArguments['c'],
+          ),
+          d: asT<double>(
+            safeArguments['d'],
+          )!,
+        ),
         routeName: 'test-func',
       );
     case 'flutterCandies://func1':
       return FFRouteSettings(
         name: name,
         arguments: arguments,
-        builder:
-            () => Func1(
-              asT<int>(safeArguments['a'])!,
-              asT<String?>(safeArguments['b']),
-              key: asT<Key?>(safeArguments['key']),
-              c: asT<bool?>(safeArguments['c']),
-              d: asT<double>(safeArguments['d'])!,
-            ),
-
+        builder: () => Func1(
+          asT<int>(
+            safeArguments['a'],
+          )!,
+          asT<String?>(
+            safeArguments['b'],
+          ),
+          key: asT<Key?>(
+            safeArguments['key'],
+          ),
+          c: asT<bool?>(
+            safeArguments['c'],
+          ),
+          d: asT<double>(
+            safeArguments['d'],
+          )!,
+        ),
         routeName: 'test-func-1',
       );
     case 'flutterCandies://func2':
       return FFRouteSettings(
         name: name,
         arguments: arguments,
-        builder:
-            () => Func2(
-              asT<int>(safeArguments['a'])!,
-              asT<String?>(safeArguments['b']),
-              key: asT<Key?>(safeArguments['key']),
-              c: asT<bool?>(safeArguments['c']),
-              d: asT<double>(safeArguments['d'])!,
-            ),
-
+        builder: () => Func2(
+          asT<int>(
+            safeArguments['a'],
+          )!,
+          asT<String?>(
+            safeArguments['b'],
+          ),
+          key: asT<Key?>(
+            safeArguments['key'],
+          ),
+          c: asT<bool?>(
+            safeArguments['c'],
+          ),
+          d: asT<double>(
+            safeArguments['d'],
+          )!,
+        ),
         routeName: 'test-func-2',
       );
     case 'flutterCandies://func3':
       return FFRouteSettings(
         name: name,
         arguments: arguments,
-        builder:
-            () => Func3(
-              asT<int>(safeArguments['a'])!,
-              asT<String?>(safeArguments['b']),
-              key: asT<Key?>(safeArguments['key']),
-              c: asT<bool?>(safeArguments['c']),
-              d: asT<double>(safeArguments['d'])!,
-            ),
-
+        builder: () => Func3(
+          asT<int>(
+            safeArguments['a'],
+          )!,
+          asT<String?>(
+            safeArguments['b'],
+          ),
+          key: asT<Key?>(
+            safeArguments['key'],
+          ),
+          c: asT<bool?>(
+            safeArguments['c'],
+          ),
+          d: asT<double>(
+            safeArguments['d'],
+          )!,
+        ),
         routeName: 'test-func-3',
       );
     case 'flutterCandies://func4':
       return FFRouteSettings(
         name: name,
         arguments: arguments,
-        builder:
-            () => Func4(
-              asT<int>(safeArguments['a'])!,
-              asT<String?>(safeArguments['b']),
-              key: asT<Key?>(safeArguments['key']),
-              c: asT<bool?>(safeArguments['c']),
-              d: asT<double>(safeArguments['d'])!,
-            ),
-
+        builder: () => Func4(
+          asT<int>(
+            safeArguments['a'],
+          )!,
+          asT<String?>(
+            safeArguments['b'],
+          ),
+          key: asT<Key?>(
+            safeArguments['key'],
+          ),
+          c: asT<bool?>(
+            safeArguments['c'],
+          ),
+          d: asT<double>(
+            safeArguments['d'],
+          )!,
+        ),
         routeName: 'test-func-4',
       );
     case 'flutterCandies://func5':
       return FFRouteSettings(
         name: name,
         arguments: arguments,
-        builder:
-            () => Func5(
-              asT<int>(safeArguments['a'])!,
-              asT<String?>(safeArguments['b']),
-              key: asT<Key?>(safeArguments['key']),
-              c: asT<bool?>(safeArguments['c']),
-              d: asT<double>(safeArguments['d'])!,
-            ),
-
+        builder: () => Func5(
+          asT<int>(
+            safeArguments['a'],
+          )!,
+          asT<String?>(
+            safeArguments['b'],
+          ),
+          key: asT<Key?>(
+            safeArguments['key'],
+          ),
+          c: asT<bool?>(
+            safeArguments['c'],
+          ),
+          d: asT<double>(
+            safeArguments['d'],
+          )!,
+        ),
         routeName: 'test-func-5',
       );
     case 'flutterCandies://func7':
       return FFRouteSettings(
         name: name,
         arguments: arguments,
-        builder:
-            () => $7Func(
-              asT<int>(safeArguments['a'])!,
-              asT<String?>(safeArguments['b']),
-              key: asT<Key?>(safeArguments['key']),
-              c: asT<bool?>(safeArguments['c']),
-              d: asT<double>(safeArguments['d'])!,
-            ),
-
+        builder: () => $7Func(
+          asT<int>(
+            safeArguments['a'],
+          )!,
+          asT<String?>(
+            safeArguments['b'],
+          ),
+          key: asT<Key?>(
+            safeArguments['key'],
+          ),
+          c: asT<bool?>(
+            safeArguments['c'],
+          ),
+          d: asT<double>(
+            safeArguments['d'],
+          )!,
+        ),
         routeName: 'test-func-7',
       );
     case '''flutterCandies://testPage' "B''':
       return FFRouteSettings(
         name: name,
         arguments: arguments,
-        builder:
-            () => testpagebf579848b341a854d92dd7bfb0a9adf6c.TestPageB(
-              key: asT<Key?>(safeArguments['key']),
-              argument: asT<String?>(safeArguments['argument']),
-            ),
-
+        builder: () => testpagebf579848b341a854d92dd7bfb0a9adf6c.TestPageB(
+          key: asT<Key?>(
+            safeArguments['key'],
+          ),
+          argument: asT<String?>(
+            safeArguments['argument'],
+          ),
+        ),
         routeName: 'testPageB ',
         pageRouteType: PageRouteType.material,
         description: "This is test ' page B.",
-        exts: <String, dynamic>{'group': 'Simple', 'order': 1},
+        exts: <String, dynamic>{
+          'group': 'Simple',
+          'order': 1,
+        },
       );
     case '''flutterCandies://testPage' "B_Copy''':
       return FFRouteSettings(
         name: name,
         arguments: arguments,
-        builder:
-            () => testpageba7e2423296cea41a98c971570832499c.TestPageB(
-              key: asT<Key?>(safeArguments['key']),
-              argument: asT<String?>(safeArguments['argument']),
-            ),
-
+        builder: () => testpageba7e2423296cea41a98c971570832499c.TestPageB(
+          key: asT<Key?>(
+            safeArguments['key'],
+          ),
+          argument: asT<String?>(
+            safeArguments['argument'],
+          ),
+        ),
         routeName: 'testPageB ',
         pageRouteType: PageRouteType.material,
         description: "This is test ' page B. has the same name",
-        exts: <String, dynamic>{'group': 'Simple', 'order': 1},
+        exts: <String, dynamic>{
+          'group': 'Simple',
+          'order': 1,
+        },
       );
     case '''flutterCandies://testPage' "B_Copy_Copy''':
       return FFRouteSettings(
         name: name,
         arguments: arguments,
-        builder:
-            () => testpagebe750dc97cdd9ac79db01471ef9768749.TestPageB(
-              key: asT<Key?>(safeArguments['key']),
-              argument: asT<String?>(safeArguments['argument']),
-            ),
-
+        builder: () => testpagebe750dc97cdd9ac79db01471ef9768749.TestPageB(
+          key: asT<Key?>(
+            safeArguments['key'],
+          ),
+          argument: asT<String?>(
+            safeArguments['argument'],
+          ),
+        ),
         routeName: 'testPageB ',
         pageRouteType: PageRouteType.material,
         description: "This is test ' page B. has the same name",
-        exts: <String, dynamic>{'group': 'Simple', 'order': 1},
+        exts: <String, dynamic>{
+          'group': 'Simple',
+          'order': 1,
+        },
       );
     case '''flutterCandies://testPage' "B_module_a''':
       return FFRouteSettings(
         name: name,
         arguments: arguments,
-        builder:
-            () => testpageb1afeb9c992bb2f1098d1acc6becb2a6c.TestPageB(
-              key: asT<Key?>(safeArguments['key']),
-              argument: asT<String?>(safeArguments['argument']),
-            ),
-
+        builder: () => testpageb1afeb9c992bb2f1098d1acc6becb2a6c.TestPageB(
+          key: asT<Key?>(
+            safeArguments['key'],
+          ),
+          argument: asT<String?>(
+            safeArguments['argument'],
+          ),
+        ),
         routeName: 'testPageB ',
         pageRouteType: PageRouteType.material,
         description: "This is test ' page B. in module a",
-        exts: <String, dynamic>{'group': 'Simple', 'order': 1},
+        exts: <String, dynamic>{
+          'group': 'Simple',
+          'order': 1,
+        },
       );
     case '''flutterCandies://testPage' "D''':
       return FFRouteSettings(
@@ -231,55 +307,84 @@ FFRouteSettings getRouteSettings({
               safeArguments[constructorName.toLowerCase()]?.toString() ?? '';
           switch (ctorName) {
             case 'another0':
-              return testpaged6c4b232f91f77ae9eb7103223363b84e
-                  .TestPageD.another0(
-                argument: asT<String?>(safeArguments['argument']),
+              return testpaged6c4b232f91f77ae9eb7103223363b84e.TestPageD
+                  .another0(
+                argument: asT<String?>(
+                  safeArguments['argument'],
+                ),
               );
             case 'another1':
-              return testpaged6c4b232f91f77ae9eb7103223363b84e
-                  .TestPageD.another1(
-                asT<String?>(safeArguments['argument']),
-                asT<bool?>(safeArguments['optional'], false),
+              return testpaged6c4b232f91f77ae9eb7103223363b84e.TestPageD
+                  .another1(
+                asT<String?>(
+                  safeArguments['argument'],
+                ),
+                asT<bool?>(
+                  safeArguments['optional'],
+                  false,
+                ),
               );
             case 'another2':
-              return testpaged6c4b232f91f77ae9eb7103223363b84e
-                  .TestPageD.another2(asT<String?>(safeArguments['argument']));
+              return testpaged6c4b232f91f77ae9eb7103223363b84e.TestPageD
+                  .another2(
+                asT<String?>(
+                  safeArguments['argument'],
+                ),
+              );
             case 'another3':
-              return testpaged6c4b232f91f77ae9eb7103223363b84e
-                  .TestPageD.another3(
-                asT<String?>(safeArguments['argument']),
-                optional: asT<bool?>(safeArguments['optional']),
+              return testpaged6c4b232f91f77ae9eb7103223363b84e.TestPageD
+                  .another3(
+                asT<String?>(
+                  safeArguments['argument'],
+                ),
+                optional: asT<bool?>(
+                  safeArguments['optional'],
+                ),
               );
             case '':
             default:
               return testpaged6c4b232f91f77ae9eb7103223363b84e.TestPageD(
-                asT<String?>(safeArguments['argument']),
-                key: asT<Key?>(safeArguments['key']),
-                optional: asT<bool?>(safeArguments['optional'], false),
-                id: asT<String?>(safeArguments['id'], 'flutterCandies'),
+                asT<String?>(
+                  safeArguments['argument'],
+                ),
+                key: asT<Key?>(
+                  safeArguments['key'],
+                ),
+                optional: asT<bool?>(
+                  safeArguments['optional'],
+                  false,
+                ),
+                id: asT<String?>(
+                  safeArguments['id'],
+                  'flutterCandies',
+                ),
               );
           }
         },
-
         routeName: 'testPageD ',
         pageRouteType: PageRouteType.material,
         description: "This is test ' page D.",
-        exts: <String, dynamic>{'group': 'Complex', 'order': 0},
+        exts: <String, dynamic>{
+          'group': 'Complex',
+          'order': 0,
+        },
       );
     case 'flutterCandies://testPageA':
       return FFRouteSettings(
         name: name,
         arguments: arguments,
-        builder: () => TestPageA(key: asT<Key?>(safeArguments['key'])),
+        builder: () => TestPageA(
+          key: asT<Key?>(
+            safeArguments['key'],
+          ),
+        ),
         codes: <String, dynamic>{
           'test2': TestPageA.dd,
           'test3': TestPageA.ddd,
           'test4': TestPageA(),
           'test5': TestPageA.ddd,
         },
-
         routeName: 'testPageA',
-
         description: 'This is test page A.',
         exts: <String, dynamic>{
           'group': 'Simple',
@@ -291,15 +396,17 @@ FFRouteSettings getRouteSettings({
       return FFRouteSettings(
         name: name,
         arguments: arguments,
-        builder:
-            () => testpagec23b284ff92265eaaa6c065105cf47f2a.TestPageC(
-              key: asT<Key?>(safeArguments['key']),
-            ),
-
+        builder: () => testpagec23b284ff92265eaaa6c065105cf47f2a.TestPageC(
+          key: asT<Key?>(
+            safeArguments['key'],
+          ),
+        ),
         routeName: 'testPageC',
-
         description: 'This is test page c in other module.',
-        exts: <String, dynamic>{'group': 'Simple', 'order': 2},
+        exts: <String, dynamic>{
+          'group': 'Simple',
+          'order': 2,
+        },
       );
     case 'flutterCandies://testPageCC':
       return FFRouteSettings(
@@ -311,69 +418,90 @@ FFRouteSettings getRouteSettings({
           switch (ctorName) {
             case 'positioned':
               return TestPageCC.positioned(
-                asT<int>(safeArguments['testarg'])!,
-                asT<bool?>(safeArguments['testboolean']),
-                asT<String>(safeArguments['testrequiredarg'], '')!,
-                asT<Key?>(safeArguments['key']),
+                asT<int>(
+                  safeArguments['testarg'],
+                )!,
+                asT<bool?>(
+                  safeArguments['testboolean'],
+                ),
+                asT<String>(
+                  safeArguments['testrequiredarg'],
+                  '',
+                )!,
+                asT<Key?>(
+                  safeArguments['key'],
+                ),
               );
             case '':
             default:
               return TestPageCC(
-                asT<int>(safeArguments['testarg'])!,
-                key: asT<Key?>(safeArguments['key']),
-                testRequiredArg: asT<String>(safeArguments['testrequiredarg'])!,
-                testBoolean: asT<bool?>(safeArguments['testboolean']),
+                asT<int>(
+                  safeArguments['testarg'],
+                )!,
+                key: asT<Key?>(
+                  safeArguments['key'],
+                ),
+                testRequiredArg: asT<String>(
+                  safeArguments['testrequiredarg'],
+                )!,
+                testBoolean: asT<bool?>(
+                  safeArguments['testboolean'],
+                ),
               );
           }
         },
-
         routeName: 'testPageCC',
-
         description: 'This is test page CC.',
       );
     case 'flutterCandies://testPageC_Copy':
       return FFRouteSettings(
         name: name,
         arguments: arguments,
-        builder:
-            () => testpagec24a74dc0abd3133051a047c62e4d4227.TestPageC(
-              key: asT<Key?>(safeArguments['key']),
-            ),
-
+        builder: () => testpagec24a74dc0abd3133051a047c62e4d4227.TestPageC(
+          key: asT<Key?>(
+            safeArguments['key'],
+          ),
+        ),
         routeName: 'testPageC',
-
         description:
             'This is test page c has the same name with moudle_a TestPageC.',
-        exts: <String, dynamic>{'group': 'Simple', 'order': 2},
+        exts: <String, dynamic>{
+          'group': 'Simple',
+          'order': 2,
+        },
       );
     case 'flutterCandies://testPageC_Copy_Copy':
       return FFRouteSettings(
         name: name,
         arguments: arguments,
-        builder:
-            () => testpagecf10ae9a1919e70b4efb736483bc2992d.TestPageC(
-              key: asT<Key?>(safeArguments['key']),
-            ),
-
+        builder: () => testpagecf10ae9a1919e70b4efb736483bc2992d.TestPageC(
+          key: asT<Key?>(
+            safeArguments['key'],
+          ),
+        ),
         routeName: 'testPageC',
-
         description:
             'This is test page c has the same name with moudle_a TestPageC.',
-        exts: <String, dynamic>{'group': 'Simple', 'order': 2},
+        exts: <String, dynamic>{
+          'group': 'Simple',
+          'order': 2,
+        },
       );
     case 'flutterCandies://testPageD_moduleA':
       return FFRouteSettings(
         name: name,
         arguments: arguments,
-        builder:
-            () => testpaged05a916dda13cd9d2b973ee75b8e74f9d.TestPageD(
-              key: asT<Key?>(safeArguments['key']),
-            ),
-
+        builder: () => testpaged05a916dda13cd9d2b973ee75b8e74f9d.TestPageD(
+          key: asT<Key?>(
+            safeArguments['key'],
+          ),
+        ),
         routeName: 'testPageA',
-
         description: 'This is test page D. in module a',
-        exts: <String, dynamic>{'group': 'Simple', 'order': 0},
+        exts: <String, dynamic>{
+          'group': 'Simple',
+          'order': 0,
+        },
       );
     case 'flutterCandies://testPageE':
       return FFRouteSettings(
@@ -387,58 +515,72 @@ FFRouteSettings getRouteSettings({
               return TestPageE.test();
             case 'requiredC':
               return TestPageE.requiredC(
-                testMode: asT<TestMode?>(safeArguments['testmode']),
+                testMode: asT<TestMode?>(
+                  safeArguments['testmode'],
+                ),
               );
             case '':
             default:
               return TestPageE(
-                key: asT<Key?>(safeArguments['key']),
+                key: asT<Key?>(
+                  safeArguments['key'],
+                ),
                 testMode: asT<TestMode?>(
                   safeArguments['testmode'],
                   const TestMode(id: 2, isTest: false),
                 ),
-                testMode1: asT<TestMode1?>(safeArguments['testmode1']),
+                testMode1: asT<TestMode1?>(
+                  safeArguments['testmode1'],
+                ),
               );
           }
         },
-
         routeName: 'testPageE',
-
         description: 'Show how to push new page with arguments(class)',
-        exts: <String, dynamic>{'group': 'Complex', 'order': 1},
+        exts: <String, dynamic>{
+          'group': 'Complex',
+          'order': 1,
+        },
       );
     case 'flutterCandies://testPageF_moduleA':
       return FFRouteSettings(
         name: name,
         arguments: arguments,
-        builder: () => TestPageF(key: asT<Key?>(safeArguments['key'])),
-
+        builder: () => TestPageF(
+          key: asT<Key?>(
+            safeArguments['key'],
+          ),
+        ),
         routeName: 'testPageA',
-
         description: 'This is test page F. in module a',
-        exts: <String, dynamic>{'group': 'Simple', 'order': 0},
+        exts: <String, dynamic>{
+          'group': 'Simple',
+          'order': 0,
+        },
       );
     case 'fluttercandies://demogrouppage':
       return FFRouteSettings(
         name: name,
         arguments: arguments,
-        builder:
-            () => DemoGroupPage(
-              key: asT<Key?>(safeArguments['key']),
-              keyValue:
-                  asT<MapEntry<String, List<DemoRouteResult>>>(
-                    safeArguments['keyvalue'],
-                  )!,
-            ),
-
+        builder: () => DemoGroupPage(
+          key: asT<Key?>(
+            safeArguments['key'],
+          ),
+          keyValue: asT<MapEntry<String, List<DemoRouteResult>>>(
+            safeArguments['keyvalue'],
+          )!,
+        ),
         routeName: 'DemoGroupPage',
       );
     case 'fluttercandies://mainpage':
       return FFRouteSettings(
         name: name,
         arguments: arguments,
-        builder: () => MainPage(key: asT<Key?>(safeArguments['key'])),
-
+        builder: () => MainPage(
+          key: asT<Key?>(
+            safeArguments['key'],
+          ),
+        ),
         routeName: 'MainPage',
       );
     default:
