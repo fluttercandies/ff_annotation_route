@@ -29,7 +29,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  module_a:
+  module_a_fast:
     path: module_a
 
   collection: ^1.17.0

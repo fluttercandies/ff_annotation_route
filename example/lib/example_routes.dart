@@ -5,7 +5,7 @@
 // fast mode: false
 // version: 10.1.0
 // **************************************************************************
-// ignore_for_file: duplicate_import,implementation_imports,library_private_types_in_public_api,multiple_combinators,prefer_const_literals_to_create_immutables,unintended_html_in_doc_comment,unnecessary_import,unused_import,unused_local_variable,unused_shown_name, unnecessary_library_name
+// ignore_for_file: duplicate_import,implementation_imports,library_private_types_in_public_api,multiple_combinators,prefer_const_literals_to_create_immutables,unintended_html_in_doc_comment,unnecessary_import,unused_import,unused_local_variable,unused_shown_name,unnecessary_library_name
 import 'dart:io' as autoimportd66e09f4babbdbbe015b32cc3816761d;
 import 'dart:ui' as autoimportde7367a4dccc7f836046967508c09a6c;
 

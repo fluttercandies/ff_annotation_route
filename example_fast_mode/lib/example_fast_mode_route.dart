@@ -5,7 +5,7 @@
 // fast mode: true
 // version: 10.1.0
 // **************************************************************************
-// ignore_for_file: duplicate_import,implementation_imports,library_private_types_in_public_api,multiple_combinators,prefer_const_literals_to_create_immutables,unintended_html_in_doc_comment,unnecessary_import,unused_import,unused_local_variable,unused_shown_name, unnecessary_library_name
+// ignore_for_file: duplicate_import,implementation_imports,library_private_types_in_public_api,multiple_combinators,prefer_const_literals_to_create_immutables,unintended_html_in_doc_comment,unnecessary_import,unused_import,unused_local_variable,unused_shown_name,unnecessary_library_name
 import 'package:example_fast_mode/src/model/test_model.dart'
     show TestMode
     hide TestMode2;
@@ -15,13 +15,13 @@ import 'package:example_fast_mode/src/model/test_model1.dart'
 import 'package:example_fast_mode/src/model/test_model1.dart';
 import 'package:ff_annotation_route_library/ff_annotation_route_library.dart';
 import 'package:flutter/widgets.dart';
-import 'package:module_a/module_a_route.dart'
+import 'package:module_a_fast/module_a_fast_route.dart'
     as testpageb1afeb9c992bb2f1098d1acc6becb2a6c;
-import 'package:module_a/module_a_route.dart'
+import 'package:module_a_fast/module_a_fast_route.dart'
     as testpagec23b284ff92265eaaa6c065105cf47f2a;
-import 'package:module_a/module_a_route.dart'
+import 'package:module_a_fast/module_a_fast_route.dart'
     as testpaged05a916dda13cd9d2b973ee75b8e74f9d;
-import 'package:module_a/module_a_route.dart'
+import 'package:module_a_fast/module_a_fast_route.dart'
     hide TestPageB, TestPageC, TestPageD;
 
 import 'src/pages/complex/test_page_d.dart'
