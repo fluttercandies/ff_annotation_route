@@ -3,7 +3,7 @@ repository: https://github.com/fluttercandies/ff_annotation_route
 
 packages:
   - 'example*'
-  - 'example/module_**'
+  - 'example**/module_**'
 
 ide:
   intellij:

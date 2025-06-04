@@ -1,4 +1,4 @@
-import 'dart:io';
+import 'dart:io' as io;
 
 import 'package:analyzer/dart/analysis/analysis_context_collection.dart';
 import 'package:analyzer/dart/analysis/features.dart';
@@ -7,15 +7,15 @@ import 'package:analyzer/dart/analysis/utilities.dart';
 import 'package:analyzer/dart/ast/syntactic_entity.dart';
 import 'package:analyzer/src/dart/ast/ast.dart';
 import 'package:collection/collection.dart' show IterableExtension;
-import 'package:ff_annotation_route/src/arg/args.dart';
-import 'package:ff_annotation_route/src/file_info.dart';
-import 'package:ff_annotation_route/src/route_info/fast_route_info.dart';
-import 'package:ff_annotation_route/src/template.dart';
-import 'package:ff_annotation_route/src/utils/convert.dart';
 import 'package:ff_annotation_route_core/ff_annotation_route_core.dart';
 import 'package:path/path.dart' as p;
 
-import '../utils/route_interceptor.dart';
+import '/src/arg/args.dart';
+import '/src/file_info.dart';
+import '/src/route_info/fast_route_info.dart';
+import '/src/template.dart';
+import '/src/utils/convert.dart';
+import '/src/utils/route_interceptor.dart';
 import 'route_generator_base.dart';
 
 class FastRouteGenerator extends RouteGeneratorBase {
@@ -33,29 +33,26 @@ class FastRouteGenerator extends RouteGeneratorBase {
     if (lib != null) {
       print('');
       print('Scanning package : $packageName');
-      final List<FileSystemEntity> files = lib!.listSync(recursive: true);
-      for (final FileSystemEntity item in files) {
-        final FileStat file = item.statSync();
-        if (file.type == FileSystemEntityType.file &&
-            item.path.endsWith('.dart')) {
+      for (final file in lib!.listSync(recursive: true)) {
+        if (file is io.File && file.path.endsWith('.dart')) {
           final ParseStringResult result = parseFile(
-            path: item.path,
+            path: file.path,
             featureSet: FeatureSet.latestLanguageVersion(),
           );
           final CompilationUnit astRoot = result.unit;
           final String ffRouteFileImportPath = 'package:${<String>[
             packageName,
-            ...item.path
+            ...file.path
                 .replaceFirst(lib!.path, '')
                 .split(p.context.separator)
                 .where((String element) => element.isNotEmpty),
           ].join('/')}';
           final List<String> argumentImports = <String>[];
-          for (final SyntacticEntity child in astRoot.childEntities) {
+          for (final child in astRoot.childEntities) {
             if (child is ImportDirective) {
-              final SyntacticEntity? syntacticEntity = child.childEntities
-                  .firstWhereOrNull(
-                      (SyntacticEntity element) => element is Annotation);
+              final syntacticEntity = child.childEntities.firstWhereOrNull(
+                (SyntacticEntity element) => element is Annotation,
+              );
 
               if (syntacticEntity != null) {
                 final Annotation annotation = syntacticEntity as AnnotationImpl;
@@ -79,20 +76,20 @@ class FastRouteGenerator extends RouteGeneratorBase {
           }
 
           FileInfo? fileInfo;
-          for (final CompilationUnitMember declaration
-              in astRoot.declarations) {
-            for (final Annotation metadata in declaration.metadata) {
+          for (final declaration in astRoot.declarations) {
+            for (final metadata in declaration.metadata) {
               final ClassDeclaration? ffRefClassDef =
-                  getFFRouteRefClassDeclaration(metadata, item);
+                  getFFRouteRefClassDeclaration(metadata, file);
               if (ffRefClassDef != null) {
                 final String className = ffRefClassDef.name.toString();
                 final String routePath =
-                    '${p.relative(item.path, from: lib!.parent.path)} ------ class : $className';
+                    '${p.relative(file.path, from: lib!.parent.path)}'
+                    ' ------ class : $className';
                 print('Found annotation route : $routePath');
 
                 final List<String> relativeParts = <String>[
                   lib!.parent.path,
-                  'lib'
+                  'lib',
                 ];
                 if (output != null) {
                   relativeParts.add(output);
@@ -100,8 +97,8 @@ class FastRouteGenerator extends RouteGeneratorBase {
 
                 fileInfo ??= FileInfo(
                   export: p
-                      .relative(item.path, from: p.joinAll(relativeParts))
-                      .replaceAll('\\', '/'),
+                      .relative(file.path, from: p.joinAll(relativeParts))
+                      .replaceAll(r'\', '/'),
                   packageName: packageName,
                 );
 
@@ -210,9 +207,11 @@ class FastRouteGenerator extends RouteGeneratorBase {
                   in (item.expression as ListLiteralImpl).elements) {
                 if (element is MethodInvocationImpl) {
                   interceptors ??= <RouteInterceptor>[];
-                  interceptors.add(FFRouteInterceptor(
-                    className: element.methodName.name,
-                  ));
+                  interceptors.add(
+                    FFRouteInterceptor(
+                      className: element.methodName.name,
+                    ),
+                  );
                 }
               }
             }
@@ -259,15 +258,16 @@ class FastRouteGenerator extends RouteGeneratorBase {
 
   ClassDeclaration? getFFRouteRefClassDeclaration(
     Annotation metadata,
-    FileSystemEntity file,
+    io.FileSystemEntity file,
   ) {
     if (metadata.name.name == typeOf<FFRoute>().toString()) {
       final AstNode node = metadata.parent;
       if (node is ClassDeclaration) {
         return node;
       } else if (node is FunctionDeclaration) {
-        final bool isFuncWidget = node.metadata.any((Annotation e) =>
-            _functionalWidgetAnnotations.contains(e.name.name));
+        final bool isFuncWidget = node.metadata.any(
+          (Annotation e) => _functionalWidgetAnnotations.contains(e.name.name),
+        );
         if (isFuncWidget) {
           final Iterable<PartDirective> parts = (node.parent as CompilationUnit)
               .directives
@@ -289,13 +289,15 @@ class FastRouteGenerator extends RouteGeneratorBase {
               _partClassDeclarations[path] = classes;
             }
             final ClassDeclaration? find = classes.firstWhereOrNull(
-                (ClassDeclaration clazz) => clazz.name.toString() == className);
+              (ClassDeclaration clazz) => clazz.name.toString() == className,
+            );
             if (find != null) {
               return find;
             }
           }
           throw StateError(
-              '[$className] class not found, please run `flutter pub run build_runner build` before execute this.');
+            '[$className] class not found, please run `flutter pub run build_runner build` before execute this.',
+          );
         }
       }
     }

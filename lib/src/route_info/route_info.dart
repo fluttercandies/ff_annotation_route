@@ -1,11 +1,8 @@
-// ignore_for_file: implementation_imports
-
 import 'package:analyzer/dart/element/element.dart';
 import 'package:ff_annotation_route_core/ff_annotation_route_core.dart';
 
-import '../arg/args.dart';
-import '../utils/dart_type_auto_import.dart';
-
+import '/src/arg/args.dart';
+import '/src/utils/dart_type_auto_import.dart';
 import 'route_info_base.dart';
 
 class RouteInfo extends RouteInfoBase {
@@ -92,10 +89,13 @@ return ${getConstructorString(rawConstructor)};
     return '() =>$classNameConflictPrefixText$className()';
   }
 
-  String getIsOptional(String name, ParameterElement parameter,
-      ConstructorElement rawConstructor) {
-    String value =
-        'safeArguments[\'${Args().argumentsIsCaseSensitive ? name : name.toLowerCase()}\']';
+  String getIsOptional(
+    String name,
+    ParameterElement parameter,
+    ConstructorElement rawConstructor,
+  ) {
+    String value = 'safeArguments'
+        '[\'${Args().argumentsIsCaseSensitive ? name : name.toLowerCase()}\']';
 
     final String type = getParameterType(parameter);
 
@@ -140,8 +140,9 @@ return ${getConstructorString(rawConstructor)};
       } else {
         final String type = getParameterType(item);
 
-        constructorString +=
-            'asT<$type>(safeArguments[\'${Args().argumentsIsCaseSensitive ? name : name.toLowerCase()}\'],)';
+        constructorString += 'asT<$type>(safeArguments[\''
+            '${Args().argumentsIsCaseSensitive ? name : name.toLowerCase()}'
+            '\'],)';
         if (Args().enableNullSafety && !type.endsWith('?')) {
           constructorString += '!';
         }
@@ -207,12 +208,18 @@ return ${getConstructorString(rawConstructor)};
           nameMap += ''''$argumentNames':<String>$parameterNames,''';
         }
 
-        sb.write(routeConstClassMethodTemplate
-            .replaceAll(
-                '{0}', (name.isEmpty ? 'd' : rawConstructor.name) + args)
-            .replaceAll('{1}', nameMap)
-            .replaceAll(
-                '{2}', rawConstructor.parameters.isEmpty ? 'const' : ''));
+        sb.write(
+          routeConstClassMethodTemplate
+              .replaceAll(
+                '{0}',
+                (name.isEmpty ? 'd' : rawConstructor.name) + args,
+              )
+              .replaceAll('{1}', nameMap)
+              .replaceAll(
+                '{2}',
+                rawConstructor.parameters.isEmpty ? 'const' : '',
+              ),
+        );
       }
 
       if (sb.isNotEmpty) {

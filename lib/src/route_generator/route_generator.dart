@@ -1,24 +1,24 @@
-// ignore_for_file: implementation_imports
-import 'package:analyzer/file_system/physical_file_system.dart';
-import 'package:analyzer/src/dart/ast/ast.dart';
 import 'package:analyzer/dart/analysis/analysis_context.dart';
 import 'package:analyzer/dart/analysis/analysis_context_collection.dart';
 import 'package:analyzer/dart/analysis/results.dart';
 import 'package:analyzer/dart/analysis/session.dart';
 import 'package:analyzer/dart/constant/value.dart';
 import 'package:analyzer/dart/element/element.dart';
+import 'package:analyzer/file_system/physical_file_system.dart';
+import 'package:analyzer/src/dart/ast/ast.dart';
+import 'package:analyzer/src/dart/constant/value.dart';
+import 'package:analyzer/src/dart/element/element.dart';
 import 'package:collection/collection.dart' show IterableExtension;
-import 'package:ff_annotation_route/src/arg/args.dart';
-import 'package:ff_annotation_route/src/file_info.dart';
-import 'package:ff_annotation_route/src/route_info/route_info.dart';
-import 'package:ff_annotation_route/src/template.dart';
-import 'package:ff_annotation_route/src/utils/dart_type_auto_import.dart';
-import 'package:ff_annotation_route/src/utils/route_interceptor.dart';
 import 'package:ff_annotation_route_core/ff_annotation_route_core.dart';
 import 'package:path/path.dart' as p;
 import 'package:source_gen/source_gen.dart';
-import 'package:analyzer/src/dart/element/element.dart';
-import 'package:analyzer/src/dart/constant/value.dart';
+
+import '/src/arg/args.dart';
+import '/src/file_info.dart';
+import '/src/route_info/route_info.dart';
+import '/src/template.dart';
+import '/src/utils/dart_type_auto_import.dart';
+import '/src/utils/route_interceptor.dart';
 import 'route_generator_base.dart';
 
 const fFRouteTypeChecker = TypeChecker.fromRuntime(FFRoute);
@@ -65,7 +65,7 @@ class RouteGenerator extends RouteGeneratorBase {
         final FileInfo fileInfo = FileInfo(
           export: p
               .relative(filePath, from: p.joinAll(relativeParts))
-              .replaceAll('\\', '/'),
+              .replaceAll(r'\', '/'),
           packageName: packageName,
         );
         final String ffRouteFileImportPath = 'package:${<String>[
@@ -89,7 +89,11 @@ class RouteGenerator extends RouteGeneratorBase {
         }
 
         await _handleFunctionWidget(
-            fileElement, context, fileInfo, ffRouteFileImportPath);
+          fileElement,
+          context,
+          fileInfo,
+          ffRouteFileImportPath,
+        );
 
         if (fileInfo.routes.isNotEmpty) {
           for (final LibraryImportElement importElement
@@ -112,8 +116,11 @@ class RouteGenerator extends RouteGeneratorBase {
     }
   }
 
-  void _findAutoImport(LibraryImportElement importElement, FileInfo fileInfo,
-      TypeChecker typeChecker) {
+  void _findAutoImport(
+    LibraryImportElement importElement,
+    FileInfo fileInfo,
+    TypeChecker typeChecker,
+  ) {
     final DartObject? fFArgumentImportAnnotation =
         typeChecker.firstAnnotationOf(
       importElement,
@@ -182,18 +189,21 @@ class RouteGenerator extends RouteGeneratorBase {
   }
 
   Future<CompilationUnitElement> getElement(
-      AnalysisSession analysisSession, String path) async {
+    AnalysisSession analysisSession,
+    String path,
+  ) async {
     return (await analysisSession.getUnitElement(path) as UnitElementResult)
         .element;
   }
 
   void findFFRoute(
-      CompilationUnitElement element,
-      FileInfo fileInfo,
-      ClassElement classElement,
-      String ffRouteFileImportPath,
-      String packageName,
-      {DartObject? annotation}) {
+    CompilationUnitElement element,
+    FileInfo fileInfo,
+    ClassElement classElement,
+    String ffRouteFileImportPath,
+    String packageName, {
+    DartObject? annotation,
+  }) {
     annotation ??= fFRouteTypeChecker.firstAnnotationOf(
       classElement,
       throwOnUnresolved: true,
@@ -204,7 +214,8 @@ class RouteGenerator extends RouteGeneratorBase {
       final ConstantReader reader = ConstantReader(annotation);
 
       print(
-          'Found annotation route in ${classElement.source.uri} ------ class : ${classElement.displayName}');
+        'Found annotation route in ${classElement.source.uri} ------ class : ${classElement.displayName}',
+      );
 
       final ConstantReader? exts = reader.peek('exts');
       Map<String, String>? extsMap;
@@ -282,9 +293,11 @@ class RouteGenerator extends RouteGeneratorBase {
         //     <String>[],
         //codes: codesMap,
         codes: reader.peek('codes')?.mapValue.map<String, String>(
-            (DartObject? key, DartObject? value) => MapEntry<String, String>(
+              (DartObject? key, DartObject? value) => MapEntry<String, String>(
                 _getStringValue(key as DartObjectImpl?),
-                value!.toStringValue()!)),
+                value!.toStringValue()!,
+              ),
+            ),
         interceptors: reader.peek('interceptors')?.listValue.map(
           (DartObject e) {
             final DartObjectImpl object = e as DartObjectImpl;
@@ -325,10 +338,12 @@ class RouteGenerator extends RouteGeneratorBase {
   }
 
   NodeList<Expression>? _getFFRouteParameters(ClassElement classElement) {
-    final ElementAnnotationImpl? elementAnnotation = classElement.metadata
-        .firstWhereOrNull((ElementAnnotation element) =>
-            (element as ElementAnnotationImpl).annotationAst.name.name ==
-            typeOf<FFRoute>().toString()) as ElementAnnotationImpl?;
+    final ElementAnnotationImpl? elementAnnotation =
+        classElement.metadata.firstWhereOrNull(
+      (ElementAnnotation element) =>
+          (element as ElementAnnotationImpl).annotationAst.name.name ==
+          typeOf<FFRoute>().toString(),
+    ) as ElementAnnotationImpl?;
     return elementAnnotation?.annotationAst.arguments?.arguments;
   }
 

@@ -1,20 +1,16 @@
-// ignore_for_file: implementation_imports
-
 import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart' as at;
-
+import 'package:analyzer/src/dart/ast/to_source_visitor.dart';
 //import 'package:analyzer/src/dart/constant/value.dart';
 import 'package:analyzer/src/dart/element/element.dart';
-import 'package:analyzer/src/dart/ast/to_source_visitor.dart';
 import 'package:analyzer/src/dart/element/type.dart';
-
-import 'package:ff_annotation_route/src/utils/convert.dart';
-import 'package:ff_annotation_route/src/utils/git_package_handler.dart';
 import 'package:io/ansi.dart';
 import 'package:meta/meta.dart';
 
+import 'convert.dart';
 import 'display_string_builder.dart';
+import 'git_package_handler.dart';
 
 class DartTypeAutoImport {
   const DartTypeAutoImport(
@@ -94,7 +90,6 @@ class DartTypeAutoImportHelper {
     if (type is InterfaceTypeImpl) {
       final MyElementDisplayStringBuilder builder =
           MyElementDisplayStringBuilder(
-        // ignore: deprecated_member_use_from_same_package
         withNullability: true,
         preferTypeAlias: true,
       );
@@ -103,7 +98,6 @@ class DartTypeAutoImportHelper {
     } else if (type is FunctionTypeImpl) {
       final MyElementDisplayStringBuilder builder =
           MyElementDisplayStringBuilder(
-        // ignore: deprecated_member_use_from_same_package
         withNullability: true,
         preferTypeAlias: true,
       );
@@ -130,7 +124,7 @@ class DartTypeAutoImportHelper {
 
   String? getDefaultValueString(
     ParameterElement parameter,
-    List<String> prefixs,
+    List<String> prefixes,
   ) {
     String? defaultValueCode;
     // remove default prefix if has
@@ -138,12 +132,12 @@ class DartTypeAutoImportHelper {
         parameter is ConstVariableElement &&
         (parameter as ConstVariableElement).constantInitializer != null) {
       final StringBuffer sb = StringBuffer();
-      (parameter as ConstVariableElement)
-          .constantInitializer!
-          .accept<void>(MyToSourceVisitor(
-            sink: sb,
-            prefixs: prefixs,
-          ));
+      (parameter as ConstVariableElement).constantInitializer!.accept<void>(
+            MyToSourceVisitor(
+              sink: sb,
+              prefixes: prefixes,
+            ),
+          );
       defaultValueCode = sb.toString();
     }
     // add auto import prefix
@@ -279,7 +273,6 @@ class DartTypeAutoImportHelper {
 
   void findParametersImport(ClassElement classElement) {
     for (final ConstructorElement rawConstructor in classElement.constructors) {
-      // ignore: prefer_foreach
       for (final ParameterElement parameter in rawConstructor.parameters) {
         DartTypeAutoImportHelper().findParameterImport(parameter.type);
       }
@@ -295,7 +288,6 @@ class DartTypeAutoImportHelper {
       }
       add(type, GitPackageHandler().replaceUri('$uri'));
     } else {
-      // ignore: prefer_foreach
       for (final at.DartType element in type.typeArguments) {
         findParameterImport(element);
       }
@@ -315,7 +307,6 @@ class DartTypeAutoImportHelper {
       _findDartTypeImport(dartType);
     } else if (dartType is FunctionTypeImpl) {
       findParameterImport(dartType.returnType);
-      // ignore: prefer_foreach
       for (final ParameterElement element in dartType.parameters) {
         findParameterImport(element.type);
       }
@@ -323,8 +314,11 @@ class DartTypeAutoImportHelper {
       // do nothing
     } else {
       // TODO(zmtzawqlp): not support now
-      print(red.wrap(
-          'This parameter type is not support now: ${dartType.runtimeType}.'));
+      print(
+        red.wrap(
+          'This parameter type is not support now: ${dartType.runtimeType}.',
+        ),
+      );
     }
   }
 }
@@ -353,15 +347,15 @@ class DartType {
 class MyToSourceVisitor extends ToSourceVisitor {
   MyToSourceVisitor({
     required StringSink sink,
-    required this.prefixs,
+    required this.prefixes,
   }) : super(sink);
 
-  final List<String> prefixs;
+  final List<String> prefixes;
 
   @override
   void visitPrefixedIdentifier(PrefixedIdentifier node) {
     // remove default prefix
-    if (!prefixs.contains(node.prefix.name)) {
+    if (!prefixes.contains(node.prefix.name)) {
       _visitNode(node.prefix);
       sink.write('.');
     }
@@ -372,7 +366,7 @@ class MyToSourceVisitor extends ToSourceVisitor {
   @override
   void visitImportPrefixReference(ImportPrefixReference node) {
     // remove default prefix
-    if (!prefixs.contains(node.name.lexeme)) {
+    if (!prefixes.contains(node.name.lexeme)) {
       sink.write(node.name.lexeme);
       sink.write('.');
     }

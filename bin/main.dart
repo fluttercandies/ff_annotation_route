@@ -1,5 +1,4 @@
 import 'dart:io' as io;
-import 'dart:io';
 
 import 'package:build_runner_core/build_runner_core.dart';
 import 'package:collection/collection.dart' show IterableExtension;
@@ -9,52 +8,28 @@ import 'package:ff_annotation_route/src/arg/args.dart';
 import 'package:io/ansi.dart';
 import 'package:path/path.dart' as path;
 
-const String argumentsFile = 'ff_annotation_route_commands';
+const _savedCommandsFile = 'ff_annotation_route_commands';
 
 Future<void> main(List<String> arguments) async {
-  bool runFromLocal = false;
-  // debug, run local example，
-  // ignore: dead_code
-  if (true) {
-    String project = 'example';
-    final io.File file =
-        io.File(path.join(path.current, project, argumentsFile));
-    if (file.existsSync()) {
-      final String content = '${file.readAsStringSync()} --path $project';
-
-      arguments = content.split(' ');
-
-      runFromLocal = true;
-    }
-  }
-
+  bool runFromSavedCommands = false;
   if (arguments.isEmpty) {
-    final io.File file = io.File(path.join(path.current, argumentsFile));
+    final file = io.File(path.join(path.current, _savedCommandsFile));
     if (file.existsSync()) {
       final String content = file.readAsStringSync();
-
       arguments = content.split(' ');
-
-      runFromLocal = true;
+      runFromSavedCommands = true;
     }
   }
 
   parseArgs(arguments);
-
   if (arguments.isEmpty || Args().help.value!) {
     print(green.wrap(parser.usage));
     return;
   }
 
   final DateTime before = DateTime.now();
-
   print(green.wrap('\nff_annotation_route ------ Start'));
-  // processRun(
-  //   executable: 'flutter',
-  //   arguments: 'packages get',
-  //   runInShell: true,
-  //   workingDirectory: Args().path.value!,
-  // );
+
   final PackageGraph packageGraph = await PackageGraph.forPath(Args().pathUri);
 
   // Only check path which imports ff_annotation_route_core or ff_annotation_route_library
@@ -93,14 +68,18 @@ Future<void> main(List<String> arguments) async {
 
   await generate(annotationPackages);
 
-  if (Args().save.value! && !runFromLocal) {
-    final File file = File(path.join(Args().pathUri, argumentsFile));
+  if (Args().save.value! && !runFromSavedCommands) {
+    final file = io.File(path.join(Args().pathUri, _savedCommandsFile));
     if (!file.existsSync()) {
       file.createSync();
     }
     file.writeAsStringSync(arguments.join(' '));
   }
 
-  print(green.wrap(
-      '\nff_annotation_route ------ End [${DateTime.now().difference(before)}]'));
+  print(
+    green.wrap(
+      '\nff_annotation_route ------ '
+      'End [${DateTime.now().difference(before)}]',
+    ),
+  );
 }

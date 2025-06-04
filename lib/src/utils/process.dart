@@ -1,4 +1,4 @@
-import 'dart:io';
+import 'dart:io' as io;
 
 void processRun({
   required String executable,
@@ -6,7 +6,7 @@ void processRun({
   bool runInShell = false,
   String? workingDirectory,
 }) {
-  final ProcessResult result = Process.runSync(
+  final result = io.Process.runSync(
     executable,
     arguments.split(' '),
     runInShell: runInShell,

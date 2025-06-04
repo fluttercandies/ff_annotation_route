@@ -4,12 +4,13 @@ library ff_annotation_route;
 import 'package:analyzer/dart/analysis/analysis_context_collection.dart';
 import 'package:analyzer/file_system/physical_file_system.dart';
 import 'package:build_runner_core/build_runner_core.dart';
-import 'package:ff_annotation_route/src/route_generator/fast_route_generator.dart';
-import 'package:ff_annotation_route/src/route_generator/route_generator.dart';
-import 'package:ff_annotation_route/src/route_generator/route_generator_base.dart';
-import 'package:ff_annotation_route/src/routes_file_generator.dart';
-import 'package:ff_annotation_route/src/utils/git_package_handler.dart';
-import 'src/arg/args.dart';
+
+import '/src/arg/args.dart';
+import '/src/route_generator/fast_route_generator.dart';
+import '/src/route_generator/route_generator.dart';
+import '/src/route_generator/route_generator_base.dart';
+import '/src/routes_file_generator.dart';
+import '/src/utils/git_package_handler.dart';
 
 Future<void> generate(List<PackageNode> annotationPackages) async {
   RouteGeneratorBase? root;

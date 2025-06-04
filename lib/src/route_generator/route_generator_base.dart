@@ -1,19 +1,18 @@
-import 'dart:io';
+import 'dart:io' as io;
 
-// ignore: implementation_imports
 import 'package:analyzer/dart/analysis/analysis_context_collection.dart';
-
 import 'package:collection/collection.dart' show IterableExtension;
-import 'package:ff_annotation_route/src/arg/args.dart';
-import 'package:ff_annotation_route/src/file_info.dart';
-import 'package:ff_annotation_route/src/route_info/route_info_base.dart';
-import 'package:ff_annotation_route/src/routes_file_generator.dart';
-import 'package:ff_annotation_route/src/template.dart';
-import 'package:ff_annotation_route/src/utils/convert.dart';
-import 'package:ff_annotation_route/src/utils/dart_type_auto_import.dart';
-import 'package:ff_annotation_route/src/utils/format.dart';
-import 'package:ff_annotation_route/src/utils/git_package_handler.dart';
 import 'package:path/path.dart' as path;
+
+import '/src/arg/args.dart';
+import '/src/file_info.dart';
+import '/src/route_info/route_info_base.dart';
+import '/src/routes_file_generator.dart';
+import '/src/template.dart';
+import '/src/utils/convert.dart';
+import '/src/utils/dart_type_auto_import.dart';
+import '/src/utils/format.dart';
+import '/src/utils/git_package_handler.dart';
 
 abstract class RouteGeneratorBase {
   RouteGeneratorBase({
@@ -21,7 +20,7 @@ abstract class RouteGeneratorBase {
     required String packagePath,
     required this.isRoot,
   }) {
-    final Directory lib = Directory(path.join(packagePath, 'lib'));
+    final lib = io.Directory(path.join(packagePath, 'lib'));
     if (lib.existsSync()) {
       _lib = GitPackageHandler().copyGitPackageToDartTool(lib, packageName);
     }
@@ -31,9 +30,8 @@ abstract class RouteGeneratorBase {
 
   List<FileInfo> get fileInfoList => _fileInfoList;
 
-  Directory? _lib;
-
-  Directory? get lib => _lib;
+  io.Directory? get lib => _lib;
+  io.Directory? _lib;
 
   final String packageName;
   final bool isRoot;
@@ -130,7 +128,7 @@ abstract class RouteGeneratorBase {
   void generateFile({
     List<RouteGeneratorBase>? nodes,
   }) {
-    final File file = deleteFile();
+    final file = deleteFile();
     if (isRoot && _fileInfoList.isEmpty && (nodes?.isEmpty ?? true)) {
       return;
     }
@@ -205,11 +203,15 @@ abstract class RouteGeneratorBase {
       imports.addAll(FileInfo.imports);
       writeImports(imports, sb);
 
-      sb.write(rootFile
-          .replaceAll('{0}', caseSb.toString())
-          .replaceAll('{1}', Args().enableNullSafety ? 'required' : '@required')
-          .replaceAll('{2}', Args().enableNullSafety ? '?' : '')
-          .replaceAll(
+      sb.write(
+        rootFile
+            .replaceAll('{0}', caseSb.toString())
+            .replaceAll(
+              '{1}',
+              Args().enableNullSafety ? 'required' : '@required',
+            )
+            .replaceAll('{2}', Args().enableNullSafety ? '?' : '')
+            .replaceAll(
               '{3}',
               Args().argumentsIsCaseSensitive
                   ? '''  final Map<String, dynamic> safeArguments =
@@ -221,7 +223,9 @@ abstract class RouteGeneratorBase {
       ignoreCaseMap[key.toLowerCase()] = value;
     });
     safeArguments = ignoreCaseMap;
-  }'''));
+  }''',
+            ),
+      );
     } else {
       /// Export
       sb.write(export);
@@ -248,7 +252,7 @@ abstract class RouteGeneratorBase {
     }
   }
 
-  File deleteFile() {
+  io.File deleteFile() {
     String g = '';
     if (Args().gSuffix.value == true) {
       g = '.g';
@@ -261,7 +265,7 @@ abstract class RouteGeneratorBase {
       routePath = path.join(_lib!.path, name);
     }
 
-    final File file = File(routePath);
+    final file = io.File(routePath);
     if (file.existsSync()) {
       file.deleteSync();
     }

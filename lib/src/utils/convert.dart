@@ -59,7 +59,7 @@ void writeImports(Set<String> imports, StringBuffer sb) {
   final String output = <String>[
     dartImports.join('\n'),
     packageImports.join('\n'),
-    otherImports.join('\n')
+    otherImports.join('\n'),
   ].join('\n\n').trim();
   sb.write(output);
 }

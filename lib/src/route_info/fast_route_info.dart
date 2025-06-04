@@ -2,7 +2,7 @@ import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/ast/syntactic_entity.dart';
 import 'package:ff_annotation_route_core/ff_annotation_route_core.dart';
 
-import '../arg/args.dart';
+import '/src/arg/args.dart';
 import 'route_info_base.dart';
 
 class FastRouteInfo extends RouteInfoBase {
@@ -41,8 +41,7 @@ class FastRouteInfo extends RouteInfoBase {
   @override
   String get constructor {
     //remove private constructor
-    constructors.removeWhere(
-        (ConstructorDeclaration element) => element.name?.toString() == '_');
+    constructors.removeWhere((element) => element.name?.toString() == '_');
     if (constructors.isNotEmpty) {
       if (constructors.length > 1) {
         String switchCase = '';
@@ -87,10 +86,13 @@ return ${getConstructorString(rawConstructor)};
     return '() =>$classNameConflictPrefixText$className()';
   }
 
-  String getIsOptional(String name, FormalParameter parameter,
-      ConstructorDeclaration rawConstructor) {
-    String value =
-        'safeArguments[\'${Args().argumentsIsCaseSensitive ? name : name.toLowerCase()}\']';
+  String getIsOptional(
+    String name,
+    FormalParameter parameter,
+    ConstructorDeclaration rawConstructor,
+  ) {
+    String value = 'safeArguments'
+        '[\'${Args().argumentsIsCaseSensitive ? name : name.toLowerCase()}\']';
 
     final String type = getParameterType(name, parameter, rawConstructor);
 
@@ -133,8 +135,9 @@ return ${getConstructorString(rawConstructor)};
         } else {
           final String type = getParameterType(name, item, rawConstructor);
 
-          constructorString +=
-              'asT<$type>(safeArguments[\'${Args().argumentsIsCaseSensitive ? name : name.toLowerCase()}\'],)';
+          constructorString += 'asT<$type>(safeArguments[\''
+              '${Args().argumentsIsCaseSensitive ? name : name.toLowerCase()}'
+              '\'],)';
           if (Args().enableNullSafety && !type.endsWith('?')) {
             constructorString += '!';
           }
@@ -155,8 +158,11 @@ return ${getConstructorString(rawConstructor)};
     return constructorString;
   }
 
-  String getParameterType(String name, FormalParameter parameter,
-      ConstructorDeclaration rawConstructor) {
+  String getParameterType(
+    String name,
+    FormalParameter parameter,
+    ConstructorDeclaration rawConstructor,
+  ) {
     String? typeString;
     if (parameter.toString().contains('this.')) {
       for (final FieldDeclaration item in fields) {
@@ -191,19 +197,6 @@ return ${getConstructorString(rawConstructor)};
     return typeString;
   }
 
-  void alertType(String typeString) {
-    // final Symbol symbol = Symbol(typeString);
-    // final MirrorSystem mirrorSystem = currentMirrorSystem();
-    // for (final LibraryMirror value in mirrorSystem.libraries.values) {
-    //   if (value.declarations.containsKey(symbol)) {
-    //     return;
-    //   }
-    // }
-
-    // print(red.wrap(
-    //     '''Error : '$typeString' must be imported. Please add argumentImports of FFRoute at $routePath.'''));
-  }
-
   void getTypeImport() {
     final CompilationUnit compilationUnit =
         classDeclaration.parent as CompilationUnit;
@@ -213,18 +206,8 @@ return ${getConstructorString(rawConstructor)};
             item.toString().contains('package:ff_annotation_route')) {
           continue;
         }
-        // final ImportDirective importDirective = item;
-
-        // print(item);
       }
     }
-
-    //classDeclarationImpl.parent as
-    // final CompilationUnit astRoot = parseFile(
-    //   path: '',
-    //   featureSet: FeatureSet.fromEnableFlags(<String>[]),
-    // ).unit;
-    //CompilationUnitImpl
   }
 
   String getConstructor(ConstructorDeclaration rawConstructor) {
@@ -238,7 +221,8 @@ return ${getConstructorString(rawConstructor)};
   @override
   String? getArgumentsClass() {
     constructors.removeWhere(
-        (ConstructorDeclaration element) => element.name?.toString() == '_');
+      (ConstructorDeclaration element) => element.name?.toString() == '_',
+    );
     if (constructors.isNotEmpty) {
       final StringBuffer sb = StringBuffer();
       for (final ConstructorDeclaration rawConstructor in constructors) {
@@ -298,11 +282,15 @@ return ${getConstructorString(rawConstructor)};
           }
         }
 
-        sb.write(routeConstClassMethodTemplate
-            .replaceAll('{0}', (name ?? 'd') + args)
-            .replaceAll('{1}', nameMap)
-            .replaceAll('{2}',
-                rawConstructor.parameters.parameters.isEmpty ? 'const' : ''));
+        sb.write(
+          routeConstClassMethodTemplate
+              .replaceAll('{0}', (name ?? 'd') + args)
+              .replaceAll('{1}', nameMap)
+              .replaceAll(
+                '{2}',
+                rawConstructor.parameters.parameters.isEmpty ? 'const' : '',
+              ),
+        );
       }
 
       if (sb.isNotEmpty) {
