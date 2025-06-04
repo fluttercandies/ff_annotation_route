@@ -1,7 +1,12 @@
+## 11.0.0
+
+* Upgrade analyzer to latest version for Alex. (dog head)
+* Support new Syntax Sugar.
+
 ## 10.2.0
 
 * Add '--g-suffix' that Whether the generated file is end with .g
-* Upgrade analyzer to 5.0.0
+* Add visitImportPrefixReference to remove default prefix
 
 ## 10.1.0
 

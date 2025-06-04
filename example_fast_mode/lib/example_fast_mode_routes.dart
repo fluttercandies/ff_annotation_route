@@ -5,7 +5,7 @@
 // fast mode: true
 // version: 10.1.0
 // **************************************************************************
-// ignore_for_file: duplicate_import,implementation_imports,library_private_types_in_public_api,multiple_combinators,prefer_const_literals_to_create_immutables,unintended_html_in_doc_comment,unnecessary_import,unused_import,unused_local_variable,unused_shown_name
+// ignore_for_file: duplicate_import,implementation_imports,library_private_types_in_public_api,multiple_combinators,prefer_const_literals_to_create_immutables,unintended_html_in_doc_comment,unnecessary_import,unused_import,unused_local_variable,unused_shown_name, unnecessary_library_name
 import 'package:example_fast_mode/src/model/test_model.dart'
     show TestMode
     hide TestMode2;
@@ -14,7 +14,6 @@ import 'package:example_fast_mode/src/model/test_model1.dart'
     show TestMode4, TestMode1, TestMode2;
 import 'package:example_fast_mode/src/model/test_model1.dart';
 import 'package:flutter/foundation.dart';
-import 'package:module_a/src/mode/mode.dart' as module_a;
 
 import 'src/pages/main_page.dart';
 
@@ -183,7 +182,7 @@ class Routes {
   ///
   /// [exts] : {'group': 'Simple', 'order': 1}
   static const _FlutterCandiesTestPageBCopyCopy
-      flutterCandiesTestPageBCopyCopy = _FlutterCandiesTestPageBCopyCopy();
+  flutterCandiesTestPageBCopyCopy = _FlutterCandiesTestPageBCopyCopy();
 
   /// "This is test ' page B. in module a"
   ///
@@ -195,7 +194,7 @@ class Routes {
   ///
   /// [constructors] :
   ///
-  /// testpageb1afeb9c992bb2f1098d1acc6becb2a6c.TestPageB : [TestMode? argument, String title]
+  /// testpageb1afeb9c992bb2f1098d1acc6becb2a6c.TestPageB : [String? argument]
   ///
   /// [pageRouteType] : PageRouteType.material
   ///
@@ -291,7 +290,7 @@ class Routes {
   ///
   /// [exts] : {'group': 'Simple', 'order': 2}
   static const _FlutterCandiesTestPageCCopyCopy
-      flutterCandiesTestPageCCopyCopy = _FlutterCandiesTestPageCCopyCopy();
+  flutterCandiesTestPageCCopyCopy = _FlutterCandiesTestPageCCopyCopy();
 
   /// 'This is test page D. in module a'
   ///
@@ -369,14 +368,7 @@ class _FlutterCandiesFunc {
     Key? key,
     bool? c,
     required double d,
-  }) =>
-      <String, dynamic>{
-        'a': a,
-        'b': b,
-        'key': key,
-        'c': c,
-        'd': d,
-      };
+  }) => <String, dynamic>{'a': a, 'b': b, 'key': key, 'c': c, 'd': d};
 
   @override
   String toString() => name;
@@ -393,14 +385,7 @@ class _FlutterCandiesFunc1 {
     Key? key,
     bool? c,
     required double d,
-  }) =>
-      <String, dynamic>{
-        'a': a,
-        'b': b,
-        'key': key,
-        'c': c,
-        'd': d,
-      };
+  }) => <String, dynamic>{'a': a, 'b': b, 'key': key, 'c': c, 'd': d};
 
   @override
   String toString() => name;
@@ -417,14 +402,7 @@ class _FlutterCandiesFunc2 {
     Key? key,
     bool? c,
     required double d,
-  }) =>
-      <String, dynamic>{
-        'a': a,
-        'b': b,
-        'key': key,
-        'c': c,
-        'd': d,
-      };
+  }) => <String, dynamic>{'a': a, 'b': b, 'key': key, 'c': c, 'd': d};
 
   @override
   String toString() => name;
@@ -441,14 +419,7 @@ class _FlutterCandiesFunc3 {
     Key? key,
     bool? c,
     required double d,
-  }) =>
-      <String, dynamic>{
-        'a': a,
-        'b': b,
-        'key': key,
-        'c': c,
-        'd': d,
-      };
+  }) => <String, dynamic>{'a': a, 'b': b, 'key': key, 'c': c, 'd': d};
 
   @override
   String toString() => name;
@@ -465,14 +436,7 @@ class _FlutterCandiesFunc4 {
     Key? key,
     bool? c,
     required double d,
-  }) =>
-      <String, dynamic>{
-        'a': a,
-        'b': b,
-        'key': key,
-        'c': c,
-        'd': d,
-      };
+  }) => <String, dynamic>{'a': a, 'b': b, 'key': key, 'c': c, 'd': d};
 
   @override
   String toString() => name;
@@ -489,14 +453,7 @@ class _FlutterCandiesFunc5 {
     Key? key,
     bool? c,
     required double d,
-  }) =>
-      <String, dynamic>{
-        'a': a,
-        'b': b,
-        'key': key,
-        'c': c,
-        'd': d,
-      };
+  }) => <String, dynamic>{'a': a, 'b': b, 'key': key, 'c': c, 'd': d};
 
   @override
   String toString() => name;
@@ -513,14 +470,7 @@ class _FlutterCandiesFunc7 {
     Key? key,
     bool? c,
     required double d,
-  }) =>
-      <String, dynamic>{
-        'a': a,
-        'b': b,
-        'key': key,
-        'c': c,
-        'd': d,
-      };
+  }) => <String, dynamic>{'a': a, 'b': b, 'key': key, 'c': c, 'd': d};
 
   @override
   String toString() => name;
@@ -531,14 +481,10 @@ class _FlutterCandiesTestPageB {
 
   String get name => '''flutterCandies://testPage' "B''';
 
-  Map<String, dynamic> d({
-    Key? key,
-    String? argument,
-  }) =>
-      <String, dynamic>{
-        'key': key,
-        'argument': argument,
-      };
+  Map<String, dynamic> d({Key? key, String? argument}) => <String, dynamic>{
+    'key': key,
+    'argument': argument,
+  };
 
   @override
   String toString() => name;
@@ -549,14 +495,10 @@ class _FlutterCandiesTestPageBCopy {
 
   String get name => '''flutterCandies://testPage' "B_Copy''';
 
-  Map<String, dynamic> d({
-    Key? key,
-    String? argument,
-  }) =>
-      <String, dynamic>{
-        'key': key,
-        'argument': argument,
-      };
+  Map<String, dynamic> d({Key? key, String? argument}) => <String, dynamic>{
+    'key': key,
+    'argument': argument,
+  };
 
   @override
   String toString() => name;
@@ -567,14 +509,10 @@ class _FlutterCandiesTestPageBCopyCopy {
 
   String get name => '''flutterCandies://testPage' "B_Copy_Copy''';
 
-  Map<String, dynamic> d({
-    Key? key,
-    String? argument,
-  }) =>
-      <String, dynamic>{
-        'key': key,
-        'argument': argument,
-      };
+  Map<String, dynamic> d({Key? key, String? argument}) => <String, dynamic>{
+    'key': key,
+    'argument': argument,
+  };
 
   @override
   String toString() => name;
@@ -585,16 +523,10 @@ class _FlutterCandiesTestPageBModuleA {
 
   String get name => '''flutterCandies://testPage' "B_module_a''';
 
-  Map<String, dynamic> d({
-    Key? key,
-    TestMode? argument,
-    String title = 'dddd',
-  }) =>
-      <String, dynamic>{
-        'key': key,
-        'argument': argument,
-        'title': title,
-      };
+  Map<String, dynamic> d({Key? key, String? argument}) => <String, dynamic>{
+    'key': key,
+    'argument': argument,
+  };
 
   @override
   String toString() => name;
@@ -610,44 +542,29 @@ class _FlutterCandiesTestPageD {
     Key? key,
     bool? optional = false,
     String? id = 'flutterCandies',
-  }) =>
-      <String, dynamic>{
-        'argument': argument,
-        'key': key,
-        'optional': optional,
-        'id': id,
-      };
+  }) => <String, dynamic>{
+    'argument': argument,
+    'key': key,
+    'optional': optional,
+    'id': id,
+  };
 
-  Map<String, dynamic> another0({
-    required String? argument,
-  }) =>
-      <String, dynamic>{
-        'argument': argument,
-        'constructorName': 'another0',
-      };
+  Map<String, dynamic> another0({required String? argument}) =>
+      <String, dynamic>{'argument': argument, 'constructorName': 'another0'};
 
-  Map<String, dynamic> another1(
-    String? argument, [
-    bool? optional = false,
-  ]) =>
+  Map<String, dynamic> another1(String? argument, [bool? optional = false]) =>
       <String, dynamic>{
         'argument': argument,
         'optional': optional,
         'constructorName': 'another1',
       };
 
-  Map<String, dynamic> another2(
-    String? argument,
-  ) =>
-      <String, dynamic>{
-        'argument': argument,
-        'constructorName': 'another2',
-      };
+  Map<String, dynamic> another2(String? argument) => <String, dynamic>{
+    'argument': argument,
+    'constructorName': 'another2',
+  };
 
-  Map<String, dynamic> another3(
-    String? argument, {
-    bool? optional,
-  }) =>
+  Map<String, dynamic> another3(String? argument, {bool? optional}) =>
       <String, dynamic>{
         'argument': argument,
         'optional': optional,
@@ -663,12 +580,7 @@ class _FlutterCandiesTestPageA {
 
   String get name => 'flutterCandies://testPageA';
 
-  Map<String, dynamic> d({
-    Key? key,
-  }) =>
-      <String, dynamic>{
-        'key': key,
-      };
+  Map<String, dynamic> d({Key? key}) => <String, dynamic>{'key': key};
 
   @override
   String toString() => name;
@@ -679,12 +591,7 @@ class _FlutterCandiesTestPageC {
 
   String get name => 'flutterCandies://testPageC';
 
-  Map<String, dynamic> d({
-    Key? key,
-  }) =>
-      <String, dynamic>{
-        'key': key,
-      };
+  Map<String, dynamic> d({Key? key}) => <String, dynamic>{'key': key};
 
   @override
   String toString() => name;
@@ -700,27 +607,25 @@ class _FlutterCandiesTestPageCC {
     Key? key,
     required String testRequiredArg,
     bool? testBoolean,
-  }) =>
-      <String, dynamic>{
-        'testArg': testArg,
-        'key': key,
-        'testRequiredArg': testRequiredArg,
-        'testBoolean': testBoolean,
-      };
+  }) => <String, dynamic>{
+    'testArg': testArg,
+    'key': key,
+    'testRequiredArg': testRequiredArg,
+    'testBoolean': testBoolean,
+  };
 
   Map<String, dynamic> positioned(
     int testArg, [
     bool? testBoolean,
     String testRequiredArg = '',
     Key? key,
-  ]) =>
-      <String, dynamic>{
-        'testArg': testArg,
-        'testBoolean': testBoolean,
-        'testRequiredArg': testRequiredArg,
-        'key': key,
-        'constructorName': 'positioned',
-      };
+  ]) => <String, dynamic>{
+    'testArg': testArg,
+    'testBoolean': testBoolean,
+    'testRequiredArg': testRequiredArg,
+    'key': key,
+    'constructorName': 'positioned',
+  };
 
   @override
   String toString() => name;
@@ -731,12 +636,7 @@ class _FlutterCandiesTestPageCCopy {
 
   String get name => 'flutterCandies://testPageC_Copy';
 
-  Map<String, dynamic> d({
-    Key? key,
-  }) =>
-      <String, dynamic>{
-        'key': key,
-      };
+  Map<String, dynamic> d({Key? key}) => <String, dynamic>{'key': key};
 
   @override
   String toString() => name;
@@ -747,12 +647,7 @@ class _FlutterCandiesTestPageCCopyCopy {
 
   String get name => 'flutterCandies://testPageC_Copy_Copy';
 
-  Map<String, dynamic> d({
-    Key? key,
-  }) =>
-      <String, dynamic>{
-        'key': key,
-      };
+  Map<String, dynamic> d({Key? key}) => <String, dynamic>{'key': key};
 
   @override
   String toString() => name;
@@ -763,12 +658,7 @@ class _FlutterCandiesTestPageDModuleA {
 
   String get name => 'flutterCandies://testPageD_moduleA';
 
-  Map<String, dynamic> d({
-    Key? key,
-  }) =>
-      <String, dynamic>{
-        'key': key,
-      };
+  Map<String, dynamic> d({Key? key}) => <String, dynamic>{'key': key};
 
   @override
   String toString() => name;
@@ -783,24 +673,18 @@ class _FlutterCandiesTestPageE {
     Key? key,
     TestMode? testMode = const TestMode(id: 2, isTest: false),
     TestMode1? testMode1,
-  }) =>
-      <String, dynamic>{
-        'key': key,
-        'testMode': testMode,
-        'testMode1': testMode1,
-      };
+  }) => <String, dynamic>{
+    'key': key,
+    'testMode': testMode,
+    'testMode1': testMode1,
+  };
 
   Map<String, dynamic> test() => const <String, dynamic>{
-        'constructorName': 'test',
-      };
+    'constructorName': 'test',
+  };
 
-  Map<String, dynamic> requiredC({
-    required TestMode? testMode,
-  }) =>
-      <String, dynamic>{
-        'testMode': testMode,
-        'constructorName': 'requiredC',
-      };
+  Map<String, dynamic> requiredC({required TestMode? testMode}) =>
+      <String, dynamic>{'testMode': testMode, 'constructorName': 'requiredC'};
 
   @override
   String toString() => name;
@@ -811,12 +695,7 @@ class _FlutterCandiesTestPageFModuleA {
 
   String get name => 'flutterCandies://testPageF_moduleA';
 
-  Map<String, dynamic> d({
-    Key? key,
-  }) =>
-      <String, dynamic>{
-        'key': key,
-      };
+  Map<String, dynamic> d({Key? key}) => <String, dynamic>{'key': key};
 
   @override
   String toString() => name;
@@ -830,11 +709,7 @@ class _FluttercandiesDemogrouppage {
   Map<String, dynamic> d({
     Key? key,
     required MapEntry<String, List<DemoRouteResult>> keyValue,
-  }) =>
-      <String, dynamic>{
-        'key': key,
-        'keyValue': keyValue,
-      };
+  }) => <String, dynamic>{'key': key, 'keyValue': keyValue};
 
   @override
   String toString() => name;
@@ -845,12 +720,7 @@ class _FluttercandiesMainpage {
 
   String get name => 'fluttercandies://mainpage';
 
-  Map<String, dynamic> d({
-    Key? key,
-  }) =>
-      <String, dynamic>{
-        'key': key,
-      };
+  Map<String, dynamic> d({Key? key}) => <String, dynamic>{'key': key};
 
   @override
   String toString() => name;

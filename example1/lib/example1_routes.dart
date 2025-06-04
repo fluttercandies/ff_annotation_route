@@ -5,7 +5,7 @@
 // fast mode: true
 // version: 10.1.0
 // **************************************************************************
-// ignore_for_file: duplicate_import,implementation_imports,library_private_types_in_public_api,multiple_combinators,prefer_const_literals_to_create_immutables,unintended_html_in_doc_comment,unnecessary_import,unused_import,unused_local_variable,unused_shown_name
+// ignore_for_file: duplicate_import,implementation_imports,library_private_types_in_public_api,multiple_combinators,prefer_const_literals_to_create_immutables,unintended_html_in_doc_comment,unnecessary_import,unused_import,unused_local_variable,unused_shown_name, unnecessary_library_name
 import 'package:example1/src/model/test_model.dart' hide TestMode2;
 import 'package:example1/src/model/test_model1.dart' hide TestMode3;
 import 'package:flutter/foundation.dart';
@@ -194,13 +194,10 @@ class _Root {
 
   String get name => '/';
 
-  Map<String, dynamic> d({
-    Key? key,
-  }) =>
-      <String, dynamic>{
-        'key': key,
-        'argumentNames': <String>['key'],
-      };
+  Map<String, dynamic> d({Key? key}) => <String, dynamic>{
+    'key': key,
+    'argumentNames': <String>['key'],
+  };
 
   @override
   String toString() => name;
@@ -214,12 +211,11 @@ class _Demogrouppage {
   Map<String, dynamic> d({
     Key? key,
     required MapEntry<String, List<DemoRouteResult>> keyValue,
-  }) =>
-      <String, dynamic>{
-        'key': key,
-        'keyValue': keyValue,
-        'argumentNames': <String>['key', 'keyValue'],
-      };
+  }) => <String, dynamic>{
+    'key': key,
+    'keyValue': keyValue,
+    'argumentNames': <String>['key', 'keyValue'],
+  };
 
   @override
   String toString() => name;
@@ -230,13 +226,10 @@ class _TestPageA {
 
   String get name => '/testPageA';
 
-  Map<String, dynamic> d({
-    Key? key,
-  }) =>
-      <String, dynamic>{
-        'key': key,
-        'argumentNames': <String>['key'],
-      };
+  Map<String, dynamic> d({Key? key}) => <String, dynamic>{
+    'key': key,
+    'argumentNames': <String>['key'],
+  };
 
   @override
   String toString() => name;
@@ -247,15 +240,11 @@ class _TestPageB {
 
   String get name => '/testPageB';
 
-  Map<String, dynamic> d({
-    Key? key,
-    String? argument,
-  }) =>
-      <String, dynamic>{
-        'key': key,
-        'argument': argument,
-        'argumentNames': <String>['key', 'argument'],
-      };
+  Map<String, dynamic> d({Key? key, String? argument}) => <String, dynamic>{
+    'key': key,
+    'argument': argument,
+    'argumentNames': <String>['key', 'argument'],
+  };
 
   @override
   String toString() => name;
@@ -266,13 +255,10 @@ class _TestPageC {
 
   String get name => '/testPageC';
 
-  Map<String, dynamic> d({
-    Key? key,
-  }) =>
-      <String, dynamic>{
-        'key': key,
-        'argumentNames': <String>['key'],
-      };
+  Map<String, dynamic> d({Key? key}) => <String, dynamic>{
+    'key': key,
+    'argumentNames': <String>['key'],
+  };
 
   @override
   String toString() => name;
@@ -288,28 +274,22 @@ class _TestPageD {
     Key? key,
     bool? optional = false,
     String? id = 'flutterCandies',
-  }) =>
-      <String, dynamic>{
-        'argument': argument,
-        'key': key,
-        'optional': optional,
-        'id': id,
-        'argumentNames': <String>['argument', 'key', 'optional', 'id'],
-      };
+  }) => <String, dynamic>{
+    'argument': argument,
+    'key': key,
+    'optional': optional,
+    'id': id,
+    'argumentNames': <String>['argument', 'key', 'optional', 'id'],
+  };
 
-  Map<String, dynamic> another0({
-    required String? argument,
-  }) =>
+  Map<String, dynamic> another0({required String? argument}) =>
       <String, dynamic>{
         'argument': argument,
         'constructorName': 'another0',
         'argumentNames': <String>['argument'],
       };
 
-  Map<String, dynamic> another1(
-    String? argument, [
-    bool? optional = false,
-  ]) =>
+  Map<String, dynamic> another1(String? argument, [bool? optional = false]) =>
       <String, dynamic>{
         'argument': argument,
         'optional': optional,
@@ -317,19 +297,13 @@ class _TestPageD {
         'argumentNames': <String>['argument', 'optional'],
       };
 
-  Map<String, dynamic> another2(
-    String? argument,
-  ) =>
-      <String, dynamic>{
-        'argument': argument,
-        'constructorName': 'another2',
-        'argumentNames': <String>['argument'],
-      };
+  Map<String, dynamic> another2(String? argument) => <String, dynamic>{
+    'argument': argument,
+    'constructorName': 'another2',
+    'argumentNames': <String>['argument'],
+  };
 
-  Map<String, dynamic> another3(
-    String? argument, {
-    bool? optional,
-  }) =>
+  Map<String, dynamic> another3(String? argument, {bool? optional}) =>
       <String, dynamic>{
         'argument': argument,
         'optional': optional,
@@ -350,22 +324,19 @@ class _TestPageE {
     Key? key,
     TestMode? testMode = const TestMode(id: 2, isTest: false),
     TestMode1? testMode1,
-  }) =>
-      <String, dynamic>{
-        'key': key,
-        'testMode': testMode,
-        'testMode1': testMode1,
-        'argumentNames': <String>['key', 'testMode', 'testMode1'],
-      };
+  }) => <String, dynamic>{
+    'key': key,
+    'testMode': testMode,
+    'testMode1': testMode1,
+    'argumentNames': <String>['key', 'testMode', 'testMode1'],
+  };
 
   Map<String, dynamic> test() => const <String, dynamic>{
-        'constructorName': 'test',
-        'argumentNames': <String>[],
-      };
+    'constructorName': 'test',
+    'argumentNames': <String>[],
+  };
 
-  Map<String, dynamic> requiredC({
-    required TestMode? testMode,
-  }) =>
+  Map<String, dynamic> requiredC({required TestMode? testMode}) =>
       <String, dynamic>{
         'testMode': testMode,
         'constructorName': 'requiredC',
@@ -386,14 +357,13 @@ class _TestPageF {
     Key? key,
     Map<String, String>? map,
     TestMode? testMode,
-  }) =>
-      <String, dynamic>{
-        'list': list,
-        'key': key,
-        'map': map,
-        'testMode': testMode,
-        'argumentNames': <String>['list', 'key', 'map', 'testMode'],
-      };
+  }) => <String, dynamic>{
+    'list': list,
+    'key': key,
+    'map': map,
+    'testMode': testMode,
+    'argumentNames': <String>['list', 'key', 'map', 'testMode'],
+  };
 
   @override
   String toString() => name;
@@ -404,13 +374,10 @@ class _TestPageG {
 
   String get name => '/testPageG';
 
-  Map<String, dynamic> d({
-    Key? key,
-  }) =>
-      <String, dynamic>{
-        'key': key,
-        'argumentNames': <String>['key'],
-      };
+  Map<String, dynamic> d({Key? key}) => <String, dynamic>{
+    'key': key,
+    'argumentNames': <String>['key'],
+  };
 
   @override
   String toString() => name;
@@ -421,13 +388,10 @@ class _ChildRouterPage {
 
   String get name => 'ChildRouterPage';
 
-  Map<String, dynamic> d({
-    Key? key,
-  }) =>
-      <String, dynamic>{
-        'key': key,
-        'argumentNames': <String>['key'],
-      };
+  Map<String, dynamic> d({Key? key}) => <String, dynamic>{
+    'key': key,
+    'argumentNames': <String>['key'],
+  };
 
   @override
   String toString() => name;
@@ -438,13 +402,10 @@ class _NestedMainPage {
 
   String get name => 'NestedMainPage';
 
-  Map<String, dynamic> d({
-    Key? key,
-  }) =>
-      <String, dynamic>{
-        'key': key,
-        'argumentNames': <String>['key'],
-      };
+  Map<String, dynamic> d({Key? key}) => <String, dynamic>{
+    'key': key,
+    'argumentNames': <String>['key'],
+  };
 
   @override
   String toString() => name;
@@ -455,13 +416,10 @@ class _NestedTestPage {
 
   String get name => 'NestedTestPage';
 
-  Map<String, dynamic> d({
-    Key? key,
-  }) =>
-      <String, dynamic>{
-        'key': key,
-        'argumentNames': <String>['key'],
-      };
+  Map<String, dynamic> d({Key? key}) => <String, dynamic>{
+    'key': key,
+    'argumentNames': <String>['key'],
+  };
 
   @override
   String toString() => name;

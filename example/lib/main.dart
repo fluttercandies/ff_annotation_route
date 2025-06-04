@@ -14,9 +14,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'ff_annotation_route demo',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+      theme: ThemeData(primarySwatch: Colors.blue),
       initialRoute: Routes.fluttercandiesMainpage.name,
       onGenerateRoute: (RouteSettings settings) {
         return onGenerateRoute(
@@ -24,9 +22,7 @@ class MyApp extends StatelessWidget {
           getRouteSettings: getRouteSettings,
           notFoundPageBuilder: () => Scaffold(
             appBar: AppBar(),
-            body: const Center(
-              child: Text('not find page'),
-            ),
+            body: const Center(child: Text('not find page')),
           ),
           routeSettingsWrapper: (FFRouteSettings ffRouteSettings) {
             if (ffRouteSettings.name == Routes.fluttercandiesMainpage.name ||
@@ -35,12 +31,14 @@ class MyApp extends StatelessWidget {
               return ffRouteSettings;
             }
 
-            return ffRouteSettings.copyWith(builder: () {
-              return CommonWidget(
-                title: ffRouteSettings.routeName,
-                child: ffRouteSettings.builder(),
-              );
-            });
+            return ffRouteSettings.copyWith(
+              builder: () {
+                return CommonWidget(
+                  title: ffRouteSettings.routeName,
+                  child: ffRouteSettings.builder(),
+                );
+              },
+            );
           },
         );
       },
@@ -49,11 +47,7 @@ class MyApp extends StatelessWidget {
 }
 
 class CommonWidget extends StatelessWidget {
-  const CommonWidget({
-    super.key,
-    this.child,
-    this.title,
-  });
+  const CommonWidget({super.key, this.child, this.title});
 
   final Widget? child;
   final String? title;
@@ -61,11 +55,7 @@ class CommonWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          title!,
-        ),
-      ),
+      appBar: AppBar(title: Text(title!)),
       body: child,
     );
   }

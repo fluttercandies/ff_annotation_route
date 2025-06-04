@@ -10,31 +10,22 @@ import 'package:io/ansi.dart';
 import 'package:path/path.dart' as path;
 
 const String argumentsFile = 'ff_annotation_route_commands';
-const String debugCommands =
-    '--path example/ --super-arguments --null-safety --no-arguments-case-sensitive';
+
 Future<void> main(List<String> arguments) async {
   bool runFromLocal = false;
-  // debug
+  // debug, run local example，
   // ignore: dead_code
-  if (false) {
-    arguments = debugCommands.split(' ');
-    // ignore: dead_code
-    if (true) {
-      arguments.add('--fast-mode');
-      // ignore: dead_code
-    } else {
-      arguments.add('--no-fast-mode');
+  if (true) {
+    String project = 'example';
+    final io.File file =
+        io.File(path.join(path.current, project, argumentsFile));
+    if (file.existsSync()) {
+      final String content = '${file.readAsStringSync()} --path $project';
+
+      arguments = content.split(' ');
+
+      runFromLocal = true;
     }
-    // parseArgs(arguments);
-    // if (Args().path.value != null) {
-    //   final io.File file =
-    //       io.File(path.join(Args().path.value!, argumentsFile));
-    //   if (file.existsSync()) {
-    //     final String content = file.readAsStringSync();
-    //     arguments.addAll(content.split(' '));
-    //     runFromLocal = true;
-    //   }
-    // }
   }
 
   if (arguments.isEmpty) {

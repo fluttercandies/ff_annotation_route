@@ -5,7 +5,7 @@
 // fast mode: true
 // version: 10.1.0
 // **************************************************************************
-// ignore_for_file: duplicate_import,implementation_imports,library_private_types_in_public_api,multiple_combinators,prefer_const_literals_to_create_immutables,unintended_html_in_doc_comment,unnecessary_import,unused_import,unused_local_variable,unused_shown_name
+// ignore_for_file: duplicate_import,implementation_imports,library_private_types_in_public_api,multiple_combinators,prefer_const_literals_to_create_immutables,unintended_html_in_doc_comment,unnecessary_import,unused_import,unused_local_variable,unused_shown_name, unnecessary_library_name
 import 'package:example_getx/src/bindings/bindings1.dart';
 import 'package:ff_annotation_route_library/ff_annotation_route_library.dart';
 import 'package:flutter/widgets.dart';
@@ -29,87 +29,68 @@ FFRouteSettings getRouteSettings({
       return FFRouteSettings(
         name: name,
         arguments: arguments,
-        builder: () => BindingsPage(
-          key: asT<Key?>(
-            safeArguments['key'],
-          ),
-          argument: asT<String?>(
-            safeArguments['argument'],
-          ),
-        ),
-        codes: <String, dynamic>{
-          'binding': Bindings1(),
-        },
+        builder:
+            () => BindingsPage(
+              key: asT<Key?>(safeArguments['key']),
+              argument: asT<String?>(safeArguments['argument']),
+            ),
+        codes: <String, dynamic>{'binding': Bindings1()},
+
         routeName: 'BindingsPage',
+
         description: 'how to use Bindings with Annotation.',
-        exts: <String, dynamic>{
-          'group': 'demo',
-          'order': 1,
-        },
+        exts: <String, dynamic>{'group': 'demo', 'order': 1},
       );
     case '/ControllerPage':
       return FFRouteSettings(
         name: name,
         arguments: arguments,
-        builder: () => ControllerPage(
-          key: asT<Key?>(
-            safeArguments['key'],
-          ),
-        ),
+        builder: () => ControllerPage(key: asT<Key?>(safeArguments['key'])),
+
         routeName: 'ControllerPage',
+
         description: 'This is getX demo.',
-        exts: <String, dynamic>{
-          'group': 'demo',
-          'order': 0,
-        },
+        exts: <String, dynamic>{'group': 'demo', 'order': 0},
       );
     case '/CounterPage':
       return FFRouteSettings(
         name: name,
         arguments: arguments,
-        builder: () => CounterPage(
-          key: asT<Key?>(
-            safeArguments['key'],
-          ),
-        ),
+        builder: () => CounterPage(key: asT<Key?>(safeArguments['key'])),
+
         description: 'This is getX counter demo.',
       );
     case '/ItemPage':
       return FFRouteSettings(
         name: name,
         arguments: arguments,
-        builder: () => ItemPage(
-          index: asT<int>(
-            safeArguments['index'],
-          )!,
-          key: asT<Key?>(
-            safeArguments['key'],
-          ),
-        ),
+        builder:
+            () => ItemPage(
+              index: asT<int>(safeArguments['index'])!,
+              key: asT<Key?>(safeArguments['key']),
+            ),
       );
     case 'fluttercandies://demogrouppage':
       return FFRouteSettings(
         name: name,
         arguments: arguments,
-        builder: () => DemoGroupPage(
-          key: asT<Key?>(
-            safeArguments['key'],
-          ),
-          keyValue: asT<MapEntry<String, List<DemoRouteResult>>>(
-            safeArguments['keyValue'],
-          )!,
-        ),
+        builder:
+            () => DemoGroupPage(
+              key: asT<Key?>(safeArguments['key']),
+              keyValue:
+                  asT<MapEntry<String, List<DemoRouteResult>>>(
+                    safeArguments['keyValue'],
+                  )!,
+            ),
+
         routeName: 'DemoGroupPage',
       );
     case 'fluttercandies://mainpage':
       return FFRouteSettings(
         name: name,
         arguments: arguments,
-        builder: () => MainPage(
-          key: asT<Key?>(
-            safeArguments['key'],
-          ),
-        ),
+        builder: () => MainPage(key: asT<Key?>(safeArguments['key'])),
+
         routeName: 'MainPage',
       );
     default:
