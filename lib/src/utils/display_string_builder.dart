@@ -1,27 +1,18 @@
-// ignore_for_file: implementation_imports, prefer_final_locals, always_specify_types, always_put_control_body_on_new_line, prefer_final_in_for_each, prefer_foreach, depend_on_referenced_packages
-
 import 'package:_fe_analyzer_shared/src/type_inference/type_analyzer_operations.dart'
     show Variance;
 import 'package:analyzer/dart/element/element2.dart';
 import 'package:analyzer/dart/element/nullability_suffix.dart';
 import 'package:analyzer/dart/element/type.dart';
+import 'package:analyzer/src/dart/element/display_string_builder.dart';
 import 'package:analyzer/src/dart/element/element.dart';
 import 'package:analyzer/src/dart/element/type.dart';
 import 'package:analyzer/src/dart/element/type_algebra.dart';
 import 'package:analyzer/src/utilities/extensions/element.dart';
-import 'package:analyzer/src/dart/element/display_string_builder.dart';
+
 import 'dart_type_auto_import.dart' hide DartType;
 
 /// A class that builds a "display string" for [Element]s and [DartType]s.
 class MyElementDisplayStringBuilder extends ElementDisplayStringBuilder {
-  final StringBuffer _buffer = StringBuffer();
-
-  /// Whether to include the nullability ('?' characters) in a display string.
-  final bool _withNullability;
-
-  /// Whether to allow a display string to be written in multiple lines.
-  final bool _multiline;
-
   MyElementDisplayStringBuilder({
     @Deprecated('Only non-nullable by default mode is supported')
     super.withNullability,
@@ -29,6 +20,14 @@ class MyElementDisplayStringBuilder extends ElementDisplayStringBuilder {
     required super.preferTypeAlias,
   })  : _withNullability = withNullability,
         _multiline = multiline;
+
+  /// Whether to include the nullability ('?' characters) in a display string.
+  final bool _withNullability;
+
+  /// Whether to allow a display string to be written in multiple lines.
+  final bool _multiline;
+
+  final StringBuffer _buffer = StringBuffer();
 
   @override
   String toString() => _buffer.toString();
@@ -204,7 +203,8 @@ class MyElementDisplayStringBuilder extends ElementDisplayStringBuilder {
           DartTypeAutoImportHelper().getImport(type);
       if (dartTypeAutoImport != null) {
         _write(
-            '${dartTypeAutoImport.prefix}.${type.alias!.element.displayName}');
+          '${dartTypeAutoImport.prefix}.${type.alias!.element.displayName}',
+        );
         return;
       }
     }
@@ -243,10 +243,12 @@ class MyElementDisplayStringBuilder extends ElementDisplayStringBuilder {
     if (dartTypeAutoImport != null) {
       if (type.alias != null) {
         _write(
-            '${dartTypeAutoImport.prefix}.${type.alias!.element.displayName}');
+          '${dartTypeAutoImport.prefix}.${type.alias!.element.displayName}',
+        );
       } else {
         _write(
-            '${dartTypeAutoImport.prefix}.${type.element3.name3 ?? '<null>'}');
+          '${dartTypeAutoImport.prefix}.${type.element3.name3 ?? '<null>'}',
+        );
       }
     } else {
       if (_maybeWriteTypeAlias(type)) {
@@ -312,7 +314,7 @@ class MyElementDisplayStringBuilder extends ElementDisplayStringBuilder {
     if (libraryImports.length == 1) {
       return;
     }
-    for (var libraryImport in libraryImports.sublist(1)) {
+    for (final libraryImport in libraryImports.sublist(1)) {
       _write("\nimport '${libraryImport.libraryName}' as $displayName;");
     }
   }
@@ -331,7 +333,7 @@ class MyElementDisplayStringBuilder extends ElementDisplayStringBuilder {
     if (libraryImports.length == 1) {
       return;
     }
-    for (var libraryImport in libraryImports.sublist(1)) {
+    for (final libraryImport in libraryImports.sublist(1)) {
       _write("\nimport '${libraryImport.libraryName}' as $displayName;");
     }
   }
@@ -348,7 +350,7 @@ class MyElementDisplayStringBuilder extends ElementDisplayStringBuilder {
     _write('(');
 
     var index = 0;
-    for (var field in positionalFields) {
+    for (final field in positionalFields) {
       _writeType(field.type);
       if (index++ < fieldCount - 1) {
         _write(', ');
@@ -357,7 +359,7 @@ class MyElementDisplayStringBuilder extends ElementDisplayStringBuilder {
 
     if (namedFields.isNotEmpty) {
       _write('{');
-      for (var field in namedFields) {
+      for (final field in namedFields) {
         _writeType(field.type);
         _write(' ');
         _write(field.name);
@@ -667,15 +669,15 @@ class MyElementDisplayStringBuilder extends ElementDisplayStringBuilder {
       if (type is TypeParameterType) {
         referencedTypeParameters.add(type.element3);
       } else if (type is FunctionType) {
-        for (var typeParameter in type.typeParameters) {
+        for (final typeParameter in type.typeParameters) {
           collectTypeParameters(typeParameter.bound);
         }
-        for (var parameter in type.formalParameters) {
+        for (final parameter in type.formalParameters) {
           collectTypeParameters(parameter.type);
         }
         collectTypeParameters(type.returnType);
       } else if (type is InterfaceType) {
-        for (var typeArgument in type.typeArguments) {
+        for (final typeArgument in type.typeArguments) {
           collectTypeParameters(typeArgument);
         }
       }
@@ -685,20 +687,22 @@ class MyElementDisplayStringBuilder extends ElementDisplayStringBuilder {
     referencedTypeParameters.removeAll(type.typeParameters);
 
     var namesToAvoid = <String>{};
-    for (var typeParameter in referencedTypeParameters) {
+    for (final typeParameter in referencedTypeParameters) {
       namesToAvoid.add(typeParameter.displayName);
     }
 
     var newTypeParameters = <TypeParameterElementImpl2>[];
-    for (var typeParameter in type.typeParameters) {
+    for (final typeParameter in type.typeParameters) {
       var name = typeParameter.name3!;
       for (var counter = 0; !namesToAvoid.add(name); counter++) {
         const unicodeSubscriptZero = 0x2080;
         const unicodeZero = 0x30;
 
-        var subscript = String.fromCharCodes('$counter'.codeUnits.map((n) {
-          return unicodeSubscriptZero + (n - unicodeZero);
-        }));
+        var subscript = String.fromCharCodes(
+          '$counter'.codeUnits.map((n) {
+            return unicodeSubscriptZero + (n - unicodeZero);
+          }),
+        );
 
         name = typeParameter.name3! + subscript;
       }

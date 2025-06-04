@@ -5,7 +5,7 @@
 // fast mode: true
 // version: 10.1.0
 // **************************************************************************
-// ignore_for_file: duplicate_import,implementation_imports,library_private_types_in_public_api,multiple_combinators,prefer_const_literals_to_create_immutables,unintended_html_in_doc_comment,unnecessary_import,unused_import,unused_local_variable,unused_shown_name, unnecessary_library_name
+// ignore_for_file: duplicate_import,implementation_imports,library_private_types_in_public_api,multiple_combinators,prefer_const_literals_to_create_immutables,unintended_html_in_doc_comment,unnecessary_import,unused_import,unused_local_variable,unused_shown_name,unnecessary_library_name
 import 'package:example_route_extension/src/interceptors/login_interceptor.dart';
 import 'package:example_route_extension/src/interceptors/permission_interceptor.dart';
 import 'package:ff_annotation_route_library/ff_annotation_route_library.dart';
@@ -35,40 +35,48 @@ FFRouteSettings getRouteSettings({
       return FFRouteSettings(
         name: name,
         arguments: arguments,
-        builder: () => HomePage(key: asT<Key?>(safeArguments['key'])),
-
+        builder: () => HomePage(
+          key: asT<Key?>(
+            safeArguments['key'],
+          ),
+        ),
         routeName: 'HomePage',
-
         description: 'HomePage',
       );
     case 'fluttercandies://LoginPage':
       return FFRouteSettings(
         name: name,
         arguments: arguments,
-        builder: () => LoginPage(key: asT<Key?>(safeArguments['key'])),
-
+        builder: () => LoginPage(
+          key: asT<Key?>(
+            safeArguments['key'],
+          ),
+        ),
         routeName: 'LoginPage',
-
         description: 'LoginPage',
       );
     case 'fluttercandies://PageA':
       return FFRouteSettings(
         name: name,
         arguments: arguments,
-        builder: () => PageA(key: asT<Key?>(safeArguments['key'])),
-
+        builder: () => PageA(
+          key: asT<Key?>(
+            safeArguments['key'],
+          ),
+        ),
         routeName: 'PageA',
-
         description: 'PageA',
       );
     case 'fluttercandies://PageB':
       return FFRouteSettings(
         name: name,
         arguments: arguments,
-        builder: () => PageB(key: asT<Key?>(safeArguments['key'])),
-
+        builder: () => PageB(
+          key: asT<Key?>(
+            safeArguments['key'],
+          ),
+        ),
         routeName: 'PageB',
-
         description: 'PageB',
       );
     default:

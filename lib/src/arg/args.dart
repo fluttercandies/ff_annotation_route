@@ -1,24 +1,23 @@
-import 'package:ff_annotation_route/src/arg/arguments_case_sensitive.dart';
-import 'package:ff_annotation_route/src/arg/g_suffix.dart';
-import 'package:ff_annotation_route/src/arg/null_safety.dart';
+import 'package:path/path.dart' as path;
 
 import 'argument_names.dart';
+import 'arguments_case_sensitive.dart';
 import 'const_ignore.dart';
 import 'exclude_packages.dart';
 import 'fast_mode.dart';
+import 'g_suffix.dart';
 import 'generate_file_import.dart';
-
 import 'generate_file_import_packages.dart';
 import 'git.dart';
 import 'help.dart';
 import 'name.dart';
+import 'null_safety.dart';
 import 'output.dart';
 import 'package.dart';
 import 'path.dart';
 import 'routes_file_output.dart';
 import 'save.dart';
 import 'super_arguments.dart';
-import 'package:path/path.dart' as path;
 
 class Args {
   factory Args() => _args ??= Args._();
@@ -42,7 +41,7 @@ class Args {
         _generateFileImport = GenerateFileImport(),
         generateFileImportPackages = GenerateFileImportPackages(),
         gSuffix = GSuffix();
-  static Args? _args;
+
   final Help help;
   final Path _path;
   final Name name;
@@ -61,6 +60,9 @@ class Args {
   final GenerateFileImport _generateFileImport;
   final GenerateFileImportPackages generateFileImportPackages;
   final GSuffix gSuffix;
+
+  static Args? _args;
+
   String get className => name.value!;
 
   List<String>? get gitNames => git.value;

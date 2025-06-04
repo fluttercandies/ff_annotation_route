@@ -5,7 +5,7 @@
 // fast mode: false
 // version: 10.1.0
 // **************************************************************************
-// ignore_for_file: duplicate_import,implementation_imports,library_private_types_in_public_api,multiple_combinators,prefer_const_literals_to_create_immutables,unintended_html_in_doc_comment,unnecessary_import,unused_import,unused_local_variable,unused_shown_name, unnecessary_library_name
+// ignore_for_file: duplicate_import,implementation_imports,library_private_types_in_public_api,multiple_combinators,prefer_const_literals_to_create_immutables,unintended_html_in_doc_comment,unnecessary_import,unused_import,unused_local_variable,unused_shown_name,unnecessary_library_name
 import 'dart:io' as autoimportd66e09f4babbdbbe015b32cc3816761d;
 import 'dart:ui' as autoimportde7367a4dccc7f836046967508c09a6c;
 
@@ -96,7 +96,7 @@ class Routes {
   ///
   /// [exts] : {'group': 'Complex', 'order': 2}
   static const _FlutterCandiesTestPageSuperParameters
-  flutterCandiesTestPageSuperParameters =
+      flutterCandiesTestPageSuperParameters =
       _FlutterCandiesTestPageSuperParameters();
 
   /// 'test-func'
@@ -234,7 +234,7 @@ class Routes {
   ///
   /// [exts] : {'group': 'Simple', 'order': 1}
   static const _FlutterCandiesTestPageBCopyCopy
-  flutterCandiesTestPageBCopyCopy = _FlutterCandiesTestPageBCopyCopy();
+      flutterCandiesTestPageBCopyCopy = _FlutterCandiesTestPageBCopyCopy();
 
   /// "This is test ' page B. in module a"
   ///
@@ -358,7 +358,7 @@ class Routes {
   ///
   /// [exts] : {'group': 'Simple', 'order': 2}
   static const _FlutterCandiesTestPageCCopyCopy
-  flutterCandiesTestPageCCopyCopy = _FlutterCandiesTestPageCCopyCopy();
+      flutterCandiesTestPageCCopyCopy = _FlutterCandiesTestPageCCopyCopy();
 
   /// 'This is test page D. in module a'
   ///
@@ -446,80 +446,70 @@ class _FlutterCandiesTestPageF {
     autoimport61a64860a48a0a727515bc4ec00b2fff.Key? key,
     autoimportde7367a4dccc7f836046967508c09a6c.BoxWidthStyle boxWidthStyle =
         autoimportde7367a4dccc7f836046967508c09a6c.BoxWidthStyle.max,
-    autoimporte9848a6dfb6bcdd3203dea5d89c0972f.ExtendedImageMode
-        extendedImageMode =
+    autoimporte9848a6dfb6bcdd3203dea5d89c0972f.ExtendedImageMode extendedImageMode =
         autoimporte9848a6dfb6bcdd3203dea5d89c0972f.ExtendedImageMode.gesture,
     required autoimport1e2f7b96e6c9c283a2a35bf82237bf16.DragDownDetails details,
     required autoimportde7367a4dccc7f836046967508c09a6c.BlendMode blendMode,
     required autoimportd66e09f4babbdbbe015b32cc3816761d.File file,
     required List<autoimportfd790b2c4cbc8e7d99977cab283b94ab.TestMode3> modes,
     required autoimport2ac85d6b777135304f548b8ca2707514.Widget Function(String)
-    function,
+        function,
     required autoimportfd790b2c4cbc8e7d99977cab283b94ab.TestMode3 Function(
-      autoimport1e2f7b96e6c9c283a2a35bf82237bf16.DragDownDetails,
-    )
-    function1,
+            autoimport1e2f7b96e6c9c283a2a35bf82237bf16.DragDownDetails)
+        function1,
     required autoimport14790b17a5a1427ada8188fbf75b352c.TestMode3 Function(
-      Map<
-        autoimportfd790b2c4cbc8e7d99977cab283b94ab.TestMode1,
-        autoimportfd790b2c4cbc8e7d99977cab283b94ab.TestMode2
-      >,
-    )
-    function2,
+            Map<autoimportfd790b2c4cbc8e7d99977cab283b94ab.TestMode1,
+                autoimportfd790b2c4cbc8e7d99977cab283b94ab.TestMode2>)
+        function2,
     required bool Function(String) Function(
-      int,
-      autoimportfd790b2c4cbc8e7d99977cab283b94ab.TestMode2 Function(
-        autoimport1e2f7b96e6c9c283a2a35bf82237bf16.DragDownDetails,
-      ),
-    )
-    function3,
+            int,
+            autoimportfd790b2c4cbc8e7d99977cab283b94ab.TestMode2 Function(
+                autoimport1e2f7b96e6c9c283a2a35bf82237bf16.DragDownDetails))
+        function3,
     required autoimport012d709d6940bda4da65ad673a93e8a3.AFunction aFunction,
     required autoimport012d709d6940bda4da65ad673a93e8a3.MyInt myInt,
     required autoimport012d709d6940bda4da65ad673a93e8a3.AFunction Function(
-      int Function(String),
-    )
-    Function(
-      int,
-      autoimport012d709d6940bda4da65ad673a93e8a3.MyInt Function(int),
-    )
-    function4,
+                int Function(String))
+            Function(int, autoimport012d709d6940bda4da65ad673a93e8a3.MyInt Function(int))
+        function4,
     autoimport012d709d6940bda4da65ad673a93e8a3.TypedefClass1 typedefClass1 =
         const autoimport012d709d6940bda4da65ad673a93e8a3.TypedefClass1(1),
-  }) => <String, dynamic>{
-    'key': key,
-    'boxWidthStyle': boxWidthStyle,
-    'extendedImageMode': extendedImageMode,
-    'details': details,
-    'blendMode': blendMode,
-    'file': file,
-    'modes': modes,
-    'function': function,
-    'function1': function1,
-    'function2': function2,
-    'function3': function3,
-    'aFunction': aFunction,
-    'myInt': myInt,
-    'function4': function4,
-    'typedefClass1': typedefClass1,
-    'constructorName': '',
-    'argumentNames': <String>[
-      'key',
-      'boxWidthStyle',
-      'extendedImageMode',
-      'details',
-      'blendMode',
-      'file',
-      'modes',
-      'function',
-      'function1',
-      'function2',
-      'function3',
-      'aFunction',
-      'myInt',
-      'function4',
-      'typedefClass1',
-    ],
-  };
+  }) =>
+      <String, dynamic>{
+        'key': key,
+        'boxWidthStyle': boxWidthStyle,
+        'extendedImageMode': extendedImageMode,
+        'details': details,
+        'blendMode': blendMode,
+        'file': file,
+        'modes': modes,
+        'function': function,
+        'function1': function1,
+        'function2': function2,
+        'function3': function3,
+        'aFunction': aFunction,
+        'myInt': myInt,
+        'function4': function4,
+        'typedefClass1': typedefClass1,
+        'constructorName': '',
+        'argumentNames': <String>[
+          'key',
+          'boxWidthStyle',
+          'extendedImageMode',
+          'details',
+          'blendMode',
+          'file',
+          'modes',
+          'function',
+          'function1',
+          'function2',
+          'function3',
+          'aFunction',
+          'myInt',
+          'function4',
+          'typedefClass1'
+        ],
+      };
 
   @override
   String toString() => name;
@@ -534,13 +524,14 @@ class _FlutterCandiesTestPageSuperParameters {
     autoimport61a64860a48a0a727515bc4ec00b2fff.Key? key,
     autoimportac41f6e44f4086b72b4f7dbc1ab40cc1.TestMode? argument,
     String title = 'abc',
-  }) => <String, dynamic>{
-    'key': key,
-    'argument': argument,
-    'title': title,
-    'constructorName': '',
-    'argumentNames': <String>['key', 'argument', 'title'],
-  };
+  }) =>
+      <String, dynamic>{
+        'key': key,
+        'argument': argument,
+        'title': title,
+        'constructorName': '',
+        'argumentNames': <String>['key', 'argument', 'title'],
+      };
 
   @override
   String toString() => name;
@@ -557,15 +548,16 @@ class _FlutterCandiesFunc {
     autoimport61a64860a48a0a727515bc4ec00b2fff.Key? key,
     bool? c,
     required double d,
-  }) => <String, dynamic>{
-    'a': a,
-    'b': b,
-    'key': key,
-    'c': c,
-    'd': d,
-    'constructorName': '',
-    'argumentNames': <String>['a', 'b', 'key', 'c', 'd'],
-  };
+  }) =>
+      <String, dynamic>{
+        'a': a,
+        'b': b,
+        'key': key,
+        'c': c,
+        'd': d,
+        'constructorName': '',
+        'argumentNames': <String>['a', 'b', 'key', 'c', 'd'],
+      };
 
   @override
   String toString() => name;
@@ -582,15 +574,16 @@ class _FlutterCandiesFunc1 {
     autoimport61a64860a48a0a727515bc4ec00b2fff.Key? key,
     bool? c,
     required double d,
-  }) => <String, dynamic>{
-    'a': a,
-    'b': b,
-    'key': key,
-    'c': c,
-    'd': d,
-    'constructorName': '',
-    'argumentNames': <String>['a', 'b', 'key', 'c', 'd'],
-  };
+  }) =>
+      <String, dynamic>{
+        'a': a,
+        'b': b,
+        'key': key,
+        'c': c,
+        'd': d,
+        'constructorName': '',
+        'argumentNames': <String>['a', 'b', 'key', 'c', 'd'],
+      };
 
   @override
   String toString() => name;
@@ -607,15 +600,16 @@ class _FlutterCandiesFunc2 {
     autoimport61a64860a48a0a727515bc4ec00b2fff.Key? key,
     bool? c,
     required double d,
-  }) => <String, dynamic>{
-    'a': a,
-    'b': b,
-    'key': key,
-    'c': c,
-    'd': d,
-    'constructorName': '',
-    'argumentNames': <String>['a', 'b', 'key', 'c', 'd'],
-  };
+  }) =>
+      <String, dynamic>{
+        'a': a,
+        'b': b,
+        'key': key,
+        'c': c,
+        'd': d,
+        'constructorName': '',
+        'argumentNames': <String>['a', 'b', 'key', 'c', 'd'],
+      };
 
   @override
   String toString() => name;
@@ -632,15 +626,16 @@ class _FlutterCandiesFunc3 {
     autoimport61a64860a48a0a727515bc4ec00b2fff.Key? key,
     bool? c,
     required double d,
-  }) => <String, dynamic>{
-    'a': a,
-    'b': b,
-    'key': key,
-    'c': c,
-    'd': d,
-    'constructorName': '',
-    'argumentNames': <String>['a', 'b', 'key', 'c', 'd'],
-  };
+  }) =>
+      <String, dynamic>{
+        'a': a,
+        'b': b,
+        'key': key,
+        'c': c,
+        'd': d,
+        'constructorName': '',
+        'argumentNames': <String>['a', 'b', 'key', 'c', 'd'],
+      };
 
   @override
   String toString() => name;
@@ -657,15 +652,16 @@ class _FlutterCandiesFunc4 {
     autoimport61a64860a48a0a727515bc4ec00b2fff.Key? key,
     bool? c,
     required double d,
-  }) => <String, dynamic>{
-    'a': a,
-    'b': b,
-    'key': key,
-    'c': c,
-    'd': d,
-    'constructorName': '',
-    'argumentNames': <String>['a', 'b', 'key', 'c', 'd'],
-  };
+  }) =>
+      <String, dynamic>{
+        'a': a,
+        'b': b,
+        'key': key,
+        'c': c,
+        'd': d,
+        'constructorName': '',
+        'argumentNames': <String>['a', 'b', 'key', 'c', 'd'],
+      };
 
   @override
   String toString() => name;
@@ -682,15 +678,16 @@ class _FlutterCandiesFunc5 {
     autoimport61a64860a48a0a727515bc4ec00b2fff.Key? key,
     bool? c,
     required double d,
-  }) => <String, dynamic>{
-    'a': a,
-    'b': b,
-    'key': key,
-    'c': c,
-    'd': d,
-    'constructorName': '',
-    'argumentNames': <String>['a', 'b', 'key', 'c', 'd'],
-  };
+  }) =>
+      <String, dynamic>{
+        'a': a,
+        'b': b,
+        'key': key,
+        'c': c,
+        'd': d,
+        'constructorName': '',
+        'argumentNames': <String>['a', 'b', 'key', 'c', 'd'],
+      };
 
   @override
   String toString() => name;
@@ -707,15 +704,16 @@ class _FlutterCandiesFunc7 {
     autoimport61a64860a48a0a727515bc4ec00b2fff.Key? key,
     bool? c,
     required double d,
-  }) => <String, dynamic>{
-    'a': a,
-    'b': b,
-    'key': key,
-    'c': c,
-    'd': d,
-    'constructorName': '',
-    'argumentNames': <String>['a', 'b', 'key', 'c', 'd'],
-  };
+  }) =>
+      <String, dynamic>{
+        'a': a,
+        'b': b,
+        'key': key,
+        'c': c,
+        'd': d,
+        'constructorName': '',
+        'argumentNames': <String>['a', 'b', 'key', 'c', 'd'],
+      };
 
   @override
   String toString() => name;
@@ -726,15 +724,15 @@ class _FlutterCandiesTestPageB {
 
   String get name => '''flutterCandies://testPage' "B''';
 
-  Map<String, dynamic> d({
-    autoimport61a64860a48a0a727515bc4ec00b2fff.Key? key,
-    String? argument,
-  }) => <String, dynamic>{
-    'key': key,
-    'argument': argument,
-    'constructorName': '',
-    'argumentNames': <String>['key', 'argument'],
-  };
+  Map<String, dynamic> d(
+          {autoimport61a64860a48a0a727515bc4ec00b2fff.Key? key,
+          String? argument}) =>
+      <String, dynamic>{
+        'key': key,
+        'argument': argument,
+        'constructorName': '',
+        'argumentNames': <String>['key', 'argument'],
+      };
 
   @override
   String toString() => name;
@@ -745,15 +743,15 @@ class _FlutterCandiesTestPageBCopy {
 
   String get name => '''flutterCandies://testPage' "B_Copy''';
 
-  Map<String, dynamic> d({
-    autoimport61a64860a48a0a727515bc4ec00b2fff.Key? key,
-    String? argument,
-  }) => <String, dynamic>{
-    'key': key,
-    'argument': argument,
-    'constructorName': '',
-    'argumentNames': <String>['key', 'argument'],
-  };
+  Map<String, dynamic> d(
+          {autoimport61a64860a48a0a727515bc4ec00b2fff.Key? key,
+          String? argument}) =>
+      <String, dynamic>{
+        'key': key,
+        'argument': argument,
+        'constructorName': '',
+        'argumentNames': <String>['key', 'argument'],
+      };
 
   @override
   String toString() => name;
@@ -764,15 +762,15 @@ class _FlutterCandiesTestPageBCopyCopy {
 
   String get name => '''flutterCandies://testPage' "B_Copy_Copy''';
 
-  Map<String, dynamic> d({
-    autoimport61a64860a48a0a727515bc4ec00b2fff.Key? key,
-    String? argument,
-  }) => <String, dynamic>{
-    'key': key,
-    'argument': argument,
-    'constructorName': '',
-    'argumentNames': <String>['key', 'argument'],
-  };
+  Map<String, dynamic> d(
+          {autoimport61a64860a48a0a727515bc4ec00b2fff.Key? key,
+          String? argument}) =>
+      <String, dynamic>{
+        'key': key,
+        'argument': argument,
+        'constructorName': '',
+        'argumentNames': <String>['key', 'argument'],
+      };
 
   @override
   String toString() => name;
@@ -787,13 +785,14 @@ class _FlutterCandiesTestPageBModuleA {
     autoimport61a64860a48a0a727515bc4ec00b2fff.Key? key,
     autoimportac41f6e44f4086b72b4f7dbc1ab40cc1.TestMode? argument,
     String title = 'dddd',
-  }) => <String, dynamic>{
-    'key': key,
-    'argument': argument,
-    'title': title,
-    'constructorName': '',
-    'argumentNames': <String>['key', 'argument', 'title'],
-  };
+  }) =>
+      <String, dynamic>{
+        'key': key,
+        'argument': argument,
+        'title': title,
+        'constructorName': '',
+        'argumentNames': <String>['key', 'argument', 'title'],
+      };
 
   @override
   String toString() => name;
@@ -809,14 +808,15 @@ class _FlutterCandiesTestPageD {
     autoimport61a64860a48a0a727515bc4ec00b2fff.Key? key,
     bool? optional = false,
     String? id = 'flutterCandies',
-  }) => <String, dynamic>{
-    'argument': argument,
-    'key': key,
-    'optional': optional,
-    'id': id,
-    'constructorName': '',
-    'argumentNames': <String>['argument', 'key', 'optional', 'id'],
-  };
+  }) =>
+      <String, dynamic>{
+        'argument': argument,
+        'key': key,
+        'optional': optional,
+        'id': id,
+        'constructorName': '',
+        'argumentNames': <String>['argument', 'key', 'optional', 'id'],
+      };
 
   Map<String, dynamic> another0({required String? argument}) =>
       <String, dynamic>{
@@ -834,10 +834,10 @@ class _FlutterCandiesTestPageD {
       };
 
   Map<String, dynamic> another2(String? argument) => <String, dynamic>{
-    'argument': argument,
-    'constructorName': 'another2',
-    'argumentNames': <String>['argument'],
-  };
+        'argument': argument,
+        'constructorName': 'another2',
+        'argumentNames': <String>['argument'],
+      };
 
   Map<String, dynamic> another3(String? argument, {bool? optional}) =>
       <String, dynamic>{
@@ -856,13 +856,13 @@ class _FlutterCandiesTestPageA {
 
   String get name => 'flutterCandies://testPageA';
 
-  Map<String, dynamic> d({
-    autoimport61a64860a48a0a727515bc4ec00b2fff.Key? key,
-  }) => <String, dynamic>{
-    'key': key,
-    'constructorName': '',
-    'argumentNames': <String>['key'],
-  };
+  Map<String, dynamic> d(
+          {autoimport61a64860a48a0a727515bc4ec00b2fff.Key? key}) =>
+      <String, dynamic>{
+        'key': key,
+        'constructorName': '',
+        'argumentNames': <String>['key'],
+      };
 
   @override
   String toString() => name;
@@ -873,13 +873,13 @@ class _FlutterCandiesTestPageC {
 
   String get name => 'flutterCandies://testPageC';
 
-  Map<String, dynamic> d({
-    autoimport61a64860a48a0a727515bc4ec00b2fff.Key? key,
-  }) => <String, dynamic>{
-    'key': key,
-    'constructorName': '',
-    'argumentNames': <String>['key'],
-  };
+  Map<String, dynamic> d(
+          {autoimport61a64860a48a0a727515bc4ec00b2fff.Key? key}) =>
+      <String, dynamic>{
+        'key': key,
+        'constructorName': '',
+        'argumentNames': <String>['key'],
+      };
 
   @override
   String toString() => name;
@@ -895,38 +895,40 @@ class _FlutterCandiesTestPageCC {
     autoimport61a64860a48a0a727515bc4ec00b2fff.Key? key,
     required String testRequiredArg,
     bool? testBoolean,
-  }) => <String, dynamic>{
-    'testArg': testArg,
-    'key': key,
-    'testRequiredArg': testRequiredArg,
-    'testBoolean': testBoolean,
-    'constructorName': '',
-    'argumentNames': <String>[
-      'testArg',
-      'key',
-      'testRequiredArg',
-      'testBoolean',
-    ],
-  };
+  }) =>
+      <String, dynamic>{
+        'testArg': testArg,
+        'key': key,
+        'testRequiredArg': testRequiredArg,
+        'testBoolean': testBoolean,
+        'constructorName': '',
+        'argumentNames': <String>[
+          'testArg',
+          'key',
+          'testRequiredArg',
+          'testBoolean'
+        ],
+      };
 
   Map<String, dynamic> positioned(
     int testArg, [
     bool? testBoolean,
     String testRequiredArg = '',
     autoimport61a64860a48a0a727515bc4ec00b2fff.Key? key,
-  ]) => <String, dynamic>{
-    'testArg': testArg,
-    'testBoolean': testBoolean,
-    'testRequiredArg': testRequiredArg,
-    'key': key,
-    'constructorName': 'positioned',
-    'argumentNames': <String>[
-      'testArg',
-      'testBoolean',
-      'testRequiredArg',
-      'key',
-    ],
-  };
+  ]) =>
+      <String, dynamic>{
+        'testArg': testArg,
+        'testBoolean': testBoolean,
+        'testRequiredArg': testRequiredArg,
+        'key': key,
+        'constructorName': 'positioned',
+        'argumentNames': <String>[
+          'testArg',
+          'testBoolean',
+          'testRequiredArg',
+          'key'
+        ],
+      };
 
   @override
   String toString() => name;
@@ -937,13 +939,13 @@ class _FlutterCandiesTestPageCCopy {
 
   String get name => 'flutterCandies://testPageC_Copy';
 
-  Map<String, dynamic> d({
-    autoimport61a64860a48a0a727515bc4ec00b2fff.Key? key,
-  }) => <String, dynamic>{
-    'key': key,
-    'constructorName': '',
-    'argumentNames': <String>['key'],
-  };
+  Map<String, dynamic> d(
+          {autoimport61a64860a48a0a727515bc4ec00b2fff.Key? key}) =>
+      <String, dynamic>{
+        'key': key,
+        'constructorName': '',
+        'argumentNames': <String>['key'],
+      };
 
   @override
   String toString() => name;
@@ -954,13 +956,13 @@ class _FlutterCandiesTestPageCCopyCopy {
 
   String get name => 'flutterCandies://testPageC_Copy_Copy';
 
-  Map<String, dynamic> d({
-    autoimport61a64860a48a0a727515bc4ec00b2fff.Key? key,
-  }) => <String, dynamic>{
-    'key': key,
-    'constructorName': '',
-    'argumentNames': <String>['key'],
-  };
+  Map<String, dynamic> d(
+          {autoimport61a64860a48a0a727515bc4ec00b2fff.Key? key}) =>
+      <String, dynamic>{
+        'key': key,
+        'constructorName': '',
+        'argumentNames': <String>['key'],
+      };
 
   @override
   String toString() => name;
@@ -971,13 +973,13 @@ class _FlutterCandiesTestPageDModuleA {
 
   String get name => 'flutterCandies://testPageD_moduleA';
 
-  Map<String, dynamic> d({
-    autoimport61a64860a48a0a727515bc4ec00b2fff.Key? key,
-  }) => <String, dynamic>{
-    'key': key,
-    'constructorName': '',
-    'argumentNames': <String>['key'],
-  };
+  Map<String, dynamic> d(
+          {autoimport61a64860a48a0a727515bc4ec00b2fff.Key? key}) =>
+      <String, dynamic>{
+        'key': key,
+        'constructorName': '',
+        'argumentNames': <String>['key'],
+      };
 
   @override
   String toString() => name;
@@ -992,32 +994,32 @@ class _FlutterCandiesTestPageE {
     autoimport61a64860a48a0a727515bc4ec00b2fff.Key? key,
     autoimport7b0d8961824b1df42839aaf6ee621592.TestMode? testMode =
         const autoimport7b0d8961824b1df42839aaf6ee621592.TestMode(
-          id: 2,
-          isTest: false,
-        ),
+            id: 2, isTest: false),
     autoimportfd790b2c4cbc8e7d99977cab283b94ab.TestMode1? testMode1,
     autoimport2ac85d6b777135304f548b8ca2707514.Widget? child,
-  }) => <String, dynamic>{
-    'key': key,
-    'testMode': testMode,
-    'testMode1': testMode1,
-    'child': child,
-    'constructorName': '',
-    'argumentNames': <String>['key', 'testMode', 'testMode1', 'child'],
-  };
+  }) =>
+      <String, dynamic>{
+        'key': key,
+        'testMode': testMode,
+        'testMode1': testMode1,
+        'child': child,
+        'constructorName': '',
+        'argumentNames': <String>['key', 'testMode', 'testMode1', 'child'],
+      };
 
   Map<String, dynamic> test() => const <String, dynamic>{
-    'constructorName': 'test',
-    'argumentNames': <String>[],
-  };
+        'constructorName': 'test',
+        'argumentNames': <String>[],
+      };
 
-  Map<String, dynamic> requiredC({
-    required autoimport7b0d8961824b1df42839aaf6ee621592.TestMode? testMode,
-  }) => <String, dynamic>{
-    'testMode': testMode,
-    'constructorName': 'requiredC',
-    'argumentNames': <String>['testMode'],
-  };
+  Map<String, dynamic> requiredC(
+          {required autoimport7b0d8961824b1df42839aaf6ee621592.TestMode?
+              testMode}) =>
+      <String, dynamic>{
+        'testMode': testMode,
+        'constructorName': 'requiredC',
+        'argumentNames': <String>['testMode'],
+      };
 
   @override
   String toString() => name;
@@ -1028,13 +1030,13 @@ class _FlutterCandiesTestPageFModuleA {
 
   String get name => 'flutterCandies://testPageF_moduleA';
 
-  Map<String, dynamic> d({
-    autoimport61a64860a48a0a727515bc4ec00b2fff.Key? key,
-  }) => <String, dynamic>{
-    'key': key,
-    'constructorName': '',
-    'argumentNames': <String>['key'],
-  };
+  Map<String, dynamic> d(
+          {autoimport61a64860a48a0a727515bc4ec00b2fff.Key? key}) =>
+      <String, dynamic>{
+        'key': key,
+        'constructorName': '',
+        'argumentNames': <String>['key'],
+      };
 
   @override
   String toString() => name;
@@ -1045,19 +1047,20 @@ class _FluttercandiesDemogrouppage {
 
   String get name => 'fluttercandies://demogrouppage';
 
-  Map<String, dynamic> d({
-    autoimport61a64860a48a0a727515bc4ec00b2fff.Key? key,
-    required MapEntry<
-      String,
-      List<autoimport19a8136766d530a60dc5d464509fd9eb.DemoRouteResult>
-    >
-    keyValue,
-  }) => <String, dynamic>{
-    'key': key,
-    'keyValue': keyValue,
-    'constructorName': '',
-    'argumentNames': <String>['key', 'keyValue'],
-  };
+  Map<String, dynamic> d(
+          {autoimport61a64860a48a0a727515bc4ec00b2fff.Key? key,
+          required MapEntry<
+                  String,
+                  List<
+                      autoimport19a8136766d530a60dc5d464509fd9eb
+                      .DemoRouteResult>>
+              keyValue}) =>
+      <String, dynamic>{
+        'key': key,
+        'keyValue': keyValue,
+        'constructorName': '',
+        'argumentNames': <String>['key', 'keyValue'],
+      };
 
   @override
   String toString() => name;
@@ -1068,13 +1071,13 @@ class _FluttercandiesMainpage {
 
   String get name => 'fluttercandies://mainpage';
 
-  Map<String, dynamic> d({
-    autoimport61a64860a48a0a727515bc4ec00b2fff.Key? key,
-  }) => <String, dynamic>{
-    'key': key,
-    'constructorName': '',
-    'argumentNames': <String>['key'],
-  };
+  Map<String, dynamic> d(
+          {autoimport61a64860a48a0a727515bc4ec00b2fff.Key? key}) =>
+      <String, dynamic>{
+        'key': key,
+        'constructorName': '',
+        'argumentNames': <String>['key'],
+      };
 
   @override
   String toString() => name;

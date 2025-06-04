@@ -3,11 +3,19 @@ import 'arg_parser.dart';
 abstract class Argument<T> {
   Argument() {
     if (false is T) {
-      parser.addFlag(name,
-          abbr: abbr, help: help, defaultsTo: defaultsTo as bool?);
+      parser.addFlag(
+        name,
+        abbr: abbr,
+        help: help,
+        defaultsTo: defaultsTo as bool?,
+      );
     } else if ('' is T) {
-      parser.addOption(name,
-          abbr: abbr, help: help, defaultsTo: defaultsTo as String?);
+      parser.addOption(
+        name,
+        abbr: abbr,
+        help: help,
+        defaultsTo: defaultsTo as String?,
+      );
     } else if (<String>[] is T) {
       parser.addMultiOption(
         name,

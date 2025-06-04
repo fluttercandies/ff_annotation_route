@@ -1,5 +1,4 @@
-//import 'package:analyzer/dart/element/element.dart';
-import 'package:ff_annotation_route/src/route_info/route_info_base.dart';
+import '/src/route_info/route_info_base.dart';
 
 class FileInfo {
   FileInfo({

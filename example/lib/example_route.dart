@@ -5,7 +5,7 @@
 // fast mode: false
 // version: 10.1.0
 // **************************************************************************
-// ignore_for_file: duplicate_import,implementation_imports,library_private_types_in_public_api,multiple_combinators,prefer_const_literals_to_create_immutables,unintended_html_in_doc_comment,unnecessary_import,unused_import,unused_local_variable,unused_shown_name, unnecessary_library_name
+// ignore_for_file: duplicate_import,implementation_imports,library_private_types_in_public_api,multiple_combinators,prefer_const_literals_to_create_immutables,unintended_html_in_doc_comment,unnecessary_import,unused_import,unused_local_variable,unused_shown_name,unnecessary_library_name
 import 'dart:io' as autoimportd66e09f4babbdbbe015b32cc3816761d;
 import 'dart:ui' as autoimportde7367a4dccc7f836046967508c09a6c;
 
@@ -81,320 +81,352 @@ FFRouteSettings getRouteSettings({
       return FFRouteSettings(
         name: name,
         arguments: arguments,
-        builder:
-            () => testpagef9823c51efb96c2d241b9668f95da35ed.TestPageF(
-              key: asT<autoimport61a64860a48a0a727515bc4ec00b2fff.Key?>(
-                safeArguments['key'],
-              ),
-              boxWidthStyle:
-                  asT<autoimportde7367a4dccc7f836046967508c09a6c.BoxWidthStyle>(
-                    safeArguments['boxwidthstyle'],
-                    autoimportde7367a4dccc7f836046967508c09a6c
-                        .BoxWidthStyle
-                        .max,
-                  )!,
-              extendedImageMode:
-                  asT<
-                    autoimporte9848a6dfb6bcdd3203dea5d89c0972f.ExtendedImageMode
-                  >(
-                    safeArguments['extendedimagemode'],
-                    autoimporte9848a6dfb6bcdd3203dea5d89c0972f
-                        .ExtendedImageMode
-                        .gesture,
-                  )!,
-              details:
-                  asT<
-                    autoimport1e2f7b96e6c9c283a2a35bf82237bf16.DragDownDetails
-                  >(safeArguments['details'])!,
-              blendMode:
-                  asT<autoimportde7367a4dccc7f836046967508c09a6c.BlendMode>(
-                    safeArguments['blendmode'],
-                  )!,
-              file:
-                  asT<autoimportd66e09f4babbdbbe015b32cc3816761d.File>(
-                    safeArguments['file'],
-                  )!,
-              modes:
-                  asT<
-                    List<autoimportfd790b2c4cbc8e7d99977cab283b94ab.TestMode3>
-                  >(safeArguments['modes'])!,
-              function:
-                  asT<
-                    autoimport2ac85d6b777135304f548b8ca2707514.Widget Function(
-                      String,
-                    )
-                  >(safeArguments['function'])!,
-              function1:
-                  asT<
-                    autoimportfd790b2c4cbc8e7d99977cab283b94ab.TestMode3
-                    Function(
-                      autoimport1e2f7b96e6c9c283a2a35bf82237bf16.DragDownDetails,
-                    )
-                  >(safeArguments['function1'])!,
-              function2:
-                  asT<
-                    autoimport14790b17a5a1427ada8188fbf75b352c.TestMode3
-                    Function(
-                      Map<
-                        autoimportfd790b2c4cbc8e7d99977cab283b94ab.TestMode1,
-                        autoimportfd790b2c4cbc8e7d99977cab283b94ab.TestMode2
-                      >,
-                    )
-                  >(safeArguments['function2'])!,
-              function3:
-                  asT<
-                    bool Function(String) Function(
-                      int,
-                      autoimportfd790b2c4cbc8e7d99977cab283b94ab.TestMode2
-                      Function(
-                        autoimport1e2f7b96e6c9c283a2a35bf82237bf16.DragDownDetails,
-                      ),
-                    )
-                  >(safeArguments['function3'])!,
-              aFunction:
-                  asT<autoimport012d709d6940bda4da65ad673a93e8a3.AFunction>(
-                    safeArguments['afunction'],
-                  )!,
-              myInt:
-                  asT<autoimport012d709d6940bda4da65ad673a93e8a3.MyInt>(
-                    safeArguments['myint'],
-                  )!,
-              function4:
-                  asT<
-                    autoimport012d709d6940bda4da65ad673a93e8a3.AFunction
-                    Function(int Function(String))
-                    Function(
-                      int,
-                      autoimport012d709d6940bda4da65ad673a93e8a3.MyInt Function(
-                        int,
-                      ),
-                    )
-                  >(safeArguments['function4'])!,
-              typedefClass1:
-                  asT<autoimport012d709d6940bda4da65ad673a93e8a3.TypedefClass1>(
-                    safeArguments['typedefclass1'],
-                    const autoimport012d709d6940bda4da65ad673a93e8a3.TypedefClass1(
-                      1,
-                    ),
-                  )!,
-            ),
-
+        builder: () => testpagef9823c51efb96c2d241b9668f95da35ed.TestPageF(
+          key: asT<autoimport61a64860a48a0a727515bc4ec00b2fff.Key?>(
+            safeArguments['key'],
+          ),
+          boxWidthStyle:
+              asT<autoimportde7367a4dccc7f836046967508c09a6c.BoxWidthStyle>(
+            safeArguments['boxwidthstyle'],
+            autoimportde7367a4dccc7f836046967508c09a6c.BoxWidthStyle.max,
+          )!,
+          extendedImageMode:
+              asT<autoimporte9848a6dfb6bcdd3203dea5d89c0972f.ExtendedImageMode>(
+            safeArguments['extendedimagemode'],
+            autoimporte9848a6dfb6bcdd3203dea5d89c0972f
+                .ExtendedImageMode.gesture,
+          )!,
+          details:
+              asT<autoimport1e2f7b96e6c9c283a2a35bf82237bf16.DragDownDetails>(
+            safeArguments['details'],
+          )!,
+          blendMode: asT<autoimportde7367a4dccc7f836046967508c09a6c.BlendMode>(
+            safeArguments['blendmode'],
+          )!,
+          file: asT<autoimportd66e09f4babbdbbe015b32cc3816761d.File>(
+            safeArguments['file'],
+          )!,
+          modes:
+              asT<List<autoimportfd790b2c4cbc8e7d99977cab283b94ab.TestMode3>>(
+            safeArguments['modes'],
+          )!,
+          function: asT<
+              autoimport2ac85d6b777135304f548b8ca2707514.Widget Function(
+                  String)>(
+            safeArguments['function'],
+          )!,
+          function1: asT<
+              autoimportfd790b2c4cbc8e7d99977cab283b94ab.TestMode3 Function(
+                  autoimport1e2f7b96e6c9c283a2a35bf82237bf16.DragDownDetails)>(
+            safeArguments['function1'],
+          )!,
+          function2: asT<
+              autoimport14790b17a5a1427ada8188fbf75b352c.TestMode3 Function(
+                  Map<autoimportfd790b2c4cbc8e7d99977cab283b94ab.TestMode1,
+                      autoimportfd790b2c4cbc8e7d99977cab283b94ab.TestMode2>)>(
+            safeArguments['function2'],
+          )!,
+          function3: asT<
+              bool Function(String) Function(
+                  int,
+                  autoimportfd790b2c4cbc8e7d99977cab283b94ab.TestMode2 Function(
+                      autoimport1e2f7b96e6c9c283a2a35bf82237bf16
+                          .DragDownDetails))>(
+            safeArguments['function3'],
+          )!,
+          aFunction: asT<autoimport012d709d6940bda4da65ad673a93e8a3.AFunction>(
+            safeArguments['afunction'],
+          )!,
+          myInt: asT<autoimport012d709d6940bda4da65ad673a93e8a3.MyInt>(
+            safeArguments['myint'],
+          )!,
+          function4: asT<
+              autoimport012d709d6940bda4da65ad673a93e8a3.AFunction Function(
+                      int Function(String))
+                  Function(int, autoimport012d709d6940bda4da65ad673a93e8a3.MyInt Function(int))>(
+            safeArguments['function4'],
+          )!,
+          typedefClass1:
+              asT<autoimport012d709d6940bda4da65ad673a93e8a3.TypedefClass1>(
+            safeArguments['typedefclass1'],
+            const autoimport012d709d6940bda4da65ad673a93e8a3.TypedefClass1(1),
+          )!,
+        ),
         routeName: 'TestPageF',
-
         description: 'Show how to push new page with arguments(class)',
-        exts: <String, dynamic>{'group': 'Complex', 'order': 2},
+        exts: <String, dynamic>{
+          'group': 'Complex',
+          'order': 2,
+        },
       );
     case 'flutterCandies://TestPageSuperParameters':
       return FFRouteSettings(
         name: name,
         arguments: arguments,
-        builder:
-            () => TestPageSuperParameters(
-              key: asT<autoimport61a64860a48a0a727515bc4ec00b2fff.Key?>(
-                safeArguments['key'],
-              ),
-              argument:
-                  asT<autoimportac41f6e44f4086b72b4f7dbc1ab40cc1.TestMode?>(
-                    safeArguments['argument'],
-                  ),
-              title: asT<String>(safeArguments['title'], 'abc')!,
-            ),
-
+        builder: () => TestPageSuperParameters(
+          key: asT<autoimport61a64860a48a0a727515bc4ec00b2fff.Key?>(
+            safeArguments['key'],
+          ),
+          argument: asT<autoimportac41f6e44f4086b72b4f7dbc1ab40cc1.TestMode?>(
+            safeArguments['argument'],
+          ),
+          title: asT<String>(
+            safeArguments['title'],
+            'abc',
+          )!,
+        ),
         routeName: 'TestPageSuperParameters ',
         pageRouteType: PageRouteType.material,
         description: 'This is super parameter test page.',
-        exts: <String, dynamic>{'group': 'Complex', 'order': 2},
+        exts: <String, dynamic>{
+          'group': 'Complex',
+          'order': 2,
+        },
       );
     case 'flutterCandies://func':
       return FFRouteSettings(
         name: name,
         arguments: arguments,
-        builder:
-            () => Func(
-              asT<int>(safeArguments['a'])!,
-              asT<String?>(safeArguments['b']),
-              key: asT<autoimport61a64860a48a0a727515bc4ec00b2fff.Key?>(
-                safeArguments['key'],
-              ),
-              c: asT<bool?>(safeArguments['c']),
-              d: asT<double>(safeArguments['d'])!,
-            ),
-
+        builder: () => Func(
+          asT<int>(
+            safeArguments['a'],
+          )!,
+          asT<String?>(
+            safeArguments['b'],
+          ),
+          key: asT<autoimport61a64860a48a0a727515bc4ec00b2fff.Key?>(
+            safeArguments['key'],
+          ),
+          c: asT<bool?>(
+            safeArguments['c'],
+          ),
+          d: asT<double>(
+            safeArguments['d'],
+          )!,
+        ),
         routeName: 'test-func',
       );
     case 'flutterCandies://func1':
       return FFRouteSettings(
         name: name,
         arguments: arguments,
-        builder:
-            () => Func1(
-              asT<int>(safeArguments['a'])!,
-              asT<String?>(safeArguments['b']),
-              key: asT<autoimport61a64860a48a0a727515bc4ec00b2fff.Key?>(
-                safeArguments['key'],
-              ),
-              c: asT<bool?>(safeArguments['c']),
-              d: asT<double>(safeArguments['d'])!,
-            ),
-
+        builder: () => Func1(
+          asT<int>(
+            safeArguments['a'],
+          )!,
+          asT<String?>(
+            safeArguments['b'],
+          ),
+          key: asT<autoimport61a64860a48a0a727515bc4ec00b2fff.Key?>(
+            safeArguments['key'],
+          ),
+          c: asT<bool?>(
+            safeArguments['c'],
+          ),
+          d: asT<double>(
+            safeArguments['d'],
+          )!,
+        ),
         routeName: 'test-func-1',
       );
     case 'flutterCandies://func2':
       return FFRouteSettings(
         name: name,
         arguments: arguments,
-        builder:
-            () => Func2(
-              asT<int>(safeArguments['a'])!,
-              asT<String?>(safeArguments['b']),
-              key: asT<autoimport61a64860a48a0a727515bc4ec00b2fff.Key?>(
-                safeArguments['key'],
-              ),
-              c: asT<bool?>(safeArguments['c']),
-              d: asT<double>(safeArguments['d'])!,
-            ),
-
+        builder: () => Func2(
+          asT<int>(
+            safeArguments['a'],
+          )!,
+          asT<String?>(
+            safeArguments['b'],
+          ),
+          key: asT<autoimport61a64860a48a0a727515bc4ec00b2fff.Key?>(
+            safeArguments['key'],
+          ),
+          c: asT<bool?>(
+            safeArguments['c'],
+          ),
+          d: asT<double>(
+            safeArguments['d'],
+          )!,
+        ),
         routeName: 'test-func-2',
       );
     case 'flutterCandies://func3':
       return FFRouteSettings(
         name: name,
         arguments: arguments,
-        builder:
-            () => Func3(
-              asT<int>(safeArguments['a'])!,
-              asT<String?>(safeArguments['b']),
-              key: asT<autoimport61a64860a48a0a727515bc4ec00b2fff.Key?>(
-                safeArguments['key'],
-              ),
-              c: asT<bool?>(safeArguments['c']),
-              d: asT<double>(safeArguments['d'])!,
-            ),
-
+        builder: () => Func3(
+          asT<int>(
+            safeArguments['a'],
+          )!,
+          asT<String?>(
+            safeArguments['b'],
+          ),
+          key: asT<autoimport61a64860a48a0a727515bc4ec00b2fff.Key?>(
+            safeArguments['key'],
+          ),
+          c: asT<bool?>(
+            safeArguments['c'],
+          ),
+          d: asT<double>(
+            safeArguments['d'],
+          )!,
+        ),
         routeName: 'test-func-3',
       );
     case 'flutterCandies://func4':
       return FFRouteSettings(
         name: name,
         arguments: arguments,
-        builder:
-            () => Func4(
-              asT<int>(safeArguments['a'])!,
-              asT<String?>(safeArguments['b']),
-              key: asT<autoimport61a64860a48a0a727515bc4ec00b2fff.Key?>(
-                safeArguments['key'],
-              ),
-              c: asT<bool?>(safeArguments['c']),
-              d: asT<double>(safeArguments['d'])!,
-            ),
-
+        builder: () => Func4(
+          asT<int>(
+            safeArguments['a'],
+          )!,
+          asT<String?>(
+            safeArguments['b'],
+          ),
+          key: asT<autoimport61a64860a48a0a727515bc4ec00b2fff.Key?>(
+            safeArguments['key'],
+          ),
+          c: asT<bool?>(
+            safeArguments['c'],
+          ),
+          d: asT<double>(
+            safeArguments['d'],
+          )!,
+        ),
         routeName: 'test-func-4',
       );
     case 'flutterCandies://func5':
       return FFRouteSettings(
         name: name,
         arguments: arguments,
-        builder:
-            () => Func5(
-              asT<int>(safeArguments['a'])!,
-              asT<String?>(safeArguments['b']),
-              key: asT<autoimport61a64860a48a0a727515bc4ec00b2fff.Key?>(
-                safeArguments['key'],
-              ),
-              c: asT<bool?>(safeArguments['c']),
-              d: asT<double>(safeArguments['d'])!,
-            ),
-
+        builder: () => Func5(
+          asT<int>(
+            safeArguments['a'],
+          )!,
+          asT<String?>(
+            safeArguments['b'],
+          ),
+          key: asT<autoimport61a64860a48a0a727515bc4ec00b2fff.Key?>(
+            safeArguments['key'],
+          ),
+          c: asT<bool?>(
+            safeArguments['c'],
+          ),
+          d: asT<double>(
+            safeArguments['d'],
+          )!,
+        ),
         routeName: 'test-func-5',
       );
     case 'flutterCandies://func7':
       return FFRouteSettings(
         name: name,
         arguments: arguments,
-        builder:
-            () => $7Func(
-              asT<int>(safeArguments['a'])!,
-              asT<String?>(safeArguments['b']),
-              key: asT<autoimport61a64860a48a0a727515bc4ec00b2fff.Key?>(
-                safeArguments['key'],
-              ),
-              c: asT<bool?>(safeArguments['c']),
-              d: asT<double>(safeArguments['d'])!,
-            ),
-
+        builder: () => $7Func(
+          asT<int>(
+            safeArguments['a'],
+          )!,
+          asT<String?>(
+            safeArguments['b'],
+          ),
+          key: asT<autoimport61a64860a48a0a727515bc4ec00b2fff.Key?>(
+            safeArguments['key'],
+          ),
+          c: asT<bool?>(
+            safeArguments['c'],
+          ),
+          d: asT<double>(
+            safeArguments['d'],
+          )!,
+        ),
         routeName: 'test-func-7',
       );
     case '''flutterCandies://testPage' "B''':
       return FFRouteSettings(
         name: name,
         arguments: arguments,
-        builder:
-            () => testpagebf579848b341a854d92dd7bfb0a9adf6c.TestPageB(
-              key: asT<autoimport61a64860a48a0a727515bc4ec00b2fff.Key?>(
-                safeArguments['key'],
-              ),
-              argument: asT<String?>(safeArguments['argument']),
-            ),
-
+        builder: () => testpagebf579848b341a854d92dd7bfb0a9adf6c.TestPageB(
+          key: asT<autoimport61a64860a48a0a727515bc4ec00b2fff.Key?>(
+            safeArguments['key'],
+          ),
+          argument: asT<String?>(
+            safeArguments['argument'],
+          ),
+        ),
         routeName: 'testPageB ',
         pageRouteType: PageRouteType.material,
         description: "This is test ' page B.",
-        exts: <String, dynamic>{'group': 'Simple', 'order': 1},
+        exts: <String, dynamic>{
+          'group': 'Simple',
+          'order': 1,
+        },
       );
     case '''flutterCandies://testPage' "B_Copy''':
       return FFRouteSettings(
         name: name,
         arguments: arguments,
-        builder:
-            () => testpageba7e2423296cea41a98c971570832499c.TestPageB(
-              key: asT<autoimport61a64860a48a0a727515bc4ec00b2fff.Key?>(
-                safeArguments['key'],
-              ),
-              argument: asT<String?>(safeArguments['argument']),
-            ),
-
+        builder: () => testpageba7e2423296cea41a98c971570832499c.TestPageB(
+          key: asT<autoimport61a64860a48a0a727515bc4ec00b2fff.Key?>(
+            safeArguments['key'],
+          ),
+          argument: asT<String?>(
+            safeArguments['argument'],
+          ),
+        ),
         routeName: 'testPageB ',
         pageRouteType: PageRouteType.material,
         description: "This is test ' page B. has the same name",
-        exts: <String, dynamic>{'group': 'Simple', 'order': 1},
+        exts: <String, dynamic>{
+          'group': 'Simple',
+          'order': 1,
+        },
       );
     case '''flutterCandies://testPage' "B_Copy_Copy''':
       return FFRouteSettings(
         name: name,
         arguments: arguments,
-        builder:
-            () => testpagebe750dc97cdd9ac79db01471ef9768749.TestPageB(
-              key: asT<autoimport61a64860a48a0a727515bc4ec00b2fff.Key?>(
-                safeArguments['key'],
-              ),
-              argument: asT<String?>(safeArguments['argument']),
-            ),
-
+        builder: () => testpagebe750dc97cdd9ac79db01471ef9768749.TestPageB(
+          key: asT<autoimport61a64860a48a0a727515bc4ec00b2fff.Key?>(
+            safeArguments['key'],
+          ),
+          argument: asT<String?>(
+            safeArguments['argument'],
+          ),
+        ),
         routeName: 'testPageB ',
         pageRouteType: PageRouteType.material,
         description: "This is test ' page B. has the same name",
-        exts: <String, dynamic>{'group': 'Simple', 'order': 1},
+        exts: <String, dynamic>{
+          'group': 'Simple',
+          'order': 1,
+        },
       );
     case '''flutterCandies://testPage' "B_module_a''':
       return FFRouteSettings(
         name: name,
         arguments: arguments,
-        builder:
-            () => testpageb1afeb9c992bb2f1098d1acc6becb2a6c.TestPageB(
-              key: asT<autoimport61a64860a48a0a727515bc4ec00b2fff.Key?>(
-                safeArguments['key'],
-              ),
-              argument:
-                  asT<autoimportac41f6e44f4086b72b4f7dbc1ab40cc1.TestMode?>(
-                    safeArguments['argument'],
-                  ),
-              title: asT<String>(safeArguments['title'], 'dddd')!,
-            ),
-
+        builder: () => testpageb1afeb9c992bb2f1098d1acc6becb2a6c.TestPageB(
+          key: asT<autoimport61a64860a48a0a727515bc4ec00b2fff.Key?>(
+            safeArguments['key'],
+          ),
+          argument: asT<autoimportac41f6e44f4086b72b4f7dbc1ab40cc1.TestMode?>(
+            safeArguments['argument'],
+          ),
+          title: asT<String>(
+            safeArguments['title'],
+            'dddd',
+          )!,
+        ),
         routeName: 'testPageB ',
         pageRouteType: PageRouteType.material,
         description: "This is test ' page B. in module a",
-        exts: <String, dynamic>{'group': 'Simple', 'order': 1},
+        exts: <String, dynamic>{
+          'group': 'Simple',
+          'order': 1,
+        },
       );
     case '''flutterCandies://testPage' "D''':
       return FFRouteSettings(
@@ -405,62 +437,84 @@ FFRouteSettings getRouteSettings({
               safeArguments[constructorName.toLowerCase()]?.toString() ?? '';
           switch (ctorName) {
             case 'another0':
-              return testpaged6c4b232f91f77ae9eb7103223363b84e
-                  .TestPageD.another0(
-                argument: asT<String?>(safeArguments['argument']),
+              return testpaged6c4b232f91f77ae9eb7103223363b84e.TestPageD
+                  .another0(
+                argument: asT<String?>(
+                  safeArguments['argument'],
+                ),
               );
             case 'another1':
-              return testpaged6c4b232f91f77ae9eb7103223363b84e
-                  .TestPageD.another1(
-                asT<String?>(safeArguments['argument']),
-                asT<bool?>(safeArguments['optional'], false),
+              return testpaged6c4b232f91f77ae9eb7103223363b84e.TestPageD
+                  .another1(
+                asT<String?>(
+                  safeArguments['argument'],
+                ),
+                asT<bool?>(
+                  safeArguments['optional'],
+                  false,
+                ),
               );
             case 'another2':
-              return testpaged6c4b232f91f77ae9eb7103223363b84e
-                  .TestPageD.another2(asT<String?>(safeArguments['argument']));
+              return testpaged6c4b232f91f77ae9eb7103223363b84e.TestPageD
+                  .another2(
+                asT<String?>(
+                  safeArguments['argument'],
+                ),
+              );
             case 'another3':
-              return testpaged6c4b232f91f77ae9eb7103223363b84e
-                  .TestPageD.another3(
-                asT<String?>(safeArguments['argument']),
-                optional: asT<bool?>(safeArguments['optional']),
+              return testpaged6c4b232f91f77ae9eb7103223363b84e.TestPageD
+                  .another3(
+                asT<String?>(
+                  safeArguments['argument'],
+                ),
+                optional: asT<bool?>(
+                  safeArguments['optional'],
+                ),
               );
             case '':
             default:
               return testpaged6c4b232f91f77ae9eb7103223363b84e.TestPageD(
-                asT<String?>(safeArguments['argument']),
+                asT<String?>(
+                  safeArguments['argument'],
+                ),
                 key: asT<autoimport61a64860a48a0a727515bc4ec00b2fff.Key?>(
                   safeArguments['key'],
                 ),
-                optional: asT<bool?>(safeArguments['optional'], false),
-                id: asT<String?>(safeArguments['id'], 'flutterCandies'),
+                optional: asT<bool?>(
+                  safeArguments['optional'],
+                  false,
+                ),
+                id: asT<String?>(
+                  safeArguments['id'],
+                  'flutterCandies',
+                ),
               );
           }
         },
-
         routeName: 'testPageD ',
         pageRouteType: PageRouteType.material,
         description: "This is test ' page D.",
-        exts: <String, dynamic>{'group': 'Complex', 'order': 0},
+        exts: <String, dynamic>{
+          'group': 'Complex',
+          'order': 0,
+        },
       );
     case 'flutterCandies://testPageA':
       return FFRouteSettings(
         name: name,
         arguments: arguments,
-        builder:
-            () => TestPageA(
-              key: asT<autoimport61a64860a48a0a727515bc4ec00b2fff.Key?>(
-                safeArguments['key'],
-              ),
-            ),
+        builder: () => TestPageA(
+          key: asT<autoimport61a64860a48a0a727515bc4ec00b2fff.Key?>(
+            safeArguments['key'],
+          ),
+        ),
         codes: <String, dynamic>{
           'test2': TestPageA.dd,
           'test3': TestPageA.ddd,
           'test4': TestPageA(),
           'test5': TestPageA.ddd,
         },
-
         routeName: 'testPageA',
-
         description: 'This is test page A.',
         exts: <String, dynamic>{
           'group': 'Simple',
@@ -472,17 +526,17 @@ FFRouteSettings getRouteSettings({
       return FFRouteSettings(
         name: name,
         arguments: arguments,
-        builder:
-            () => testpagec23b284ff92265eaaa6c065105cf47f2a.TestPageC(
-              key: asT<autoimport61a64860a48a0a727515bc4ec00b2fff.Key?>(
-                safeArguments['key'],
-              ),
-            ),
-
+        builder: () => testpagec23b284ff92265eaaa6c065105cf47f2a.TestPageC(
+          key: asT<autoimport61a64860a48a0a727515bc4ec00b2fff.Key?>(
+            safeArguments['key'],
+          ),
+        ),
         routeName: 'testPageC',
-
         description: 'This is test page c in other module.',
-        exts: <String, dynamic>{'group': 'Simple', 'order': 2},
+        exts: <String, dynamic>{
+          'group': 'Simple',
+          'order': 2,
+        },
       );
     case 'flutterCandies://testPageCC':
       return FFRouteSettings(
@@ -494,9 +548,16 @@ FFRouteSettings getRouteSettings({
           switch (ctorName) {
             case 'positioned':
               return TestPageCC.positioned(
-                asT<int>(safeArguments['testarg'])!,
-                asT<bool?>(safeArguments['testboolean']),
-                asT<String>(safeArguments['testrequiredarg'], '')!,
+                asT<int>(
+                  safeArguments['testarg'],
+                )!,
+                asT<bool?>(
+                  safeArguments['testboolean'],
+                ),
+                asT<String>(
+                  safeArguments['testrequiredarg'],
+                  '',
+                )!,
                 asT<autoimport61a64860a48a0a727515bc4ec00b2fff.Key?>(
                   safeArguments['key'],
                 ),
@@ -504,69 +565,73 @@ FFRouteSettings getRouteSettings({
             case '':
             default:
               return TestPageCC(
-                asT<int>(safeArguments['testarg'])!,
+                asT<int>(
+                  safeArguments['testarg'],
+                )!,
                 key: asT<autoimport61a64860a48a0a727515bc4ec00b2fff.Key?>(
                   safeArguments['key'],
                 ),
-                testRequiredArg: asT<String>(safeArguments['testrequiredarg'])!,
-                testBoolean: asT<bool?>(safeArguments['testboolean']),
+                testRequiredArg: asT<String>(
+                  safeArguments['testrequiredarg'],
+                )!,
+                testBoolean: asT<bool?>(
+                  safeArguments['testboolean'],
+                ),
               );
           }
         },
-
         routeName: 'testPageCC',
-
         description: 'This is test page CC.',
       );
     case 'flutterCandies://testPageC_Copy':
       return FFRouteSettings(
         name: name,
         arguments: arguments,
-        builder:
-            () => testpagec24a74dc0abd3133051a047c62e4d4227.TestPageC(
-              key: asT<autoimport61a64860a48a0a727515bc4ec00b2fff.Key?>(
-                safeArguments['key'],
-              ),
-            ),
-
+        builder: () => testpagec24a74dc0abd3133051a047c62e4d4227.TestPageC(
+          key: asT<autoimport61a64860a48a0a727515bc4ec00b2fff.Key?>(
+            safeArguments['key'],
+          ),
+        ),
         routeName: 'testPageC',
-
         description:
             'This is test page c has the same name with moudle_a TestPageC.',
-        exts: <String, dynamic>{'group': 'Simple', 'order': 2},
+        exts: <String, dynamic>{
+          'group': 'Simple',
+          'order': 2,
+        },
       );
     case 'flutterCandies://testPageC_Copy_Copy':
       return FFRouteSettings(
         name: name,
         arguments: arguments,
-        builder:
-            () => testpagecf10ae9a1919e70b4efb736483bc2992d.TestPageC(
-              key: asT<autoimport61a64860a48a0a727515bc4ec00b2fff.Key?>(
-                safeArguments['key'],
-              ),
-            ),
-
+        builder: () => testpagecf10ae9a1919e70b4efb736483bc2992d.TestPageC(
+          key: asT<autoimport61a64860a48a0a727515bc4ec00b2fff.Key?>(
+            safeArguments['key'],
+          ),
+        ),
         routeName: 'testPageC',
-
         description:
             'This is test page c has the same name with moudle_a TestPageC.',
-        exts: <String, dynamic>{'group': 'Simple', 'order': 2},
+        exts: <String, dynamic>{
+          'group': 'Simple',
+          'order': 2,
+        },
       );
     case 'flutterCandies://testPageD_moduleA':
       return FFRouteSettings(
         name: name,
         arguments: arguments,
-        builder:
-            () => testpaged05a916dda13cd9d2b973ee75b8e74f9d.TestPageD(
-              key: asT<autoimport61a64860a48a0a727515bc4ec00b2fff.Key?>(
-                safeArguments['key'],
-              ),
-            ),
-
+        builder: () => testpaged05a916dda13cd9d2b973ee75b8e74f9d.TestPageD(
+          key: asT<autoimport61a64860a48a0a727515bc4ec00b2fff.Key?>(
+            safeArguments['key'],
+          ),
+        ),
         routeName: 'testPageA',
-
         description: 'This is test page D. in module a',
-        exts: <String, dynamic>{'group': 'Simple', 'order': 0},
+        exts: <String, dynamic>{
+          'group': 'Simple',
+          'order': 0,
+        },
       );
     case 'flutterCandies://testPageE':
       return FFRouteSettings(
@@ -582,8 +647,8 @@ FFRouteSettings getRouteSettings({
               return TestPageE.requiredC(
                 testMode:
                     asT<autoimport7b0d8961824b1df42839aaf6ee621592.TestMode?>(
-                      safeArguments['testmode'],
-                    ),
+                  safeArguments['testmode'],
+                ),
               );
             case '':
             default:
@@ -593,77 +658,71 @@ FFRouteSettings getRouteSettings({
                 ),
                 testMode:
                     asT<autoimport7b0d8961824b1df42839aaf6ee621592.TestMode?>(
-                      safeArguments['testmode'],
-                      const autoimport7b0d8961824b1df42839aaf6ee621592.TestMode(
-                        id: 2,
-                        isTest: false,
-                      ),
-                    ),
+                  safeArguments['testmode'],
+                  const autoimport7b0d8961824b1df42839aaf6ee621592.TestMode(
+                      id: 2, isTest: false),
+                ),
                 testMode1:
                     asT<autoimportfd790b2c4cbc8e7d99977cab283b94ab.TestMode1?>(
-                      safeArguments['testmode1'],
-                    ),
+                  safeArguments['testmode1'],
+                ),
                 child: asT<autoimport2ac85d6b777135304f548b8ca2707514.Widget?>(
                   safeArguments['child'],
                 ),
               );
           }
         },
-
         routeName: 'testPageE',
-
         description: 'Show how to push new page with arguments(class)',
-        exts: <String, dynamic>{'group': 'Complex', 'order': 1},
+        exts: <String, dynamic>{
+          'group': 'Complex',
+          'order': 1,
+        },
       );
     case 'flutterCandies://testPageF_moduleA':
       return FFRouteSettings(
         name: name,
         arguments: arguments,
-        builder:
-            () => testpagef659cb97d54edf7d4349710e906c4d437.TestPageF(
-              key: asT<autoimport61a64860a48a0a727515bc4ec00b2fff.Key?>(
-                safeArguments['key'],
-              ),
-            ),
-
+        builder: () => testpagef659cb97d54edf7d4349710e906c4d437.TestPageF(
+          key: asT<autoimport61a64860a48a0a727515bc4ec00b2fff.Key?>(
+            safeArguments['key'],
+          ),
+        ),
         routeName: 'testPageA',
-
         description: 'This is test page F. in module a',
-        exts: <String, dynamic>{'group': 'Simple', 'order': 0},
+        exts: <String, dynamic>{
+          'group': 'Simple',
+          'order': 0,
+        },
       );
     case 'fluttercandies://demogrouppage':
       return FFRouteSettings(
         name: name,
         arguments: arguments,
-        builder:
-            () => DemoGroupPage(
-              key: asT<autoimport61a64860a48a0a727515bc4ec00b2fff.Key?>(
-                safeArguments['key'],
-              ),
-              keyValue:
-                  asT<
-                    MapEntry<
-                      String,
-                      List<
-                        autoimport19a8136766d530a60dc5d464509fd9eb.DemoRouteResult
-                      >
-                    >
-                  >(safeArguments['keyvalue'])!,
-            ),
-
+        builder: () => DemoGroupPage(
+          key: asT<autoimport61a64860a48a0a727515bc4ec00b2fff.Key?>(
+            safeArguments['key'],
+          ),
+          keyValue: asT<
+              MapEntry<
+                  String,
+                  List<
+                      autoimport19a8136766d530a60dc5d464509fd9eb
+                      .DemoRouteResult>>>(
+            safeArguments['keyvalue'],
+          )!,
+        ),
         routeName: 'DemoGroupPage',
       );
     case 'fluttercandies://mainpage':
       return FFRouteSettings(
         name: name,
         arguments: arguments,
-        builder:
-            () => MainPage(
-              key: asT<autoimport61a64860a48a0a727515bc4ec00b2fff.Key?>(
-                safeArguments['key'],
-              ),
-            ),
-
+        builder: () => MainPage(
+          key: asT<autoimport61a64860a48a0a727515bc4ec00b2fff.Key?>(
+            safeArguments['key'],
+          ),
+        ),
         routeName: 'MainPage',
       );
     default:
