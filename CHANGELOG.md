@@ -1,7 +1,6 @@
 ## 11.0.0
 
-* Upgrade analyzer to latest version for Alex. (dog head)
-* Support new Syntax Sugar.
+* Upgrade `package:analyzer` to the latest version to support new syntax.
 
 ## 10.2.0
 

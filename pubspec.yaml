@@ -10,7 +10,7 @@ topics:
   - route-guard
 
 environment:
-  sdk: ^3.0.0
+  sdk: ^3.5.0
 
 dependencies:
   _fe_analyzer_shared: ">=81.0.0 <83.0.0"
