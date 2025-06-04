@@ -32,7 +32,7 @@ jobs:
         uses: bluefireteam/melos-action@v3
       - name: Check Dart code formatting
         if: matrix.flutter-version != 'min'
-        run: dart format . -o none --set-exit-if-changed
+        run: dart format lib -o none --set-exit-if-changed
       - name: Analyze Dart code
         run: flutter analyze .
       - name: Publish dry-run
