@@ -1,49 +1,54 @@
-import 'dart:io';
+import 'dart:io' as io show File;
+
 import 'package:dart_style/dart_style.dart';
-import 'package:io/ansi.dart';
+import 'package:path/path.dart' as p;
+import 'package:pub_semver/pub_semver.dart';
+import 'package:yaml/yaml.dart' show loadYaml;
 
-final DartFormatter _formatter = DartFormatter(
-  languageVersion: DartFormatter.latestLanguageVersion,
-);
-
-Future<void> formatFile(File? file) async {
-  if (file == null) {
-    return;
-  }
-
-  if (!file.existsSync()) {
-    print(red.wrap('format error: ${file.absolute.path} doesn\'t exist\n'));
-    return;
-  }
-
-  processRunSync(
-    executable: 'flutter',
-    arguments: 'format ${file.absolute.path}',
-    runInShell: true,
-  );
-}
-
-String formatDart(String input) {
-  try {
-    return _formatter.format(input);
-  } catch (e) {
-    print(e);
-  }
-  return input;
-}
-
-void processRunSync({
-  required String executable,
-  required String arguments,
-  bool runInShell = false,
+/// The formatter will only use the tall-style if the SDK constraint is ^3.7.
+DartFormatter _buildDartFormatter({
+  required VersionConstraint? sdk,
+  required int? pageWidth,
 }) {
-  final ProcessResult result = Process.runSync(
-    executable,
-    arguments.split(' '),
-    runInShell: runInShell,
+  final useShort = switch (sdk) {
+    final c? => c.allowsAny(VersionConstraint.parse('<3.7.0')),
+    _ => true,
+  };
+  return DartFormatter(
+    languageVersion: useShort
+        ? DartFormatter.latestShortStyleLanguageVersion
+        : DartFormatter.latestLanguageVersion,
+    pageWidth: pageWidth,
+    lineEnding: '\n',
   );
-  if (result.exitCode != 0) {
-    throw Exception(result.stderr);
+}
+
+String formatDart({
+  required String content,
+  required String directory,
+}) {
+  final (sdk, pageWidth) = _readConfig(directory);
+  final formatter = _buildDartFormatter(sdk: sdk, pageWidth: pageWidth);
+  return formatter.format(content);
+}
+
+(VersionConstraint? sdk, int? pageWidth) _readConfig(String directory) {
+  final pubspecFile = io.File(p.join(directory, 'pubspec.yaml'));
+  final pubspecSource = pubspecFile.existsSync()
+      ? loadYaml(pubspecFile.readAsStringSync()) as Map?
+      : null;
+  final VersionConstraint? sdk;
+  final rawSdk = pubspecSource?['environment']?['sdk'] as String?;
+  if (rawSdk != null) {
+    sdk = VersionConstraint.parse(rawSdk);
+  } else {
+    sdk = null;
   }
-  print('${result.stdout}');
+
+  final analysisFile = io.File(p.join(directory, 'analysis_options.yaml'));
+  final analysisSource = analysisFile.existsSync()
+      ? loadYaml(analysisFile.readAsStringSync()) as Map?
+      : null;
+  final pageWidth = analysisSource?['formatter']?['page_width'] as int?;
+  return (sdk, pageWidth);
 }

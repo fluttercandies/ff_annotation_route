@@ -238,7 +238,12 @@ abstract class RouteGeneratorBase {
 
     if (sb.isNotEmpty) {
       file.createSync(recursive: true);
-      file.writeAsStringSync(formatDart(fileHeader + sb.toString()));
+      file.writeAsStringSync(
+        formatDart(
+          content: fileHeader + sb.toString(),
+          directory: _lib!.path,
+        ),
+      );
       print('Generate : ${path.relative(file.path, from: _lib!.parent.path)}');
     }
   }

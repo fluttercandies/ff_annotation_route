@@ -149,7 +149,9 @@ class RoutesFileGenerator {
 
     if (constants != null) {
       file.createSync(recursive: true);
-      file.writeAsStringSync(formatDart(constants));
+      file.writeAsStringSync(
+        formatDart(content: constants, directory: lib.path),
+      );
       print('Generate : ${p.relative(file.path, from: lib.parent.path)}');
     }
   }

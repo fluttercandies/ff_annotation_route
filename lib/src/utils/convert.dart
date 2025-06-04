@@ -1,9 +1,8 @@
 import 'dart:convert';
+
 import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/ast/syntactic_entity.dart';
 import 'package:crypto/crypto.dart' as crypto;
-
-import 'format.dart';
 
 T? toT<T>(Expression expression) {
   if ('' is T && expression is SimpleStringLiteral) {
@@ -42,8 +41,8 @@ void writeImports(Set<String> imports, StringBuffer sb) {
   final List<String> dartImports = <String>[];
   final List<String> packageImports = <String>[];
   final List<String> otherImports = <String>[];
-  final Set<String> distinctImports =
-      imports.map((String e) => formatDart(e.trim()).trim()).toSet();
+  final Set<String> distinctImports = imports.map((e) => e.trim()).toSet();
+
   for (final String import in distinctImports) {
     if (import.isDartImport) {
       dartImports.add(import);
@@ -53,6 +52,7 @@ void writeImports(Set<String> imports, StringBuffer sb) {
       otherImports.add(import);
     }
   }
+
   dartImports.sort((String a, String b) => a.compareTo(b));
   packageImports.sort((String a, String b) => a.compareTo(b));
   otherImports.sort((String a, String b) => a.compareTo(b));

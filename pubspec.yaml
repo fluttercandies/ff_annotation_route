@@ -13,6 +13,7 @@ environment:
   sdk: ^3.0.0
 
 dependencies:
+  _fe_analyzer_shared: ">=81.0.0 <83.0.0"
   analyzer: ^7.4.5
   args: ^2.3.1
   build_runner_core: ^8.0.0
@@ -24,6 +25,7 @@ dependencies:
   meta: ^1.7.0
   path: ^1.8.1
   pub_cache: ^0.3.1
+  pub_semver: ^2.2.0
   source_gen: ^2.0.0
   yaml: ^3.1.1
 
