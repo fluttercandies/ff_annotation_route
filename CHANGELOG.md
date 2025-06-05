@@ -1,3 +1,7 @@
+## 10.2.1
+
+* ignore unnecessary_library_directive
+
 ## 10.2.0
 
 * Add '--g-suffix' that Whether the generated file is end with .g
