@@ -1,3 +1,7 @@
+## 11.0.1
+
+* ignore unnecessary_library_directive
+
 ## 11.0.0
 
 * Upgrade `package:analyzer` to the latest version to support new syntax.
