@@ -1,3 +1,7 @@
+## 11.0.2
+
+* Resolve directives_ordering
+
 ## 11.0.1
 
 * ignore unnecessary_library_directive
