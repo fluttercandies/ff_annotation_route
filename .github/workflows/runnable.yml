@@ -31,7 +31,7 @@ jobs:
         run: dart pub get
       - name: Melos bootstrap
         uses: bluefireteam/melos-action@v3
-      - name: Generate version consistency
+      - name: Check version consistency
         run: |
           dart run build_runner build -d
           git --no-pager diff --exit-code lib/src/version.gen.dart

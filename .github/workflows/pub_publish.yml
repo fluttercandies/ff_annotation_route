@@ -11,18 +11,16 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - uses: flutter-actions/setup-flutter@v4
-        with:
-          channel: stable
-          cache: true
-      - run: |
+      - uses: dart-lang/setup-dart@v1
+      - name: Check version consistency
+        run: |
           dart pub get
           dart run build_runner build -d
           git --no-pager diff --exit-code lib/src/version.gen.dart
       - name: Publish
-        uses: sakebook/actions-flutter-pub-publisher@v1.4.1
+        uses: k-paxian/dart-package-publisher@master
         with:
-          credential: ${{ secrets.CREDENTIAL_JSON }}
-          flutter_package: false
-          skip_test: true
-          dry_run: false
+          credentialJson: ${{ secrets.CREDENTIAL_JSON }}
+          flutter: false
+          skipTests: true
+          dryRunOnly: false
