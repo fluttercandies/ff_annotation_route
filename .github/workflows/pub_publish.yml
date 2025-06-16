@@ -14,7 +14,7 @@ jobs:
       - uses: dart-lang/setup-dart@v1
       - name: Check version consistency
         run: |
-          dart pub get
+          dart pub get --no-example
           dart run build_runner build -d
           git --no-pager diff --exit-code lib/src/version.gen.dart
       - name: Publish
