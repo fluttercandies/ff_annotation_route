@@ -36,10 +36,8 @@ jobs:
           dart run build_runner build -d
           git --no-pager diff --exit-code lib/src/version.gen.dart
       - name: Check Dart code formatting
-        if: matrix.flutter-version != 'min'
         run: dart format lib -o none --set-exit-if-changed
       - name: Analyze Dart code
         run: flutter analyze .
       - name: Publish dry-run
-        if: matrix.flutter-version != 'min'
         run: dart pub publish --dry-run

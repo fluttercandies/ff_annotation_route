@@ -11,7 +11,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - uses: dart-lang/setup-dart@v1
+      - uses: flutter-actions/setup-flutter@v4
+        with:
+          channel: stable
+          cache: true
       - name: Check version consistency
         run: |
           dart pub get --no-example
@@ -21,6 +24,6 @@ jobs:
         uses: k-paxian/dart-package-publisher@master
         with:
           credentialJson: ${{ secrets.CREDENTIAL_JSON }}
-          flutter: false
+          flutter: true
           skipTests: true
           dryRunOnly: false
