@@ -1,6 +1,7 @@
 ## 11.0.2
 
 * Resolve directives_ordering
+* Use a fixed version when generating rather than the one in the PUB_CACHE
 
 ## 11.0.1
 

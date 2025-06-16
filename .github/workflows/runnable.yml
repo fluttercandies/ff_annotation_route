@@ -22,6 +22,7 @@ jobs:
       - uses: flutter-actions/setup-flutter@v4
         with:
           channel: stable
+          cache: true
       - name: Log Dart/Flutter versions
         run: |
           dart --version
@@ -30,6 +31,8 @@ jobs:
         run: dart pub get
       - name: Melos bootstrap
         uses: bluefireteam/melos-action@v3
+      - name: Generate version
+        run: dart run build_runner build -d
       - name: Check Dart code formatting
         if: matrix.flutter-version != 'min'
         run: dart format lib -o none --set-exit-if-changed

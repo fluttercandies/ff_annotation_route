@@ -24,3 +24,6 @@ build/
 
 # Directory created by dartdoc
 doc/api/
+
+# Ignores version.gen.dart
+lib/src/version.gen.dart

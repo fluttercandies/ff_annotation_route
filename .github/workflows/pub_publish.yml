@@ -7,16 +7,19 @@ on:
 
 jobs:
   publish:
-
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout
-        uses: actions/checkout@v1
+        uses: actions/checkout@v4
+      - uses: flutter-actions/setup-flutter@v4
+        with:
+          channel: stable
+          cache: true
+      - run: flutter pub get; dart run build_runner build -d
       - name: Publish
-        uses: sakebook/actions-flutter-pub-publisher@v1.3.0
+        uses: sakebook/actions-flutter-pub-publisher@v1.4.1
         with:
           credential: ${{ secrets.CREDENTIAL_JSON }}
-          flutter_package: true
+          flutter_package: false
           skip_test: true
           dry_run: false
