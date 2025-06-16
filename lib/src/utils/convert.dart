@@ -43,7 +43,10 @@ void writeImports(Set<String> imports, StringBuffer sb) {
   final List<String> otherImports = <String>[];
   final Set<String> distinctImports = imports.map((e) => e.trim()).toSet();
 
-  for (final String import in distinctImports) {
+  for (final import in distinctImports) {
+    if (import.isEmpty) {
+      continue;
+    }
     if (import.isDartImport) {
       dartImports.add(import);
     } else if (import.isPackageImport) {
@@ -55,12 +58,25 @@ void writeImports(Set<String> imports, StringBuffer sb) {
 
   dartImports.sort((String a, String b) => a.compareTo(b));
   packageImports.sort((String a, String b) => a.compareTo(b));
-  otherImports.sort((String a, String b) => a.compareTo(b));
+  otherImports.sort((String a, String b) {
+    if (a.startsWith("import '/") && b.startsWith("import '/")) {
+      return a.compareTo(b);
+    }
+    if (b.startsWith("import '/")) {
+      return 1;
+    }
+    if (a.startsWith("import '/")) {
+      return -1;
+    }
+    return a.compareTo(b);
+  });
+
   final String output = <String>[
     dartImports.join('\n'),
     packageImports.join('\n'),
     otherImports.join('\n'),
   ].join('\n\n').trim();
+
   sb.write(output);
 }
 

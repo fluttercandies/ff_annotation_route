@@ -32,6 +32,7 @@ dependencies:
 dev_dependencies:
   melos: ^6.0.0
   lints: any
+  test: ^1.16.0
 
 # Run `dart pub global activate --source path ./` for local development.
 executables:
