@@ -44,6 +44,3 @@ executables:
 # dependency_overrides:
 #   ff_annotation_route_core:
 #     path: ../ff_annotation_route_core
-
-version_gen:
-  path: lib/src/
