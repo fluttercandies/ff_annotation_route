@@ -1,3 +1,7 @@
+## 11.1.1
+
+* Remove version from template.
+* 
 ## 11.1.0
 
 * Upgrade dependencies.
