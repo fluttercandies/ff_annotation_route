@@ -1,5 +1,3 @@
-import 'package:_fe_analyzer_shared/src/type_inference/type_analyzer_operations.dart'
-    show Variance;
 import 'package:analyzer/dart/element/element2.dart';
 import 'package:analyzer/dart/element/nullability_suffix.dart';
 import 'package:analyzer/dart/element/type.dart';
@@ -401,7 +399,7 @@ class MyElementDisplayStringBuilder extends ElementDisplayStringBuilder {
   @override
   void writeTypeParameter(TypeParameterElementImpl element) {
     var variance = element.variance;
-    if (!element.isLegacyCovariant && variance != Variance.unrelated) {
+    if (!element.isLegacyCovariant && variance.name != 'unrelated') {
       _write(variance.keyword);
       _write(' ');
     }
@@ -418,7 +416,7 @@ class MyElementDisplayStringBuilder extends ElementDisplayStringBuilder {
   @override
   void writeTypeParameter2(TypeParameterElementImpl2 element) {
     var variance = element.variance;
-    if (!element.isLegacyCovariant && variance != Variance.unrelated) {
+    if (!element.isLegacyCovariant && variance.name != 'unrelated') {
       _write(variance.keyword);
       _write(' ');
     }
