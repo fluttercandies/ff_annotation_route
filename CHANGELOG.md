@@ -1,3 +1,7 @@
+## 11.1.0
+
+* Upgrade dependencies.
+
 ## 11.0.2
 
 * Resolve directives_ordering
