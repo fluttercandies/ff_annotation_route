@@ -5,7 +5,7 @@ import 'package:ff_annotation_route/src/file_info.dart';
 import 'package:ff_annotation_route/src/utils/camel_under_score_converter.dart';
 import 'package:ff_annotation_route/src/utils/convert.dart';
 import 'package:ff_annotation_route_core/ff_annotation_route_core.dart';
-import 'package:source_gen/source_gen.dart';
+import 'package:source_gen/source_gen.dart' show ConstantReader;
 
 abstract class RouteInfoBase {
   RouteInfoBase({

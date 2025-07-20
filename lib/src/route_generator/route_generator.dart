@@ -11,7 +11,7 @@ import 'package:analyzer/src/dart/element/element.dart';
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:ff_annotation_route_core/ff_annotation_route_core.dart';
 import 'package:path/path.dart' as p;
-import 'package:source_gen/source_gen.dart';
+import 'package:source_gen/source_gen.dart' show ConstantReader, TypeChecker;
 
 import '/src/arg/args.dart';
 import '/src/file_info.dart';

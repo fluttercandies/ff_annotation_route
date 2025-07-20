@@ -1,11 +1,12 @@
 import 'dart:io' as io;
 
-import 'package:build_runner_core/build_runner_core.dart';
-import 'package:collection/collection.dart' show IterableExtension;
+import 'package:build_runner_core/build_runner_core.dart'
+    show DependencyType, PackageGraph, PackageNode;
+import 'package:collection/collection.dart';
 import 'package:ff_annotation_route/ff_annotation_route.dart';
 import 'package:ff_annotation_route/src/arg/arg_parser.dart';
 import 'package:ff_annotation_route/src/arg/args.dart';
-import 'package:io/ansi.dart';
+import 'package:io/ansi.dart' as ansi show green;
 import 'package:path/path.dart' as path;
 
 const _savedCommandsFile = 'ff_annotation_route_commands';
@@ -23,12 +24,12 @@ Future<void> main(List<String> arguments) async {
 
   parseArgs(arguments);
   if (arguments.isEmpty || Args().help.value!) {
-    print(green.wrap(parser.usage));
+    print(ansi.green.wrap(parser.usage));
     return;
   }
 
   final DateTime before = DateTime.now();
-  print(green.wrap('\nff_annotation_route ------ Start'));
+  print(ansi.green.wrap('\nff_annotation_route ------ Start'));
 
   final PackageGraph packageGraph = await PackageGraph.forPath(Args().pathUri);
 
@@ -77,7 +78,7 @@ Future<void> main(List<String> arguments) async {
   }
 
   print(
-    green.wrap(
+    ansi.green.wrap(
       '\nff_annotation_route ------ '
       'End [${DateTime.now().difference(before)}]',
     ),
