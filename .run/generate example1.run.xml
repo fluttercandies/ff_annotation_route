@@ -1,6 +1,6 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="generate example1" type="DartCommandLineRunConfigurationType" factoryName="Dart Command Line Application">
-    <option name="filePath" value="$PROJECT_DIR$/bin/main.dart" />
+    <option name="filePath" value="$PROJECT_DIR$/bin/ff_annotation_route.dart" />
     <option name="workingDirectory" value="$PROJECT_DIR$/example1" />
     <method v="2" />
   </configuration>

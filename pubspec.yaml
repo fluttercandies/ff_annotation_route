@@ -36,9 +36,10 @@ dev_dependencies:
 
   build_runner: any
 
+# Run `dart run bin/ff_annotation_route.dart` for local development.
 # Run `dart pub global activate --source path ./` for local development.
 executables:
-  ff_route: main
+  ff_route: ff_annotation_route
 
 # dependency_overrides:
 #   ff_annotation_route_core:
