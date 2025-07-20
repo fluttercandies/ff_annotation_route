@@ -1,7 +1,11 @@
+## 11.1.2
+
+* Rename executable to enable running as a dev_dependency.
+
 ## 11.1.1
 
 * Remove version from template.
-* 
+
 ## 11.1.0
 
 * Upgrade dependencies.
