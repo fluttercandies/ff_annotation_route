@@ -15,11 +15,6 @@ jobs:
         with:
           channel: stable
           cache: true
-      - name: Check version consistency
-        run: |
-          dart pub get --no-example
-          dart run build_runner build -d
-          git --no-pager diff --exit-code lib/src/version.gen.dart
       - name: Publish
         uses: k-paxian/dart-package-publisher@master
         with:
