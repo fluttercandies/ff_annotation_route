@@ -263,7 +263,7 @@ class Routes {
   ///
   /// [constructors] :
   ///
-  /// TestPageD(String? argument, {Key? key, bool? optional = false, String? id = 'flutterCandies'})
+  /// TestPageD(String? argument, {Key? key, bool? optional = false, String? id = 'flutterCandies', dynamic anything})
   ///
   /// TestPageD.another0({required String? argument})
   ///
@@ -271,7 +271,7 @@ class Routes {
   ///
   /// TestPageD.another2(String? argument)
   ///
-  /// TestPageD.another3(String? argument, {bool? optional})
+  /// TestPageD.another3(String? argument, {bool? optional, dynamic anything})
   ///
   /// [pageRouteType] : PageRouteType.material
   ///
@@ -807,14 +807,22 @@ class _FlutterCandiesTestPageD {
     autoimport61a64860a48a0a727515bc4ec00b2fff.Key? key,
     bool? optional = false,
     String? id = 'flutterCandies',
+    dynamic anything,
   }) =>
       <String, dynamic>{
         'argument': argument,
         'key': key,
         'optional': optional,
         'id': id,
+        'anything': anything,
         'constructorName': '',
-        'argumentNames': <String>['argument', 'key', 'optional', 'id'],
+        'argumentNames': <String>[
+          'argument',
+          'key',
+          'optional',
+          'id',
+          'anything'
+        ],
       };
 
   Map<String, dynamic> another0({required String? argument}) =>
@@ -838,12 +846,17 @@ class _FlutterCandiesTestPageD {
         'argumentNames': <String>['argument'],
       };
 
-  Map<String, dynamic> another3(String? argument, {bool? optional}) =>
+  Map<String, dynamic> another3(
+    String? argument, {
+    bool? optional,
+    dynamic anything,
+  }) =>
       <String, dynamic>{
         'argument': argument,
         'optional': optional,
+        'anything': anything,
         'constructorName': 'another3',
-        'argumentNames': <String>['argument', 'optional'],
+        'argumentNames': <String>['argument', 'optional', 'anything'],
       };
 
   @override

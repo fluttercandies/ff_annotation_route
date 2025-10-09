@@ -1,3 +1,7 @@
+## 11.1.3
+
+* Improve `dynamic` parameter casts.
+
 ## 11.1.2
 
 * Rename executable to enable running as a dev_dependency.

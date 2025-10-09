@@ -20,6 +20,7 @@ class TestPageD extends StatelessWidget {
     super.key,
     this.optional = false,
     this.id = 'flutterCandies',
+    this.anything,
   });
 
   factory TestPageD.another0({required String? argument}) {
@@ -34,16 +35,22 @@ class TestPageD extends StatelessWidget {
     return TestPageD(argument);
   }
 
-  factory TestPageD.another3(String? argument, {bool? optional}) {
+  factory TestPageD.another3(
+    String? argument, {
+    bool? optional,
+    dynamic anything,
+  }) {
     return TestPageD(
       argument,
       optional: optional,
+      anything: anything,
     );
   }
 
   final String? argument;
   final bool? optional;
   final String? id;
+  final dynamic anything;
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +59,8 @@ class TestPageD extends StatelessWidget {
         'TestPageD '
         'argument:$argument, '
         'optional:$optional, '
-        'id:$id',
+        'id:$id, '
+        'anything:$anything',
       ),
     );
   }

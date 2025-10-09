@@ -469,6 +469,9 @@ FFRouteSettings getRouteSettings({
                 optional: asT<bool?>(
                   safeArguments['optional'],
                 ),
+                anything: asT(
+                  safeArguments['anything'],
+                ),
               );
             case '':
             default:
@@ -486,6 +489,9 @@ FFRouteSettings getRouteSettings({
                 id: asT<String?>(
                   safeArguments['id'],
                   'flutterCandies',
+                ),
+                anything: asT(
+                  safeArguments['anything'],
                 ),
               );
           }
