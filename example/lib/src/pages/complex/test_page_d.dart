@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 
 @FFRoute(
   name: "flutterCandies://testPage' \"D",
-  routeName: 'testPageD ' '',
+  routeName:
+      'testPageD '
+      '',
   description: 'This is test \' page D.',
   exts: <String, dynamic>{
     'group': 'Complex',
@@ -20,24 +22,25 @@ class TestPageD extends StatelessWidget {
     this.id = 'flutterCandies',
   });
 
-  factory TestPageD.another0({required String? argument}) => TestPageD(
-        argument,
-      );
+  factory TestPageD.another0({required String? argument}) {
+    return TestPageD(argument);
+  }
 
-  factory TestPageD.another1(String? argument, [bool? optional = false]) =>
-      TestPageD(
-        argument,
-        optional: optional,
-      );
+  factory TestPageD.another1(String? argument, [bool? optional = false]) {
+    return TestPageD(argument, optional: optional);
+  }
 
-  factory TestPageD.another2(String? argument) => TestPageD(
-        argument,
-      );
+  factory TestPageD.another2(String? argument) {
+    return TestPageD(argument);
+  }
 
-  factory TestPageD.another3(String? argument, {bool? optional}) => TestPageD(
-        argument,
-        optional: optional,
-      );
+  factory TestPageD.another3(String? argument, {bool? optional}) {
+    return TestPageD(
+      argument,
+      optional: optional,
+    );
+  }
+
   final String? argument;
   final bool? optional;
   final String? id;
@@ -45,7 +48,12 @@ class TestPageD extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Text('TestPageD argument:$argument,optional:$optional,id:$id'),
+      child: Text(
+        'TestPageD '
+        'argument:$argument, '
+        'optional:$optional, '
+        'id:$id',
+      ),
     );
   }
 }
