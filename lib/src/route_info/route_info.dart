@@ -98,8 +98,13 @@ return ${getConstructorString(rawConstructor)};
         '[\'${Args().argumentsIsCaseSensitive ? name : name.toLowerCase()}\']';
 
     final String type = getParameterType(parameter);
+    final asTBuffer = StringBuffer('asT');
+    if (type != 'dynamic') {
+      asTBuffer.write('<$type>');
+    }
+    asTBuffer.write('(');
 
-    value = 'asT<$type>($value';
+    value = '$asTBuffer$value';
 
     final String? defaultValueCode =
         DartTypeAutoImportHelper().getDefaultValueString(parameter, prefixes);
@@ -109,7 +114,7 @@ return ${getConstructorString(rawConstructor)};
     }
 
     value += ',)';
-    if (Args().enableNullSafety && !type.endsWith('?')) {
+    if (Args().enableNullSafety && !type.endsWith('?') && type != 'dynamic') {
       value += '!';
     }
 
