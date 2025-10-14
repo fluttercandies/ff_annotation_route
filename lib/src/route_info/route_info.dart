@@ -12,17 +12,19 @@ class RouteInfo extends RouteInfoBase {
     required this.classElement,
     required super.fileInfo,
     required this.element,
-  }) : constructors = classElement.constructors
-            .where((e) => e.name.toString() != '_')
-            .toList();
+  }) : constructors =
+           classElement.constructors
+               .where((e) => e.name.toString() != '_')
+               .toList();
 
   final ClassElement classElement;
   final List<ConstructorElement> constructors;
   final CompilationUnitElement element;
 
-  List<String> get prefixes => element.libraryImportPrefixes
-      .map((PrefixElement e) => e.displayName)
-      .toList();
+  List<String> get prefixes =>
+      element.libraryImportPrefixes
+          .map((PrefixElement e) => e.displayName)
+          .toList();
 
   @override
   String? get constructorsString {
@@ -35,10 +37,11 @@ class RouteInfo extends RouteInfoBase {
           return null;
         }
 
-        final String args = rawConstructor
-            .toString()
-            .replaceFirst(rawConstructor.returnType.toString(), '')
-            .trim();
+        final String args =
+            rawConstructor
+                .toString()
+                .replaceFirst(rawConstructor.returnType.toString(), '')
+                .trim();
 
         temp += '\n /// \n /// $args';
       }
@@ -94,7 +97,8 @@ return ${getConstructorString(rawConstructor)};
     ParameterElement parameter,
     ConstructorElement rawConstructor,
   ) {
-    String value = 'safeArguments'
+    String value =
+        'safeArguments'
         '[\'${Args().argumentsIsCaseSensitive ? name : name.toLowerCase()}\']';
 
     final String type = getParameterType(parameter);
@@ -106,8 +110,8 @@ return ${getConstructorString(rawConstructor)};
 
     value = '$asTBuffer$value';
 
-    final String? defaultValueCode =
-        DartTypeAutoImportHelper().getDefaultValueString(parameter, prefixes);
+    final String? defaultValueCode = DartTypeAutoImportHelper()
+        .getDefaultValueString(parameter, prefixes);
 
     if (defaultValueCode != null) {
       value += ',$defaultValueCode';
@@ -145,7 +149,8 @@ return ${getConstructorString(rawConstructor)};
       } else {
         final String type = getParameterType(item);
 
-        constructorString += 'asT<$type>(safeArguments[\''
+        constructorString +=
+            'asT<$type>(safeArguments[\''
             '${Args().argumentsIsCaseSensitive ? name : name.toLowerCase()}'
             '\'],)';
         if (Args().enableNullSafety && !type.endsWith('?')) {
@@ -179,8 +184,9 @@ return ${getConstructorString(rawConstructor)};
 
   @override
   String? getArgumentsClass() {
-    constructors
-        .removeWhere((ConstructorElement element) => element.name == '_');
+    constructors.removeWhere(
+      (ConstructorElement element) => element.name == '_',
+    );
     if (constructors.isNotEmpty) {
       final StringBuffer sb = StringBuffer();
 
@@ -194,8 +200,10 @@ return ${getConstructorString(rawConstructor)};
           return null;
         }
 
-        String args = DartTypeAutoImportHelper()
-            .getFormalParameters(rawConstructor.parameters, prefixes);
+        String args = DartTypeAutoImportHelper().getFormalParameters(
+          rawConstructor.parameters,
+          prefixes,
+        );
 
         String nameMap = '';
         final List<String> parameterNames = <String>[];

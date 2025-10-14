@@ -23,24 +23,24 @@ class Args {
   factory Args() => _args ??= Args._();
 
   Args._()
-      : help = Help(),
-        _path = Path(),
-        name = Name(),
-        output = Output(),
-        git = Git(),
-        excludePackages = ExcludePackages(),
-        routesFileOutput = RoutesFileOutput(),
-        constIgnore = ConstIgnore(),
-        package = Package(),
-        superArguments = SuperArguments(),
-        save = Save(),
-        nullSafety = NullSafety(),
-        argumentsCaseSensitive = ArgumentsCaseSensitive(),
-        fastMode = FastMode(),
-        argumentNames = ArgumentNames(),
-        _generateFileImport = GenerateFileImport(),
-        generateFileImportPackages = GenerateFileImportPackages(),
-        gSuffix = GSuffix();
+    : help = Help(),
+      _path = Path(),
+      name = Name(),
+      output = Output(),
+      git = Git(),
+      excludePackages = ExcludePackages(),
+      routesFileOutput = RoutesFileOutput(),
+      constIgnore = ConstIgnore(),
+      package = Package(),
+      superArguments = SuperArguments(),
+      save = Save(),
+      nullSafety = NullSafety(),
+      argumentsCaseSensitive = ArgumentsCaseSensitive(),
+      fastMode = FastMode(),
+      argumentNames = ArgumentNames(),
+      _generateFileImport = GenerateFileImport(),
+      generateFileImportPackages = GenerateFileImportPackages(),
+      gSuffix = GSuffix();
 
   final Help help;
   final Path _path;

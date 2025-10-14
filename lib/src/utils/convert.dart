@@ -71,11 +71,12 @@ void writeImports(Set<String> imports, StringBuffer sb) {
     return a.compareTo(b);
   });
 
-  final String output = <String>[
-    dartImports.join('\n'),
-    packageImports.join('\n'),
-    otherImports.join('\n'),
-  ].join('\n\n').trim();
+  final String output =
+      <String>[
+        dartImports.join('\n'),
+        packageImports.join('\n'),
+        otherImports.join('\n'),
+      ].join('\n\n').trim();
 
   sb.write(output);
 }

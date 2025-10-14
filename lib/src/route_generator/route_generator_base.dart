@@ -58,9 +58,14 @@ abstract class RouteGeneratorBase {
         if (isRoot) {
           classNames = <String>[];
         }
-        String import = isRoot
-            ? "import '${info.export}'"
-            : packageImport.replaceRange(packageImport.length - 1, null, '');
+        String import =
+            isRoot
+                ? "import '${info.export}'"
+                : packageImport.replaceRange(
+                  packageImport.length - 1,
+                  null,
+                  '',
+                );
         for (final RouteInfoBase route in info.routes) {
           if (route.classNameConflictPrefix != null) {
             sb.write('$import as ${route.classNameConflictPrefix};\n');
@@ -80,8 +85,11 @@ abstract class RouteGeneratorBase {
         }
       }
       if (!isRoot) {
-        String import =
-            packageImport.replaceRange(packageImport.length - 1, null, '');
+        String import = packageImport.replaceRange(
+          packageImport.length - 1,
+          null,
+          '',
+        );
         if (classNames.length != pageCount || classNames.isEmpty) {
           if (classNames.isNotEmpty) {
             import += ' hide ';
@@ -103,8 +111,9 @@ abstract class RouteGeneratorBase {
 
       sb.write('library ${packageName}_route;\n');
 
-      _fileInfoList
-          .sort((FileInfo a, FileInfo b) => a.export.compareTo(b.export));
+      _fileInfoList.sort(
+        (FileInfo a, FileInfo b) => a.export.compareTo(b.export),
+      );
 
       for (final FileInfo info in _fileInfoList) {
         sb.write("export '${info.export}';\n");
@@ -135,10 +144,11 @@ abstract class RouteGeneratorBase {
 
     final StringBuffer sb = StringBuffer();
 
-    final List<RouteInfoBase> routes = _fileInfoList
-        .map((FileInfo it) => it.routes)
-        .expand((List<RouteInfoBase> it) => it)
-        .toList();
+    final List<RouteInfoBase> routes =
+        _fileInfoList
+            .map((FileInfo it) => it.routes)
+            .expand((List<RouteInfoBase> it) => it)
+            .toList();
 
     if (nodes != null && nodes.isNotEmpty) {
       routes.addAll(
@@ -154,8 +164,8 @@ abstract class RouteGeneratorBase {
           a.ffRoute.name.compareTo(b.ffRoute.name),
     );
 
-    final Map<String, List<RouteInfoBase>> conflictClassNames =
-        routes.groupListsBy((RouteInfoBase element) => element.className);
+    final Map<String, List<RouteInfoBase>> conflictClassNames = routes
+        .groupListsBy((RouteInfoBase element) => element.className);
 
     for (final String key in conflictClassNames.keys) {
       final List<RouteInfoBase>? routes = conflictClassNames[key];

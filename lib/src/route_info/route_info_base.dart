@@ -78,9 +78,10 @@ abstract class RouteInfoBase {
     final PageRouteType? pageRouteType = route.pageRouteType;
     final Map<String, dynamic>? exts = route.exts;
 
-    final String firstLine = description == "''"
-        ? (routeName == "''" ? name : routeName)
-        : description;
+    final String firstLine =
+        description == "''"
+            ? (routeName == "''" ? name : routeName)
+            : description;
 
     String constant = camelName(name)
         .replaceAll('"', '')
@@ -131,7 +132,8 @@ abstract class RouteInfoBase {
       if (argumentsClassName.length == 1) {
         argumentsClassName = argumentsClassName.toUpperCase();
       } else {
-        argumentsClassName = argumentsClassName[0].toUpperCase() +
+        argumentsClassName =
+            argumentsClassName[0].toUpperCase() +
             argumentsClassName.substring(1, argumentsClassName.length);
       }
       argumentsClassName = '_$argumentsClassName';

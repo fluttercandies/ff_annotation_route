@@ -90,17 +90,17 @@ class DartTypeAutoImportHelper {
     if (type is InterfaceTypeImpl) {
       final MyElementDisplayStringBuilder builder =
           MyElementDisplayStringBuilder(
-        withNullability: true,
-        preferTypeAlias: true,
-      );
+            withNullability: true,
+            preferTypeAlias: true,
+          );
       builder.writeInterfaceType(type);
       return builder.toString();
     } else if (type is FunctionTypeImpl) {
       final MyElementDisplayStringBuilder builder =
           MyElementDisplayStringBuilder(
-        withNullability: true,
-        preferTypeAlias: true,
-      );
+            withNullability: true,
+            preferTypeAlias: true,
+          );
       builder.writeFunctionType(type);
       return builder.toString();
     }
@@ -109,8 +109,9 @@ class DartTypeAutoImportHelper {
     final List<DartTypeAutoImport> imports = getDartTypeAutoImports(type);
 
     for (final DartTypeAutoImport import in imports) {
-      final String dartTypeString =
-          import.dartType.dartType.getDisplayString(withNullability: true);
+      final String dartTypeString = import.dartType.dartType.getDisplayString(
+        withNullability: true,
+      );
 
       String prefixType = '${import.prefix}.$dartTypeString';
       if (import.dartType.alias != null) {
@@ -133,19 +134,22 @@ class DartTypeAutoImportHelper {
         (parameter as ConstVariableElement).constantInitializer != null) {
       final StringBuffer sb = StringBuffer();
       (parameter as ConstVariableElement).constantInitializer!.accept<void>(
-            MyToSourceVisitor(
-              sink: sb,
-              prefixes: prefixes,
-            ),
-          );
+        MyToSourceVisitor(
+          sink: sb,
+          prefixes: prefixes,
+        ),
+      );
       defaultValueCode = sb.toString();
     }
     // add auto import prefix
     if (defaultValueCode != null) {
-      for (final DartTypeAutoImport import
-          in getDartTypeAutoImports(parameter.type)) {
-        defaultValueCode =
-            _getDefaultValueCodeString(defaultValueCode!, import);
+      for (final DartTypeAutoImport import in getDartTypeAutoImports(
+        parameter.type,
+      )) {
+        defaultValueCode = _getDefaultValueCodeString(
+          defaultValueCode!,
+          import,
+        );
       }
     }
 

@@ -19,17 +19,18 @@ Future<void> generate(List<PackageNode> annotationPackages) async {
   final List<RouteGeneratorBase> nodes = <RouteGeneratorBase>[];
   final List<String> libPaths = <String>[];
   for (final PackageNode annotationPackage in annotationPackages) {
-    final RouteGeneratorBase routeGenerator = Args().isFastMode
-        ? FastRouteGenerator(
-            packageName: annotationPackage.name,
-            packagePath: annotationPackage.path,
-            isRoot: annotationPackage.isRoot && !Args().isPackage,
-          )
-        : RouteGenerator(
-            packageName: annotationPackage.name,
-            packagePath: annotationPackage.path,
-            isRoot: annotationPackage.isRoot && !Args().isPackage,
-          );
+    final RouteGeneratorBase routeGenerator =
+        Args().isFastMode
+            ? FastRouteGenerator(
+              packageName: annotationPackage.name,
+              packagePath: annotationPackage.path,
+              isRoot: annotationPackage.isRoot && !Args().isPackage,
+            )
+            : RouteGenerator(
+              packageName: annotationPackage.name,
+              packagePath: annotationPackage.path,
+              isRoot: annotationPackage.isRoot && !Args().isPackage,
+            );
 
     final String? libPath = routeGenerator.lib?.path;
     if (libPath == null) {

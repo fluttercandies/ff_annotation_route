@@ -68,15 +68,15 @@ class RouteGenerator extends RouteGeneratorBase {
               .replaceAll(r'\', '/'),
           packageName: packageName,
         );
-        final String ffRouteFileImportPath = 'package:${<String>[
-          packageName,
-          ...filePath
-              .replaceFirst(lib!.path, '')
-              .split(p.context.separator)
-              .where((String element) => element.isNotEmpty),
-        ].join('/')}';
-        final CompilationUnitElement fileElement =
-            await getElement(context.currentSession, filePath);
+        final String ffRouteFileImportPath =
+            'package:${<String>[
+              packageName,
+              ...filePath.replaceFirst(lib!.path, '').split(p.context.separator).where((String element) => element.isNotEmpty),
+            ].join('/')}';
+        final CompilationUnitElement fileElement = await getElement(
+          context.currentSession,
+          filePath,
+        );
 
         for (final ClassElement classElement in fileElement.classes) {
           findFFRoute(
@@ -121,11 +121,11 @@ class RouteGenerator extends RouteGeneratorBase {
     FileInfo fileInfo,
     TypeChecker typeChecker,
   ) {
-    final DartObject? fFArgumentImportAnnotation =
-        typeChecker.firstAnnotationOf(
-      importElement,
-      throwOnUnresolved: true,
-    );
+    final DartObject? fFArgumentImportAnnotation = typeChecker
+        .firstAnnotationOf(
+          importElement,
+          throwOnUnresolved: true,
+        );
 
     if (fFArgumentImportAnnotation != null) {
       final ConstantReader reader = ConstantReader(fFArgumentImportAnnotation);
@@ -142,12 +142,11 @@ class RouteGenerator extends RouteGeneratorBase {
     final widgetFunctionMap = <String, DartObject>{};
 
     for (final FunctionElement functionElement in fileElement.functions) {
-      final DartObject? annotation = fFRouteTypeChecker.firstAnnotationOf(
+      final annotation = fFRouteTypeChecker.firstAnnotationOf(
         functionElement,
         throwOnUnresolved: true,
       );
-      final DartObject? functionalWidget =
-          functionalWidgetTypeChecker.firstAnnotationOf(
+      final functionalWidget = functionalWidgetTypeChecker.firstAnnotationOf(
         functionElement,
         throwOnUnresolved: true,
       );
@@ -167,8 +166,7 @@ class RouteGenerator extends RouteGeneratorBase {
           path = uri.source.fullName;
         }
         if (path != null) {
-          final CompilationUnitElement element =
-              await getElement(context.currentSession, path);
+          final element = await getElement(context.currentSession, path);
           for (final ClassElement classElement in element.classes) {
             if (widgetFunctionMap.containsKey(classElement.name)) {
               final DartObject? annotation =
@@ -220,9 +218,7 @@ class RouteGenerator extends RouteGeneratorBase {
       final ConstantReader? exts = reader.peek('exts');
       Map<String, String>? extsMap;
       if (exts != null) {
-        final NodeList<Expression>? parameters =
-            _getFFRouteParameters(classElement);
-
+        final parameters = _getFFRouteParameters(classElement);
         if (parameters != null) {
           for (final Expression item in parameters) {
             if (item is NamedExpressionImpl) {
@@ -254,11 +250,12 @@ class RouteGenerator extends RouteGeneratorBase {
           }
         }
       }
-      argumentImports = reader
-          .peek('argumentImports')
-          ?.listValue
-          .map((DartObject e) => e.toStringValue()!)
-          .toList();
+      argumentImports =
+          reader
+              .peek('argumentImports')
+              ?.listValue
+              .map((e) => e.toStringValue()!)
+              .toList();
       final bool generateFilePath = Args().generateFileImport;
       final List<String>? generateFileImportPackages =
           Args().generateFileImportPackages.value;
@@ -292,20 +289,24 @@ class RouteGenerator extends RouteGeneratorBase {
         //         .toList() ??
         //     <String>[],
         //codes: codesMap,
-        codes: reader.peek('codes')?.mapValue.map<String, String>(
-              (DartObject? key, DartObject? value) => MapEntry<String, String>(
+        codes: reader
+            .peek('codes')
+            ?.mapValue
+            .map<String, String>(
+              (key, value) => MapEntry(
                 _getStringValue(key as DartObjectImpl?),
                 value!.toStringValue()!,
               ),
             ),
-        interceptors: reader.peek('interceptors')?.listValue.map(
-          (DartObject e) {
-            final DartObjectImpl object = e as DartObjectImpl;
-            final dartType = object.type;
-            DartTypeAutoImportHelper().findParameterImport(dartType);
-            return FFRouteInterceptor(dartType: dartType);
-          },
-        ).toList(),
+        interceptors:
+            reader.peek('interceptors')?.listValue.map(
+              (e) {
+                final DartObjectImpl object = e as DartObjectImpl;
+                final dartType = object.type;
+                DartTypeAutoImportHelper().findParameterImport(dartType);
+                return FFRouteInterceptor(dartType: dartType);
+              },
+            ).toList(),
       );
     }
 
@@ -340,10 +341,11 @@ class RouteGenerator extends RouteGeneratorBase {
   NodeList<Expression>? _getFFRouteParameters(ClassElement classElement) {
     final ElementAnnotationImpl? elementAnnotation =
         classElement.metadata.firstWhereOrNull(
-      (ElementAnnotation element) =>
-          (element as ElementAnnotationImpl).annotationAst.name.name ==
-          typeOf<FFRoute>().toString(),
-    ) as ElementAnnotationImpl?;
+              (element) =>
+                  (element as ElementAnnotationImpl).annotationAst.name.name ==
+                  typeOf<FFRoute>().toString(),
+            )
+            as ElementAnnotationImpl?;
     return elementAnnotation?.annotationAst.arguments?.arguments;
   }
 
@@ -351,10 +353,14 @@ class RouteGenerator extends RouteGeneratorBase {
     if (object == null) {
       return '';
     }
-    final String valueString = object
-        .toString()
-        .replaceFirst(object.type.getDisplayString(withNullability: true), '')
-        .trim();
+    final String valueString =
+        object
+            .toString()
+            .replaceFirst(
+              object.type.getDisplayString(withNullability: true),
+              '',
+            )
+            .trim();
     // toString() = "${type.getDisplayString(withNullability: false)} ($_state)";
 
     return valueString.substring(1, valueString.length - 1);

@@ -16,8 +16,8 @@ class MyElementDisplayStringBuilder extends ElementDisplayStringBuilder {
     super.withNullability,
     super.multiline,
     required super.preferTypeAlias,
-  })  : _withNullability = withNullability,
-        _multiline = multiline;
+  }) : _withNullability = withNullability,
+       _multiline = multiline;
 
   /// Whether to include the nullability ('?' characters) in a display string.
   final bool _withNullability;
@@ -195,10 +195,8 @@ class MyElementDisplayStringBuilder extends ElementDisplayStringBuilder {
 
   @override
   void writeFunctionType(FunctionTypeImpl type) {
-    // zmtzawqlp
     if (type.alias != null) {
-      final DartTypeAutoImport? dartTypeAutoImport =
-          DartTypeAutoImportHelper().getImport(type);
+      final dartTypeAutoImport = DartTypeAutoImportHelper().getImport(type);
       if (dartTypeAutoImport != null) {
         _write(
           '${dartTypeAutoImport.prefix}.${type.alias!.element.displayName}',
@@ -235,9 +233,7 @@ class MyElementDisplayStringBuilder extends ElementDisplayStringBuilder {
 
   @override
   void writeInterfaceType(InterfaceType type) {
-    // zmtzawqlp
-    final DartTypeAutoImport? dartTypeAutoImport =
-        DartTypeAutoImportHelper().getImport(type);
+    final dartTypeAutoImport = DartTypeAutoImportHelper().getImport(type);
     if (dartTypeAutoImport != null) {
       if (type.alias != null) {
         _write(

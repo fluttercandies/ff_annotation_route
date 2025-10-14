@@ -15,9 +15,10 @@ DartFormatter _buildDartFormatter({
     _ => true,
   };
   return DartFormatter(
-    languageVersion: useShort
-        ? DartFormatter.latestShortStyleLanguageVersion
-        : DartFormatter.latestLanguageVersion,
+    languageVersion:
+        useShort
+            ? DartFormatter.latestShortStyleLanguageVersion
+            : DartFormatter.latestLanguageVersion,
     pageWidth: pageWidth,
     lineEnding: '\n',
   );
@@ -34,9 +35,10 @@ String formatDart({
 
 (VersionConstraint? sdk, int? pageWidth) _readConfig(String directory) {
   final pubspecFile = io.File(p.join(directory, 'pubspec.yaml'));
-  final pubspecSource = pubspecFile.existsSync()
-      ? loadYaml(pubspecFile.readAsStringSync()) as Map?
-      : null;
+  final pubspecSource =
+      pubspecFile.existsSync()
+          ? loadYaml(pubspecFile.readAsStringSync()) as Map?
+          : null;
   final VersionConstraint? sdk;
   final rawSdk = pubspecSource?['environment']?['sdk'] as String?;
   if (rawSdk != null) {
@@ -46,9 +48,10 @@ String formatDart({
   }
 
   final analysisFile = io.File(p.join(directory, 'analysis_options.yaml'));
-  final analysisSource = analysisFile.existsSync()
-      ? loadYaml(analysisFile.readAsStringSync()) as Map?
-      : null;
+  final analysisSource =
+      analysisFile.existsSync()
+          ? loadYaml(analysisFile.readAsStringSync()) as Map?
+          : null;
   final pageWidth = analysisSource?['formatter']?['page_width'] as int?;
   return (sdk, pageWidth);
 }

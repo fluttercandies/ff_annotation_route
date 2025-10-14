@@ -51,13 +51,11 @@ class RoutesFileGenerator {
       if (interceptors != null && interceptors.isNotEmpty) {
         interceptorsString.write(
           '$name:<RouteInterceptor>[${interceptors.map((RouteInterceptor e) {
-            final FFRouteInterceptor ffRouteInterceptor =
-                e as FFRouteInterceptor;
+            final FFRouteInterceptor ffRouteInterceptor = e as FFRouteInterceptor;
             String? className = ffRouteInterceptor.className;
             if (className == null) {
               final dartType = ffRouteInterceptor.dartType!;
-              final String name =
-                  dartType.getDisplayString(withNullability: false);
+              final String name = dartType.getDisplayString(withNullability: false);
               final import = DartTypeAutoImportHelper().getImport(dartType);
               className = '${import?.prefix}.$name';
             }

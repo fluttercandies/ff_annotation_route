@@ -40,13 +40,11 @@ class FastRouteGenerator extends RouteGeneratorBase {
             featureSet: FeatureSet.latestLanguageVersion(),
           );
           final CompilationUnit astRoot = result.unit;
-          final String ffRouteFileImportPath = 'package:${<String>[
-            packageName,
-            ...file.path
-                .replaceFirst(lib!.path, '')
-                .split(p.context.separator)
-                .where((String element) => element.isNotEmpty),
-          ].join('/')}';
+          final ffRouteFileImportPath =
+              'package:${[
+                packageName,
+                ...file.path.replaceFirst(lib!.path, '').split(p.context.separator).where((element) => element.isNotEmpty),
+              ].join('/')}';
           final List<String> argumentImports = <String>[];
           for (final child in astRoot.childEntities) {
             if (child is ImportDirective) {
@@ -61,8 +59,10 @@ class FastRouteGenerator extends RouteGeneratorBase {
                     annotation.name.name == typeOf<FFAutoImport>().toString()) {
                   final NodeList<Expression>? parameters =
                       annotation.arguments?.arguments;
-                  String import =
-                      child.toString().replaceAll(annotation.toString(), '');
+                  String import = child.toString().replaceAll(
+                    annotation.toString(),
+                    '',
+                  );
                   import = import.replaceAll(';', '');
                   if (parameters != null && parameters.isNotEmpty) {
                     import =
@@ -185,9 +185,10 @@ class FastRouteGenerator extends RouteGeneratorBase {
                   item.expression as SetOrMapLiteralImpl;
               final bool isCodes = key == 'codes:';
               if (setOrMapLiteralImpl.elements.isNotEmpty) {
-                final Map<String, dynamic> map = isCodes
-                    ? codes ??= <String, String>{}
-                    : exts ??= <String, dynamic>{};
+                final Map<String, dynamic> map =
+                    isCodes
+                        ? codes ??= <String, String>{}
+                        : exts ??= <String, dynamic>{};
                 for (final CollectionElement element
                     in setOrMapLiteralImpl.elements) {
                   final MapLiteralEntryImpl entry =
@@ -269,9 +270,9 @@ class FastRouteGenerator extends RouteGeneratorBase {
           (Annotation e) => _functionalWidgetAnnotations.contains(e.name.name),
         );
         if (isFuncWidget) {
-          final Iterable<PartDirective> parts = (node.parent as CompilationUnit)
-              .directives
-              .whereType<PartDirective>();
+          final Iterable<PartDirective> parts =
+              (node.parent as CompilationUnit).directives
+                  .whereType<PartDirective>();
           final String funcName = node.name.toString();
           final String className = funcName2ClassName(funcName);
           for (final PartDirective part in parts) {
@@ -281,10 +282,11 @@ class FastRouteGenerator extends RouteGeneratorBase {
             if (_partClassDeclarations.containsKey(path)) {
               classes = _partClassDeclarations[path]!;
             } else {
-              final CompilationUnit astRoot = parseFile(
-                path: path,
-                featureSet: FeatureSet.latestLanguageVersion(),
-              ).unit;
+              final CompilationUnit astRoot =
+                  parseFile(
+                    path: path,
+                    featureSet: FeatureSet.latestLanguageVersion(),
+                  ).unit;
               classes = astRoot.declarations.whereType<ClassDeclaration>();
               _partClassDeclarations[path] = classes;
             }

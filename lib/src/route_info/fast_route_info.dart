@@ -12,11 +12,11 @@ class FastRouteInfo extends RouteInfoBase {
     this.routePath,
     required this.classDeclaration,
     required super.fileInfo,
-  })  : constructors = classDeclaration.members
-            .whereType<ConstructorDeclaration>()
-            .toList(),
-        fields =
-            classDeclaration.members.whereType<FieldDeclaration>().toList();
+  }) : constructors =
+           classDeclaration.members
+               .whereType<ConstructorDeclaration>()
+               .toList(),
+       fields = classDeclaration.members.whereType<FieldDeclaration>().toList();
 
   final List<ConstructorDeclaration> constructors;
   final List<FieldDeclaration> fields;
@@ -91,7 +91,8 @@ return ${getConstructorString(rawConstructor)};
     FormalParameter parameter,
     ConstructorDeclaration rawConstructor,
   ) {
-    String value = 'safeArguments'
+    String value =
+        'safeArguments'
         '[\'${Args().argumentsIsCaseSensitive ? name : name.toLowerCase()}\']';
 
     final String type = getParameterType(name, parameter, rawConstructor);
@@ -135,7 +136,8 @@ return ${getConstructorString(rawConstructor)};
         } else {
           final String type = getParameterType(name, item, rawConstructor);
 
-          constructorString += 'asT<$type>(safeArguments[\''
+          constructorString +=
+              'asT<$type>(safeArguments[\''
               '${Args().argumentsIsCaseSensitive ? name : name.toLowerCase()}'
               '\'],)';
           if (Args().enableNullSafety && !type.endsWith('?')) {
