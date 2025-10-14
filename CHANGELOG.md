@@ -1,3 +1,7 @@
+## 11.2.0
+
+* Support `source_gen` v4, which also requires Dart SDK v3.7.
+
 ## 11.1.3
 
 * Improve `dynamic` parameter casts.
