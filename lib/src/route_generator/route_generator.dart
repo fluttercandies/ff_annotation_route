@@ -21,9 +21,9 @@ import '/src/utils/dart_type_auto_import.dart';
 import '/src/utils/route_interceptor.dart';
 import 'route_generator_base.dart';
 
-const fFRouteTypeChecker = TypeChecker.fromRuntime(FFRoute);
-const fFArgumentImportTypeChecker = TypeChecker.fromRuntime(FFArgumentImport);
-const fFAutoImportTypeChecker = TypeChecker.fromRuntime(FFAutoImport);
+const fFRouteTypeChecker = TypeChecker.typeNamed(FFRoute);
+const fFArgumentImportTypeChecker = TypeChecker.typeNamed(FFArgumentImport);
+const fFAutoImportTypeChecker = TypeChecker.typeNamed(FFAutoImport);
 const functionalWidgetTypeChecker = TypeChecker.fromUrl(
   'package:functional_widget_annotation'
   '/functional_widget_annotation.dart'
