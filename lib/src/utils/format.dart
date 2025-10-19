@@ -28,9 +28,13 @@ String formatDart({
   required String content,
   required String directory,
 }) {
-  final (sdk, pageWidth) = _readConfig(directory);
-  final formatter = _buildDartFormatter(sdk: sdk, pageWidth: pageWidth);
-  return formatter.format(content);
+  try {
+    final (sdk, pageWidth) = _readConfig(directory);
+    final formatter = _buildDartFormatter(sdk: sdk, pageWidth: pageWidth);
+    return formatter.format(content);
+  } catch (e) {
+    return content;
+  }
 }
 
 (VersionConstraint? sdk, int? pageWidth) _readConfig(String directory) {

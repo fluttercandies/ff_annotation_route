@@ -40,7 +40,11 @@ class FastRouteInfo extends RouteInfoBase {
 
   @override
   String get constructor {
-    //remove private constructor
+    final String arguments =
+        Args().isGoRouterOutputTemplate
+            ? 'Map<String, dynamic> safeArguments'
+            : '';
+    // remove private constructor
     constructors.removeWhere((element) => element.name?.toString() == '_');
     if (constructors.isNotEmpty) {
       if (constructors.length > 1) {
@@ -80,10 +84,10 @@ return ${getConstructorString(rawConstructor)};
 
         return switchCase;
       } else {
-        return ' () =>  ${getConstructorString(constructors.first)}';
+        return ' ($arguments) =>  ${getConstructorString(constructors.first)}';
       }
     }
-    return '() =>$classNameConflictPrefixText$className()';
+    return '($arguments) =>$classNameConflictPrefixText$className()';
   }
 
   String getIsOptional(

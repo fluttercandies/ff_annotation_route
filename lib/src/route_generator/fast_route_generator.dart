@@ -7,6 +7,7 @@ import 'package:analyzer/dart/analysis/utilities.dart';
 import 'package:analyzer/dart/ast/syntactic_entity.dart';
 import 'package:analyzer/src/dart/ast/ast.dart';
 import 'package:collection/collection.dart' show IterableExtension;
+import 'package:ff_annotation_route/src/utils/ff_route.dart';
 import 'package:ff_annotation_route_core/ff_annotation_route_core.dart';
 import 'package:path/path.dart' as p;
 
@@ -107,7 +108,7 @@ class FastRouteGenerator extends RouteGeneratorBase {
                 if (parameters == null) {
                   continue;
                 }
-                final FFRoute ffRoute = getFFRouteFromAnnotation(
+                final GeneratedFFRoute ffRoute = getFFRouteFromAnnotation(
                   parameters,
                   argumentImports,
                   ffRouteFileImportPath,
@@ -133,7 +134,7 @@ class FastRouteGenerator extends RouteGeneratorBase {
     }
   }
 
-  FFRoute getFFRouteFromAnnotation(
+  GeneratedFFRoute getFFRouteFromAnnotation(
     NodeList<Expression> parameters,
     List<String> argumentImports,
     String ffRouteFileImportPath,
@@ -146,7 +147,8 @@ class FastRouteGenerator extends RouteGeneratorBase {
     String? description;
     Map<String, dynamic>? exts;
     Map<String, String>? codes;
-    List<RouteInterceptor>? interceptors;
+    List<FFRouteInterceptor>? interceptors;
+    List<InterceptorType>? interceptorTypes;
 
     for (final Expression item in parameters) {
       if (item is NamedExpressionImpl) {
@@ -207,10 +209,25 @@ class FastRouteGenerator extends RouteGeneratorBase {
               for (final CollectionElementImpl element
                   in (item.expression as ListLiteralImpl).elements) {
                 if (element is MethodInvocationImpl) {
-                  interceptors ??= <RouteInterceptor>[];
+                  interceptors ??= <FFRouteInterceptor>[];
                   interceptors.add(
                     FFRouteInterceptor(
                       className: element.methodName.name,
+                    ),
+                  );
+                }
+              }
+            }
+            break;
+          case 'interceptorTypes:':
+            if (item.expression is ListLiteralImpl) {
+              for (final CollectionElementImpl element
+                  in (item.expression as ListLiteralImpl).elements) {
+                if (element is SimpleIdentifierImpl) {
+                  interceptorTypes ??= <InterceptorType>[];
+                  interceptorTypes.add(
+                    InterceptorType(
+                      className: element.name,
                     ),
                   );
                 }
@@ -232,7 +249,7 @@ class FastRouteGenerator extends RouteGeneratorBase {
       exts['\'$ffRouteFileImport\''] = '\'$ffRouteFileImportPath\'';
     }
 
-    final FFRoute ffRoute = FFRoute(
+    final GeneratedFFRoute ffRoute = GeneratedFFRoute(
       name: name!,
       showStatusBar: showStatusBar ?? true,
       routeName: routeName ?? '',
@@ -242,6 +259,7 @@ class FastRouteGenerator extends RouteGeneratorBase {
       argumentImports: argumentImports,
       codes: codes,
       interceptors: interceptors,
+      interceptorTypeStrings: interceptorTypes,
     );
     return ffRoute;
   }

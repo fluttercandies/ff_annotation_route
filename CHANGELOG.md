@@ -1,3 +1,10 @@
+## 11.3.1
+
+* Add new command `--name-case-sensitive` that define route name is case sensitive or not.
+* Add new command `--output-template` to support `go_router` template.
+* Move `routeInterceptors` from `routes.dart` to `route.dart`
+* Add `go_router` example
+  
 ## 11.2.0
 
 * Support `source_gen` v4, which also requires Dart SDK v3.7.

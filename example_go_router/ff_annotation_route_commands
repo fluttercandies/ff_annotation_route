@@ -1,0 +1,1 @@
+--super-arguments -s --output-template go_router --null-safety --fast-mode

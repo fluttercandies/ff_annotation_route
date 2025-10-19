@@ -1,3 +1,4 @@
+import 'package:ff_annotation_route/src/arg/name_case_sensitive.dart';
 import 'package:path/path.dart' as path;
 
 import 'argument_names.dart';
@@ -13,6 +14,7 @@ import 'help.dart';
 import 'name.dart';
 import 'null_safety.dart';
 import 'output.dart';
+import 'output_template.dart';
 import 'package.dart';
 import 'path.dart';
 import 'routes_file_output.dart';
@@ -27,6 +29,7 @@ class Args {
       _path = Path(),
       name = Name(),
       output = Output(),
+      outputTemplate = OutputTemplate(),
       git = Git(),
       excludePackages = ExcludePackages(),
       routesFileOutput = RoutesFileOutput(),
@@ -40,12 +43,14 @@ class Args {
       argumentNames = ArgumentNames(),
       _generateFileImport = GenerateFileImport(),
       generateFileImportPackages = GenerateFileImportPackages(),
-      gSuffix = GSuffix();
+      gSuffix = GSuffix(),
+      nameCaseSensitive = NameCaseSensitive();
 
   final Help help;
   final Path _path;
   final Name name;
   final Output output;
+  final OutputTemplate outputTemplate;
   final Git git;
   final ExcludePackages excludePackages;
   final RoutesFileOutput routesFileOutput;
@@ -60,6 +65,7 @@ class Args {
   final GenerateFileImport _generateFileImport;
   final GenerateFileImportPackages generateFileImportPackages;
   final GSuffix gSuffix;
+  final NameCaseSensitive nameCaseSensitive;
 
   static Args? _args;
 
@@ -75,6 +81,8 @@ class Args {
       constIgnore.value != null ? RegExp(constIgnore.value!) : null;
 
   String? get outputPath => output.value;
+
+  String? get outputTemplateType => outputTemplate.value;
 
   List<String> get excludedPackagesName => excludePackages.value ?? <String>[];
 
@@ -92,4 +100,8 @@ class Args {
   bool get enableArgumentNames => argumentNames.value!;
 
   bool get generateFileImport => _generateFileImport.value ?? false;
+
+  bool get isGoRouterOutputTemplate => outputTemplate.value == 'go_router';
+
+  bool get isNameCaseSensitive => nameCaseSensitive.value ?? true;
 }

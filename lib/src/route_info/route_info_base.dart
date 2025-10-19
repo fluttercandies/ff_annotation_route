@@ -1,9 +1,11 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
 import 'package:analyzer/src/dart/element/element.dart';
+import 'package:ff_annotation_route/src/arg/args.dart';
 import 'package:ff_annotation_route/src/file_info.dart';
 import 'package:ff_annotation_route/src/utils/camel_under_score_converter.dart';
 import 'package:ff_annotation_route/src/utils/convert.dart';
+import 'package:ff_annotation_route/src/utils/ff_route.dart';
 import 'package:ff_annotation_route_core/ff_annotation_route_core.dart';
 import 'package:source_gen/source_gen.dart' show ConstantReader;
 
@@ -15,7 +17,7 @@ abstract class RouteInfoBase {
   });
 
   final String className;
-  final FFRoute ffRoute;
+  final GeneratedFFRoute ffRoute;
   final FileInfo fileInfo;
   String? classNameConflictPrefix;
 
@@ -47,7 +49,20 @@ abstract class RouteInfoBase {
       exts += '},';
     }
 
-    return '''case ${safeToString(ffRoute.name)}:
+    if (Args().isGoRouterOutputTemplate) {
+      return ''' 
+      FFGoRouterRouteSettings(
+      name: ${safeToString(ffRoute.name)},
+      builder: $constructor,
+      $codes
+      ${ffRoute.showStatusBar != true ? 'showStatusBar: ${ffRoute.showStatusBar},' : ''}
+      ${ffRoute.routeName != '' ? 'routeName: ${safeToString(ffRoute.routeName)},' : ''}
+      ${ffRoute.pageRouteType != null ? 'pageRouteType: ${ffRoute.pageRouteType},' : ''}
+      ${ffRoute.description != '' ? 'description: ${safeToString(ffRoute.description)},' : ''}
+      $exts
+      ),''';
+    } else {
+      return '''case ${safeToString(ffRoute.name)}:
 
     return FFRouteSettings(
       name: name,
@@ -60,6 +75,7 @@ abstract class RouteInfoBase {
       ${ffRoute.description != '' ? 'description: ${safeToString(ffRoute.description)},' : ''}
       $exts
       );\n''';
+    }
   }
 
   @override

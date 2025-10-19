@@ -9,6 +9,7 @@ import 'package:analyzer/src/dart/ast/ast.dart';
 import 'package:analyzer/src/dart/constant/value.dart';
 import 'package:analyzer/src/dart/element/element.dart';
 import 'package:collection/collection.dart' show IterableExtension;
+import 'package:ff_annotation_route/src/utils/ff_route.dart';
 import 'package:ff_annotation_route_core/ff_annotation_route_core.dart';
 import 'package:path/path.dart' as p;
 import 'package:source_gen/source_gen.dart' show ConstantReader, TypeChecker;
@@ -206,7 +207,7 @@ class RouteGenerator extends RouteGeneratorBase {
       classElement,
       throwOnUnresolved: true,
     );
-    FFRoute? ffRoute;
+    GeneratedFFRoute? ffRoute;
     List<String>? argumentImports;
     if (annotation != null) {
       final ConstantReader reader = ConstantReader(annotation);
@@ -266,7 +267,7 @@ class RouteGenerator extends RouteGeneratorBase {
         extsMap['\'$ffRouteFileImport\''] = '\'$ffRouteFileImportPath\'';
       }
 
-      ffRoute = FFRoute(
+      ffRoute = GeneratedFFRoute(
         name: reader.read('name').stringValue,
         showStatusBar: reader.peek('showStatusBar')?.boolValue ?? true,
         routeName: reader.peek('routeName')?.stringValue ?? '',
@@ -305,6 +306,22 @@ class RouteGenerator extends RouteGeneratorBase {
                 final dartType = object.type;
                 DartTypeAutoImportHelper().findParameterImport(dartType);
                 return FFRouteInterceptor(dartType: dartType);
+              },
+            ).toList(),
+        interceptorTypeStrings:
+            reader.peek('interceptorTypes')?.listValue.map(
+              (e) {
+                final DartObjectImpl object = e as DartObjectImpl;
+                // InterfaceTypeImpl
+                // TypeState
+                // TODO(zmtzawqlp): can't get the type of TypeState
+                return InterceptorType(
+                  className: (object.state as TypeState).toString(),
+                );
+
+                // final dartType = (object.type);
+                // DartTypeAutoImportHelper().findParameterImport(dartType);
+                // return InterceptorType(dartType: dartType);
               },
             ).toList(),
       );

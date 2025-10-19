@@ -13,11 +13,14 @@ const _savedCommandsFile = 'ff_annotation_route_commands';
 
 Future<void> main(List<String> arguments) async {
   bool runFromSavedCommands = false;
+  String? debugExamplePath;
   if (arguments.isEmpty) {
-    final file = io.File(path.join(path.current, _savedCommandsFile));
+    final file = io.File(
+      path.join(debugExamplePath ?? path.current, _savedCommandsFile),
+    );
     if (file.existsSync()) {
       final String content = file.readAsStringSync();
-      arguments = content.split(' ');
+      arguments = content.split(' ').map((e) => e.trim()).toList();
       runFromSavedCommands = true;
     }
   }
@@ -31,38 +34,44 @@ Future<void> main(List<String> arguments) async {
   final DateTime before = DateTime.now();
   print(ansi.green.wrap('\nff_annotation_route ------ Start'));
 
-  final PackageGraph packageGraph = await PackageGraph.forPath(Args().pathUri);
+  final PackageGraph packageGraph = await PackageGraph.forPath(
+    debugExamplePath ?? Args().pathUri,
+  );
 
   // Only check path which imports ff_annotation_route_core or ff_annotation_route_library
   final List<PackageNode> annotationPackages =
       packageGraph.allPackages.values.where(
-    (PackageNode x) {
-      if (x.name == 'ff_annotation_route_library' ||
-          x.name == 'ff_annotation_route_core' ||
-          x.name == 'ff_annotation_route') {
-        return false;
-      }
-      final bool matchPackage = x.dependencyType == DependencyType.path ||
-          (x.dependencyType == DependencyType.github &&
-              Args()
-                      .gitNames
-                      ?.firstWhereOrNull((String key) => x.name == key) !=
-                  null);
-      final bool matchFFRoute = x.dependencies.firstWhereOrNull(
-            (PackageNode? dep) =>
-                dep?.name == 'ff_annotation_route_core' ||
-                dep?.name == 'ff_annotation_route_library',
-          ) !=
-          null;
-      final bool isNotExcluded =
-          x.name.isNotEmpty && !Args().excludedPackagesName.contains(x.name);
+        (PackageNode x) {
+          if (x.name == 'ff_annotation_route_library' ||
+              x.name == 'ff_annotation_route_core' ||
+              x.name == 'ff_annotation_route') {
+            return false;
+          }
+          final bool matchPackage =
+              x.dependencyType == DependencyType.path ||
+              (x.dependencyType == DependencyType.github &&
+                  Args().gitNames?.firstWhereOrNull(
+                        (String key) => x.name == key,
+                      ) !=
+                      null);
+          final bool matchFFRoute =
+              x.dependencies.firstWhereOrNull(
+                (PackageNode? dep) =>
+                    dep?.name == 'ff_annotation_route_core' ||
+                    dep?.name == 'ff_annotation_route_library',
+              ) !=
+              null;
+          final bool isNotExcluded =
+              x.name.isNotEmpty &&
+              !Args().excludedPackagesName.contains(x.name);
 
-      return matchPackage && matchFFRoute && isNotExcluded;
-    },
-  ).toList();
+          return matchPackage && matchFFRoute && isNotExcluded;
+        },
+      ).toList();
 
-  final bool isRootAnnotationRouteEnabled =
-      annotationPackages.contains(packageGraph.root);
+  final bool isRootAnnotationRouteEnabled = annotationPackages.contains(
+    packageGraph.root,
+  );
   if (!isRootAnnotationRouteEnabled) {
     annotationPackages.add(packageGraph.root);
   }
