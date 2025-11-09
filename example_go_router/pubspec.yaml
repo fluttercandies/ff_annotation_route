@@ -35,7 +35,7 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
   go_router: any
-  ff_annotation_route_library: ^3.2.1
+  ff_annotation_route_library: ^3.2.3
   url_launcher: ^6.0.2
   get_it: any
 # dependency_overrides:

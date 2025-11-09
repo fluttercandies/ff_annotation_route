@@ -36,6 +36,10 @@ void main() {
           ),
     ),
   );
+
+  // Initialize the route lifecycle service
+  initRouteLifecycleService();
+
   runApp(const MyApp());
 }
 

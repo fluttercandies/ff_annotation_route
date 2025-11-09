@@ -1,32 +1,57 @@
 import 'package:example_go_router/example_go_router_route.dart';
 import 'package:example_go_router/example_go_router_routes.dart';
 import 'package:example_go_router/src/router/external_link_helper.dart';
-import 'package:example_go_router/src/router/navigator.dart';
-import 'package:example_go_router/src/pages/home_page.dart';
+import 'package:example_go_router/src/router/go_router_route_lifecycle.dart';
+import 'package:example_go_router/src/pages/shell_container.dart';
 import 'package:example_go_router/src/router/page_route.dart';
 import 'package:ff_annotation_route_library/ff_annotation_route_library.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import 'navigator.dart';
+
+// Global navigator key for StatefulShellRoute
+
 GoRouter appGoRouter = GoRouter(
-  initialLocation: Routes.root.name,
+  initialLocation: Routes.indexHome.name,
   navigatorKey: AppNavigator().navigatorKey,
   routes: [
-    GoRoute(
-      path: Routes.root.name,
-      builder: (context, state) => const HomePage(),
-      routes: goRouterRouteSettings.where((e) => e.name != '/').map((settings) {
-        return FFGoRoute(
-          settings: settings,
-          path: settings.name!,
-          caseSensitive: false,
-          pageBuilder: (context, state) {
-            return _pageBuilder(state, settings);
-          },
-        );
-      }).toList(),
+    StatefulShellRoute.indexedStack(
+      builder: (context, state, navigationShell) {
+        return ShellContainer(navigationShell: navigationShell);
+      },
+      branches: goRouterRouteSettings
+          .where((x) => x.name!.startsWith('/index/'))
+          .map((settings) {
+            return StatefulShellBranch(
+              routes: [
+                FFGoRoute(
+                  settings: settings,
+                  path: settings.name!,
+                  caseSensitive: false,
+                  pageBuilder: (context, state) {
+                    return _pageBuilder(state, settings);
+                  },
+                ),
+              ],
+            );
+          })
+          .toList(),
     ),
+    // Other routes outside the shell
+    ...goRouterRouteSettings.where((r) => !r.name!.startsWith('/index/')).map((
+      settings,
+    ) {
+      return FFGoRoute(
+        settings: settings,
+        path: settings.name!,
+        caseSensitive: false,
+        pageBuilder: (context, state) {
+          return _pageBuilder(state, settings);
+        },
+      );
+    }),
   ],
   redirect: (context, state) {
     var result = ExternalLinkHelper().parseExternalLocation(state.uri);
@@ -40,6 +65,19 @@ GoRouter appGoRouter = GoRouter(
     return null;
   },
 );
+
+// Initialize the route lifecycle service after creating the router
+void initRouteLifecycleService() {
+  GoRouterRouteLifecycleService.init(appGoRouter, fireOnlyLeaf: false);
+
+  // Optional: Listen to global events for debugging
+  GoRouterRouteLifecycleService.I.events.listen((event) {
+    final ffgoRoute = event.state.topRoute as FFGoRoute?;
+    debugPrint(
+      '🔔 Global Event: ${event.type.name} - ${event.state.uri} - ${ffgoRoute?.routeName}',
+    );
+  });
+}
 
 Page<dynamic> _pageBuilder(
   GoRouterState state,

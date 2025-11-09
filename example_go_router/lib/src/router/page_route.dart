@@ -36,4 +36,6 @@ class FFGoRoute extends GoRoute {
   });
 
   final FFGoRouterRouteSettings settings;
+
+  String get routeName => settings.routeName!;
 }

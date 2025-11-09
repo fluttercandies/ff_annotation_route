@@ -1,33 +1,23 @@
-// ignore_for_file: avoid_print
-
-@FFAutoImport()
-import 'package:example_go_router/src/router/interceptors/interface.dart';
-@FFAutoImport()
-import 'package:example_go_router/src/router/interceptors/login_interceptor.dart';
-@FFAutoImport()
-import 'package:example_go_router/src/router/interceptors/permission_interceptor.dart';
+import 'package:example_go_router/example_go_router_routes.dart';
 import 'package:example_go_router/src/router/go_router_route_lifecycle.dart';
+import 'package:example_go_router/src/router/navigator.dart';
 import 'package:ff_annotation_route_library/ff_annotation_route_library.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-@FFRoute(
-  name: '/PageB',
-  routeName: 'PageB',
-  description: 'PageB',
-  interceptors: <RouteInterceptor>[LoginInterceptor(), PermissionInterceptor()],
-  interceptorTypes: [ILoginInterceptor, IPermissionInterceptor],
-)
-class PageB extends StatefulWidget {
-  const PageB({super.key});
+@FFRoute(name: '/index/home', routeName: 'home')
+/// Home tab page with route lifecycle
+class TabHomePage extends StatefulWidget {
+  const TabHomePage({super.key});
 
   @override
-  State<PageB> createState() => _PageBState();
+  State<TabHomePage> createState() => _TabHomePageState();
 }
 
-class _PageBState extends State<PageB> with GoRouterRouteLifecycleMixin<PageB> {
+class _TabHomePageState extends State<TabHomePage>
+    with GoRouterRouteLifecycleMixin<TabHomePage> {
+  int _counter = 0;
   final List<String> _lifecycleEvents = [];
-  int _visitCount = 0;
 
   void _addEvent(String event) {
     setState(() {
@@ -35,7 +25,7 @@ class _PageBState extends State<PageB> with GoRouterRouteLifecycleMixin<PageB> {
         0,
         '${DateTime.now().toString().substring(11, 19)} - $event',
       );
-      if (_lifecycleEvents.length > 15) {
+      if (_lifecycleEvents.length > 10) {
         _lifecycleEvents.removeLast();
       }
     });
@@ -43,37 +33,40 @@ class _PageBState extends State<PageB> with GoRouterRouteLifecycleMixin<PageB> {
 
   @override
   void onPageShow(GoRouterState state) {
-    debugPrint('📱 [PageB] onPageShow - ${state.uri}');
-    setState(() {
-      _visitCount++;
-    });
-    _addEvent('📱 onPageShow (Visit #$_visitCount)');
+    debugPrint('📱 [TabHomePage] onPageShow - ${state.uri}');
+    _addEvent('📱 onPageShow');
   }
 
   @override
   void onPageHide(GoRouterState state) {
-    debugPrint('📴 [PageB] onPageHide - ${state.uri}');
+    debugPrint('📴 [TabHomePage] onPageHide - ${state.uri}');
     _addEvent('📴 onPageHide');
   }
 
   @override
   void onForeground(GoRouterState state) {
-    debugPrint('🌞 [PageB] onForeground - ${state.uri}');
+    debugPrint('🌞 [TabHomePage] onForeground - ${state.uri}');
     _addEvent('🌞 onForeground (App resumed)');
   }
 
   @override
   void onBackground(GoRouterState state) {
-    debugPrint('🌙 [PageB] onBackground - ${state.uri}');
+    debugPrint('🌙 [TabHomePage] onBackground - ${state.uri}');
     _addEvent('🌙 onBackground (App paused)');
+  }
+
+  void _incrementCounter() {
+    setState(() {
+      _counter++;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Page B (Detail)'),
-        backgroundColor: Colors.teal,
+        title: const Text('Home Tab'),
+        backgroundColor: Colors.blue,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -81,47 +74,49 @@ class _PageBState extends State<PageB> with GoRouterRouteLifecycleMixin<PageB> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Card(
-              color: Colors.teal.shade50,
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Column(
                   children: [
-                    Icon(Icons.security, size: 48, color: Colors.teal),
-                    const SizedBox(height: 8),
                     const Text(
-                      'Page B - Protected View',
+                      'Counter Demo',
                       style: TextStyle(
-                        fontSize: 20,
+                        fontSize: 18,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                     const SizedBox(height: 8),
-                    const Text(
-                      'This page requires login and admin permissions.',
-                      textAlign: TextAlign.center,
+                    Text(
+                      '$_counter',
+                      style: Theme.of(context).textTheme.headlineMedium,
                     ),
-                    const SizedBox(height: 16),
-                    Container(
-                      padding: const EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                        color: Colors.teal.shade100,
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Text(
-                        'Visit Count: $_visitCount',
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
+                    const SizedBox(height: 8),
+                    ElevatedButton.icon(
+                      onPressed: _incrementCounter,
+                      icon: const Icon(Icons.add),
+                      label: const Text('Increment'),
                     ),
                   ],
                 ),
               ),
             ),
             const SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: () {
+                AppNavigator().push(Routes.pageA.name);
+              },
+              child: const Text('Go to Page A (Detail Page)'),
+            ),
+            const SizedBox(height: 8),
+            ElevatedButton(
+              onPressed: () {
+                AppNavigator().push(Routes.pageB.name);
+              },
+              child: const Text('Go to Page B (Detail Page)'),
+            ),
+            const SizedBox(height: 16),
             const Text(
-              'Lifecycle Events (Last 15):',
+              'Lifecycle Events (Last 10):',
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
@@ -132,7 +127,11 @@ class _PageBState extends State<PageB> with GoRouterRouteLifecycleMixin<PageB> {
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: _lifecycleEvents.isEmpty
-                    ? const Center(child: Text('No events yet.'))
+                    ? const Center(
+                        child: Text(
+                          'No events yet. Switch tabs or navigate to see events.',
+                        ),
+                      )
                     : ListView.builder(
                         itemCount: _lifecycleEvents.length,
                         itemBuilder: (context, index) {

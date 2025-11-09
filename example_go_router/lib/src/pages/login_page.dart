@@ -2,7 +2,8 @@ import 'package:example_go_router/src/router/navigator.dart';
 import 'package:example_go_router/src/user.dart';
 import 'package:ff_annotation_route_library/ff_annotation_route_library.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+
+import '../router/go_router_route_lifecycle.dart';
 
 @FFRoute(name: '/LoginPage', routeName: 'LoginPage', description: 'LoginPage')
 class LoginPage extends StatefulWidget {
@@ -12,7 +13,8 @@ class LoginPage extends StatefulWidget {
   State<LoginPage> createState() => _LoginPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _LoginPageState extends State<LoginPage>
+    with GoRouterRouteLifecycleMixin {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 

@@ -7,14 +7,12 @@
 
 import 'dart:io' as io;
 
-import 'package:ff_annotation_route_core/ff_annotation_route_core.dart';
 import 'package:path/path.dart' as p;
 
 import '/src/arg/args.dart';
 import '/src/route_info/route_info_base.dart';
 import '/src/utils/camel_under_score_converter.dart';
 import '/src/utils/dart_type_auto_import.dart';
-import '/src/utils/route_interceptor.dart';
 import 'file_info.dart';
 import 'template.dart';
 import 'utils/convert.dart';
