@@ -1,3 +1,7 @@
+## 11.3.2
+
+* Add coverage and format ignore directives to generated code.
+
 ## 11.3.1
 
 * Add new command `--name-case-sensitive` that define route name is case sensitive or not.
