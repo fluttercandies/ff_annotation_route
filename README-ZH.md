@@ -2,16 +2,72 @@
 
 [![pub package](https://img.shields.io/pub/v/ff_annotation_route.svg)](https://pub.dartlang.org/packages/ff_annotation_route) [![GitHub stars](https://img.shields.io/github/stars/fluttercandies/ff_annotation_route)](https://github.com/fluttercandies/ff_annotation_route/stargazers) [![GitHub forks](https://img.shields.io/github/forks/fluttercandies/ff_annotation_route)](https://github.com/fluttercandies/ff_annotation_route/network) [![GitHub license](https://img.shields.io/github/license/fluttercandies/ff_annotation_route)](https://github.com/fluttercandies/ff_annotation_route/blob/master/LICENSE) [![GitHub issues](https://img.shields.io/github/issues/fluttercandies/ff_annotation_route)](https://github.com/fluttercandies/ff_annotation_route/issues) <a href="https://qm.qq.com/q/ZyJbSVjfSU">![FlutterCandies QQ 群](https://img.shields.io/badge/dynamic/yaml?url=https%3A%2F%2Fraw.githubusercontent.com%2Ffluttercandies%2F.github%2Frefs%2Fheads%2Fmain%2Fdata.yml&query=%24.qq_group_number&label=QQ%E7%BE%A4&logo=qq&color=1DACE8)
 
-Languages: [English](README.md) | 中文简体
+Languages: [English](README.md) | 中文简体 | [深度解析](技术文章-ff_annotation_route深度解析.md)
 
 [掘金地址](https://juejin.im/post/5d5a7fe5f265da03b94ff42c)
 
 ## 描述
 
-通过注解快速完成路由映射.
+ff_annotation_route 是一个基于注解自动生成路由映射的 Flutter 解决方案。它不仅支持基础的 “路由名称 → Widget” 映射，还提供多导航支持（Navigator 1.0 / 2.0、GetX、GoRouter）、路由与全局拦截器、页面/弹窗生命周期、强类型参数辅助构造、深度链接与 Web Query 解析、嵌套路由、分组与排序（exts）、快速/完整两种构建模式，以及在多 package / monorepo 场景下的跨包扫描能力。
+
+### 关键特性 (Key Features)
+* 多导航模式：Navigator 1.0、Navigator 2.0、GetX、GoRouter
+* 自动生成路由映射与强类型参数助手（支持 super 参数模式）
+* 快速模式 vs 非快速模式：性能与智能的平衡
+* 路由级与全局拦截器，扩展安全/登录/权限等场景
+* 页面与弹窗生命周期：前后台、显示/隐藏、Route 显示/隐藏
+* GetX Bindings 支持：通过 `codes` + 自动导入实现依赖注入
+* 深度链接 / Web Query 自动解析，可自定义 `FFConvert.convert`
+* 嵌套路由（Nested Router）支持多层级导航栈
+* 多 package / git 扫描，支持排除与分组
+* 透明 / Cupertino / Material RouteType 及灵活包装
+* 提供扩展方法：`pushNamedWithInterceptor` 等
+
+### 架构概览 (Architecture Overview)
+1. 收集阶段：扫描指定路径/包中的注解元素（快速模式 = 单文件 AST；非快速模式 = 包 + SDK 解析）
+2. 分析阶段：解析构造函数参数，推断必要 import（或使用 `@FFAutoImport`），生成参数 Map 构造辅助、codes 映射
+3. 输出阶段：生成路由文件、常量、参数辅助类、供不同导航策略消费的 switch 映射
+
+### 快速模式 vs 非快速模式 (Fast Mode vs Non-Fast Mode)
+| 模式                         | 速度 | 导入推断                                       | Super 参数辅助 | 适用场景          |
+| ---------------------------- | ---- | ---------------------------------------------- | -------------- | ----------------- |
+| 快速模式(默认)               | 极快 | 需要手动 (`@FFAutoImport` / `argumentImports`) | 有限           | 频繁增量生成/CI   |
+| 非快速模式(`--no-fast-mode`) | 较慢 | 自动推断 (构造参数类型)                        | 完整           | 首次接入/复杂泛型 |
+
+### 嵌套路由示例 (Nested Router)
+使用多个 `FFRouterDelegate` + `FFRouteInformationParser` 实例（如 Tab 内部再开 Router）并结合 `ChildBackButtonDispatcher` 管理系统返回事件。详见 `example1` 的 nested router demo。
+
+### 拦截器与生命周期 (Interceptors & Lifecycle)
+在 `@FFRoute(interceptors: [...])` 中声明路由级拦截器；通过 `RouteInterceptorManager().addGlobalInterceptors` 注册全局拦截器。生命周期 Mixin `RouteLifecycleState` 支持：`onPageShow/onPageHide/onForeground/onBackground/onRouteShow/onRouteHide`，同时适用于页面与对话框（依赖 `ExtendedRouteObserver`）。
+
+### 深度链接与 Query 解析 (Deep Link & Query Parsing)
+在 Web (Navigator 2.0) 下形如 `...?list=[1,2]&testMode={"id":2,"isTest":true}` 的查询字符串可通过自定义 `FFConvert.convert` 转换为强类型（如 List<int>、自定义 Model）。
+
+### 多 Package / Monorepo 支持 (Monorepo / Multi-Package)
+通过 `--git` 扫描工作区下的多个包，使用 `--exclude-packages` 排除不需要的包。生成跨包统一映射，保持边界清晰。
+
+### 性能建议 (Performance Notes)
+迭代/CI 使用快速模式；发布前或新增复杂类型与超级参数时用非快速模式校验导入与构造。
+
+### 常见问题排查 (Troubleshooting)
+* 构造参数类型导入缺失：添加 `@FFAutoImport()`、`argumentImports` 或使用非快速模式
+* 拦截器不生效：确保使用扩展导航方法（如 `pushNamedWithInterceptor`）且包装未替换掉 settings
+* 生命周期不触发：在 `navigatorObservers` 中添加 `ExtendedRouteObserver` 且页面继承 `RouteLifecycleState`
+* Query 解析类型错误：扩展自定义 `FFConvert.convert`
+
+更多中文深度解析请见：`技术文章-ff_annotation_route深度解析.md`
 
 - [ff\_annotation\_route](#ff_annotation_route)
   - [描述](#描述)
+    - [关键特性 (Key Features)](#关键特性-key-features)
+    - [架构概览 (Architecture Overview)](#架构概览-architecture-overview)
+    - [快速模式 vs 非快速模式 (Fast Mode vs Non-Fast Mode)](#快速模式-vs-非快速模式-fast-mode-vs-non-fast-mode)
+    - [嵌套路由示例 (Nested Router)](#嵌套路由示例-nested-router)
+    - [拦截器与生命周期 (Interceptors \& Lifecycle)](#拦截器与生命周期-interceptors--lifecycle)
+    - [深度链接与 Query 解析 (Deep Link \& Query Parsing)](#深度链接与-query-解析-deep-link--query-parsing)
+    - [多 Package / Monorepo 支持 (Monorepo / Multi-Package)](#多-package--monorepo-支持-monorepo--multi-package)
+    - [性能建议 (Performance Notes)](#性能建议-performance-notes)
+    - [常见问题排查 (Troubleshooting)](#常见问题排查-troubleshooting)
   - [使用](#使用)
     - [增加引用](#增加引用)
     - [添加注解](#添加注解)
@@ -35,9 +91,15 @@ Languages: [English](README.md) | 中文简体
       - [Push](#push-1)
         - [Push name](#push-name-1)
         - [Push name with arguments](#push-name-with-arguments-1)
+    - [GoRouter](#gorouter)
+      - [如何使用 GoRouter](#如何使用-gorouter)
+      - [GoRouter 特性](#gorouter-特性)
     - [GetX](#getx)
       - [How to use](#how-to-use)
       - [设置 GetPageRoute 的参数](#设置-getpageroute-的参数)
+    - [路由扩展](#路由扩展)
+      - [NavigatorWithInterceptor](#navigatorwithinterceptor)
+      - [RouteLifecycleState](#routelifecyclestate)
     - [Functional Widget](#functional-widget)
       - [如何与 functional\_widget 一起使用？](#如何与-functional_widget-一起使用)
     - [Code Hints](#code-hints)
@@ -53,7 +115,7 @@ Languages: [English](README.md) | 中文简体
         - [完成配置](#完成配置-1)
       - [跳转](#跳转)
     - [Lifecycle](#lifecycle)
-      - [RouteLifecycleState](#routelifecyclestate)
+      - [RouteLifecycleState](#routelifecyclestate-1)
       - [ExtendedRouteObserver](#extendedrouteobserver)
     - [GlobalNavigator](#globalnavigator)
   - [来杯可乐](#来杯可乐)
@@ -428,8 +490,76 @@ class MyApp extends StatelessWidget {
         'map': <String, String>{'ddd': 'dddd'},
         'testMode': const TestMode(id: 1, isTest: true),
      }
-  )
+  );
 ```
+
+### GoRouter
+
+完整代码在 [example_go_router](https://github.com/fluttercandies/ff_annotation_route/tree/master/example_go_router) 中
+
+#### 如何使用 GoRouter
+
+`ff_annotation_route` 与 [GoRouter](https://pub.dev/packages/go_router) 完美集成。工具会生成 `FFGoRouterRouteSettings` 用于 GoRouter。
+
+```dart
+import 'package:example_go_router/example_go_router_route.dart';
+import 'package:example_go_router/example_go_router_routes.dart';
+import 'package:go_router/go_router.dart';
+
+GoRouter appGoRouter = GoRouter(
+  initialLocation: Routes.indexHome.name,
+  routes: [
+    // 使用 StatefulShellRoute 实现状态保持的底部导航
+    StatefulShellRoute.indexedStack(
+      builder: (context, state, navigationShell) {
+        return ShellContainer(navigationShell: navigationShell);
+      },
+      branches: goRouterRouteSettings
+          .where((x) => x.name!.startsWith('/index/'))
+          .map((settings) {
+            return StatefulShellBranch(
+              routes: [
+                FFGoRoute(
+                  settings: settings,
+                  path: settings.name!,
+                  pageBuilder: (context, state) {
+                    return _pageBuilder(state, settings);
+                  },
+                ),
+              ],
+            );
+          })
+          .toList(),
+    ),
+    // 其他路由
+    ...goRouterRouteSettings
+        .where((r) => !r.name!.startsWith('/index/'))
+        .map((settings) {
+          return FFGoRoute(
+            settings: settings,
+            path: settings.name!,
+            pageBuilder: (context, state) {
+              return _pageBuilder(state, settings);
+            },
+          );
+        }),
+  ],
+);
+```
+
+#### GoRouter 特性
+
+- **StatefulShellRoute 支持**：使用 `IndexedStack` 实现状态保持的底部导航
+- **路由生命周期**：`GoRouterRouteLifecycleService` 监控页面显示/隐藏和应用前台/后台
+- **Deep Link 支持**：处理 Universal Links (HTTPS) 和自定义 scheme 链接，带白名单验证
+- **路由拦截器**：支持路由级和全局拦截器
+- **类型安全导航**：生成的路由常量带参数辅助方法
+
+查看完整的 [example_go_router](https://github.com/fluttercandies/ff_annotation_route/tree/master/example_go_router) 了解高级用法，包括：
+- 使用 `ExternalLinkBinding` 处理外部链接
+- 自定义页面转场（Material、Cupertino、Transparent）
+- 路由生命周期管理
+- 使用 GetIt 进行依赖注入
 
 ### GetX
 
@@ -566,6 +696,67 @@ class MyApp extends StatelessWidget {
 
 ```
 
+### 路由扩展
+
+完整代码在 [example_route_extension](https://github.com/fluttercandies/ff_annotation_route/tree/master/example_route_extension) 中
+
+#### NavigatorWithInterceptor
+
+`ff_annotation_route_library` 提供了带拦截器支持的导航扩展：
+
+```dart
+// 扩展方法
+Navigator.of(context).pushNamedWithInterceptor(
+  Routes.fluttercandiesPageA.name,
+);
+
+// 静态方法
+NavigatorWithInterceptor.pushNamed(
+  context,
+  Routes.fluttercandiesPageB.name,
+);
+```
+
+#### RouteLifecycleState
+
+通过继承 `RouteLifecycleState` 轻松监测页面生命周期事件：
+
+```dart
+class _PageAState extends RouteLifecycleState<PageA> {
+  @override
+  void onPageShow() {
+    print('PageA 现在可见了');
+    // 刷新数据、恢复动画、埋点统计
+  }
+
+  @override
+  void onPageHide() {
+    print('PageA 现在隐藏了');
+    // 暂停动画、保存状态
+  }
+
+  @override
+  void onForeground() {
+    print('应用回到前台');
+    // 刷新实时数据
+  }
+
+  @override
+  void onBackground() {
+    print('应用进入后台');
+    // 暂停任务、释放资源
+  }
+}
+```
+
+别忘了在 `MaterialApp` 中添加 `ExtendedRouteObserver`：
+
+```dart
+MaterialApp(
+  navigatorObservers: <NavigatorObserver>[ExtendedRouteObserver()],
+  // ...
+)
+```
 
 ### Functional Widget
 

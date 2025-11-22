@@ -2,14 +2,70 @@
 
 [![pub package](https://img.shields.io/pub/v/ff_annotation_route.svg)](https://pub.dartlang.org/packages/ff_annotation_route) [![GitHub stars](https://img.shields.io/github/stars/fluttercandies/ff_annotation_route)](https://github.com/fluttercandies/ff_annotation_route/stargazers) [![GitHub forks](https://img.shields.io/github/forks/fluttercandies/ff_annotation_route)](https://github.com/fluttercandies/ff_annotation_route/network) [![GitHub license](https://img.shields.io/github/license/fluttercandies/ff_annotation_route)](https://github.com/fluttercandies/ff_annotation_route/blob/master/LICENSE) [![GitHub issues](https://img.shields.io/github/issues/fluttercandies/ff_annotation_route)](https://github.com/fluttercandies/ff_annotation_route/issues) <a href="https://qm.qq.com/q/ZyJbSVjfSU">![FlutterCandies QQ 群](https://img.shields.io/badge/dynamic/yaml?url=https%3A%2F%2Fraw.githubusercontent.com%2Ffluttercandies%2F.github%2Frefs%2Fheads%2Fmain%2Fdata.yml&query=%24.qq_group_number&label=QQ%E7%BE%A4&logo=qq&color=1DACE8)
 
-Languages: English | [中文简体](README-ZH.md)
+Languages: English | [中文简体](README-ZH.md) | [深度解析(中文)](技术文章-ff_annotation_route深度解析.md)
 
 ## Description
 
-Provide a route generator to create route map quickly by annotations.
+ff_annotation_route is an annotation–driven route generation solution for Flutter. It scans your Dart code for `@FFRoute` (and helper annotations like `@FFAutoImport`) then produces strongly‑typed, framework‑agnostic routing artifacts. Beyond simple name → widget mapping, it supports multiple navigation paradigms (Navigator 1.0 / 2.0, GetX, GoRouter), deep link & query parsing, lifecycle callbacks, interceptors (global & per‑route), bindings/injection (GetX), nested routers, transparent routes, grouping & ordering metadata, and fast/slow (full analysis) generation modes.
+
+### Key Features
+* Multi navigation support: Navigator 1.0, Navigator 2.0, GetX, GoRouter.
+* Automatic route mapping & strongly‑typed argument helpers (super arguments helper class when enabled).
+* Fast mode (single file scan) vs full analysis (imports inference, super parameters, richer generation).
+* Route & global interceptors + lifecycle (page/dialog foreground/background show/hide).
+* GetX bindings via `codes` + custom imports, transparent / material / cupertino route types.
+* Deep link & query parameter parsing with `FFRouteInformationParser` + `FFConvert.convert` customization.
+* Nested Router (multiple Router/Delegate instances) support.
+* Monorepo / multi‑package scanning, git package scan, grouping & ordering metadata via `exts`.
+* Functional widget & extension method integrations (`pushNamedWithInterceptor`, etc.).
+* Null‑safety, case sensitivity controls, performance tuned scanning.
+
+### Architecture Overview
+Generation consists of three conceptual phases:
+1. Collection: Scan target paths/packages (fast mode = per file AST only; full mode = package + SDK resolution) gathering annotated elements.
+2. Analysis: Resolve constructor signatures, infer needed imports (when not in fast mode or when using `@FFAutoImport`), build argument helper factories & codes map.
+3. Emission: Produce routes file(s) + optional constants, argument helper classes, and mapping switch statements consumed by different navigation strategies.
+
+### Fast Mode vs Non-Fast Mode
+| Mode                        | Speed     | Import inference                             | Super parameters helper | Recommended when                 |
+| --------------------------- | --------- | -------------------------------------------- | ----------------------- | -------------------------------- |
+| Fast (default)              | Very fast | Manual (`@FFAutoImport` / `argumentImports`) | Limited                 | Large codebase frequent regen    |
+| Non-Fast (`--no-fast-mode`) | Slower    | Automatic (constructor param types)          | Full                    | Initial setup / complex generics |
+
+### Nested Router Example
+Use multiple `FFRouterDelegate` + `FFRouteInformationParser` instances (e.g. inside a tab) with `ChildBackButtonDispatcher` to correctly manage system back events. See `example1` nested router demo.
+
+### Interceptors & Lifecycle
+Per‑route interceptors declared directly on `@FFRoute(interceptors: [...])` and global interceptors registered via `RouteInterceptorManager`. Lifecycle mixin `RouteLifecycleState` adds `onPageShow/onPageHide/onForeground/onBackground/onRouteShow/onRouteHide` for both pages and dialogs (via `ExtendedRouteObserver`).
+
+### Deep Link & Query Parsing
+On web (Navigator 2.0) queries like `...?list=[1,2]&testMode={"id":2,"isTest":true}` are converted using customizable `FFConvert.convert` to strong types (List<int>, custom model etc.).
+
+### Monorepo / Multi-Package
+Use `--git` to scan packages under melos or multi‑package workspace; exclude with `--exclude-packages`. Generates cross‑package route maps while respecting package boundaries.
+
+### Performance Notes
+Prefer fast mode for CI or iterative development; switch to non‑fast to ensure imports & super arguments helpers are correct before release.
+
+### Troubleshooting
+* Missing import for a constructor param: add `@FFAutoImport()` above the import or specify in `argumentImports` or disable fast mode.
+* Interceptor not firing: ensure you use provided push APIs (`pushNamedWithInterceptor`) or route wrapper is not replacing settings.
+* Lifecycle not triggered: add `ExtendedRouteObserver` to `navigatorObservers` and ensure widget extends `RouteLifecycleState`.
+* Query parsing type errors: customize `FFConvert.convert` to handle your model/collection shape.
+
+For an in‑depth Chinese deep dive see: `技术文章-ff_annotation_route深度解析.md`.
 
 - [ff\_annotation\_route](#ff_annotation_route)
   - [Description](#description)
+  - [Key Features](#key-features)
+  - [Architecture Overview](#architecture-overview)
+  - [Fast Mode vs Non-Fast Mode](#fast-mode-vs-non-fast-mode)
+  - [Nested Router Example](#nested-router-example)
+  - [Interceptors & Lifecycle](#interceptors--lifecycle)
+  - [Deep Link & Query Parsing](#deep-link--query-parsing)
+  - [Monorepo / Multi-Package](#monorepo--multi-package)
+  - [Performance Notes](#performance-notes)
+  - [Troubleshooting](#troubleshooting)
   - [Usage](#usage)
     - [Add packages to dependencies](#add-packages-to-dependencies)
     - [Add annotation](#add-annotation)
@@ -33,9 +89,15 @@ Provide a route generator to create route map quickly by annotations.
       - [Push](#push-1)
         - [Push name](#push-name-1)
         - [Push name with arguments](#push-name-with-arguments-1)
+    - [GoRouter](#gorouter)
+      - [How to use](#how-to-use-with-gorouter)
+      - [Features](#gorouter-features)
     - [GetX](#getx)
       - [How to use](#how-to-use)
       - [How to set the parameter of GetPageRoute](#how-to-set-the-parameter-of-getpageroute)
+    - [Route Extensions](#route-extensions)
+      - [NavigatorWithInterceptor](#navigatorwithinterceptor)
+      - [RouteLifecycleState](#routelifecyclestate)
     - [Functional Widget](#functional-widget)
       - [How to use with functional\_widget?](#how-to-use-with-functional_widget)
     - [Code Hints](#code-hints)
@@ -429,8 +491,76 @@ you can find more demo in [test_page_c.dart](https://github.com/fluttercandies/f
         'map': <String, String>{'ddd': 'dddd'},
         'testMode': const TestMode(id: 1, isTest: true),
      }
-  )
+  );
 ```
+
+### GoRouter
+
+You can see full demo in [example_go_router](https://github.com/fluttercandies/ff_annotation_route/tree/master/example_go_router)
+
+#### How to use with GoRouter
+
+`ff_annotation_route` works seamlessly with [GoRouter](https://pub.dev/packages/go_router). The tool generates `FFGoRouterRouteSettings` for use with GoRouter.
+
+```dart
+import 'package:example_go_router/example_go_router_route.dart';
+import 'package:example_go_router/example_go_router_routes.dart';
+import 'package:go_router/go_router.dart';
+
+GoRouter appGoRouter = GoRouter(
+  initialLocation: Routes.indexHome.name,
+  routes: [
+    // Use StatefulShellRoute for bottom navigation with state preservation
+    StatefulShellRoute.indexedStack(
+      builder: (context, state, navigationShell) {
+        return ShellContainer(navigationShell: navigationShell);
+      },
+      branches: goRouterRouteSettings
+          .where((x) => x.name!.startsWith('/index/'))
+          .map((settings) {
+            return StatefulShellBranch(
+              routes: [
+                FFGoRoute(
+                  settings: settings,
+                  path: settings.name!,
+                  pageBuilder: (context, state) {
+                    return _pageBuilder(state, settings);
+                  },
+                ),
+              ],
+            );
+          })
+          .toList(),
+    ),
+    // Other routes
+    ...goRouterRouteSettings
+        .where((r) => !r.name!.startsWith('/index/'))
+        .map((settings) {
+          return FFGoRoute(
+            settings: settings,
+            path: settings.name!,
+            pageBuilder: (context, state) {
+              return _pageBuilder(state, settings);
+            },
+          );
+        }),
+  ],
+);
+```
+
+#### GoRouter Features
+
+- **StatefulShellRoute Support**: Bottom navigation with state preservation using `IndexedStack`
+- **Route Lifecycle**: `GoRouterRouteLifecycleService` for monitoring page show/hide and app foreground/background
+- **Deep Link Support**: Handle Universal Links (HTTPS) and custom scheme links with whitelist validation
+- **Route Interceptors**: Support both route-level and global interceptors
+- **Type-Safe Navigation**: Generated route constants with parameter helpers
+
+See the complete [example_go_router](https://github.com/fluttercandies/ff_annotation_route/tree/master/example_go_router) for advanced usage including:
+- External link handling with `ExternalLinkBinding`
+- Custom page transitions (Material, Cupertino, Transparent)
+- Route lifecycle management
+- Dependency injection with GetIt
 
 ### GetX
 
@@ -567,7 +697,67 @@ for example:
 
 ```
 
+### Route Extensions
 
+You can see full demo in [example_route_extension](https://github.com/fluttercandies/ff_annotation_route/tree/master/example_route_extension)
+
+#### NavigatorWithInterceptor
+
+The `ff_annotation_route_library` provides navigation extensions with interceptor support:
+
+```dart
+// Extension method
+Navigator.of(context).pushNamedWithInterceptor(
+  Routes.fluttercandiesPageA.name,
+);
+
+// Static method
+NavigatorWithInterceptor.pushNamed(
+  context,
+  Routes.fluttercandiesPageB.name,
+);
+```
+
+#### RouteLifecycleState
+
+Detect page lifecycle events easily by extending `RouteLifecycleState`:
+
+```dart
+class _PageAState extends RouteLifecycleState<PageA> {
+  @override
+  void onPageShow() {
+    print('PageA is now visible');
+    // Refresh data, resume animations, track analytics
+  }
+
+  @override
+  void onPageHide() {
+    print('PageA is now hidden');
+    // Pause animations, save state
+  }
+
+  @override
+  void onForeground() {
+    print('App returned to foreground');
+    // Refresh real-time data
+  }
+
+  @override
+  void onBackground() {
+    print('App went to background');
+    // Pause tasks, release resources
+  }
+}
+```
+
+Don't forget to add `ExtendedRouteObserver` to your `MaterialApp`:
+
+```dart
+MaterialApp(
+  navigatorObservers: <NavigatorObserver>[ExtendedRouteObserver()],
+  // ...
+)
+```
 
 ### Functional Widget
 
