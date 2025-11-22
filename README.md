@@ -2,7 +2,7 @@
 
 [![pub package](https://img.shields.io/pub/v/ff_annotation_route.svg)](https://pub.dartlang.org/packages/ff_annotation_route) [![GitHub stars](https://img.shields.io/github/stars/fluttercandies/ff_annotation_route)](https://github.com/fluttercandies/ff_annotation_route/stargazers) [![GitHub forks](https://img.shields.io/github/forks/fluttercandies/ff_annotation_route)](https://github.com/fluttercandies/ff_annotation_route/network) [![GitHub license](https://img.shields.io/github/license/fluttercandies/ff_annotation_route)](https://github.com/fluttercandies/ff_annotation_route/blob/master/LICENSE) [![GitHub issues](https://img.shields.io/github/issues/fluttercandies/ff_annotation_route)](https://github.com/fluttercandies/ff_annotation_route/issues) <a href="https://qm.qq.com/q/ZyJbSVjfSU">![FlutterCandies QQ 群](https://img.shields.io/badge/dynamic/yaml?url=https%3A%2F%2Fraw.githubusercontent.com%2Ffluttercandies%2F.github%2Frefs%2Fheads%2Fmain%2Fdata.yml&query=%24.qq_group_number&label=QQ%E7%BE%A4&logo=qq&color=1DACE8)
 
-Languages: English | [中文简体](README-ZH.md) | [深度解析(中文)](技术文章-ff_annotation_route深度解析.md)
+Languages: English | [中文简体](README-ZH.md)
 
 ## Description
 
@@ -57,15 +57,15 @@ For an in‑depth Chinese deep dive see: `技术文章-ff_annotation_route深度
 
 - [ff\_annotation\_route](#ff_annotation_route)
   - [Description](#description)
-  - [Key Features](#key-features)
-  - [Architecture Overview](#architecture-overview)
-  - [Fast Mode vs Non-Fast Mode](#fast-mode-vs-non-fast-mode)
-  - [Nested Router Example](#nested-router-example)
-  - [Interceptors & Lifecycle](#interceptors--lifecycle)
-  - [Deep Link & Query Parsing](#deep-link--query-parsing)
-  - [Monorepo / Multi-Package](#monorepo--multi-package)
-  - [Performance Notes](#performance-notes)
-  - [Troubleshooting](#troubleshooting)
+    - [Key Features](#key-features)
+    - [Architecture Overview](#architecture-overview)
+    - [Fast Mode vs Non-Fast Mode](#fast-mode-vs-non-fast-mode)
+    - [Nested Router Example](#nested-router-example)
+    - [Interceptors \& Lifecycle](#interceptors--lifecycle)
+    - [Deep Link \& Query Parsing](#deep-link--query-parsing)
+    - [Monorepo / Multi-Package](#monorepo--multi-package)
+    - [Performance Notes](#performance-notes)
+    - [Troubleshooting](#troubleshooting)
   - [Usage](#usage)
     - [Add packages to dependencies](#add-packages-to-dependencies)
     - [Add annotation](#add-annotation)
@@ -90,8 +90,8 @@ For an in‑depth Chinese deep dive see: `技术文章-ff_annotation_route深度
         - [Push name](#push-name-1)
         - [Push name with arguments](#push-name-with-arguments-1)
     - [GoRouter](#gorouter)
-      - [How to use](#how-to-use-with-gorouter)
-      - [Features](#gorouter-features)
+      - [How to use with GoRouter](#how-to-use-with-gorouter)
+      - [GoRouter Features](#gorouter-features)
     - [GetX](#getx)
       - [How to use](#how-to-use)
       - [How to set the parameter of GetPageRoute](#how-to-set-the-parameter-of-getpageroute)
@@ -113,7 +113,7 @@ For an in‑depth Chinese deep dive see: `技术文章-ff_annotation_route深度
         - [Complete configuration](#complete-configuration-1)
       - [push route](#push-route)
     - [Lifecycle](#lifecycle)
-      - [RouteLifecycleState](#routelifecyclestate)
+      - [RouteLifecycleState](#routelifecyclestate-1)
       - [ExtendedRouteObserver](#extendedrouteobserver)
     - [GlobalNavigator](#globalnavigator)
 

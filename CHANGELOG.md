@@ -1,4 +1,4 @@
-## 11.3.2
+## 11.3.3
 
 * Add coverage and format ignore directives to generated code.
 
