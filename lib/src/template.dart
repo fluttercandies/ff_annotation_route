@@ -4,20 +4,22 @@ import '/src/arg/args.dart';
 
 Type typeOf<T>() => T;
 
-List<String> get ignores => [
-  'duplicate_import',
-  'implementation_imports',
-  'library_private_types_in_public_api',
-  'multiple_combinators',
-  'prefer_const_literals_to_create_immutables',
-  'unintended_html_in_doc_comment',
-  'unnecessary_import',
-  'unnecessary_library_directive',
-  'unnecessary_library_name',
-  'unused_import',
-  'unused_local_variable',
-  'unused_shown_name',
-].sorted();
+List<String> get ignores {
+  return [
+    'duplicate_import',
+    'implementation_imports',
+    'library_private_types_in_public_api',
+    'multiple_combinators',
+    'prefer_const_literals_to_create_immutables',
+    'unintended_html_in_doc_comment',
+    'unnecessary_import',
+    'unnecessary_library_directive',
+    'unnecessary_library_name',
+    'unused_import',
+    'unused_local_variable',
+    'unused_shown_name',
+  ].sorted();
+}
 
 String get headerLicense {
   return '''// coverage:ignore-file
@@ -31,6 +33,7 @@ String get headerLicense {
 // **************************************************************************
 ''';
 }
+
 const String headerFormatOff = '// dart format off';
 
 const String rootFile = '''

@@ -20,6 +20,7 @@ class ExternalLinkBinaryMessenger extends BinaryMessenger {
     ByteData? data,
     PlatformMessageResponseCallback? callback,
   ) {
+    // ignore: deprecated_member_use
     return original.handlePlatformMessage(channel, data, callback);
   }
 
