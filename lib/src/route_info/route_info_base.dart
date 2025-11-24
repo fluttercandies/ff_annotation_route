@@ -31,7 +31,7 @@ abstract class RouteInfoBase {
   String get caseString {
     String codes = '';
     if (ffRoute.codes != null && ffRoute.codes!.isNotEmpty) {
-      codes += 'codes: <String,dynamic>{';
+      codes += 'codes: <String, dynamic>{';
 
       for (final String key in ffRoute.codes!.keys) {
         codes += '$key:${ffRoute.codes![key]},';
@@ -41,7 +41,7 @@ abstract class RouteInfoBase {
 
     String exts = '';
     if (ffRoute.exts != null && ffRoute.exts!.isNotEmpty) {
-      exts += 'exts: <String,dynamic>{';
+      exts += 'exts: <String, dynamic>{';
 
       for (final String key in ffRoute.exts!.keys) {
         exts += '$key:${ffRoute.exts![key]},';
@@ -49,38 +49,44 @@ abstract class RouteInfoBase {
       exts += '},';
     }
 
-    if (Args().isGoRouterOutputTemplate) {
-      return ''' 
-      FFGoRouterRouteSettings(
-      name: ${safeToString(ffRoute.name)},
-      builder: $constructor,
-      $codes
-      ${ffRoute.showStatusBar != true ? 'showStatusBar: ${ffRoute.showStatusBar},' : ''}
-      ${ffRoute.routeName != '' ? 'routeName: ${safeToString(ffRoute.routeName)},' : ''}
-      ${ffRoute.pageRouteType != null ? 'pageRouteType: ${ffRoute.pageRouteType},' : ''}
-      ${ffRoute.description != '' ? 'description: ${safeToString(ffRoute.description)},' : ''}
-      $exts
-      ),''';
-    } else {
-      return '''case ${safeToString(ffRoute.name)}:
+    final isGoRouter = Args().isGoRouterOutputTemplate;
+    final routeBuffer = StringBuffer();
+    routeBuffer.writeln();
+    routeBuffer.writeln('name: ${safeToString(ffRoute.name)},');
+    if (ffRoute.routeName != '') {
+      routeBuffer.writeln('routeName: ${safeToString(ffRoute.routeName)},');
+    }
+    if (ffRoute.description != '') {
+      routeBuffer.writeln('description: ${safeToString(ffRoute.description)},');
+    }
+    if (!isGoRouter) {
+      routeBuffer.writeln('arguments: arguments,');
+    }
+    if (ffRoute.showStatusBar != true) {
+      routeBuffer.writeln('showStatusBar: ${ffRoute.showStatusBar},');
+    }
+    if (ffRoute.pageRouteType != null) {
+      routeBuffer.writeln('pageRouteType: ${ffRoute.pageRouteType},');
+    }
+    if (codes.isNotEmpty) {
+      routeBuffer.writeln(codes);
+    }
+    if (exts.isNotEmpty) {
+      routeBuffer.writeln(exts);
+    }
+    routeBuffer.writeln('builder: $constructor,');
 
-    return FFRouteSettings(
-      name: name,
-      arguments: arguments,
-      builder: $constructor,
-      $codes
-      ${ffRoute.showStatusBar != true ? 'showStatusBar: ${ffRoute.showStatusBar},' : ''}
-      ${ffRoute.routeName != '' ? 'routeName: ${safeToString(ffRoute.routeName)},' : ''}
-      ${ffRoute.pageRouteType != null ? 'pageRouteType: ${ffRoute.pageRouteType},' : ''}
-      ${ffRoute.description != '' ? 'description: ${safeToString(ffRoute.description)},' : ''}
-      $exts
-      );\n''';
+    if (Args().isGoRouterOutputTemplate) {
+      return '\nFFGoRouterRouteSettings(\n$routeBuffer\n),';
+    } else {
+      return 'case ${safeToString(ffRoute.name)}:\n'
+          'return FFRouteSettings(\n$routeBuffer\n);\n';
     }
   }
 
   @override
   String toString() {
-    return 'RouteInfo {className: $className, ffRoute: $ffRoute}';
+    return 'RouteInfo(className: $className, ffRoute: $ffRoute)';
   }
 
   void getRouteConst(bool enableSuperArguments, StringBuffer sb) {
@@ -92,6 +98,7 @@ abstract class RouteInfoBase {
     final String? constructor = constructorsString;
     final bool showStatusBar = route.showStatusBar;
     final PageRouteType? pageRouteType = route.pageRouteType;
+    final Map<String, String>? codes = route.codes;
     final Map<String, dynamic>? exts = route.exts;
 
     final String firstLine =
@@ -136,6 +143,11 @@ abstract class RouteInfoBase {
     if (pageRouteType != null) {
       sb.write('\n///');
       sb.write('\n/// [pageRouteType] : $pageRouteType');
+    }
+
+    if (codes != null) {
+      sb.write('\n///');
+      sb.write('\n/// [codes] : $codes');
     }
 
     if (exts != null) {

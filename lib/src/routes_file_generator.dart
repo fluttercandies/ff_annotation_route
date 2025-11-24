@@ -68,7 +68,7 @@ class RoutesFileGenerator {
     final Set<String> imports = <String>{};
 
     if (constantsSb.isEmpty) {
-      constantsSb.write(fileHeader);
+      constantsSb.write(headerLicense);
     }
     final className = Args().className;
     constantsSb.write(
@@ -121,7 +121,7 @@ class RoutesFileGenerator {
         writeImports(imports, sb);
         constants = sb.toString() + constants;
       }
-      constants = fileHeader + constants;
+      constants = headerLicense + constants;
     }
 
     if (constants != null) {

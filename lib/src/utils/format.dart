@@ -5,20 +5,15 @@ import 'package:path/path.dart' as p;
 import 'package:pub_semver/pub_semver.dart';
 import 'package:yaml/yaml.dart' show loadYaml;
 
+import '../template.dart' show headerFormatOff;
+
 /// The formatter will only use the tall-style if the SDK constraint is ^3.7.
 DartFormatter _buildDartFormatter({
-  required VersionConstraint? sdk,
+  required VersionRange? sdk,
   required int? pageWidth,
 }) {
-  final useShort = switch (sdk) {
-    final c? => c.allowsAny(VersionConstraint.parse('<3.7.0')),
-    _ => true,
-  };
   return DartFormatter(
-    languageVersion:
-        useShort
-            ? DartFormatter.latestShortStyleLanguageVersion
-            : DartFormatter.latestLanguageVersion,
+    languageVersion: sdk?.min ?? DartFormatter.latestLanguageVersion,
     pageWidth: pageWidth,
     lineEnding: '\n',
   );
@@ -31,22 +26,22 @@ String formatDart({
   try {
     final (sdk, pageWidth) = _readConfig(directory);
     final formatter = _buildDartFormatter(sdk: sdk, pageWidth: pageWidth);
-    return formatter.format(content);
+    return '$headerFormatOff\n${formatter.format(content)}';
   } catch (e) {
     return content;
   }
 }
 
-(VersionConstraint? sdk, int? pageWidth) _readConfig(String directory) {
+(VersionRange? sdk, int? pageWidth) _readConfig(String directory) {
   final pubspecFile = io.File(p.join(directory, 'pubspec.yaml'));
   final pubspecSource =
       pubspecFile.existsSync()
           ? loadYaml(pubspecFile.readAsStringSync()) as Map?
           : null;
-  final VersionConstraint? sdk;
+  final VersionRange? sdk;
   final rawSdk = pubspecSource?['environment']?['sdk'] as String?;
   if (rawSdk != null) {
-    sdk = VersionConstraint.parse(rawSdk);
+    sdk = VersionConstraint.parse(rawSdk) as VersionRange;
   } else {
     sdk = null;
   }
