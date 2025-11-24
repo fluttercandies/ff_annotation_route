@@ -1,3 +1,7 @@
+## 11.3.4
+
+* Improve formats of generated files.
+
 ## 11.3.3
 
 * Add coverage and format ignore directives to generated code.
