@@ -19,8 +19,15 @@ Future<void> main(List<String> arguments) async {
       path.join(debugExamplePath ?? path.current, _savedCommandsFile),
     );
     if (file.existsSync()) {
-      final String content = file.readAsStringSync();
-      arguments = content.split(' ').map((e) => e.trim()).toList();
+      final content = file.readAsStringSync();
+      arguments =
+          content
+              .replaceAll('\\\n', '')
+              .replaceAll('\n', '')
+              .split(' ')
+              .map((e) => e.trim())
+              .where((e) => e.isNotEmpty)
+              .toList();
       runFromSavedCommands = true;
     }
   }
@@ -83,7 +90,7 @@ Future<void> main(List<String> arguments) async {
     if (!file.existsSync()) {
       file.createSync();
     }
-    file.writeAsStringSync(arguments.join(' '));
+    file.writeAsStringSync(arguments.sorted().join(' \\\n'));
   }
 
   print(

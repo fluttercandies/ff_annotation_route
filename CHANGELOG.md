@@ -1,3 +1,7 @@
+## 11.3.5
+
+* Support reading the shell-like multiline saved commands file and saving a shell-like format by default.
+
 ## 11.3.4
 
 * Improve formats of generated files.
