@@ -253,6 +253,7 @@ class TestPageE extends StatelessWidget {
 -g, --git                         扫描 git 引用的 package，你需要指定 package 的名字，多个用 `,` 分开    
     --exclude-packages            排除某些 packages 被扫描
     --routes-file-output          routes 文件的输出目录路径，路径相对于主项目的lib文件夹
+  --generated-file-prefix       替换生成 route 相关文件名中的 packageName，例如 foo 会生成 foo_route(.g).dart 和 foo_routes(.g).dart
     --const-ignore                使用正则表达式忽略一些const(不是全部const都希望生成)
     --[no-]route-constants        是否在根项目中的 `xxx_route.dart` 生成全部路由的静态常量
     --[no-]package                这个是否是一个 package

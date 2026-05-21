@@ -358,7 +358,10 @@ abstract class RouteGeneratorBase {
     if (Args().gSuffix.value == true) {
       g = '.g';
     }
-    final String name = '${packageName}_route$g.dart';
+
+    final String fileNamePrefix =
+        isRoot ? Args().routeFileNamePrefix(packageName) : packageName;
+    final String name = '${fileNamePrefix}_route$g.dart';
     String routePath;
     if (isRoot && Args().outputPath != null) {
       routePath = path.join(_lib!.path, Args().outputPath, name);

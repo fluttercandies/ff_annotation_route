@@ -1,3 +1,9 @@
+## 11.3.6
+
+* Add new command `--generated-file-prefix` to replace `packageName` in generated route file names.
+* Apply the replacement rule consistently for both generated files: `*_route(.g).dart` and `*_routes(.g).dart`.
+* Refactor route file naming fallback logic into a shared method for maintainability.
+
 ## 11.3.5
 
 * Support reading the shell-like multiline saved commands file and saving a shell-like format by default.

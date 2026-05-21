@@ -9,6 +9,7 @@ import 'fast_mode.dart';
 import 'g_suffix.dart';
 import 'generate_file_import.dart';
 import 'generate_file_import_packages.dart';
+import 'generated_file_prefix.dart';
 import 'git.dart';
 import 'help.dart';
 import 'name.dart';
@@ -43,6 +44,7 @@ class Args {
       argumentNames = ArgumentNames(),
       _generateFileImport = GenerateFileImport(),
       generateFileImportPackages = GenerateFileImportPackages(),
+      generatedFilePrefix = GeneratedFilePrefix(),
       gSuffix = GSuffix(),
       nameCaseSensitive = NameCaseSensitive();
 
@@ -64,6 +66,7 @@ class Args {
   final ArgumentNames argumentNames;
   final GenerateFileImport _generateFileImport;
   final GenerateFileImportPackages generateFileImportPackages;
+  final GeneratedFilePrefix generatedFilePrefix;
   final GSuffix gSuffix;
   final NameCaseSensitive nameCaseSensitive;
 
@@ -100,6 +103,14 @@ class Args {
   bool get enableArgumentNames => argumentNames.value!;
 
   bool get generateFileImport => _generateFileImport.value ?? false;
+
+  String routeFileNamePrefix(String packageName) {
+    final String replacement = generatedFilePrefix.value ?? '';
+    if (replacement.isNotEmpty) {
+      return replacement;
+    }
+    return packageName;
+  }
 
   bool get isGoRouterOutputTemplate => outputTemplate.value == 'go_router';
 

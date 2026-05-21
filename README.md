@@ -250,6 +250,7 @@ Available commands:
 -g, --git                              scan git lib(you should specify package names and split multiple by ,)
     --exclude-packages                 Exclude given packages from scanning
     --routes-file-output               The path of routes file. It is relative to the lib directory
+  --generated-file-prefix            Replace packageName in generated route files, for example foo for foo_route(.g).dart and foo_routes(.g).dart
     --const-ignore                     The regular to ignore some route consts
     --[no-]package                     Is this a package
     --[no-]super-arguments             Whether generate page arguments helper class

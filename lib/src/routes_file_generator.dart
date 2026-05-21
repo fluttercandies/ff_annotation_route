@@ -142,7 +142,8 @@ class RoutesFileGenerator {
     if (Args().gSuffix.value == true) {
       g = '.g';
     }
-    final String name = '${packageName}_routes$g.dart';
+    final String fileNamePrefix = Args().routeFileNamePrefix(packageName);
+    final String name = '${fileNamePrefix}_routes$g.dart';
     String routePath;
 
     if (routesFileOutputPath != null) {
