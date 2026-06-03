@@ -4,8 +4,8 @@ import 'package:analyzer/dart/analysis/analysis_context_collection.dart';
 import 'package:analyzer/dart/analysis/features.dart';
 import 'package:analyzer/dart/analysis/results.dart';
 import 'package:analyzer/dart/analysis/utilities.dart';
+import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/ast/syntactic_entity.dart';
-import 'package:analyzer/src/dart/ast/ast.dart';
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:ff_annotation_route/src/utils/ff_route.dart';
 import 'package:ff_annotation_route_core/ff_annotation_route_core.dart';
@@ -54,7 +54,7 @@ class FastRouteGenerator extends RouteGeneratorBase {
               );
 
               if (syntacticEntity != null) {
-                final Annotation annotation = syntacticEntity as AnnotationImpl;
+                final Annotation annotation = syntacticEntity as Annotation;
                 if (annotation.name.name ==
                         typeOf<FFArgumentImport>().toString() ||
                     annotation.name.name == typeOf<FFAutoImport>().toString()) {
@@ -82,7 +82,7 @@ class FastRouteGenerator extends RouteGeneratorBase {
               final ClassDeclaration? ffRefClassDef =
                   getFFRouteRefClassDeclaration(metadata, file);
               if (ffRefClassDef != null) {
-                final String className = ffRefClassDef.name.toString();
+                final String className = _className(ffRefClassDef);
                 final String routePath =
                     '${p.relative(file.path, from: lib!.parent.path)}'
                     ' ------ class : $className';
@@ -151,7 +151,7 @@ class FastRouteGenerator extends RouteGeneratorBase {
     List<InterceptorType>? interceptorTypes;
 
     for (final Expression item in parameters) {
-      if (item is NamedExpressionImpl) {
+      if (item is NamedExpression) {
         String source;
         source = item.expression.toSource();
         if (source == 'null') {
@@ -182,9 +182,9 @@ class FastRouteGenerator extends RouteGeneratorBase {
             break;
           case 'exts:':
           case 'codes:':
-            if (item.expression is SetOrMapLiteralImpl) {
-              final SetOrMapLiteralImpl setOrMapLiteralImpl =
-                  item.expression as SetOrMapLiteralImpl;
+            if (item.expression is SetOrMapLiteral) {
+              final SetOrMapLiteral setOrMapLiteralImpl =
+                  item.expression as SetOrMapLiteral;
               final bool isCodes = key == 'codes:';
               if (setOrMapLiteralImpl.elements.isNotEmpty) {
                 final Map<String, dynamic> map =
@@ -193,8 +193,7 @@ class FastRouteGenerator extends RouteGeneratorBase {
                         : exts ??= <String, dynamic>{};
                 for (final CollectionElement element
                     in setOrMapLiteralImpl.elements) {
-                  final MapLiteralEntryImpl entry =
-                      element as MapLiteralEntryImpl;
+                  final MapLiteralEntry entry = element as MapLiteralEntry;
                   String value = entry.value.toString();
                   if (isCodes) {
                     value = value.replaceAll('\'', '');
@@ -205,10 +204,10 @@ class FastRouteGenerator extends RouteGeneratorBase {
             }
             break;
           case 'interceptors:':
-            if (item.expression is ListLiteralImpl) {
-              for (final CollectionElementImpl element
-                  in (item.expression as ListLiteralImpl).elements) {
-                if (element is MethodInvocationImpl) {
+            if (item.expression is ListLiteral) {
+              for (final CollectionElement element
+                  in (item.expression as ListLiteral).elements) {
+                if (element is MethodInvocation) {
                   interceptors ??= <FFRouteInterceptor>[];
                   interceptors.add(
                     FFRouteInterceptor(
@@ -220,10 +219,10 @@ class FastRouteGenerator extends RouteGeneratorBase {
             }
             break;
           case 'interceptorTypes:':
-            if (item.expression is ListLiteralImpl) {
-              for (final CollectionElementImpl element
-                  in (item.expression as ListLiteralImpl).elements) {
-                if (element is SimpleIdentifierImpl) {
+            if (item.expression is ListLiteral) {
+              for (final CollectionElement element
+                  in (item.expression as ListLiteral).elements) {
+                if (element is SimpleIdentifier) {
                   interceptorTypes ??= <InterceptorType>[];
                   interceptorTypes.add(
                     InterceptorType(
@@ -309,7 +308,7 @@ class FastRouteGenerator extends RouteGeneratorBase {
               _partClassDeclarations[path] = classes;
             }
             final ClassDeclaration? find = classes.firstWhereOrNull(
-              (ClassDeclaration clazz) => clazz.name.toString() == className,
+              (ClassDeclaration clazz) => _className(clazz) == className,
             );
             if (find != null) {
               return find;
@@ -322,5 +321,10 @@ class FastRouteGenerator extends RouteGeneratorBase {
       }
     }
     return null;
+  }
+
+  String _className(ClassDeclaration declaration) {
+    final ClassNamePart namePart = declaration.namePart;
+    return namePart.beginToken.lexeme;
   }
 }

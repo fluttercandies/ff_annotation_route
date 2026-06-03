@@ -5,9 +5,9 @@ import 'package:analyzer/dart/analysis/analysis_context_collection.dart'
     show AnalysisContextCollection;
 import 'package:analyzer/file_system/physical_file_system.dart'
     show PhysicalResourceProvider;
-import 'package:build_runner_core/build_runner_core.dart' show PackageNode;
 
 import '/src/arg/args.dart';
+import '/src/package_graph.dart';
 import '/src/route_generator/fast_route_generator.dart';
 import '/src/route_generator/route_generator.dart';
 import '/src/route_generator/route_generator_base.dart';

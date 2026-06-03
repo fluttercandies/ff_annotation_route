@@ -13,10 +13,11 @@ class FastRouteInfo extends RouteInfoBase {
     required this.classDeclaration,
     required super.fileInfo,
   }) : constructors =
-           classDeclaration.members
+           classDeclaration.body.members
                .whereType<ConstructorDeclaration>()
                .toList(),
-       fields = classDeclaration.members.whereType<FieldDeclaration>().toList();
+       fields =
+           classDeclaration.body.members.whereType<FieldDeclaration>().toList();
 
   final List<ConstructorDeclaration> constructors;
   final List<FieldDeclaration> fields;

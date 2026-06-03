@@ -1,6 +1,7 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
-import 'package:analyzer/src/dart/element/element.dart';
+import 'package:analyzer/src/dart/element/element.dart'
+    show DirectiveUriWithLibraryImpl, HideElementCombinatorImpl;
 import 'package:ff_annotation_route/src/arg/args.dart';
 import 'package:ff_annotation_route/src/file_info.dart';
 import 'package:ff_annotation_route/src/utils/camel_under_score_converter.dart';
@@ -187,7 +188,7 @@ abstract class RouteInfoBase {
   String? getArgumentsClass();
 
   void addImport(
-    LibraryImportElement importElement, {
+    LibraryImport importElement, {
     ConstantReader? reader,
     bool containsCombinator = true,
     DartType? type,
@@ -214,7 +215,7 @@ abstract class RouteInfoBase {
     }
     String prefix = '';
     if (importElement.prefix != null) {
-      prefix = ' ${importElement.prefix!.element.toString()}';
+      prefix = ' as ${importElement.prefix!.element.displayName}';
     }
 
     importString = '${'import $importString$suffix$prefix'.trim()};';

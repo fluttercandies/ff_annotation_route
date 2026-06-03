@@ -76,7 +76,7 @@ class Routes {
   ///
   /// [constructors] :
   ///
-  /// TestPageF({Key? key, BoxWidthStyle boxWidthStyle = ui.BoxWidthStyle.max, ExtendedImageMode extendedImageMode = ExtendedImageMode.gesture, required DragDownDetails details, required BlendMode blendMode, required File file, required List<TestMode3> modes, required Widget Function(String) function, required TestMode3 Function(DragDownDetails) function1, required TestMode3 Function(Map<TestMode1, TestMode2>) function2, required bool Function(String) Function(int, TestMode2 Function(DragDownDetails)) function3, required int Function(String) aFunction, required int myInt, required int Function(String) Function(int Function(String)) Function(int, int Function(int)) function4, TypedefClass1 typedefClass1 = const type.TypedefClass1(1)})
+  /// TestPageF({Key? key, BoxWidthStyle boxWidthStyle = ui.BoxWidthStyle.max, ExtendedImageMode extendedImageMode = ExtendedImageMode.gesture, required DragDownDetails details, required BlendMode blendMode, required File file, required List<TestMode3> modes, required Widget Function(String) function, required TestMode3 Function(DragDownDetails) function1, required TestMode3 Function(Map<TestMode1, TestMode2>) function2, required bool Function(String) Function(int, TestMode2 Function(DragDownDetails)) function3, required AFunction aFunction, required MyInt myInt, required AFunction Function(int Function(String)) Function(int, MyInt Function(int)) function4, TypedefClass1 typedefClass1 = const type.TypedefClass1(1)})
   ///
   /// [exts] : {'group': 'Complex', 'order': 2}
   static const _FlutterCandiesTestPageF flutterCandiesTestPageF =
@@ -480,12 +480,9 @@ class _FlutterCandiesTestPageF {
     required autoimport012d709d6940bda4da65ad673a93e8a3.AFunction aFunction,
     required autoimport012d709d6940bda4da65ad673a93e8a3.MyInt myInt,
     required autoimport012d709d6940bda4da65ad673a93e8a3.AFunction Function(
-      int Function(String),
+      autoimport012d709d6940bda4da65ad673a93e8a3.MyInt Function(String),
     )
-    Function(
-      int,
-      autoimport012d709d6940bda4da65ad673a93e8a3.MyInt Function(int),
-    )
+    Function(int, int Function(int))
     function4,
     autoimport012d709d6940bda4da65ad673a93e8a3.TypedefClass1 typedefClass1 =
         const autoimport012d709d6940bda4da65ad673a93e8a3.TypedefClass1(1),
