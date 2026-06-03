@@ -229,18 +229,18 @@ class RouteGenerator extends RouteGeneratorBase {
       if (exts != null) {
         final parameters = _getFFRouteParameters(classElement);
         if (parameters != null) {
-          for (final Expression item in parameters) {
-            if (item is NamedExpression) {
+          for (final Object? item in parameters) {
+            final Expression? expression = _argumentExpression(item);
+            final String? key = _argumentName(item);
+            if (expression != null && key != null) {
               String source;
-              source = item.expression.toSource();
+              source = expression.toSource();
               if (source == 'null') {
                 continue;
               }
-              final String key = item.name.toSource();
               if (key == 'exts:') {
-                if (item.expression is SetOrMapLiteral) {
-                  final SetOrMapLiteral setOrMapLiteralImpl =
-                      item.expression as SetOrMapLiteral;
+                if (expression is SetOrMapLiteral) {
+                  final SetOrMapLiteral setOrMapLiteralImpl = expression;
                   if (setOrMapLiteralImpl.elements.isNotEmpty) {
                     extsMap = <String, String>{};
                     for (final CollectionElement element
@@ -362,7 +362,7 @@ class RouteGenerator extends RouteGeneratorBase {
     }
   }
 
-  NodeList<Expression>? _getFFRouteParameters(ClassElement classElement) {
+  NodeList? _getFFRouteParameters(ClassElement classElement) {
     final ElementAnnotation? elementAnnotation = classElement
         .metadata
         .annotations
@@ -386,6 +386,34 @@ class RouteGenerator extends RouteGeneratorBase {
         result.unit.declarations.whereType<ClassDeclaration>().first;
     final Annotation annotation = declaration.metadata.first;
     return annotation.arguments?.arguments;
+  }
+
+  Expression? _argumentExpression(Object? argument) {
+    final dynamic value = argument;
+    try {
+      return value.argumentExpression as Expression?;
+    } on NoSuchMethodError {
+      try {
+        return value.expression as Expression?;
+      } on NoSuchMethodError {
+        return argument is Expression ? argument : null;
+      }
+    }
+  }
+
+  String? _argumentName(Object? argument) {
+    final dynamic value = argument;
+    final Object? name;
+    try {
+      name = value.name;
+    } on NoSuchMethodError {
+      return null;
+    }
+    if (name == null) {
+      return null;
+    }
+    final String text = '$name';
+    return text.endsWith(':') ? text : '$text:';
   }
 
   String _getStringValue(DartObjectImpl? object) {

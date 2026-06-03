@@ -104,8 +104,9 @@ return ${getConstructorString(rawConstructor)};
 
     value = 'asT<$type>($value';
 
-    if (parameter is DefaultFormalParameter && parameter.defaultValue != null) {
-      value += ',${parameter.defaultValue}';
+    final Object? defaultValue = _defaultValue(parameter);
+    if (defaultValue != null) {
+      value += ',$defaultValue';
     }
 
     value += ',)';
@@ -182,13 +183,14 @@ return ${getConstructorString(rawConstructor)};
       }
     } else if (parameter.toString() == 'super.key') {
       return 'Key?';
-    } else if (parameter is DefaultFormalParameter &&
-        parameter.parameter is SimpleFormalParameter) {
-      final TypeAnnotation? type =
-          (parameter.parameter as SimpleFormalParameter).type;
+    } else if (_isDefaultFormalParameter(parameter) &&
+        _isSimpleFormalParameter(_normalParameter(parameter))) {
+      final dynamic normalParameter = _normalParameter(parameter);
+      final TypeAnnotation? type = normalParameter.type as TypeAnnotation?;
       typeString = type.toString();
       //getTypeImport();
     }
+    typeString ??= _parameterTypeAnnotation(parameter)?.toString();
     typeString ??= parameter.childEntities.first.toString();
     // if (ffRoute.argumentImports == null) {
     //   alertType(typeString);
@@ -202,6 +204,55 @@ return ${getConstructorString(rawConstructor)};
     constructorsMap[getConstructor(rawConstructor)] ??= <String>[];
     constructorsMap[getConstructor(rawConstructor)]!.add('$display $name');
     return typeString;
+  }
+
+  bool _isDefaultFormalParameter(Object? parameter) {
+    return parameter.runtimeType.toString().contains('DefaultFormalParameter');
+  }
+
+  bool _isSimpleFormalParameter(Object? parameter) {
+    return parameter.runtimeType.toString().contains('SimpleFormalParameter');
+  }
+
+  Object? _defaultValue(FormalParameter parameter) {
+    final dynamic value = parameter;
+    try {
+      return value.defaultValue;
+    } on NoSuchMethodError {
+      final Object? defaultClause = _defaultClause(parameter);
+      if (defaultClause == null) {
+        return null;
+      }
+      final dynamic clause = defaultClause;
+      return clause.value;
+    }
+  }
+
+  Object? _normalParameter(FormalParameter parameter) {
+    final dynamic value = parameter;
+    try {
+      return value.parameter;
+    } on NoSuchMethodError {
+      return null;
+    }
+  }
+
+  Object? _defaultClause(FormalParameter parameter) {
+    final dynamic value = parameter;
+    try {
+      return value.defaultClause;
+    } on NoSuchMethodError {
+      return null;
+    }
+  }
+
+  TypeAnnotation? _parameterTypeAnnotation(FormalParameter parameter) {
+    final dynamic value = parameter;
+    try {
+      return value.type as TypeAnnotation?;
+    } on NoSuchMethodError {
+      return null;
+    }
   }
 
   void getTypeImport() {
