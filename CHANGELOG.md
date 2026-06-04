@@ -1,3 +1,7 @@
+## 12.0.0
+
+* Support `package:analyzer` v12 and v13.
+
 ## 11.3.6
 
 * Add new command `--generated-file-prefix` to replace `packageName` in generated route file names.

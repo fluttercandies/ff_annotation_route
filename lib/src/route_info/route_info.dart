@@ -19,12 +19,15 @@ class RouteInfo extends RouteInfoBase {
 
   final ClassElement classElement;
   final List<ConstructorElement> constructors;
-  final CompilationUnitElement element;
+  final LibraryFragment element;
+
+  String _constructorName(ConstructorElement constructor) {
+    final String name = constructor.name ?? '';
+    return name == 'new' ? '' : name;
+  }
 
   List<String> get prefixes =>
-      element.libraryImportPrefixes
-          .map((PrefixElement e) => e.displayName)
-          .toList();
+      element.prefixes.map((PrefixElement e) => e.displayName).toList();
 
   @override
   String? get constructorsString {
@@ -32,16 +35,19 @@ class RouteInfo extends RouteInfoBase {
       String temp = '';
       for (final ConstructorElement rawConstructor in constructors) {
         if (constructors.length == 1 &&
-            rawConstructor.parameters.isEmpty &&
-            rawConstructor.name.isEmpty) {
+            rawConstructor.formalParameters.isEmpty &&
+            _constructorName(rawConstructor).isEmpty) {
           return null;
         }
 
-        final String args =
+        String args =
             rawConstructor
-                .toString()
+                .displayString(multiline: false, preferTypeAlias: true)
                 .replaceFirst(rawConstructor.returnType.toString(), '')
                 .trim();
+        if (!args.startsWith(className)) {
+          args = '$className$args';
+        }
 
         temp += '\n /// \n /// $args';
       }
@@ -62,7 +68,7 @@ class RouteInfo extends RouteInfoBase {
         String switchCase = '';
         String defaultCtor = '';
         for (final ConstructorElement rawConstructor in constructors) {
-          final String ctorName = rawConstructor.name;
+          final String ctorName = _constructorName(rawConstructor);
           if (ctorName.isEmpty) {
             defaultCtor = '''
 case '':
@@ -98,7 +104,7 @@ return ${getConstructorString(rawConstructor)};
 
   String getIsOptional(
     String name,
-    ParameterElement parameter,
+    FormalParameterElement parameter,
     ConstructorElement rawConstructor,
   ) {
     String value =
@@ -142,8 +148,8 @@ return ${getConstructorString(rawConstructor)};
 
     //final List<FormalParameter> optionals = <FormalParameter>[];
 
-    for (final ParameterElement item in rawConstructor.parameters) {
-      final String name = item.name;
+    for (final FormalParameterElement item in rawConstructor.formalParameters) {
+      final String name = item.name!;
       hasParameters = true;
       if (item.isOptional || item.isRequiredNamed) {
         constructorString += getIsOptional(name, item, rawConstructor);
@@ -173,14 +179,15 @@ return ${getConstructorString(rawConstructor)};
     return constructorString;
   }
 
-  String getParameterType(ParameterElement parameter) {
+  String getParameterType(FormalParameterElement parameter) {
     return DartTypeAutoImportHelper().fixDartTypeString(parameter.type);
   }
 
   String getConstructor(ConstructorElement rawConstructor) {
     String ctor = className;
-    if (rawConstructor.name.isNotEmpty) {
-      ctor += '.${rawConstructor.name}';
+    final String name = _constructorName(rawConstructor);
+    if (name.isNotEmpty) {
+      ctor += '.$name';
     }
 
     return classNameConflictPrefixText + ctor;
@@ -189,30 +196,31 @@ return ${getConstructorString(rawConstructor)};
   @override
   String? getArgumentsClass() {
     constructors.removeWhere(
-      (ConstructorElement element) => element.name == '_',
+      (ConstructorElement element) => _constructorName(element) == '_',
     );
     if (constructors.isNotEmpty) {
       final StringBuffer sb = StringBuffer();
 
       for (final ConstructorElement rawConstructor in constructors) {
-        final String name = rawConstructor.name;
+        final String name = _constructorName(rawConstructor);
         if (constructors.length == 1 &&
             name.isEmpty &&
-            rawConstructor.parameters.isEmpty) {
+            rawConstructor.formalParameters.isEmpty) {
           // only one ctor and no parameters
           // no need arguments class
           return null;
         }
 
         String args = DartTypeAutoImportHelper().getFormalParameters(
-          rawConstructor.parameters,
+          rawConstructor.formalParameters,
           prefixes,
         );
 
         String nameMap = '';
         final List<String> parameterNames = <String>[];
-        for (final ParameterElement parameter in rawConstructor.parameters) {
-          final String name = parameter.name;
+        for (final FormalParameterElement parameter
+            in rawConstructor.formalParameters) {
+          final String name = parameter.name!;
           if (!Args().enableNullSafety) {
             args = args.replaceAll('?', '');
           }
@@ -229,12 +237,12 @@ return ${getConstructorString(rawConstructor)};
           routeConstClassMethodTemplate
               .replaceAll(
                 '{0}',
-                (name.isEmpty ? 'd' : rawConstructor.name) + args,
+                (name.isEmpty ? 'd' : name) + args,
               )
               .replaceAll('{1}', nameMap)
               .replaceAll(
                 '{2}',
-                rawConstructor.parameters.isEmpty ? 'const' : '',
+                rawConstructor.formalParameters.isEmpty ? 'const' : '',
               ),
         );
       }

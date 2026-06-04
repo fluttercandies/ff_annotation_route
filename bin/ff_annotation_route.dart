@@ -1,11 +1,10 @@
 import 'dart:io' as io;
 
-import 'package:build_runner_core/build_runner_core.dart'
-    show DependencyType, PackageGraph, PackageNode;
 import 'package:collection/collection.dart';
 import 'package:ff_annotation_route/ff_annotation_route.dart';
 import 'package:ff_annotation_route/src/arg/arg_parser.dart';
 import 'package:ff_annotation_route/src/arg/args.dart';
+import 'package:ff_annotation_route/src/package_graph.dart';
 import 'package:io/ansi.dart' as ansi show green;
 import 'package:path/path.dart' as path;
 

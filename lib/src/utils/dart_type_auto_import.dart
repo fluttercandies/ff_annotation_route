@@ -2,14 +2,11 @@ import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart' as at;
 import 'package:analyzer/src/dart/ast/to_source_visitor.dart';
-//import 'package:analyzer/src/dart/constant/value.dart';
-import 'package:analyzer/src/dart/element/element.dart';
 import 'package:analyzer/src/dart/element/type.dart';
 import 'package:io/ansi.dart';
 import 'package:meta/meta.dart';
 
 import 'convert.dart';
-import 'display_string_builder.dart';
 import 'git_package_handler.dart';
 
 class DartTypeAutoImport {
@@ -76,7 +73,7 @@ class DartTypeAutoImportHelper {
       }
     } else if (dartType is FunctionTypeImpl) {
       imports.addAll(getDartTypeAutoImports(dartType.returnType));
-      for (final ParameterElement element in dartType.parameters) {
+      for (final FormalParameterElement element in dartType.formalParameters) {
         imports.addAll(getDartTypeAutoImports(element.type));
       }
     } else if (dartType is VoidTypeImpl || dartType is DynamicTypeImpl) {
@@ -87,24 +84,6 @@ class DartTypeAutoImportHelper {
   }
 
   String fixDartTypeString(at.DartType type) {
-    if (type is InterfaceTypeImpl) {
-      final MyElementDisplayStringBuilder builder =
-          MyElementDisplayStringBuilder(
-            withNullability: true,
-            preferTypeAlias: true,
-          );
-      builder.writeInterfaceType(type);
-      return builder.toString();
-    } else if (type is FunctionTypeImpl) {
-      final MyElementDisplayStringBuilder builder =
-          MyElementDisplayStringBuilder(
-            withNullability: true,
-            preferTypeAlias: true,
-          );
-      builder.writeFunctionType(type);
-      return builder.toString();
-    }
-
     String input = type.getDisplayString(withNullability: true);
     final List<DartTypeAutoImport> imports = getDartTypeAutoImports(type);
 
@@ -124,16 +103,14 @@ class DartTypeAutoImportHelper {
   }
 
   String? getDefaultValueString(
-    ParameterElement parameter,
+    FormalParameterElement parameter,
     List<String> prefixes,
   ) {
     String? defaultValueCode;
     // remove default prefix if has
-    if (parameter.hasDefaultValue &&
-        parameter is ConstVariableElement &&
-        (parameter as ConstVariableElement).constantInitializer != null) {
+    if (parameter.hasDefaultValue && parameter.constantInitializer != null) {
       final StringBuffer sb = StringBuffer();
-      (parameter as ConstVariableElement).constantInitializer!.accept<void>(
+      parameter.constantInitializer!.accept<void>(
         MyToSourceVisitor(
           sink: sb,
           prefixes: prefixes,
@@ -187,7 +164,7 @@ class DartTypeAutoImportHelper {
   }
 
   String getFormalParameters(
-    List<ParameterElement> parameters,
+    List<FormalParameterElement> parameters,
     List<String> prefixs,
   ) {
     // Assume the display string looks better wrapped when there are at least
@@ -227,7 +204,7 @@ class DartTypeAutoImportHelper {
         sb.write(separator);
       }
 
-      final ParameterElement parameter = parameters[i];
+      final FormalParameterElement parameter = parameters[i];
       if (parameter.isRequiredPositional) {
         openGroup(_WriteFormalParameterKind.requiredPositional, '', '');
       } else if (parameter.isOptionalPositional) {
@@ -251,7 +228,7 @@ class DartTypeAutoImportHelper {
   }
 
   void _writeWithoutDelimiters(
-    ParameterElement element,
+    FormalParameterElement element,
     StringBuffer sb,
     List<String> prefixs,
   ) {
@@ -277,7 +254,8 @@ class DartTypeAutoImportHelper {
 
   void findParametersImport(ClassElement classElement) {
     for (final ConstructorElement rawConstructor in classElement.constructors) {
-      for (final ParameterElement parameter in rawConstructor.parameters) {
+      for (final FormalParameterElement parameter
+          in rawConstructor.formalParameters) {
         DartTypeAutoImportHelper().findParameterImport(parameter.type);
       }
     }
@@ -285,8 +263,8 @@ class DartTypeAutoImportHelper {
 
   void _findDartTypeImport(InterfaceTypeImpl type) {
     if (type.typeArguments.isEmpty) {
-      Uri uri = type.element.source.uri;
-      final Uri partParent = type.element.library.source.uri;
+      Uri uri = type.element.library.firstFragment.source.uri;
+      final Uri partParent = type.element.library.firstFragment.source.uri;
       if (partParent != uri) {
         uri = partParent;
       }
@@ -301,8 +279,9 @@ class DartTypeAutoImportHelper {
   void findParameterImport(at.DartType dartType) {
     if (dartType.alias != null) {
       final aliasElement = dartType.alias!;
-      Uri uri = aliasElement.element.source.uri;
-      final Uri partParent = aliasElement.element.library.source.uri;
+      Uri uri = aliasElement.element.library.firstFragment.source.uri;
+      final Uri partParent =
+          aliasElement.element.library.firstFragment.source.uri;
       if (partParent != uri) {
         uri = partParent;
       }
@@ -311,7 +290,7 @@ class DartTypeAutoImportHelper {
       _findDartTypeImport(dartType);
     } else if (dartType is FunctionTypeImpl) {
       findParameterImport(dartType.returnType);
-      for (final ParameterElement element in dartType.parameters) {
+      for (final FormalParameterElement element in dartType.formalParameters) {
         findParameterImport(element.type);
       }
     } else if (dartType is VoidTypeImpl || dartType is DynamicTypeImpl) {

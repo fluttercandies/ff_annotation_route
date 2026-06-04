@@ -155,14 +155,11 @@ FFRouteSettings getRouteSettings({
           function4:
               asT<
                 autoimport012d709d6940bda4da65ad673a93e8a3.AFunction Function(
-                  int Function(String),
-                )
-                Function(
-                  int,
                   autoimport012d709d6940bda4da65ad673a93e8a3.MyInt Function(
-                    int,
+                    String,
                   ),
                 )
+                Function(int, int Function(int))
               >(safeArguments['function4'])!,
           typedefClass1:
               asT<autoimport012d709d6940bda4da65ad673a93e8a3.TypedefClass1>(

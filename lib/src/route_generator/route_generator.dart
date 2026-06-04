@@ -2,12 +2,12 @@ import 'package:analyzer/dart/analysis/analysis_context.dart';
 import 'package:analyzer/dart/analysis/analysis_context_collection.dart';
 import 'package:analyzer/dart/analysis/results.dart';
 import 'package:analyzer/dart/analysis/session.dart';
+import 'package:analyzer/dart/analysis/utilities.dart';
+import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/constant/value.dart';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/file_system/physical_file_system.dart';
-import 'package:analyzer/src/dart/ast/ast.dart';
 import 'package:analyzer/src/dart/constant/value.dart';
-import 'package:analyzer/src/dart/element/element.dart';
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:ff_annotation_route/src/utils/ff_route.dart';
 import 'package:ff_annotation_route_core/ff_annotation_route_core.dart';
@@ -74,12 +74,14 @@ class RouteGenerator extends RouteGeneratorBase {
               packageName,
               ...filePath.replaceFirst(lib!.path, '').split(p.context.separator).where((String element) => element.isNotEmpty),
             ].join('/')}';
-        final CompilationUnitElement fileElement = await getElement(
+        final LibraryFragment fileElement = await getElement(
           context.currentSession,
           filePath,
         );
 
-        for (final ClassElement classElement in fileElement.classes) {
+        for (final ClassElement classElement in fileElement.classes.map(
+          (ClassFragment e) => e.element,
+        )) {
           findFFRoute(
             fileElement,
             fileInfo,
@@ -97,7 +99,7 @@ class RouteGenerator extends RouteGeneratorBase {
         );
 
         if (fileInfo.routes.isNotEmpty) {
-          for (final LibraryImportElement importElement
+          for (final LibraryImport importElement
               in fileElement.libraryImports) {
             _findAutoImport(
               importElement,
@@ -118,7 +120,7 @@ class RouteGenerator extends RouteGeneratorBase {
   }
 
   void _findAutoImport(
-    LibraryImportElement importElement,
+    LibraryImport importElement,
     FileInfo fileInfo,
     TypeChecker typeChecker,
   ) {
@@ -135,14 +137,19 @@ class RouteGenerator extends RouteGeneratorBase {
   }
 
   Future<void> _handleFunctionWidget(
-    CompilationUnitElement fileElement,
+    LibraryFragment fileElement,
     AnalysisContext context,
     FileInfo fileInfo,
     String ffRouteFileImportPath,
   ) async {
     final widgetFunctionMap = <String, DartObject>{};
 
-    for (final FunctionElement functionElement in fileElement.functions) {
+    for (final TopLevelFunctionElement functionElement in fileElement.functions
+        .map((TopLevelFunctionFragment e) => e.element)) {
+      final String? functionName = functionElement.name;
+      if (functionName == null) {
+        continue;
+      }
       final annotation = fFRouteTypeChecker.firstAnnotationOf(
         functionElement,
         throwOnUnresolved: true,
@@ -152,23 +159,24 @@ class RouteGenerator extends RouteGeneratorBase {
         throwOnUnresolved: true,
       );
       if (annotation != null && functionalWidget != null) {
-        widgetFunctionMap[funcName2ClassName(functionElement.name)] =
-            annotation;
+        widgetFunctionMap[funcName2ClassName(functionName)] = annotation;
       }
     }
 
     if (widgetFunctionMap.isNotEmpty) {
-      for (final PartElement partElement in fileElement.parts) {
+      for (final PartInclude partElement in fileElement.partIncludes) {
         final DirectiveUri uri = partElement.uri;
         String? path;
         if (uri is DirectiveUriWithUnit) {
-          path = uri.unit.source.fullName;
+          path = uri.libraryFragment.source.fullName;
         } else if (uri is DirectiveUriWithSource) {
           path = uri.source.fullName;
         }
         if (path != null) {
           final element = await getElement(context.currentSession, path);
-          for (final ClassElement classElement in element.classes) {
+          for (final ClassElement classElement in element.classes.map(
+            (ClassFragment e) => e.element,
+          )) {
             if (widgetFunctionMap.containsKey(classElement.name)) {
               final DartObject? annotation =
                   widgetFunctionMap[classElement.name];
@@ -187,16 +195,16 @@ class RouteGenerator extends RouteGeneratorBase {
     }
   }
 
-  Future<CompilationUnitElement> getElement(
+  Future<LibraryFragment> getElement(
     AnalysisSession analysisSession,
     String path,
   ) async {
     return (await analysisSession.getUnitElement(path) as UnitElementResult)
-        .element;
+        .fragment;
   }
 
   void findFFRoute(
-    CompilationUnitElement element,
+    LibraryFragment element,
     FileInfo fileInfo,
     ClassElement classElement,
     String ffRouteFileImportPath,
@@ -213,7 +221,7 @@ class RouteGenerator extends RouteGeneratorBase {
       final ConstantReader reader = ConstantReader(annotation);
 
       print(
-        'Found annotation route in ${classElement.source.uri} ------ class : ${classElement.displayName}',
+        'Found annotation route in ${classElement.library.firstFragment.source.uri} ------ class : ${classElement.displayName}',
       );
 
       final ConstantReader? exts = reader.peek('exts');
@@ -221,24 +229,23 @@ class RouteGenerator extends RouteGeneratorBase {
       if (exts != null) {
         final parameters = _getFFRouteParameters(classElement);
         if (parameters != null) {
-          for (final Expression item in parameters) {
-            if (item is NamedExpressionImpl) {
+          for (final Object? item in parameters) {
+            final Expression? expression = _argumentExpression(item);
+            final String? key = _argumentName(item);
+            if (expression != null && key != null) {
               String source;
-              source = item.expression.toSource();
+              source = expression.toSource();
               if (source == 'null') {
                 continue;
               }
-              final String key = item.name.toSource();
               if (key == 'exts:') {
-                if (item.expression is SetOrMapLiteralImpl) {
-                  final SetOrMapLiteralImpl setOrMapLiteralImpl =
-                      item.expression as SetOrMapLiteralImpl;
+                if (expression is SetOrMapLiteral) {
+                  final SetOrMapLiteral setOrMapLiteralImpl = expression;
                   if (setOrMapLiteralImpl.elements.isNotEmpty) {
                     extsMap = <String, String>{};
                     for (final CollectionElement element
                         in setOrMapLiteralImpl.elements) {
-                      final MapLiteralEntryImpl entry =
-                          element as MapLiteralEntryImpl;
+                      final MapLiteralEntry entry = element as MapLiteralEntry;
                       final String value = entry.value.toString();
 
                       extsMap[entry.key.toString()] = value;
@@ -355,15 +362,58 @@ class RouteGenerator extends RouteGeneratorBase {
     }
   }
 
-  NodeList<Expression>? _getFFRouteParameters(ClassElement classElement) {
-    final ElementAnnotationImpl? elementAnnotation =
-        classElement.metadata.firstWhereOrNull(
-              (element) =>
-                  (element as ElementAnnotationImpl).annotationAst.name.name ==
-                  typeOf<FFRoute>().toString(),
-            )
-            as ElementAnnotationImpl?;
-    return elementAnnotation?.annotationAst.arguments?.arguments;
+  NodeList? _getFFRouteParameters(ClassElement classElement) {
+    final ElementAnnotation? elementAnnotation = classElement
+        .metadata
+        .annotations
+        .firstWhereOrNull(
+          (ElementAnnotation element) =>
+              element.toSource().startsWith('@${typeOf<FFRoute>()}'),
+        );
+    final String? source = elementAnnotation?.toSource();
+    if (source == null) {
+      return null;
+    }
+    final int start = source.indexOf('(');
+    final int end = source.lastIndexOf(')');
+    if (start < 0 || end <= start) {
+      return null;
+    }
+    final ParseStringResult result = parseString(
+      content: '$source class _FFRouteAnnotationProbe {}',
+    );
+    final ClassDeclaration declaration =
+        result.unit.declarations.whereType<ClassDeclaration>().first;
+    final Annotation annotation = declaration.metadata.first;
+    return annotation.arguments?.arguments;
+  }
+
+  Expression? _argumentExpression(Object? argument) {
+    final dynamic value = argument;
+    try {
+      return value.argumentExpression as Expression?;
+    } on NoSuchMethodError {
+      try {
+        return value.expression as Expression?;
+      } on NoSuchMethodError {
+        return argument is Expression ? argument : null;
+      }
+    }
+  }
+
+  String? _argumentName(Object? argument) {
+    final dynamic value = argument;
+    final Object? name;
+    try {
+      name = value.name;
+    } on NoSuchMethodError {
+      return null;
+    }
+    if (name == null) {
+      return null;
+    }
+    final String text = '$name';
+    return text.endsWith(':') ? text : '$text:';
   }
 
   String _getStringValue(DartObjectImpl? object) {
