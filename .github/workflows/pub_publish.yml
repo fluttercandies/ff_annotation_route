@@ -3,20 +3,24 @@ name: Pub Publish plugin
 on:
   release:
     types: [published]
-  workflow_dispatch:
+
+permissions:
+  contents: read
 
 jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
-      - uses: flutter-actions/setup-flutter@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: flutter-actions/setup-flutter@adb607ae976a9e00473569facfc69813c637a060
         with:
           channel: stable
           cache: true
       - name: Publish
-        uses: k-paxian/dart-package-publisher@master
+        uses: k-paxian/dart-package-publisher@8fdba1dbf624c712706281a6f91cb50b6bfc2eaf
         with:
           credentialJson: ${{ secrets.CREDENTIAL_JSON }}
           flutter: true
