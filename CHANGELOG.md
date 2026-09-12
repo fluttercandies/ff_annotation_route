@@ -1,3 +1,7 @@
+## 12.1.0
+
+* Silence the generated route files by diagnostic type (`// ignore_for_file: type=hint,type=lint,type=warning`) instead of a list of twelve diagnostic names that had to be kept in sync with the analyzer.
+
 ## 12.0.0
 
 * Support `package:analyzer` v12 and v13.
