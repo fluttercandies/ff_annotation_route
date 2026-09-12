@@ -518,7 +518,14 @@ class GoRouterRouteLifecycleService
 
   GoRouterState _safeBuildState(RouteMatchBase m, RouteMatchList list) {
     try {
-      return m.buildState(_router.configuration, list);
+      return m.buildState(
+        _router.configuration,
+        list,
+        // Required since go_router 17.5.0. The merged metadata
+        // (`RouteMatchList.metadataFor`) is internal to go_router, so pass the
+        // metadata of the matched route itself.
+        metadata: m.route.metadata ?? const <String, dynamic>{},
+      );
     } catch (_) {
       // Fallback minimal state (should rarely happen)
       return GoRouterState(

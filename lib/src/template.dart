@@ -1,29 +1,23 @@
-import 'package:collection/collection.dart' show IterableComparableExtension;
-
 import '/src/arg/args.dart';
 
 Type typeOf<T>() => T;
 
-List<String> get ignores {
-  return [
-    'duplicate_import',
-    'implementation_imports',
-    'library_private_types_in_public_api',
-    'multiple_combinators',
-    'prefer_const_literals_to_create_immutables',
-    'unintended_html_in_doc_comment',
-    'unnecessary_import',
-    'unnecessary_library_directive',
-    'unnecessary_library_name',
-    'unused_import',
-    'unused_local_variable',
-    'unused_shown_name',
-  ].sorted();
-}
+/// The `ignore_for_file` directive used by the generated header.
+///
+/// The generated code is suppressed by diagnostic *type* rather than by a list
+/// of diagnostic names: most of the diagnostics that generated code triggers
+/// have moved out of the lint set into the analyzer itself (`unnecessary_import`
+/// is a hint, `duplicate_import`, `multiple_combinators`, `unused_import`,
+/// `unused_local_variable` and `unused_shown_name` are static warnings), so a
+/// name based list has to be kept in sync with every such move.
+///
+/// `hint`, `lint` and `warning` are the only types an ignore comment can match;
+/// diagnostics of type `error` can not be ignored either way.
+const String ignoreForFile = 'type=hint,type=lint,type=warning';
 
 String get headerLicense {
   return '''// coverage:ignore-file
-// ignore_for_file: ${ignores.join(',')}
+// ignore_for_file: $ignoreForFile
 //
 // GENERATED CODE - DO NOT MODIFY MANUALLY
 // **************************************************************************
