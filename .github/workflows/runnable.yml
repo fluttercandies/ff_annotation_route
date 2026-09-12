@@ -10,6 +10,8 @@ on:
       - main
       - master
 
+permissions: {}
+
 jobs:
   analyze:
     name: Analyze on ${{ matrix.os }} with ${{ matrix.flutter-version }} Flutter
@@ -18,8 +20,10 @@ jobs:
       matrix:
         os: [ ubuntu-latest ]
     steps:
-      - uses: actions/checkout@v4
-      - uses: flutter-actions/setup-flutter@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: flutter-actions/setup-flutter@adb607ae976a9e00473569facfc69813c637a060
         with:
           channel: stable
           cache: true
@@ -30,7 +34,7 @@ jobs:
       - name: Prepare dependencies
         run: dart pub get
       - name: Melos bootstrap
-        uses: bluefireteam/melos-action@v3
+        uses: bluefireteam/melos-action@2982f8e4fc92440a219490009d6d05195cb1a6a5
       - name: Check Dart code formatting
         run: dart format lib -o none --set-exit-if-changed
       - name: Analyze Dart code
